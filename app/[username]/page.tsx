@@ -1,153 +1,96 @@
-/**
- * @fileoverview Forke Platform
- * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
- *
- * Source-Available License (Non-Commercial / Fair Source).
- * This source code is open for inspection, learning, and personal development.
- * Commercial use, hosting, or resale as a paid service without an explicit
- * commercial license from Forke Inc. is strictly prohibited.
- */
-
 import { db } from '@/lib/db'
-import { users, owners, tasks, submissions } from '@/lib/db/schema'
-import { eq, desc, sql, and } from 'drizzle-orm'
-import crypto from 'crypto'
-import {
-  getLevelFromXp, getLevelTitle, getLevelProgress, getXpForNextLevel, calculateXpAward,
-} from '@/lib/utils/xp'
+import { users, owners, tasks } from '@/lib/db/schema'
+import { eq, desc, sql } from 'drizzle-orm'
+import { getLevelFromXp, getLevelTitle } from '@/lib/utils/xp'
+import { Globe, Mail, Phone, Shield, Calendar, ArrowLeft, ExternalLink, Award, Terminal } from 'lucide-react'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { auth } from '@/auth'
-import { resolveAvatarUrl } from '@/lib/utils/avatar'
-import { ensureProfileColumns } from '@/lib/actions/profile-actions'
-import PublicProfileView, { ProfileData, ShippedItem, AchievementItem } from '@/components/profile/PublicProfileView'
-import Navbar from '@/components/shared/Navbar'
-import Footer from '@/components/shared/Footer'
+import CopyProfileButton from '@/components/shared/CopyProfileButton'
 
 const RESERVED_KEYWORDS = [
-  'admin', 'api', 'checkout', 'privacy', 'register', 'signin', 'terms', 'waitlist',
-  'auth-error', 'profile', 'dashboard', 'tasks', 'submissions', 'earnings',
-  'messages', 'settings', 'support', 'developers', 'onboarding', 'post-task', 'notifications',
+  'admin', 'api', 'checkout', 'privacy', 'register', 'signin', 'terms', 'waitlist', 
+  'auth-error', 'profile', 'dashboard', 'tasks', 'submissions', 'earnings', 
+  'messages', 'settings', 'support', 'developers', 'onboarding', 'post-task'
 ]
 
+function LinkedinIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" width="16" height="16">
+      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+    </svg>
+  )
+}
+
+// Generate dynamic Open Graph preview metadata for social sharing cards
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ username: string }>
 }): Promise<Metadata> {
   const { username } = await params
-  if (RESERVED_KEYWORDS.includes(username.toLowerCase())) return {}
 
-  const dbUser = await db.query.users.findFirst({ where: eq(users.username, username) })
+  if (RESERVED_KEYWORDS.includes(username.toLowerCase())) {
+    return {}
+  }
+
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.username, username),
+  })
+
   if (!dbUser) return {}
 
   const level = getLevelFromXp(dbUser.xp || 0)
-  const title = `${dbUser.name} (@${dbUser.username})`
+  const isOwner = dbUser.role === 'owner'
+  
+  let companyName = ''
+  if (isOwner) {
+    const ownerData = await db.query.owners.findFirst({
+      where: eq(owners.id, dbUser.id)
+    })
+    companyName = ownerData?.companyName || ''
+  }
 
-  // Social/SEO descriptions should be ~110-160 chars. Bios can be long (2500
-  // char limit), so trim to a level-aware budget, cut on a word boundary, and
-  // append the "· Level N Title" suffix without blowing past ~160 chars.
-  const levelSuffix = ` · Level ${level} ${getLevelTitle(level)}`
-  const intro = (dbUser.headline || dbUser.bio || 'Building real, verified work on Forke.')
-    .replace(/\s+/g, ' ')
-    .trim()
-  const maxIntro = Math.max(40, 158 - levelSuffix.length)
-  const trimmedIntro = intro.length > maxIntro
-    ? `${intro.slice(0, maxIntro).replace(/\s+\S*$/, '')}…`
-    : intro
-  const description = `${trimmedIntro}${levelSuffix}`
+  const title = `${dbUser.username || dbUser.name} - Overview`
+  
+  // Fetch statistics
+  const countRes = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(tasks)
+    .where(isOwner ? eq(tasks.clientId, dbUser.id) : eq(tasks.claimantId, dbUser.id))
+  const totalTasks = countRes[0]?.count || 0
 
-  // Cache-buster: a short hash of everything the OG image renders. When the user
-  // changes their avatar/name/headline/level, this version changes, so the
-  // og:image URL changes and external scrapers (LinkedIn, Twitter, etc.) re-fetch
-  // instead of serving their cached copy.
-  const ogVersion = crypto
-    .createHash('sha1')
-    .update(`${dbUser.name}|${dbUser.image || ''}|${dbUser.headline || ''}|${dbUser.bio || ''}|${dbUser.xp || 0}`)
-    .digest('hex')
-    .slice(0, 10)
-  const ogImageUrl = `/${dbUser.username}/opengraph-image?v=${ogVersion}`
+  const subtitle = isOwner 
+    ? `Verified employer at ${companyName || 'Forke'}` 
+    : `Level ${level} (${getLevelTitle(level)}) Developer`
+
+  const description = `${dbUser.bio || 'Building products on the Forke network.'} ${subtitle} • ${totalTasks} ${isOwner ? 'tasks posted' : 'completed/active claims'}.`
 
   return {
-    title,
-    description,
-    alternates: { canonical: `https://www.forke.space/${dbUser.username}` },
+    title: title,
+    description: description,
     openGraph: {
-      title,
-      description,
+      title: title,
+      description: description,
+      images: [
+        {
+          url: dbUser.image || 'https://www.forke.space/icon.png',
+          width: 800,
+          height: 800,
+          alt: dbUser.name,
+        },
+      ],
       type: 'profile',
       username: dbUser.username || undefined,
-      images: [{ url: `https://www.forke.space${ogImageUrl}`, width: 1200, height: 630, alt: title }],
     },
-    twitter: { card: 'summary_large_image', title, description, images: [`https://www.forke.space${ogImageUrl}`] },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: [dbUser.image || 'https://www.forke.space/icon.png'],
+    },
   }
-}
-
-function getStreakMilestoneBonus(day: number): number {
-  if (day === 30) return 150
-  if (day === 14) return 100
-  if (day === 7) return 50
-  if (day === 5) return 30
-  if (day === 2) return 15
-  return 0
-}
-
-function toLocalDateString(date: Date) {
-  const yyyy = date.getFullYear()
-  const mm = String(date.getMonth() + 1).padStart(2, '0')
-  const dd = String(date.getDate()).padStart(2, '0')
-  return `${yyyy}-${mm}-${dd}`
-}
-
-function buildHeatmap(activities: { date: Date; xp: number }[], currentStreak: number): { date: string; count: number }[] {
-  const days = 371 // 53 weeks
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const counts = new Map<string, number>()
-  
-  for (const act of activities) {
-    const key = toLocalDateString(new Date(act.date))
-    counts.set(key, (counts.get(key) || 0) + act.xp + 10)
-  }
-  
-  for (let s = 0; s < currentStreak; s++) {
-    const d = new Date(today)
-    d.setDate(today.getDate() - s)
-    const key = toLocalDateString(d)
-    
-    const streakDayNum = currentStreak - s
-    const milestoneBonus = getStreakMilestoneBonus(streakDayNum)
-    
-    const existing = counts.get(key) || 0
-    if (existing > 0) {
-      counts.set(key, existing + milestoneBonus)
-    } else {
-      counts.set(key, 10 + milestoneBonus)
-    }
-  }
-
-  const out: { date: string; count: number }[] = []
-  for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(today)
-    d.setDate(today.getDate() - i)
-    const key = toLocalDateString(d)
-    out.push({ date: key, count: counts.get(key) || 0 })
-  }
-  return out
-}
-
-function buildAchievements(opts: { shipped: number; level: number; streak: number; earned: number }): AchievementItem[] {
-  const { shipped, level, streak, earned } = opts
-  return [
-    { id: 'first', label: 'First Blood', desc: 'Shipped your first task', unlocked: shipped >= 1, icon: 'first' },
-    { id: 'sprint', label: 'Sprinter', desc: 'Shipped 5+ tasks', unlocked: shipped >= 5, icon: 'sprint' },
-    { id: 'untouchable', label: 'Untouchable', desc: '20+ approved ships', unlocked: shipped >= 20, icon: 'untouchable' },
-    { id: 'streak', label: 'Streak God', desc: '30-day login streak', unlocked: streak >= 30, icon: 'streak' },
-    { id: 'loot', label: 'Loot Goblin', desc: 'Earned ₹10,000+', unlocked: earned >= 10000, icon: 'loot' },
-    { id: 'boss', label: 'Boss Mode', desc: 'Reached Level 15', unlocked: level >= 15, icon: 'boss' },
-    { id: 'legend', label: 'Forke Legend', desc: 'Reached Level 25', unlocked: level >= 25, icon: 'legend' },
-    { id: 'night', label: 'Stack Explorer', desc: 'Reached Level 5', unlocked: level >= 5, icon: 'night' },
-  ]
 }
 
 export default async function PublicProfilePage({
@@ -156,127 +99,286 @@ export default async function PublicProfilePage({
   params: Promise<{ username: string }>
 }) {
   const { username } = await params
-  if (RESERVED_KEYWORDS.includes(username.toLowerCase())) notFound()
 
-  await ensureProfileColumns()
+  if (RESERVED_KEYWORDS.includes(username.toLowerCase())) {
+    notFound()
+  }
 
-  const dbUser = await db.query.users.findFirst({ where: eq(users.username, username) })
+  // Fetch full user record
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.username, username)
+  })
+
   if (!dbUser) notFound()
 
   const session = await auth()
-  const isOwnProfile = !!session?.user && session.user.id === dbUser.id
+  const loggedInUser = session?.user
+
+  let ownerDetails = null
+  let totalTasks = 0
   const isOwner = dbUser.role === 'owner'
 
-  // ----- XP / level -----
-  const xp = dbUser.xp || 0
-  const level = getLevelFromXp(xp)
-  const levelTitle = getLevelTitle(level)
-  const xpProgress = getLevelProgress(xp)
-  const nextLevelXp = getXpForNextLevel(level)
-  const xpRemaining = nextLevelXp ? nextLevelXp - xp : 0
-
-  // ----- shipped work + stats -----
-  let shippedWork: ShippedItem[] = []
-  let shipped = 0
-  let avgRating: number | null = null
-  let completionRate: number | null = null
-  let earned = 0
-  let shipActivities: { date: Date; xp: number }[] = []
-
   if (isOwner) {
-    const rows = await db
-      .select({ id: tasks.id, title: tasks.title, budget: tasks.budget, tags: tasks.skillTags, date: tasks.createdAt })
-      .from(tasks)
-      .where(and(eq(tasks.clientId, dbUser.id), eq(tasks.status, 'approved')))
-      .orderBy(desc(tasks.createdAt))
-      .limit(30)
-    shippedWork = rows.map((r) => ({ id: r.id, title: r.title, budget: Math.floor((r.budget || 0) / 100), tags: r.tags || [], rating: null, prUrl: null, date: r.date.toISOString() }))
-    shipped = rows.length
-    shipActivities = rows.map((r) => ({ date: r.date, xp: 100 }))
-    earned = rows.reduce((s, r) => s + Math.floor((r.budget || 0) / 100), 0)
-  } else {
-    const [rows, totals] = await Promise.all([
-      db
-        .select({
-          id: tasks.id, title: tasks.title, budget: tasks.budget, tags: tasks.skillTags,
-          rating: submissions.rating, prUrl: submissions.githubLink, date: submissions.createdAt,
-          taskCreatedAt: tasks.createdAt, deadline: tasks.deadline
-        })
-        .from(submissions)
-        .innerJoin(tasks, eq(submissions.taskId, tasks.id))
-        .where(and(eq(submissions.developerId, dbUser.id), eq(submissions.status, 'approved')))
-        .orderBy(desc(submissions.createdAt))
-        .limit(30),
-      db
-        .select({ total: sql<number>`count(*)::int`, approved: sql<number>`count(*) filter (where ${submissions.status} = 'approved')::int` })
-        .from(submissions)
-        .where(eq(submissions.developerId, dbUser.id)),
-    ])
-    shippedWork = rows.map((r) => ({ id: r.id, title: r.title, budget: Math.floor((r.budget || 0) / 100), tags: r.tags || [], rating: r.rating ?? null, prUrl: r.prUrl ?? null, date: r.date.toISOString() }))
-    shipped = rows.length
-    shipActivities = rows.map((r) => {
-      const xpVal = calculateXpAward({
-        budgetPaise: r.budget || 0,
-        taskCreatedAt: r.taskCreatedAt,
-        submittedAt: r.date,
-        deadline: r.deadline,
-        rating: r.rating,
-        hadRevision: false
-      })
-      return {
-        date: r.date,
-        xp: xpVal
-      }
+    ownerDetails = await db.query.owners.findFirst({
+      where: eq(owners.id, dbUser.id)
     })
-    earned = rows.reduce((s, r) => s + Math.floor((r.budget || 0) / 100), 0)
-
-    const ratings = rows.map((r) => r.rating).filter((r): r is number => typeof r === 'number')
-    avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null
-
-    const t = totals[0]
-    completionRate = t && t.total > 0 ? Math.round((t.approved / t.total) * 100) : null
+    
+    const countRes = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(tasks)
+      .where(eq(tasks.clientId, dbUser.id))
+    totalTasks = countRes[0]?.count || 0
+  } else {
+    const countRes = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(tasks)
+      .where(eq(tasks.claimantId, dbUser.id))
+    totalTasks = countRes[0]?.count || 0
   }
 
-  let ownerName: string | null = null
-  if (isOwner) {
-    const od = await db.query.owners.findFirst({ where: eq(owners.id, dbUser.id) })
-    ownerName = od?.companyName || null
-  }
+  // Fetch tasks portfolio (e.g. up to 5 tasks claimed or posted)
+  const portfolioTasks = await db
+    .select()
+    .from(tasks)
+    .where(isOwner ? eq(tasks.clientId, dbUser.id) : eq(tasks.claimantId, dbUser.id))
+    .orderBy(desc(tasks.createdAt))
+    .limit(5)
 
-  const data: ProfileData = {
-    username: dbUser.username || username,
-    name: ownerName || dbUser.name,
-    headline: dbUser.headline ?? null,
-    bio: dbUser.bio ?? null,
-    location: dbUser.location ?? null,
-    college: dbUser.college ?? null,
-    avatarUrl: resolveAvatarUrl(dbUser.image),
-    level,
-    levelTitle,
-    xp,
-    xpProgress,
-    xpRemaining,
-    nextLevel: nextLevelXp ? level + 1 : null,
-    currentStreak: dbUser.currentStreak || 0,
-    joinedAt: dbUser.createdAt.toISOString(),
-    githubUrl: dbUser.githubUrl ?? null,
-    linkedinUrl: dbUser.linkedinUrl ?? null,
-    websiteUrl: dbUser.websiteUrl ?? null,
-    stats: { shipped, avgRating, completionRate },
-    shippedWork,
-    achievements: buildAchievements({ shipped, level, streak: dbUser.currentStreak || 0, earned }),
-    heatmap: buildHeatmap(shipActivities, dbUser.currentStreak || 0),
-  }
+  const level = getLevelFromXp(dbUser?.xp || 0)
 
   return (
-    <div className="min-h-screen bg-[#060608] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-neutral-900 via-[#060608] to-[#060608] text-white font-sans flex flex-col antialiased">
-      <Navbar />
+    <div className="min-h-screen bg-[#0A0A0A] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-neutral-900 via-[#0A0A0A] to-[#0A0A0A] text-white font-sans flex flex-col">
+      {/* Public Header */}
+      <header className="border-b border-white/5 bg-[#0A0A0A]/50 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 select-none group">
+            <span className="text-base font-black tracking-widest text-[#ff8a00] font-mono group-hover:text-white transition-colors">
+              FORKE //
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ff8a00] animate-pulse" />
+          </Link>
 
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 min-[1920px]:max-w-[1920px]">
-        <PublicProfileView data={data} isOwnProfile={isOwnProfile} contained={false} />
+          <div>
+            {loggedInUser ? (
+              <Link
+                href="/dashboard"
+                className="h-9 px-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-xs font-bold text-white flex items-center gap-1.5 cursor-pointer"
+              >
+                Go to Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/"
+                className="h-9 px-4 rounded-lg bg-[#ff8a00] border border-[#ff8a00] hover:bg-[#ff8a00]/90 transition-all text-xs font-black text-[#0A0A0A] flex items-center gap-1.5 cursor-pointer"
+              >
+                Join Forke
+              </Link>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-grow flex items-center justify-center py-10 px-5 relative overflow-hidden">
+        {/* Futuristic Grid Lines */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+
+        <div className="max-w-4xl w-full space-y-6 relative z-10">
+          {/* Main Profile Card */}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.015] backdrop-blur-xl p-6 md:p-8 space-y-6 text-left">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              {/* Avatar Circle with Neon Ring */}
+              <div className="relative shrink-0 select-none">
+                <div className="absolute inset-0 rounded-full bg-[#ff8a00]/25 blur-md" />
+                <div className="w-20 h-20 rounded-full bg-accent/15 border-2 border-[#ff8a00] flex items-center justify-center text-accent text-3xl font-black relative overflow-hidden">
+                  {dbUser?.image ? (
+                    <img src={dbUser.image} alt={dbUser.name} className="w-full h-full object-cover rounded-full" />
+                  ) : (
+                    dbUser?.name?.[0]?.toUpperCase() || 'F'
+                  )}
+                </div>
+              </div>
+
+              {/* Profile Info */}
+              <div className="flex-1 min-w-0 text-center sm:text-left space-y-2.5">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                  <h1 className="text-xl md:text-2xl font-black text-white tracking-tight">
+                    {isOwner ? (ownerDetails?.companyName || 'Acme Labs') : dbUser?.name}
+                  </h1>
+                  
+                  {isOwner ? (
+                    <span className="px-2 py-0.5 rounded-lg bg-accent/10 border border-accent/25 text-accent text-[11px] font-bold">
+                      Verified Employer
+                    </span>
+                  ) : (
+                    dbUser?.username && (
+                      <CopyProfileButton username={dbUser.username} />
+                    )
+                  )}
+                </div>
+
+                <p className="text-sm text-white/60 max-w-lg leading-relaxed">
+                  {isOwner
+                    ? `Managed by ${ownerDetails?.firstName || ''} ${ownerDetails?.lastName || ''} (${ownerDetails?.designation || 'Founder'})`
+                    : (dbUser?.bio || "Developer building products on the Forke network.")}
+                </p>
+
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 pt-1.5 text-xs text-white/40 font-medium">
+                  <div className="flex items-center gap-1.5 hover:text-white transition-colors">
+                    <Mail className="w-4 h-4 text-[#ff8a00]/70" />
+                    <span>{isOwner ? ownerDetails?.contactEmail : dbUser?.email}</span>
+                  </div>
+                  {ownerDetails?.contactNumber && (
+                    <div className="flex items-center gap-1.5">
+                      <Phone className="w-4 h-4 text-[#ff8a00]/70" />
+                      <span>{ownerDetails.contactNumber}</span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="w-4 h-4 text-[#ff8a00]/70" />
+                    <span>Joined {new Date(dbUser?.createdAt || Date.now()).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Info Metrics Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+              {/* Profile Details Block */}
+              <div className="rounded-xl bg-white/[0.01] border border-white/5 divide-y divide-white/[0.03] text-sm">
+                <div className="px-4 py-3 bg-white/[0.01] font-bold text-white/90">
+                  Profile Details
+                </div>
+                {isOwner ? (
+                  <>
+                    <div className="flex justify-between items-center px-4 py-3">
+                      <span className="text-white/45">Designation</span>
+                      <span className="text-white font-medium">{ownerDetails?.designation}</span>
+                    </div>
+                    <div className="flex justify-between items-center px-4 py-3">
+                      <span className="text-white/45">Company website</span>
+                      {ownerDetails?.companyWebsite ? (
+                        <a href={ownerDetails.companyWebsite} target="_blank" rel="noreferrer" className="text-accent hover:underline flex items-center gap-1.5 font-bold">
+                          <Globe className="w-3.5 h-3.5" /> Visit site
+                        </a>
+                      ) : (
+                        <span className="text-white/20">—</span>
+                      )}
+                    </div>
+                    <div className="flex justify-between items-center px-4 py-3">
+                      <span className="text-white/45">LinkedIn</span>
+                      {ownerDetails?.personalLinkedIn ? (
+                        <a href={ownerDetails.personalLinkedIn} target="_blank" rel="noreferrer" className="text-accent hover:underline flex items-center gap-1.5 font-bold">
+                          <LinkedinIcon className="w-3.5 h-3.5" /> View LinkedIn
+                        </a>
+                      ) : (
+                        <span className="text-white/20">—</span>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-between items-center px-4 py-3">
+                      <span className="text-white/45">Level & Rank</span>
+                      <span className="text-[#ff8a00] font-black flex items-center gap-1.5">
+                        <Award className="w-4 h-4" />
+                        Lvl {level} ({getLevelTitle(level)})
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center px-4 py-3">
+                      <span className="text-white/45">Experience Points</span>
+                      <span className="text-white font-mono font-bold tabular-nums">{dbUser?.xp} XP</span>
+                    </div>
+                    <div className="flex justify-between items-center px-4 py-3 font-mono">
+                      <span className="text-white/45">GitHub Handle</span>
+                      {dbUser?.githubUrl ? (
+                        <a href={dbUser.githubUrl} target="_blank" rel="noreferrer" className="text-accent hover:underline flex items-center gap-1.5 font-bold">
+                          <Terminal className="w-3.5 h-3.5" />
+                          {dbUser.githubUrl.replace('https://github.com/', '')}
+                        </a>
+                      ) : (
+                        <span className="text-white/20">Not linked</span>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Statistics & Platform Status Block */}
+              <div className="rounded-xl bg-white/[0.01] border border-white/5 divide-y divide-white/[0.03] text-sm">
+                <div className="px-4 py-3 bg-white/[0.01] font-bold text-white/90">
+                  Platform Status
+                </div>
+                <div className="flex justify-between items-center px-4 py-3">
+                  <span className="text-white/45">Account Status</span>
+                  <span className="px-2.5 py-0.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Active Secure
+                  </span>
+                </div>
+                <div className="flex justify-between items-center px-4 py-3">
+                  <span className="text-white/45">Current Tier</span>
+                  <span className="text-white font-bold">{isOwner ? 'Verified Client' : 'Active Developer'}</span>
+                </div>
+                <div className="flex justify-between items-center px-4 py-3">
+                  <span className="text-white/45">{isOwner ? 'Missions Launched' : 'Missions Undertaken'}</span>
+                  <span className="text-white font-black font-mono tabular-nums">{totalTasks}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Portfolio: Tasks Timeline */}
+          {portfolioTasks.length > 0 && (
+            <div className="rounded-2xl border border-white/10 bg-white/[0.015] backdrop-blur-xl p-6 text-left space-y-4">
+              <h2 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
+                <Terminal className="w-5 h-5 text-[#ff8a00]" />
+                {isOwner ? 'Recent Mission Board' : 'Completed & Active Bounties'}
+              </h2>
+              
+              <div className="divide-y divide-white/[0.03]">
+                {portfolioTasks.map((t) => {
+                  const budgetInRupees = Math.floor(t.budget / 100)
+                  return (
+                    <div key={t.id} className="py-3 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
+                      <div className="min-w-0">
+                        <h4 className="text-sm font-semibold text-white/90 truncate">
+                          {t.title}
+                        </h4>
+                        <div className="flex flex-wrap gap-1.5 mt-1.5">
+                          {t.skillTags?.slice(0, 3).map((tag) => (
+                            <span key={tag} className="px-1.5 py-0.5 bg-white/[0.02] border border-white/5 text-[10px] text-white/40 rounded font-medium">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="text-sm font-black text-[#ff8a00] font-mono">
+                          ₹{budgetInRupees.toLocaleString()}
+                        </div>
+                        <div className="text-[10px] text-white/35 uppercase font-bold mt-1">
+                          {t.status}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </main>
 
-      <Footer />
+      {/* Public Footer */}
+      <footer className="border-t border-white/5 py-6 bg-[#0A0A0A]">
+        <div className="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/30 font-medium">
+          <div>© {new Date().getFullYear()} Forke Technology Group. All rights reserved.</div>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
