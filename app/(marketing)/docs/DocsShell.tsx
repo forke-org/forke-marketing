@@ -216,6 +216,7 @@ function NavGroup({
                         'h-4 w-4 shrink-0 transition-colors',
                         active ? 'text-accent' : 'text-white/35'
                       )}
+                      strokeWidth={1.7}
                     />
                     <span className="truncate">{a.title}</span>
                   </Link>
@@ -367,12 +368,12 @@ export default function DocsShell({
 
               {/* Auth CTA */}
               {isLoggedIn ? (
-                <a
-                  href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.forke.space'}/dashboard`}
+                <Link
+                  href="/dashboard"
                   className="rounded-lg bg-white px-3.5 py-1.5 text-[13px] font-semibold tracking-tight text-[#0a0a0a] transition-colors hover:bg-white/90"
                 >
                   Dashboard
-                </a>
+                </Link>
               ) : (
                 <Link
                   href={showWaitlisterView ? '/waitlist' : '/signin'}

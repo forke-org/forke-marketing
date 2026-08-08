@@ -1,31 +1,29 @@
 import React from 'react'
 import {
+  GraduationCap,
+  Info,
+  Code2,
+  Building2,
+  User,
+  GitFork,
+  Settings,
+  ListChecks,
+  MousePointerClick,
+  GitBranch,
+  GitPullRequest,
+  ShieldCheck,
+  Bot,
+  Trophy,
+  Layers,
+  Gauge,
+  Wallet,
+  RefreshCw,
+  ScrollText,
+  LifeBuoy,
   ArrowRight,
   ArrowDown,
-  ChevronRight,
+  type LucideIcon,
 } from 'lucide-react'
-import {
-  RiGraduationCapFill,
-  RiInformationFill,
-  RiCodeSSlashFill,
-  RiBuilding4Fill,
-  RiUser3Fill,
-  RiGitForkFill,
-  RiSettings4Fill,
-  RiListCheck3,
-  RiCursorFill,
-  RiGitBranchFill,
-  RiGitPullRequestFill,
-  RiShieldCheckFill,
-  RiRobotFill,
-  RiTrophyFill,
-  RiStackFill,
-  RiSpeedFill,
-  RiWallet3Fill,
-  RiLoopLeftFill,
-  RiFileTextFill,
-  RiLifebuoyFill,
-} from '@remixicon/react'
 import {
   Prose,
   Lead,
@@ -51,13 +49,11 @@ import {
 
 export type TocItem = { id: string; label: string; depth?: 1 | 2 }
 
-export type DocIcon = React.ComponentType<{ className?: string }>
-
 export type Article = {
   slug: string
   title: string
   description: string
-  icon: DocIcon
+  icon: LucideIcon
   readTime?: string
   /** Surfaced on the docs home grid. */
   popular?: boolean
@@ -75,7 +71,7 @@ export type DocSection = {
   id: string
   label: string
   description: string
-  icon: DocIcon
+  icon: LucideIcon
   /** Collapsed groups still render; this just sets the default open state. */
   defaultOpen?: boolean
   articles: Article[]
@@ -126,7 +122,7 @@ const welcome: Article = {
   slug: 'welcome',
   title: 'Welcome to Forke',
   description: 'Learn what Forke is and how to get from sign-up to your first payout.',
-  icon: RiGraduationCapFill,
+  icon: GraduationCap,
   readTime: '2 min read',
   popular: true,
   toc: [
@@ -261,7 +257,7 @@ const coreConcepts: Article = {
   slug: 'core-concepts',
   title: 'Core concepts',
   description: 'The vocabulary that shows up everywhere on Forke — bounties, escrow, levels, trust.',
-  icon: RiInformationFill,
+  icon: Info,
   readTime: '3 min read',
   popular: true,
   toc: [
@@ -366,7 +362,7 @@ const forDevelopers: Article = {
   slug: 'for-developers',
   title: 'For developers',
   description: 'The end-to-end journey from connecting GitHub to your first instant payout.',
-  icon: RiCodeSSlashFill,
+  icon: Code2,
   readTime: '4 min read',
   popular: true,
   toc: [
@@ -474,7 +470,7 @@ const forFounders: Article = {
   slug: 'for-founders',
   title: 'For founders',
   description: 'Post scoped tasks, fund escrow, and review a clean verdict instead of raw code.',
-  icon: RiBuilding4Fill,
+  icon: Building2,
   readTime: '4 min read',
   toc: [
     { id: 'apply', label: 'Apply & get approved' },
@@ -576,7 +572,7 @@ const profile: Article = {
   slug: 'profile',
   title: 'Developer profile & proof of work',
   description: 'Your public developer page, activity graph, completed task history, and badges.',
-  icon: RiUser3Fill,
+  icon: User,
   readTime: '2 min read',
   toc: [
     { id: 'public', label: 'Your public profile' },
@@ -626,7 +622,7 @@ const githubConnection: Article = {
   slug: 'github-connection',
   title: 'Connecting GitHub & permissions',
   description: 'Why Forke needs GitHub access, what permissions are requested, and how PRs are mapped.',
-  icon: RiGitForkFill,
+  icon: GitFork,
   readTime: '3 min read',
   toc: [
     { id: 'why', label: 'Why GitHub' },
@@ -688,7 +684,7 @@ const settings: Article = {
   slug: 'account-settings',
   title: 'Account settings & UPI payouts',
   description: 'Manage your profile details, notification preferences, and UPI ID for instant payouts.',
-  icon: RiSettings4Fill,
+  icon: Settings,
   readTime: '2 min read',
   toc: [
     { id: 'upi', label: 'UPI payout ID' },
@@ -732,7 +728,7 @@ const browsingTheFeed: Article = {
   slug: 'browsing-the-feed',
   title: 'Browsing the bounty feed',
   description: 'How to filter tasks by tech stack, level, reward, and estimated completion time.',
-  icon: RiListCheck3,
+  icon: ListChecks,
   readTime: '3 min read',
   popular: true,
   toc: [
@@ -799,7 +795,7 @@ const claiming: Article = {
   slug: 'claiming-a-task',
   title: 'Claiming a task & soft reservations',
   description: 'How task reservation works, the 20-minute timer, and what happens when you activate.',
-  icon: RiCursorFill,
+  icon: MousePointerClick,
   readTime: '3 min read',
   toc: [
     { id: 'soft', label: 'Soft reservation' },
@@ -884,7 +880,7 @@ const branchWorkflow: Article = {
   slug: 'branch-workflow',
   title: 'Forke branch workflow',
   description: 'How Forke creates dedicated working branches and why developers never push directly to main.',
-  icon: RiGitBranchFill,
+  icon: GitBranch,
   readTime: '4 min read',
   toc: [
     { id: 'where', label: 'Where you work' },
@@ -948,7 +944,7 @@ const submittingPr: Article = {
   slug: 'submitting-a-pr',
   title: 'Submitting a pull request',
   description: 'How to link your PR, run pre-submission validation, and trigger the automated review pipeline.',
-  icon: RiGitPullRequestFill,
+  icon: GitPullRequest,
   readTime: '4 min read',
   popular: true,
   toc: [
@@ -1025,7 +1021,7 @@ const reviewPipeline: Article = {
   slug: 'review-pipeline',
   title: 'The 4-layer review pipeline',
   description: 'Static analysis, AI test generation, security scanning, and owner verdict card generation.',
-  icon: RiShieldCheckFill,
+  icon: ShieldCheck,
   readTime: '5 min read',
   popular: true,
   toc: [
@@ -1126,7 +1122,7 @@ const verdictCard: Article = {
   slug: 'verdict-card',
   title: 'Understanding the AI verdict card',
   description: 'How Forke translates code diffs into plain-English acceptance signals for task owners.',
-  icon: RiRobotFill,
+  icon: Bot,
   readTime: '3 min read',
   toc: [
     { id: 'what', label: "What's on the card" },
@@ -1167,7 +1163,7 @@ const acceptanceCriteria: Article = {
   slug: 'acceptance-criteria',
   title: 'Writing clear acceptance criteria',
   description: 'Best practices for founders writing task specs that AI reviewers and developers can test against.',
-  icon: RiListCheck3,
+  icon: ListChecks,
   readTime: '4 min read',
   toc: [
     { id: 'why', label: 'Why it matters' },
@@ -1217,7 +1213,7 @@ const xpSystem: Article = {
   slug: 'xp-system',
   title: 'The XP system & calculations',
   description: 'How XP is earned from completed tasks, speed bonuses, clean reviews, and streak multipliers.',
-  icon: RiTrophyFill,
+  icon: Trophy,
   readTime: '3 min read',
   popular: true,
   toc: [
@@ -1301,7 +1297,7 @@ const levelsAndUnlocks: Article = {
   slug: 'levels-and-unlocks',
   title: 'Levels (1-25) & feature unlocks',
   description: 'Full tier breakdown from Level 1 Newcomer to Level 25 Forke Legend and what each tier unlocks.',
-  icon: RiStackFill,
+  icon: Layers,
   readTime: '4 min read',
   popular: true,
   toc: [
@@ -1390,7 +1386,7 @@ const skillTracks: Article = {
   slug: 'skill-tracks',
   title: 'Skill tracks & specialization',
   description: 'Frontend, Backend, Fullstack, and DevOps tracks that gate specialized bounty categories.',
-  icon: RiCodeSSlashFill,
+  icon: Code2,
   readTime: '3 min read',
   toc: [
     { id: 'tracks', label: 'Tracks & tiers' },
@@ -1443,7 +1439,7 @@ const trustScore: Article = {
   slug: 'trust-score',
   title: 'Trust score & platform standing',
   description: 'How deadline adherence, review pass rates, and dispute history calculate your Trust Score.',
-  icon: RiSpeedFill,
+  icon: Gauge,
   readTime: '4 min read',
   toc: [
     { id: 'what', label: 'What it measures' },
@@ -1504,7 +1500,7 @@ const escrow: Article = {
   slug: 'escrow-system',
   title: 'Razorpay escrow & lockup',
   description: 'How owner funds are locked before a bounty goes live and how instant payouts trigger on approval.',
-  icon: RiWallet3Fill,
+  icon: Wallet,
   readTime: '4 min read',
   popular: true,
   toc: [
@@ -1569,7 +1565,7 @@ const refundsDisputes: Article = {
   slug: 'refunds-and-disputes',
   title: 'Refunds, timeouts & disputes',
   description: 'What happens when a task expires, how refund requests work, and the 48-hour dispute window.',
-  icon: RiLoopLeftFill,
+  icon: RefreshCw,
   readTime: '4 min read',
   toc: [
     { id: 'rejected', label: 'When work is rejected' },
@@ -1614,7 +1610,7 @@ const policies: Article = {
   slug: 'platform-policies',
   title: 'Code of conduct & marketplace rules',
   description: 'Rules against plagiarized code, ghosting claimed tasks, circumventing escrow, or alt accounts.',
-  icon: RiFileTextFill,
+  icon: ScrollText,
   readTime: '5 min read',
   toc: [
     { id: 'conduct', label: 'Code of conduct' },
@@ -1659,7 +1655,7 @@ const support: Article = {
   slug: 'getting-support',
   title: 'Getting help & contacting support',
   description: 'How to open a support ticket, appeal a dispute, or reach the engineering team directly.',
-  icon: RiLifebuoyFill,
+  icon: LifeBuoy,
   readTime: '2 min read',
   toc: [{ id: 'contact', label: 'Contact us' }],
   body: (
@@ -1694,7 +1690,7 @@ export const SECTIONS: DocSection[] = [
     id: 'getting-started',
     label: 'Getting started',
     description: 'Overview of Forke, core principles, and onboarding for developers & founders.',
-    icon: RiGraduationCapFill,
+    icon: GraduationCap,
     defaultOpen: true,
     articles: [welcome, coreConcepts, forDevelopers, forFounders],
   },
@@ -1702,42 +1698,42 @@ export const SECTIONS: DocSection[] = [
     id: 'account',
     label: 'Your account',
     description: 'Manage your developer profile, proof of work, GitHub connection, and UPI payout settings.',
-    icon: RiUser3Fill,
+    icon: User,
     articles: [profile, githubConnection, settings],
   },
   {
     id: 'bounties',
     label: 'Bounties & workflow',
     description: 'Browse bounties, claim tasks, develop in Forke branches, and submit pull requests.',
-    icon: RiGitPullRequestFill,
+    icon: GitPullRequest,
     articles: [browsingTheFeed, claiming, branchWorkflow, submittingPr],
   },
   {
     id: 'review',
     label: 'Review & quality',
     description: 'The 4-layer review pipeline, automated checks, AI verdict cards, and acceptance criteria.',
-    icon: RiShieldCheckFill,
+    icon: ShieldCheck,
     articles: [reviewPipeline, verdictCard, acceptanceCriteria],
   },
   {
     id: 'progression',
     label: 'Levels, XP & trust',
     description: 'How level progression, XP rewards, skill tracks, and trust scores unlock higher-tier bounties.',
-    icon: RiTrophyFill,
+    icon: Trophy,
     articles: [xpSystem, levelsAndUnlocks, skillTracks, trustScore],
   },
   {
     id: 'payments',
     label: 'Payments & escrow',
     description: 'Razorpay escrow deposits, instant UPI payout processing, refunds, and disputes.',
-    icon: RiWallet3Fill,
+    icon: Wallet,
     articles: [escrow, refundsDisputes],
   },
   {
     id: 'policies',
     label: 'Policies & support',
     description: 'Platform rules, code of conduct, dispute resolution policies, and contact channels.',
-    icon: RiLifebuoyFill,
+    icon: LifeBuoy,
     articles: [policies, support],
   },
 ]
@@ -1812,12 +1808,12 @@ export function getDocsIndexMarkdown(): string {
 
 function LoopVisual() {
   const steps = [
-    { icon: RiListCheck3, label: 'Browse' },
-    { icon: RiCursorFill, label: 'Claim' },
-    { icon: RiGitBranchFill, label: 'Build' },
-    { icon: RiGitPullRequestFill, label: 'Submit' },
-    { icon: RiShieldCheckFill, label: 'Reviewed' },
-    { icon: RiWallet3Fill, label: 'Paid' },
+    { icon: ListChecks, label: 'Browse' },
+    { icon: MousePointerClick, label: 'Claim' },
+    { icon: GitBranch, label: 'Build' },
+    { icon: GitPullRequest, label: 'Submit' },
+    { icon: ShieldCheck, label: 'Reviewed' },
+    { icon: Wallet, label: 'Paid' },
   ]
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
