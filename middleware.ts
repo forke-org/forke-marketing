@@ -121,6 +121,9 @@ export async function middleware(req: NextRequest) {
   const isProd = process.env.NODE_ENV === 'production'
   const domainOption = isProd ? { domain: '.forke.space' } : {}
 
+  const adminToken = req.cookies.get('admin_token')?.value
+  const isAdmin = adminToken && adminToken.startsWith('forke_admin_session:')
+
   const hasTrackingParams = TRACKING_PARAMS.some((p) => req.nextUrl.searchParams.has(p))
   if (hasTrackingParams) {
     const cleanUrl = new URL(req.nextUrl.pathname, req.nextUrl.origin)
@@ -129,7 +132,7 @@ export async function middleware(req: NextRequest) {
     })
     const redirect = NextResponse.redirect(cleanUrl)
     const attribution = computeAttribution(req)
-    if (attribution) {
+    if (attribution && !isAdmin) {
       setAttributionCookie(redirect, attribution)
     }
     return redirect

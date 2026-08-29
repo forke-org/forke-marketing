@@ -1,5 +1,27 @@
 [
   {
+    "date": "2026-08-30",
+    "label": "aug 30, 2026",
+    "entries": [
+      {
+        "shortHash": "467cb65",
+        "author": "ayushmaninbox",
+        "date": "2026-08-30T03:05:25+05:30",
+        "kind": "chore",
+        "scope": null,
+        "title": "Add Forke Source-Available License"
+      },
+      {
+        "shortHash": "a601b3e",
+        "author": "ayushmaninbox",
+        "date": "2026-08-30T02:59:00+05:30",
+        "kind": "feature",
+        "scope": null,
+        "title": "Initial commit for forke-marketing (forke.space)"
+      }
+    ]
+  },
+  {
     "date": "2026-08-24",
     "label": "aug 24, 2026",
     "entries": [
