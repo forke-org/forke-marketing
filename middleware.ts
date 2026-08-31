@@ -33,6 +33,7 @@ function cleanField(raw?: string | null): string | undefined {
 function sourceFromReferrerHost(host: string): string {
   const h = host.toLowerCase()
   if (/(^|\.)(google|bing|yahoo|yandex|duckduckgo|brave|baidu|ecosia|qwant)\./.test(h)) return 'organic'
+  if (/(^|\.)(chatgpt\.com|openai\.com)/.test(h)) return 'chatgptcom'
   if (/(^|\.)reddit\.|^out\.reddit\./.test(h)) return 'reddit'
   if (/(^|\.)(linkedin\.|lnkd\.in)/.test(h)) return 'linkedin'
   if (/(^|\.)(twitter\.|x\.com|t\.co)/.test(h)) return 'twitter'
@@ -47,7 +48,14 @@ function sourceFromReferrerHost(host: string): string {
   return 'referral'
 }
 
-function computeAttribution(req: NextRequest): object | null {
+function computeAttribution(req: NextRequest): {
+  source: string
+  medium?: string
+  campaign?: string
+  referrer?: string
+  landingPage: string
+  firstSeenAt: string
+} {
   const search = req.nextUrl.searchParams
   const sourceParam = search.get('source') || search.get('utm_source')
   const medium = search.get('utm_medium')
@@ -68,10 +76,6 @@ function computeAttribution(req: NextRequest): object | null {
     } catch (_) {}
   }
 
-  if (source === 'direct' && !derivedMedium && !campaign) {
-    return null
-  }
-
   return {
     source,
     medium: derivedMedium,
@@ -86,6 +90,15 @@ function setAttributionCookie(res: NextResponse, attribution: object) {
   res.cookies.set(ATTRIBUTION_COOKIE, encodeURIComponent(JSON.stringify(attribution)), {
     path: '/',
     maxAge: 60 * 60 * 24 * 90,
+    sameSite: 'lax',
+    domain: process.env.NODE_ENV === 'production' ? '.forke.space' : undefined,
+  })
+}
+
+function setSessionCookie(res: NextResponse, sessionId: string) {
+  res.cookies.set(SESSION_COOKIE, sessionId, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 30, // 30 days
     sameSite: 'lax',
     domain: process.env.NODE_ENV === 'production' ? '.forke.space' : undefined,
   })
@@ -124,16 +137,58 @@ export async function middleware(req: NextRequest) {
   const adminToken = req.cookies.get('admin_token')?.value
   const isAdmin = adminToken && adminToken.startsWith('forke_admin_session:')
 
+  // Check or initialize session ID
+  const existingSession = req.cookies.get(SESSION_COOKIE)?.value
+  const sessionId = existingSession || newSessionId()
+  const isNewSession = !existingSession
+
   const hasTrackingParams = TRACKING_PARAMS.some((p) => req.nextUrl.searchParams.has(p))
+  const attribution = computeAttribution(req)
+
+  // Track visit via background ping if not admin
+  if (!isAdmin && (isNewSession || hasTrackingParams || attribution.source !== 'direct')) {
+    const trackUrl = new URL('/api/track', req.nextUrl.origin)
+    if (trackUrl.hostname === 'localhost') {
+      trackUrl.hostname = '127.0.0.1'
+    }
+    const country =
+      req.headers.get('x-vercel-ip-country') ||
+      req.headers.get('cf-ipcountry') ||
+      req.headers.get('x-country-code') ||
+      null
+
+    fetch(trackUrl, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'user-agent': req.headers.get('user-agent') || '',
+        ...(req.cookies.get('forke_cookie_consent')
+          ? { cookie: `forke_cookie_consent=${req.cookies.get('forke_cookie_consent')?.value}` }
+          : {}),
+      },
+      body: JSON.stringify({
+        sessionId,
+        source: attribution.source,
+        medium: attribution.medium,
+        campaign: attribution.campaign,
+        referrer: attribution.referrer,
+        landingPath: pathname,
+        country,
+      }),
+    }).catch(() => {})
+  }
+
   if (hasTrackingParams) {
     const cleanUrl = new URL(req.nextUrl.pathname, req.nextUrl.origin)
     req.nextUrl.searchParams.forEach((value, key) => {
       if (!TRACKING_PARAMS.includes(key)) cleanUrl.searchParams.set(key, value)
     })
     const redirect = NextResponse.redirect(cleanUrl)
-    const attribution = computeAttribution(req)
-    if (attribution && !isAdmin) {
-      setAttributionCookie(redirect, attribution)
+    if (!isAdmin) {
+      setSessionCookie(redirect, sessionId)
+      if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
+        setAttributionCookie(redirect, attribution)
+      }
     }
     return redirect
   }
@@ -148,12 +203,24 @@ export async function middleware(req: NextRequest) {
     redirectUrl.search = req.nextUrl.search
     const res = NextResponse.redirect(redirectUrl)
     res.cookies.set('waitlist_active', waitlistEnabled ? 'true' : 'false', { path: '/', ...domainOption })
+    if (!isAdmin) {
+      setSessionCookie(res, sessionId)
+      if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
+        setAttributionCookie(res, attribution)
+      }
+    }
     return res
   }
 
   const res = NextResponse.next()
   res.cookies.set('waitlist_active', waitlistEnabled ? 'true' : 'false', { path: '/', ...domainOption })
   res.cookies.set('site_access_public', siteAccess ? 'true' : 'false', { path: '/', ...domainOption })
+  if (!isAdmin) {
+    setSessionCookie(res, sessionId)
+    if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
+      setAttributionCookie(res, attribution)
+    }
+  }
 
   return res
 }
@@ -161,3 +228,4 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }
+

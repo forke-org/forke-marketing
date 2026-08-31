@@ -4,6 +4,54 @@
     "label": "aug 30, 2026",
     "entries": [
       {
+        "shortHash": "9a5bf7f",
+        "author": "ayushmaninbox",
+        "date": "2026-08-30T19:25:19+05:30",
+        "kind": "docs",
+        "scope": null,
+        "title": "Overhaul README to include comprehensive project documentation and technical specifications"
+      },
+      {
+        "shortHash": "f6accfb",
+        "author": "ayushmaninbox",
+        "date": "2026-08-30T05:15:42+05:30",
+        "kind": "feature",
+        "scope": null,
+        "title": "Add [username] profile routes, exclude admin tracking, and update navbar cta states"
+      },
+      {
+        "shortHash": "1ad81f2",
+        "author": "ayushmaninbox",
+        "date": "2026-08-30T04:55:55+05:30",
+        "kind": "feature",
+        "scope": null,
+        "title": "Add dynamic waitlist and attribution middleware"
+      },
+      {
+        "shortHash": "ca1a8d9",
+        "author": "ayushmaninbox",
+        "date": "2026-08-30T04:40:44+05:30",
+        "kind": "feature",
+        "scope": null,
+        "title": "Add checkout access portal and cross-subdomain cookie"
+      },
+      {
+        "shortHash": "b7c538d",
+        "author": "ayushmaninbox",
+        "date": "2026-08-30T03:43:25+05:30",
+        "kind": "fix",
+        "scope": "db",
+        "title": "Safe fallback for DATABASE_URL during build time"
+      },
+      {
+        "shortHash": "aea440d",
+        "author": "ayushmaninbox",
+        "date": "2026-08-30T03:39:48+05:30",
+        "kind": "chore",
+        "scope": null,
+        "title": "Add .npmrc with legacy-peer-deps=true"
+      },
+      {
         "shortHash": "467cb65",
         "author": "ayushmaninbox",
         "date": "2026-08-30T03:05:25+05:30",
