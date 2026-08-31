@@ -1,8 +1,54 @@
 [
   {
+    "date": "2026-09-01",
+    "label": "sep 1, 2026",
+    "entries": [
+      {
+        "shortHash": "8943f0a",
+        "author": "ayushmaninbox",
+        "date": "2026-09-01T01:21:17+05:30",
+        "kind": "refactor",
+        "scope": null,
+        "title": "Remove legacy AI-driven PR review engine and infrastructure"
+      },
+      {
+        "shortHash": "db263c9",
+        "author": "ayushmaninbox",
+        "date": "2026-09-01T01:21:17+05:30",
+        "kind": "refactor",
+        "scope": null,
+        "title": "Remove legacy AI-driven PR review engine and infrastructure"
+      },
+      {
+        "shortHash": "cc22d30",
+        "author": "ayushmaninbox",
+        "date": "2026-09-01T01:21:17+05:30",
+        "kind": "refactor",
+        "scope": null,
+        "title": "Remove legacy AI-driven PR review engine and infrastructure"
+      },
+      {
+        "shortHash": "2304c9a",
+        "author": "ayushmaninbox",
+        "date": "2026-09-01T01:21:17+05:30",
+        "kind": "refactor",
+        "scope": null,
+        "title": "Remove legacy AI-driven PR review engine and infrastructure"
+      }
+    ]
+  },
+  {
     "date": "2026-08-31",
     "label": "aug 31, 2026",
     "entries": [
+      {
+        "shortHash": "91a2c60",
+        "author": "ayushmaninbox",
+        "date": "2026-08-31T16:57:06+05:30",
+        "kind": "refactor",
+        "scope": null,
+        "title": "Remove legacy API routes, server actions, and UI components"
+      },
       {
         "shortHash": "5b190bb",
         "author": "ayushmaninbox",

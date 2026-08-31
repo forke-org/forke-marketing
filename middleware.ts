@@ -31,12 +31,21 @@ function cleanField(raw?: string | null): string | undefined {
 }
 
 function sourceFromReferrerHost(host: string): string {
-  const h = host.toLowerCase()
+  const h = host.toLowerCase().replace(/^www\./, '')
   if (/(^|\.)(google|bing|yahoo|yandex|duckduckgo|brave|baidu|ecosia|qwant)\./.test(h)) return 'organic'
-  if (/(^|\.)(chatgpt\.com|openai\.com)/.test(h)) return 'chatgptcom'
+  if (/(^|\.)(chatgpt\.com|openai\.com)/.test(h)) return 'chatgpt'
+  if (/(^|\.)(claude\.ai|anthropic\.com)/.test(h)) return 'claude'
+  if (/(^|\.)perplexity\.ai/.test(h)) return 'perplexity'
+  if (/(^|\.)(gemini\.google\.com|deepmind\.google\.com)/.test(h)) return 'gemini'
+  if (/(^|\.)deepseek\.com/.test(h)) return 'deepseek'
+  if (/(^|\.)poe\.com/.test(h)) return 'poe'
+  if (/(^|\.)(news\.ycombinator\.com|ycombinator\.com)/.test(h)) return 'hackernews'
+  if (/(^|\.)peerlist\.io/.test(h)) return 'peerlist'
   if (/(^|\.)reddit\.|^out\.reddit\./.test(h)) return 'reddit'
   if (/(^|\.)(linkedin\.|lnkd\.in)/.test(h)) return 'linkedin'
   if (/(^|\.)(twitter\.|x\.com|t\.co)/.test(h)) return 'twitter'
+  if (/(^|\.)(threads\.net)/.test(h)) return 'threads'
+  if (/(^|\.)(bsky\.app|bluesky\.social)/.test(h)) return 'bluesky'
   if (/(^|\.)github\./.test(h)) return 'github'
   if (/(^|\.)producthunt\./.test(h)) return 'producthunt'
   if (/(^|\.)(instagram\.|l\.instagram\.)/.test(h)) return 'instagram'
@@ -45,7 +54,15 @@ function sourceFromReferrerHost(host: string): string {
   if (/(^|\.)(discord\.|discordapp\.)/.test(h)) return 'discord'
   if (/(^|\.)(t\.me|telegram\.)/.test(h)) return 'telegram'
   if (/(^|\.)whatsapp\./.test(h) || h === 'wa.me') return 'whatsapp'
-  return 'referral'
+  if (/(^|\.)(notion\.so|notion\.site)/.test(h)) return 'notion'
+  if (/(^|\.)slack\.com/.test(h)) return 'slack'
+  if (/(^|\.)(dev\.to|hashnode\.com|medium\.com|substack\.com)/.test(h)) {
+    return h.split('.')[0]
+  }
+
+  // Fallback: extract the clean base domain name instead of a generic "referral"
+  const cleanDomain = h.replace(/:\d+$/, '').replace(/[^a-z0-9.-]/g, '').slice(0, 32)
+  return cleanDomain || 'referral'
 }
 
 function computeAttribution(req: NextRequest): {
@@ -69,8 +86,10 @@ function computeAttribution(req: NextRequest): {
   if (source === 'direct' && referrerHeader) {
     try {
       const refUrl = new URL(referrerHeader)
-      if (refUrl.hostname !== req.nextUrl.hostname) {
-        source = sourceFromReferrerHost(refUrl.hostname)
+      const h = refUrl.hostname.toLowerCase()
+      const isInternal = h === req.nextUrl.hostname.toLowerCase() || h.endsWith('.forke.space') || h === 'forke.space' || h.includes('localhost')
+      if (!isInternal) {
+        source = sourceFromReferrerHost(h)
         if (!derivedMedium) derivedMedium = source === 'organic' ? 'organic' : 'referral'
       }
     } catch (_) {}
