@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-08-31",
+    "label": "aug 31, 2026",
+    "entries": [
+      {
+        "shortHash": "5b190bb",
+        "author": "ayushmaninbox",
+        "date": "2026-08-31T16:31:09+05:30",
+        "kind": "feature",
+        "scope": null,
+        "title": "Implement dynamic attribution and session management middleware with cross-subdomain tracking"
+      }
+    ]
+  },
+  {
     "date": "2026-08-30",
     "label": "aug 30, 2026",
     "entries": [
