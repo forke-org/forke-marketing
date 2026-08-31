@@ -4,6 +4,14 @@
     "label": "sep 1, 2026",
     "entries": [
       {
+        "shortHash": "eab3c87",
+        "author": "ayushmaninbox",
+        "date": "2026-09-01T01:21:17+05:30",
+        "kind": "refactor",
+        "scope": null,
+        "title": "Remove legacy AI-driven PR review engine and infrastructure"
+      },
+      {
         "shortHash": "8943f0a",
         "author": "ayushmaninbox",
         "date": "2026-09-01T01:21:17+05:30",

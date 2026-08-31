@@ -15,6 +15,7 @@ import { cookies } from 'next/headers'
 
 export const ATTRIBUTION_COOKIE = 'forke_attribution'
 export const SESSION_COOKIE = 'forke_session'
+export const DEVICE_COOKIE = 'forke_device_id'
 
 export type Attribution = {
   source: string

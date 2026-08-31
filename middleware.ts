@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 
 const ATTRIBUTION_COOKIE = 'forke_attribution'
 const SESSION_COOKIE = 'forke_session'
+const DEVICE_COOKIE = 'forke_device_id'
 
 const TRACKING_PARAMS = [
   'source',
@@ -14,7 +15,7 @@ const TRACKING_PARAMS = [
   'ref',
 ]
 
-function newSessionId(): string {
+function newId(): string {
   return crypto.randomUUID()
 }
 
@@ -62,7 +63,7 @@ function sourceFromReferrerHost(host: string): string {
 
   // Fallback: extract the clean base domain name instead of a generic "referral"
   const cleanDomain = h.replace(/:\d+$/, '').replace(/[^a-z0-9.-]/g, '').slice(0, 32)
-  return cleanDomain || 'referral'
+  return cleanDomain || 'direct'
 }
 
 function computeAttribution(req: NextRequest): {
@@ -91,6 +92,9 @@ function computeAttribution(req: NextRequest): {
       if (!isInternal) {
         source = sourceFromReferrerHost(h)
         if (!derivedMedium) derivedMedium = source === 'organic' ? 'organic' : 'referral'
+      } else {
+        source = 'direct'
+        derivedMedium = 'direct'
       }
     } catch (_) {}
   }
@@ -121,6 +125,37 @@ function setSessionCookie(res: NextResponse, sessionId: string) {
     sameSite: 'lax',
     domain: process.env.NODE_ENV === 'production' ? '.forke.space' : undefined,
   })
+}
+
+function setDeviceCookie(res: NextResponse, deviceId: string) {
+  res.cookies.set(DEVICE_COOKIE, deviceId, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365, // 365 days (1 year persistent device identifier)
+    sameSite: 'lax',
+    domain: process.env.NODE_ENV === 'production' ? '.forke.space' : undefined,
+  })
+}
+
+function isPublicMarketingRoute(pathname: string): boolean {
+  // Exclude private, internal, auth, redirect, and media routes
+  if (
+    pathname.startsWith('/profile') ||
+    pathname.startsWith('/signin') ||
+    pathname.startsWith('/register') ||
+    pathname.startsWith('/checkout') ||
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/auth') ||
+    pathname.startsWith('/_') ||
+    pathname.endsWith('/opengraph-image') ||
+    pathname.endsWith('site.webmanifest') ||
+    pathname.endsWith('robots.txt') ||
+    pathname.endsWith('sitemap.xml') ||
+    pathname.endsWith('favicon.ico') ||
+    pathname.endsWith('icon.png')
+  ) {
+    return false
+  }
+  return true
 }
 
 async function fetchWaitlistStatus(origin: string): Promise<boolean> {
@@ -156,16 +191,19 @@ export async function middleware(req: NextRequest) {
   const adminToken = req.cookies.get('admin_token')?.value
   const isAdmin = adminToken && adminToken.startsWith('forke_admin_session:')
 
-  // Check or initialize session ID
+  // Check or initialize device ID and session ID
+  const existingDevice = req.cookies.get(DEVICE_COOKIE)?.value
+  const deviceId = existingDevice || newId()
+
   const existingSession = req.cookies.get(SESSION_COOKIE)?.value
-  const sessionId = existingSession || newSessionId()
+  const sessionId = existingSession || newId()
   const isNewSession = !existingSession
 
   const hasTrackingParams = TRACKING_PARAMS.some((p) => req.nextUrl.searchParams.has(p))
   const attribution = computeAttribution(req)
 
-  // Track visit via background ping if not admin
-  if (!isAdmin && (isNewSession || hasTrackingParams || attribution.source !== 'direct')) {
+  // Track visit via background ping if not admin and on a public marketing landing page
+  if (!isAdmin && isPublicMarketingRoute(pathname) && (isNewSession || hasTrackingParams || attribution.source !== 'direct')) {
     const trackUrl = new URL('/api/track', req.nextUrl.origin)
     if (trackUrl.hostname === 'localhost') {
       trackUrl.hostname = '127.0.0.1'
@@ -187,6 +225,7 @@ export async function middleware(req: NextRequest) {
       },
       body: JSON.stringify({
         sessionId,
+        deviceId,
         source: attribution.source,
         medium: attribution.medium,
         campaign: attribution.campaign,
@@ -204,6 +243,7 @@ export async function middleware(req: NextRequest) {
     })
     const redirect = NextResponse.redirect(cleanUrl)
     if (!isAdmin) {
+      setDeviceCookie(redirect, deviceId)
       setSessionCookie(redirect, sessionId)
       if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
         setAttributionCookie(redirect, attribution)
@@ -223,6 +263,7 @@ export async function middleware(req: NextRequest) {
     const res = NextResponse.redirect(redirectUrl)
     res.cookies.set('waitlist_active', waitlistEnabled ? 'true' : 'false', { path: '/', ...domainOption })
     if (!isAdmin) {
+      setDeviceCookie(res, deviceId)
       setSessionCookie(res, sessionId)
       if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
         setAttributionCookie(res, attribution)
@@ -235,6 +276,7 @@ export async function middleware(req: NextRequest) {
   res.cookies.set('waitlist_active', waitlistEnabled ? 'true' : 'false', { path: '/', ...domainOption })
   res.cookies.set('site_access_public', siteAccess ? 'true' : 'false', { path: '/', ...domainOption })
   if (!isAdmin) {
+    setDeviceCookie(res, deviceId)
     setSessionCookie(res, sessionId)
     if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
       setAttributionCookie(res, attribution)

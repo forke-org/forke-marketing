@@ -10,11 +10,11 @@
 
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { eq, and, gt } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { pageVisits } from '@/lib/db/schema'
 import { normalizeSource } from '@/lib/utils/attribution'
 import { getCountry, isBotUserAgent } from '@/lib/utils/analytics'
-
 /** Validate a 2-letter ISO country code coming from the middleware body. */
 function cleanCountry(raw: unknown): string | null {
   if (typeof raw !== 'string') return null
@@ -22,15 +22,13 @@ function cleanCountry(raw: unknown): string | null {
   return /^[A-Z]{2}$/.test(code) ? code : null
 }
 
-// Node runtime: postgres-js cannot run on the Edge, which is exactly why the Edge
-// middleware pings THIS route (fire-and-forget) instead of inserting directly.
-export const runtime = 'nodejs'
-
 function clean(raw: unknown, max: number): string | null {
   if (typeof raw !== 'string') return null
   const v = raw.trim().slice(0, max)
   return v || null
 }
+
+export const runtime = 'nodejs'
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,14 +45,35 @@ export async function POST(req: NextRequest) {
     // Don't write bot rows at all — keeps the table small and the charts human.
     if (isBot) return NextResponse.json({ ok: true, skipped: 'bot' })
 
+    const sessionId = clean(body.sessionId, 64)
+    const landingPath = clean(body.landingPath, 255) || '/'
+
+    // 1-Device deduplication: prevent duplicate visit rows from the same device/session within 24 hours
+    if (sessionId) {
+      const existing = await db
+        .select({ id: pageVisits.id })
+        .from(pageVisits)
+        .where(
+          and(
+            eq(pageVisits.sessionId, sessionId),
+            eq(pageVisits.landingPath, landingPath),
+            gt(pageVisits.createdAt, new Date(Date.now() - 24 * 60 * 60 * 1000))
+          )
+        )
+        .limit(1)
+
+      if (existing.length > 0) {
+        return NextResponse.json({ ok: true, skipped: 'deduplicated' })
+      }
+    }
 
     await db.insert(pageVisits).values({
-      sessionId: clean(body.sessionId, 64),
+      sessionId,
       source: normalizeSource(typeof body.source === 'string' ? body.source : null),
       medium: clean(body.medium, 64),
       campaign: clean(body.campaign, 64),
       referrer: clean(body.referrer, 255),
-      landingPath: clean(body.landingPath, 255),
+      landingPath,
       // Prefer the geo the middleware resolved from the ORIGINAL request. The edge geo
       // headers are absent on this internal fetch, so getCountry() is only a fallback
       // for any direct (non-middleware) caller.
