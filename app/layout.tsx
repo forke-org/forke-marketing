@@ -77,6 +77,7 @@ import { ScrollToTopOnLoad } from '@/components/providers/ScrollToTopOnLoad'
 import { CookieConsentProvider } from '@/components/providers/CookieConsentProvider'
 import { GoogleAnalyticsWrapper } from '@/components/providers/GoogleAnalyticsWrapper'
 import { CookieConsentBanner } from '@/components/ui/CookieConsentBanner'
+import { ClientAttributionTracker } from '@/components/providers/ClientAttributionTracker'
 
 // Load GA4 only in production with a configured ID, so local dev never pollutes
 // the live analytics. Set NEXT_PUBLIC_GA_ID in Vercel (e.g. G-XV7FKNZ4S6).
@@ -96,6 +97,7 @@ export default function RootLayout({
       <body className="antialiased bg-[#0A0A0A]">
         <ScrollToTopOnLoad />
         <CookieConsentProvider>
+          <ClientAttributionTracker />
           <NextAuthProvider>
             {children}
           </NextAuthProvider>

@@ -67,12 +67,45 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const referrer = clean(body.referrer, 255)
+    let source = normalizeSource(typeof body.source === 'string' ? body.source : null)
+    let medium = clean(body.medium, 64)
+
+    // Automatically detect search engines from referrer even if source wasn't passed in URL
+    if (source === 'direct' && referrer) {
+      const refLower = referrer.toLowerCase()
+      if (/google|bing|yahoo|duckduckgo|brave|ecosia|baidu|startpage|kagi|naver|yandex/i.test(refLower)) {
+        source = 'organic'
+        if (!medium) medium = 'organic'
+      } else if (/chatgpt|openai/i.test(refLower)) {
+        source = 'chatgpt'
+        if (!medium) medium = 'ai'
+      } else if (/claude|anthropic/i.test(refLower)) {
+        source = 'claude'
+        if (!medium) medium = 'ai'
+      } else if (/perplexity/i.test(refLower)) {
+        source = 'perplexity'
+        if (!medium) medium = 'ai'
+      } else if (/github/i.test(refLower)) {
+        source = 'github'
+      } else if (/reddit/i.test(refLower)) {
+        source = 'reddit'
+        if (!medium) medium = 'social'
+      } else if (/twitter|x\.com|t\.co/i.test(refLower)) {
+        source = 'twitter'
+        if (!medium) medium = 'social'
+      } else if (/linkedin|lnkd\.in/i.test(refLower)) {
+        source = 'linkedin'
+        if (!medium) medium = 'social'
+      }
+    }
+
     await db.insert(pageVisits).values({
       sessionId,
-      source: normalizeSource(typeof body.source === 'string' ? body.source : null),
-      medium: clean(body.medium, 64),
+      source,
+      medium,
       campaign: clean(body.campaign, 64),
-      referrer: clean(body.referrer, 255),
+      referrer,
       landingPath,
       // Prefer the geo the middleware resolved from the ORIGINAL request. The edge geo
       // headers are absent on this internal fetch, so getCountry() is only a fallback

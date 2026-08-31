@@ -33,31 +33,47 @@ function cleanField(raw?: string | null): string | undefined {
 
 function sourceFromReferrerHost(host: string): string {
   const h = host.toLowerCase().replace(/^www\./, '')
-  if (/(^|\.)(google|bing|yahoo|yandex|duckduckgo|brave|baidu|ecosia|qwant)\./.test(h)) return 'organic'
-  if (/(^|\.)(chatgpt\.com|openai\.com)/.test(h)) return 'chatgpt'
-  if (/(^|\.)(claude\.ai|anthropic\.com)/.test(h)) return 'claude'
-  if (/(^|\.)perplexity\.ai/.test(h)) return 'perplexity'
-  if (/(^|\.)(gemini\.google\.com|deepmind\.google\.com)/.test(h)) return 'gemini'
-  if (/(^|\.)deepseek\.com/.test(h)) return 'deepseek'
-  if (/(^|\.)poe\.com/.test(h)) return 'poe'
-  if (/(^|\.)(news\.ycombinator\.com|ycombinator\.com)/.test(h)) return 'hackernews'
-  if (/(^|\.)peerlist\.io/.test(h)) return 'peerlist'
-  if (/(^|\.)reddit\.|^out\.reddit\./.test(h)) return 'reddit'
-  if (/(^|\.)(linkedin\.|lnkd\.in)/.test(h)) return 'linkedin'
-  if (/(^|\.)(twitter\.|x\.com|t\.co)/.test(h)) return 'twitter'
-  if (/(^|\.)(threads\.net)/.test(h)) return 'threads'
-  if (/(^|\.)(bsky\.app|bluesky\.social)/.test(h)) return 'bluesky'
-  if (/(^|\.)github\./.test(h)) return 'github'
-  if (/(^|\.)producthunt\./.test(h)) return 'producthunt'
-  if (/(^|\.)(instagram\.|l\.instagram\.)/.test(h)) return 'instagram'
-  if (/(^|\.)(facebook\.|m\.facebook\.|fb\.me)/.test(h)) return 'facebook'
-  if (/(^|\.)(youtube\.|youtu\.be)/.test(h)) return 'youtube'
-  if (/(^|\.)(discord\.|discordapp\.)/.test(h)) return 'discord'
-  if (/(^|\.)(t\.me|telegram\.)/.test(h)) return 'telegram'
-  if (/(^|\.)whatsapp\./.test(h) || h === 'wa.me') return 'whatsapp'
-  if (/(^|\.)(notion\.so|notion\.site)/.test(h)) return 'notion'
-  if (/(^|\.)slack\.com/.test(h)) return 'slack'
-  if (/(^|\.)(dev\.to|hashnode\.com|medium\.com|substack\.com)/.test(h)) {
+  // Search engines -> organic
+  if (
+    h.includes('google') || 
+    h.includes('bing.') || 
+    h.includes('yahoo.') || 
+    h.includes('duckduckgo.') || 
+    h.includes('yandex.') || 
+    h.includes('brave.com') || 
+    h.includes('ecosia.') || 
+    h.includes('baidu.') ||
+    h.includes('startpage.') ||
+    h.includes('kagi.com') ||
+    h.includes('qwant.') ||
+    h.includes('naver.')
+  ) {
+    return 'organic'
+  }
+  if (h.includes('chatgpt') || h.includes('openai')) return 'chatgpt'
+  if (h.includes('claude') || h.includes('anthropic')) return 'claude'
+  if (h.includes('perplexity')) return 'perplexity'
+  if (h.includes('gemini') || h.includes('deepmind')) return 'gemini'
+  if (h.includes('deepseek')) return 'deepseek'
+  if (h.includes('poe.com')) return 'poe'
+  if (h.includes('news.ycombinator') || h.includes('ycombinator')) return 'hackernews'
+  if (h.includes('peerlist')) return 'peerlist'
+  if (h.includes('reddit')) return 'reddit'
+  if (h.includes('linkedin') || h.includes('lnkd.in')) return 'linkedin'
+  if (h.includes('twitter') || h.includes('x.com') || h.includes('t.co')) return 'twitter'
+  if (h.includes('threads.net')) return 'threads'
+  if (h.includes('bsky.app') || h.includes('bluesky')) return 'bluesky'
+  if (h.includes('github')) return 'github'
+  if (h.includes('producthunt')) return 'producthunt'
+  if (h.includes('instagram')) return 'instagram'
+  if (h.includes('facebook') || h.includes('fb.me')) return 'facebook'
+  if (h.includes('youtube') || h.includes('youtu.be')) return 'youtube'
+  if (h.includes('discord')) return 'discord'
+  if (h.includes('telegram') || h.includes('t.me')) return 'telegram'
+  if (h.includes('whatsapp') || h.includes('wa.me')) return 'whatsapp'
+  if (h.includes('notion')) return 'notion'
+  if (h.includes('slack')) return 'slack'
+  if (h.includes('dev.to') || h.includes('hashnode') || h.includes('medium.com') || h.includes('substack')) {
     return h.split('.')[0]
   }
 

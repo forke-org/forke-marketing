@@ -87,5 +87,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If the DB is briefly unreachable, still return the static sitemap.
   }
 
-  return [...staticEntries, ...docsEntries, ...postEntries]
+  // Append every published changelog post.
+  let changelogEntries: MetadataRoute.Sitemap = []
+  try {
+    const { getPublishedChangelogs } = await import('@/lib/actions/changelog-actions')
+    const changelogList = await getPublishedChangelogs()
+    changelogEntries = changelogList.map((c) => ({
+      url: `${baseUrl}/changelog/${c.slug}`,
+      lastModified: new Date(c.updatedAt || c.publishedAt || now),
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    }))
+  } catch {
+    // Fail-soft fallback
+  }
+
+  return [...staticEntries, ...docsEntries, ...postEntries, ...changelogEntries]
 }
