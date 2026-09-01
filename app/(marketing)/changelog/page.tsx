@@ -13,21 +13,22 @@ import Navbar from '@/components/shared/Navbar'
 import Footer from '@/components/shared/Footer'
 import { getPublishedChangelogs } from '@/lib/actions/changelog-actions'
 import ChangelogFeed from './ChangelogFeed'
+import { Rails } from '@/components/landing/primitives'
 import { buildOpenGraph, buildTwitter } from '@/lib/utils/og'
 
 export const metadata: Metadata = {
-  title: 'Changelog',
+  title: 'Changelog — Everything We’ve Actually Shipped',
   description:
-    'What we shipped on Forke — new features, performance improvements, and fixes.',
+    'Hand-curated, not auto-generated from commits. A live ledger of user-visible shipping moments across the Forke developer platform.',
   alternates: { canonical: '/changelog' },
   openGraph: buildOpenGraph({
-    title: 'Changelog | Forke',
-    description: 'What we shipped on Forke — new features, improvements, and fixes.',
+    title: 'Changelog — Everything We’ve Actually Shipped | Forke',
+    description: 'Hand-curated, not auto-generated from commits. A live ledger of user-visible shipping moments across the Forke developer platform.',
     url: 'https://www.forke.space/changelog',
   }),
   twitter: buildTwitter({
-    title: 'Changelog | Forke',
-    description: 'What we shipped on Forke — new features, improvements, and fixes.',
+    title: 'Changelog — Everything We’ve Actually Shipped | Forke',
+    description: 'Hand-curated, not auto-generated from commits. A live ledger of user-visible shipping moments across the Forke developer platform.',
   }),
 }
 
@@ -38,28 +39,24 @@ export default async function ChangelogPage() {
   const changelogs = await getPublishedChangelogs()
 
   return (
-    <div className="min-h-screen bg-[#060608] text-white flex flex-col antialiased">
+    <div className="min-h-screen bg-[#060608] text-white flex flex-col antialiased relative selection:bg-accent/30 selection:text-white">
       <Navbar />
 
-      <main className="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-24">
-        {/* Header matching Supermemory / Linear */}
-        <div className="mb-16 sm:mb-24 pb-8 border-b border-white/[0.08]">
-          <p className="font-mono text-xs text-[#ff8a00] font-bold tracking-widest uppercase mb-3">
-            // CHANGELOG
-          </p>
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white leading-[1.1]">
-            What we shipped.
-          </h1>
-          <p className="mt-4 text-white/50 text-base sm:text-lg font-light max-w-xl leading-relaxed">
-            New features, fixes, and product enhancements released on the Forke developer network.
-          </p>
-        </div>
+      {/* Ambient Top Radial Glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,122,0,0.12)_0%,transparent_60%)] z-0"
+      />
 
-        {/* 2-Column Sticky Changelog Feed */}
-        <ChangelogFeed items={changelogs} />
+      <main className="flex-grow pt-28 sm:pt-36 pb-32 relative z-10">
+        <Rails fadeTop fadeBottom>
+          <ChangelogFeed items={changelogs} />
+        </Rails>
       </main>
 
       <Footer />
     </div>
   )
 }
+
+

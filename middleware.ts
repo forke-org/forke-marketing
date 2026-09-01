@@ -95,22 +95,28 @@ function computeAttribution(req: NextRequest): {
   const medium = search.get('utm_medium')
   const campaign = search.get('utm_campaign')
   const refParam = search.get('ref')
-  const referrerHeader = req.headers.get('referer')
+  const referrerHeader = req.headers.get('referer') || req.headers.get('referrer')
 
   let source = normalizeSource(sourceParam || refParam)
   let derivedMedium = cleanField(medium)
+  let validReferrer: string | undefined = undefined
 
-  if (source === 'direct' && referrerHeader) {
+  if (referrerHeader) {
     try {
-      const refUrl = new URL(referrerHeader)
-      const h = refUrl.hostname.toLowerCase()
-      const isInternal = h === req.nextUrl.hostname.toLowerCase() || h.endsWith('.forke.space') || h === 'forke.space' || h.includes('localhost')
+      let h = ''
+      try {
+        h = new URL(referrerHeader).hostname.toLowerCase()
+      } catch {
+        h = referrerHeader.replace(/^[a-z0-9_-]+:\/\//i, '').split('/')[0].toLowerCase()
+      }
+      const isInternal = !h || h === req.nextUrl.hostname.toLowerCase() || h.endsWith('.forke.space') || h === 'forke.space' || h.includes('localhost')
+      
       if (!isInternal) {
-        source = sourceFromReferrerHost(h)
-        if (!derivedMedium) derivedMedium = source === 'organic' ? 'organic' : 'referral'
-      } else {
-        source = 'direct'
-        derivedMedium = 'direct'
+        validReferrer = referrerHeader.slice(0, 500)
+        if (source === 'direct') {
+          source = sourceFromReferrerHost(h)
+          if (!derivedMedium) derivedMedium = source === 'organic' ? 'organic' : 'referral'
+        }
       }
     } catch (_) {}
   }
@@ -119,7 +125,7 @@ function computeAttribution(req: NextRequest): {
     source,
     medium: derivedMedium,
     campaign: cleanField(campaign),
-    referrer: referrerHeader ? referrerHeader.slice(0, 500) : undefined,
+    referrer: validReferrer,
     landingPage: req.nextUrl.pathname.slice(0, 255),
     firstSeenAt: new Date().toISOString(),
   }
@@ -294,7 +300,9 @@ export async function middleware(req: NextRequest) {
   if (!isAdmin) {
     setDeviceCookie(res, deviceId)
     setSessionCookie(res, sessionId)
-    if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
+    const existingAttrCookie = req.cookies.get(ATTRIBUTION_COOKIE)?.value
+    const isExternalTouch = attribution.source !== 'direct' || attribution.campaign || hasTrackingParams
+    if ((!existingAttrCookie && isExternalTouch) || hasTrackingParams) {
       setAttributionCookie(res, attribution)
     }
   }
