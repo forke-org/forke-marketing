@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useMemo } from 'react'
-import { Sparkles, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import ImageLightbox from '@/components/changelog/ImageLightbox'
 import CustomVideoPlayer from '@/components/changelog/CustomVideoPlayer'
 import { Crosses } from '@/components/landing/primitives'
@@ -93,41 +93,41 @@ export default function ChangelogFeed({ items }: { items: ChangelogItem[] }) {
     const upper = (tag || 'FEATURE').toUpperCase()
     if (upper === 'FEATURE') {
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded bg-[#ff4d24] text-white font-mono text-[10px] font-bold tracking-wider uppercase">
+        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/20 bg-white/10 text-white font-mono text-[10px] font-medium tracking-wider uppercase select-none">
           Feature
         </span>
       )
     }
     if (upper === 'UPDATE') {
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-blue-500/40 text-blue-400 bg-blue-500/10 font-mono text-[10px] font-bold tracking-wider uppercase">
+        <span className="inline-flex items-center px-2 py-0.5 rounded border border-sky-400/25 text-sky-300/90 bg-sky-400/[0.07] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
           Update
         </span>
       )
     }
     if (upper === 'IMPROVEMENT') {
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-emerald-500/40 text-emerald-400 bg-emerald-500/10 font-mono text-[10px] font-bold tracking-wider uppercase">
+        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/15 text-white/80 bg-white/[0.05] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
           Improvement
         </span>
       )
     }
     if (upper === 'FIX') {
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-amber-500/40 text-amber-400 bg-amber-500/10 font-mono text-[10px] font-bold tracking-wider uppercase">
+        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/15 text-white/70 bg-white/[0.04] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
           Fix
         </span>
       )
     }
     if (upper === 'POLISH') {
       return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/20 text-white/70 bg-white/5 font-mono text-[10px] font-bold tracking-wider uppercase">
+        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/10 text-white/60 bg-white/[0.03] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
           Polish
         </span>
       )
     }
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded border border-accent/40 text-accent bg-accent/10 font-mono text-[10px] font-bold tracking-wider uppercase">
+      <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/15 text-white/80 bg-white/[0.05] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
         {upper}
       </span>
     )
@@ -138,15 +138,15 @@ export default function ChangelogFeed({ items }: { items: ChangelogItem[] }) {
       {/* ─────────────────────────────────────────────────────────────
           HERO HEADER: Everything we've actually shipped.
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative px-6 sm:px-10 lg:px-14 pt-10 sm:pt-14 pb-14 sm:pb-16 border-b border-white/[0.07]">
+      <div className="relative px-4 sm:px-8 lg:px-14 pt-6 sm:pt-14 pb-10 sm:pb-16 border-b border-white/[0.07]">
         <Crosses />
         <div className="max-w-3xl">
-          <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-white/40 font-semibold mb-6">
+          <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-white/40 font-semibold mb-4 sm:mb-6">
             <span>Changelog</span>
             <span className="h-px w-10 bg-white/20" />
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-[4.25rem] font-medium tracking-[-0.04em] leading-[1.05] text-white">
+          <h1 className="text-3xl sm:text-5xl lg:text-[4.25rem] font-medium tracking-[-0.04em] leading-[1.08] text-white">
             Everything we&apos;ve{' '}
             <span className="relative inline-block text-white">
               actually shipped.
@@ -167,7 +167,7 @@ export default function ChangelogFeed({ items }: { items: ChangelogItem[] }) {
             </span>
           </h1>
 
-          <p className="mt-8 text-white/60 text-base sm:text-lg font-light leading-relaxed max-w-2xl">
+          <p className="mt-5 sm:mt-8 text-white/60 text-sm sm:text-lg font-light leading-relaxed max-w-2xl">
             Hand-curated, not auto-generated from commits &mdash; an auto-derived log fills up with
             dependency bumps and tells you nothing. One entry here is one user-visible shipping
             moment, often spanning several repos.
@@ -178,7 +178,7 @@ export default function ChangelogFeed({ items }: { items: ChangelogItem[] }) {
       {/* ─────────────────────────────────────────────────────────────
           CHANGELOG STREAM (10 per page, grouped by date)
       ───────────────────────────────────────────────────────────── */}
-      <div className="relative px-6 sm:px-10 lg:px-14 py-12 sm:py-16">
+      <div className="relative px-4 sm:px-8 lg:px-14 py-8 sm:py-16">
         <Crosses />
 
         <div className="divide-y divide-white/[0.07]">
@@ -186,11 +186,24 @@ export default function ChangelogFeed({ items }: { items: ChangelogItem[] }) {
             <div
               key={group.dateKey}
               id={`date-group-${group.dateKey}`}
-              className="py-12 sm:py-16 first:pt-4 last:pb-8"
+              className="py-10 sm:py-16 first:pt-2 sm:first:pt-4 last:pb-8"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] xl:grid-cols-[260px_1fr] gap-8 lg:gap-14 items-start">
-                {/* Left Column: Sticky Date */}
-                <div className="lg:sticky lg:top-28 z-10 pt-1">
+              {/* Mobile Date Header (Visible on small screens) */}
+              <div className="lg:hidden mb-6 flex items-center justify-between pb-3.5 border-b border-white/[0.07]">
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+                  <h3 className="text-sm sm:text-base font-medium text-white tracking-tight select-text">
+                    {group.displayDate}
+                  </h3>
+                </div>
+                <span className="font-mono text-[10px] text-white/50 tracking-wider uppercase px-2 py-0.5 rounded border border-white/[0.08] bg-white/[0.02] select-none">
+                  {group.items.length} {group.items.length === 1 ? 'change' : 'changes'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] xl:grid-cols-[260px_1fr] gap-6 lg:gap-14 items-start">
+                {/* Desktop Left Column: Sticky Date */}
+                <div className="hidden lg:block lg:sticky lg:top-28 z-10 pt-1">
                   <h3 className="text-base sm:text-lg font-medium text-white tracking-tight select-text">
                     {group.displayDate}
                   </h3>
@@ -199,79 +212,103 @@ export default function ChangelogFeed({ items }: { items: ChangelogItem[] }) {
                   </span>
                 </div>
 
-                {/* Right Column: Change Items */}
-                <div className="space-y-12 min-w-0">
-                  {group.items.map((item) => (
-                    <article key={item.id} id={item.slug} className="space-y-4">
-                      {/* Tag Pill + Non-clickable Title Row */}
-                      <div className="flex flex-col sm:flex-row sm:items-baseline gap-2.5 sm:gap-3.5">
-                        <div className="shrink-0">{renderTagPill(item.tag)}</div>
-                        <h4 className="text-lg sm:text-xl font-medium text-white tracking-[-0.02em] leading-snug select-text">
-                          {item.title}
-                        </h4>
-                      </div>
+                {/* Right Column: Change Items with Mobile Timeline Connector */}
+                <div className="relative pl-3.5 sm:pl-5 lg:pl-0 border-l border-white/[0.07] lg:border-l-0 ml-1.5 sm:ml-2 lg:ml-0 space-y-10 sm:space-y-12 min-w-0">
+                  {group.items.map((item, itemIdx) => {
+                    const hasImprovements = Boolean(item.improvements && item.improvements.length > 0)
+                    const hasFixes = Boolean(item.fixes && item.fixes.length > 0)
 
-                      {/* Main Narrative Description */}
-                      <div className="text-white/70 text-[15px] sm:text-base leading-relaxed font-light whitespace-pre-line space-y-3 pl-0 sm:pl-1 select-text">
-                        {item.description}
-                      </div>
-
-                      {/* Optional Media (Image / Video) */}
-                      {item.mediaType === 'image' && item.mediaUrl && (
-                        <div className="pt-2 sm:pl-1">
-                          <ImageLightbox src={item.mediaUrl} alt={item.title} />
+                    return (
+                      <article
+                        key={item.id}
+                        id={item.slug}
+                        className={`space-y-4 ${itemIdx > 0 ? 'pt-8 lg:pt-0 border-t border-white/[0.05] lg:border-t-0' : ''}`}
+                      >
+                        {/* Tag Pill + Title Row */}
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                          <div className="shrink-0">{renderTagPill(item.tag)}</div>
+                          <h4 className="text-base sm:text-lg lg:text-xl font-medium text-white tracking-[-0.02em] leading-snug select-text">
+                            {item.title}
+                          </h4>
                         </div>
-                      )}
 
-                      {item.mediaType === 'video' && item.mediaUrl && (
-                        <div className="pt-2 sm:pl-1">
-                          <CustomVideoPlayer src={item.mediaUrl} />
+                        {/* Main Narrative Description */}
+                        <div className="text-white/70 text-[14.5px] sm:text-base leading-relaxed font-light whitespace-pre-line space-y-3 select-text">
+                          {item.description}
                         </div>
-                      )}
 
-                      {/* Optional Improvements */}
-                      {item.improvements && item.improvements.length > 0 && (
-                        <div className="pt-2 sm:pl-1 space-y-2.5">
-                          <div className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-accent flex items-center gap-1.5 select-none">
-                            <Sparkles className="h-3.5 w-3.5 text-accent" />
-                            <span>Improvements</span>
+                        {/* Optional Media (Image / Video) */}
+                        {item.mediaType === 'image' && item.mediaUrl && (
+                          <div className="pt-2">
+                            <ImageLightbox src={item.mediaUrl} alt={item.title} />
                           </div>
-                          <ul className="space-y-2 pl-1">
-                            {item.improvements.map((imp, i) => (
-                              <li
-                                key={i}
-                                className="text-sm sm:text-[14.5px] text-white/80 leading-relaxed flex items-start gap-2.5 select-text"
-                              >
-                                <span className="h-1.5 w-1.5 rounded-full bg-accent mt-2 shrink-0" />
-                                <span>{imp}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                        )}
 
-                      {/* Optional Fixes */}
-                      {item.fixes && item.fixes.length > 0 && (
-                        <div className="pt-2 sm:pl-1 space-y-2.5">
-                          <div className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-400 flex items-center gap-1.5 select-none">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-                            <span>Fixes</span>
+                        {item.mediaType === 'video' && item.mediaUrl && (
+                          <div className="pt-2">
+                            <CustomVideoPlayer src={item.mediaUrl} />
                           </div>
-                          <ul className="space-y-2 pl-1">
-                            {item.fixes.map((fix, i) => (
-                              <li
-                                key={i}
-                                className="text-sm sm:text-[14.5px] text-white/70 leading-relaxed flex items-start gap-2.5 select-text"
+                        )}
+
+                        {/* Architectural Sub-Panel for Improvements & Fixes */}
+                        {(hasImprovements || hasFixes) && (
+                          <div className="pt-2">
+                            <div className="rounded-xl border border-white/[0.07] bg-white/[0.015] p-4 sm:p-5">
+                              <div
+                                className={`grid grid-cols-1 ${
+                                  hasImprovements && hasFixes
+                                    ? 'sm:grid-cols-2 gap-6 sm:gap-8'
+                                    : 'gap-5'
+                                }`}
                               >
-                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
-                                <span>{fix}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </article>
-                  ))}
+                                {hasImprovements && (
+                                  <div className="space-y-2.5">
+                                    <h5 className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50 select-none">
+                                      Improvements
+                                    </h5>
+                                    <ul className="space-y-2">
+                                      {item.improvements.map((imp, i) => (
+                                        <li
+                                          key={i}
+                                          className="text-[13.5px] sm:text-[14px] text-white/75 leading-relaxed font-light flex items-start select-text"
+                                        >
+                                          <span className="text-white/30 mr-2.5 font-mono text-xs select-none mt-0.5 leading-none shrink-0">
+                                            –
+                                          </span>
+                                          <span>{imp}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+
+                                {hasFixes && (
+                                  <div className="space-y-2.5">
+                                    <h5 className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50 select-none">
+                                      Fixes
+                                    </h5>
+                                    <ul className="space-y-2">
+                                      {item.fixes.map((fix, i) => (
+                                        <li
+                                          key={i}
+                                          className="text-[13.5px] sm:text-[14px] text-white/75 leading-relaxed font-light flex items-start select-text"
+                                        >
+                                          <span className="text-white/30 mr-2.5 font-mono text-xs select-none mt-0.5 leading-none shrink-0">
+                                            –
+                                          </span>
+                                          <span>{fix}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </article>
+                    )
+                  })}
                 </div>
               </div>
             </div>

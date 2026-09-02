@@ -48,7 +48,7 @@ export default async function ChangelogPage() {
         className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_50%_0%,rgba(255,122,0,0.12)_0%,transparent_60%)] z-0"
       />
 
-      <main className="flex-grow pt-28 sm:pt-36 pb-32 relative z-10">
+      <main className="flex-grow pt-20 sm:pt-36 pb-20 sm:pb-32 relative z-10">
         <Rails fadeTop fadeBottom>
           <ChangelogFeed items={changelogs} />
         </Rails>
