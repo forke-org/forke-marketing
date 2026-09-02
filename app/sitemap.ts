@@ -87,5 +87,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If the DB is briefly unreachable, still return the static sitemap.
   }
 
-  return [...staticEntries, ...docsEntries, ...postEntries]
+  // Append paginated index pages for blogs and changelog
+  const paginatedEntries: MetadataRoute.Sitemap = []
+  try {
+    const { getPublishedChangelogs } = await import('@/lib/actions/changelog-actions')
+    const changelogs = await getPublishedChangelogs()
+    const totalChangelogPages = Math.ceil(changelogs.length / 10)
+    for (let p = 2; p <= totalChangelogPages; p++) {
+      paginatedEntries.push({
+        url: `${baseUrl}/changelog?page=${p}`,
+        lastModified: now,
+        changeFrequency: 'daily',
+        priority: 0.5,
+      })
+    }
+  } catch {}
+
+  try {
+    const totalBlogPages = Math.max(1, Math.ceil(postEntries.length > 0 ? (postEntries.length - 1) / 9 : 1))
+    for (let p = 2; p <= totalBlogPages; p++) {
+      paginatedEntries.push({
+        url: `${baseUrl}/blogs?page=${p}`,
+        lastModified: now,
+        changeFrequency: 'weekly',
+        priority: 0.5,
+      })
+    }
+  } catch {}
+
+  return [...staticEntries, ...docsEntries, ...postEntries, ...paginatedEntries]
 }

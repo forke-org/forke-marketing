@@ -35,7 +35,11 @@ export const metadata: Metadata = {
 // Re-read at most every 60 seconds.
 export const revalidate = 60
 
-export default async function ChangelogPage() {
+export default async function ChangelogPage(props: {
+  searchParams?: Promise<{ page?: string }>
+}) {
+  const searchParams = await props.searchParams
+  const initialPage = Math.max(1, parseInt(searchParams?.page || '1', 10) || 1)
   const changelogs = await getPublishedChangelogs()
 
   return (
@@ -50,7 +54,7 @@ export default async function ChangelogPage() {
 
       <main className="flex-grow pt-20 sm:pt-36 pb-20 sm:pb-32 relative z-10">
         <Rails fadeTop fadeBottom>
-          <ChangelogFeed items={changelogs} />
+          <ChangelogFeed items={changelogs} initialPage={initialPage} />
         </Rails>
       </main>
 

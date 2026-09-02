@@ -58,9 +58,15 @@ function CoverImage({ post, className = '' }: { post: BlogCard; className?: stri
   )
 }
 
-export default function BlogList({ posts }: { posts: BlogCard[] }) {
+export default function BlogList({
+  posts,
+  initialPage = 1,
+}: {
+  posts: BlogCard[]
+  initialPage?: number
+}) {
   const [perPage, setPerPage] = useState(9)
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(initialPage)
   const [mounted, setMounted] = useState(false)
   // Desktop pulls the newest post out as a full-width feature. On mobile we skip
   // that treatment so it reads as a normal card and the grid is just 5/page.
@@ -81,6 +87,34 @@ export default function BlogList({ posts }: { posts: BlogCard[] }) {
     return () => window.removeEventListener('resize', apply)
   }, [])
 
+  // Desktop: newest post becomes the feature, the remainder fills the grid.
+  // Mobile: no feature — every post (including the newest) flows into the grid.
+  const [featured, ...rest] = posts
+  const showFeatured = isDesktop
+  const gridPosts = showFeatured ? rest : posts
+  const totalPages = Math.max(1, Math.ceil(gridPosts.length / perPage))
+  const safePage = Math.min(Math.max(1, page), totalPages)
+
+  useEffect(() => {
+    if (initialPage && initialPage !== page) {
+      setPage(Math.min(Math.max(1, initialPage), totalPages))
+    }
+  }, [initialPage, totalPages])
+
+  const goToPage = (newPage: number) => {
+    const target = Math.min(Math.max(1, newPage), totalPages)
+    setPage(target)
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      if (target > 1) {
+        url.searchParams.set('page', String(target))
+      } else {
+        url.searchParams.delete('page')
+      }
+      window.history.pushState({}, '', url.pathname + (url.search ? url.search : ''))
+    }
+  }
+
   if (posts.length === 0) {
     return (
       <div className="py-24 text-center">
@@ -92,13 +126,6 @@ export default function BlogList({ posts }: { posts: BlogCard[] }) {
     )
   }
 
-  // Desktop: newest post becomes the feature, the remainder fills the grid.
-  // Mobile: no feature — every post (including the newest) flows into the grid.
-  const [featured, ...rest] = posts
-  const showFeatured = isDesktop
-  const gridPosts = showFeatured ? rest : posts
-  const totalPages = Math.max(1, Math.ceil(gridPosts.length / perPage))
-  const safePage = Math.min(page, totalPages)
   const start = (safePage - 1) * perPage
   const visible = gridPosts.slice(start, start + perPage)
 
@@ -208,19 +235,20 @@ export default function BlogList({ posts }: { posts: BlogCard[] }) {
       {totalPages > 1 && (
         <div className="mt-12 flex items-center justify-center gap-4">
           <button
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            onClick={() => goToPage(safePage - 1)}
             disabled={safePage === 1}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] transition-colors hover:border-white/20 hover:text-white disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] transition-colors hover:border-white/20 hover:text-white disabled:opacity-30 cursor-pointer"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <span className="font-mono text-xs text-white/70">
-            {String(safePage).padStart(2, '0')} <span className="text-white/25">/ {String(totalPages).padStart(2, '0')}</span>
+            {String(safePage).padStart(2, '0')}{' '}
+            <span className="text-white/25">/ {String(totalPages).padStart(2, '0')}</span>
           </span>
           <button
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            onClick={() => goToPage(safePage + 1)}
             disabled={safePage === totalPages}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] transition-colors hover:border-white/20 hover:text-white disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--color-border)] text-[var(--color-text-muted)] transition-colors hover:border-white/20 hover:text-white disabled:opacity-30 cursor-pointer"
           >
             <ChevronRight className="h-4 w-4" />
           </button>

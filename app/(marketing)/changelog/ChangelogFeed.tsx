@@ -44,11 +44,23 @@ interface DateGroup {
   items: ChangelogItem[]
 }
 
-export default function ChangelogFeed({ items }: { items: ChangelogItem[] }) {
-  const [page, setPage] = useState(1)
+export default function ChangelogFeed({
+  items,
+  initialPage = 1,
+}: {
+  items: ChangelogItem[]
+  initialPage?: number
+}) {
+  const [page, setPage] = useState(initialPage)
 
   const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE))
-  const safePage = Math.min(page, totalPages)
+  const safePage = Math.min(Math.max(1, page), totalPages)
+
+  React.useEffect(() => {
+    if (initialPage && initialPage !== page) {
+      setPage(Math.min(Math.max(1, initialPage), totalPages))
+    }
+  }, [initialPage, totalPages])
 
   // Slice exactly 10 changelogs for the current page
   const pageItems = useMemo(() => {
@@ -82,7 +94,17 @@ export default function ChangelogFeed({ items }: { items: ChangelogItem[] }) {
   }, [pageItems])
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage)
+    const target = Math.min(Math.max(1, newPage), totalPages)
+    setPage(target)
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      if (target > 1) {
+        url.searchParams.set('page', String(target))
+      } else {
+        url.searchParams.delete('page')
+      }
+      window.history.pushState({}, '', url.pathname + (url.search ? url.search : ''))
+    }
     const topEl = document.getElementById('changelog-feed-top')
     if (topEl) {
       topEl.scrollIntoView({ behavior: 'smooth', block: 'start' })

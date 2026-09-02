@@ -17,7 +17,12 @@ import BlogList, { type BlogCard } from './BlogList'
 // Always reflect the latest published posts.
 export const dynamic = 'force-dynamic'
 
-export default async function BlogsIndexPage() {
+export default async function BlogsIndexPage(props: {
+  searchParams?: Promise<{ page?: string }>
+}) {
+  const searchParams = await props.searchParams
+  const initialPage = Math.max(1, parseInt(searchParams?.page || '1', 10) || 1)
+
   const [rows, viewCounts] = await Promise.all([
     getPublishedBlogs(),
     getPublishedBlogViewCounts(),
@@ -81,7 +86,7 @@ export default async function BlogsIndexPage() {
       </div>
 
       <main className="mx-auto w-full max-w-6xl px-4 pb-24 sm:px-6 lg:px-8">
-        <BlogList posts={posts} />
+        <BlogList posts={posts} initialPage={initialPage} />
       </main>
       <Footer />
     </div>

@@ -10,7 +10,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { subscribers } from '@/lib/db/schema'
+import { subscribers, pageVisits } from '@/lib/db/schema'
 import { z } from 'zod'
 import { sendWelcomeEmail } from '@/lib/email'
 import { eq } from 'drizzle-orm'
@@ -34,7 +34,21 @@ export async function POST(request: NextRequest) {
     const attribution = await readAttributionCookie()
     const sessionId = await readSessionId()
     const channel = attribution.source !== 'direct' ? attribution.source : normalizeSource(source)
-    const country = getCountry(request.headers)
+    // Detect country: 1) from edge headers, 2) from first-touch cookie, 3) correlated via sessionId from page_visits
+    let country = getCountry(request.headers) || (attribution as any).country || null
+    if (!country && sessionId) {
+      try {
+        const visit = await db
+          .select({ country: pageVisits.country })
+          .from(pageVisits)
+          .where(eq(pageVisits.sessionId, sessionId))
+          .limit(1)
+          .then((rows) => rows[0])
+        if (visit?.country && visit.country !== 'unknown') {
+          country = visit.country.toUpperCase()
+        }
+      } catch {}
+    }
 
     // Check if subscriber already exists in Drizzle
     const existing = await db

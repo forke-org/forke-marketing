@@ -41,13 +41,24 @@ export function getClientIp(headers: Headers): string | null {
   )
 }
 
-/** Coarse country from edge geo headers (Vercel sets x-vercel-ip-country). No IP retained. */
+/** Coarse country from edge geo headers (Vercel, Cloudflare, CloudFront, Fastly). No IP retained. */
 export function getCountry(headers: Headers): string | null {
-  return (
+  const code =
     headers.get('x-vercel-ip-country') ||
     headers.get('cf-ipcountry') ||
+    headers.get('x-country-code') ||
+    headers.get('cloudfront-viewer-country') ||
+    headers.get('x-real-ip-country') ||
+    headers.get('fastly-client-country') ||
+    headers.get('x-geo-country') ||
     null
-  )
+
+  if (!code) return null
+  const cleaned = code.trim().toUpperCase()
+  if (/^[A-Z]{2}$/.test(cleaned) && cleaned !== 'XX' && cleaned !== 'T1') {
+    return cleaned
+  }
+  return null
 }
 
 // Conservative bot match — keeps obvious crawlers out of the human click charts without
