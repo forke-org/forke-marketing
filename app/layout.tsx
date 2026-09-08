@@ -83,6 +83,44 @@ import { ClientAttributionTracker } from '@/components/providers/ClientAttributi
 // the live analytics. Set NEXT_PUBLIC_GA_ID in production environment (e.g. G-XV7FKNZ4S6).
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://www.forke.space/#organization',
+      name: 'Forke',
+      alternateName: ['forke.space', 'Forke Platform', 'Forke Dev'],
+      url: 'https://www.forke.space',
+      logo: 'https://www.forke.space/icon.png',
+      description: 'The developer micro-task and bounty marketplace. Engineers ship real code, earn rewards, and build verified engineering portfolios.',
+      sameAs: [
+        'https://github.com/forke-org',
+        'https://twitter.com/forkedotdev',
+      ],
+      knowsAbout: [
+        'software engineering',
+        'developer micro-tasks',
+        'open source bounties',
+        'git code review',
+        'engineering portfolio',
+        'technical blogging',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.forke.space/#website',
+      url: 'https://www.forke.space',
+      name: 'Forke',
+      alternateName: 'forke.space',
+      description: 'The micro-task marketplace for developers. Ship real work, get paid.',
+      publisher: {
+        '@id': 'https://www.forke.space/#organization',
+      },
+    },
+  ],
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -94,6 +132,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="alternate" type="application/rss+xml" title="The Forke Blogs" href="https://www.forke.space/feed.xml" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className="antialiased bg-[#0A0A0A]">
         <ScrollToTopOnLoad />
         <CookieConsentProvider>

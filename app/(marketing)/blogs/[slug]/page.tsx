@@ -94,8 +94,44 @@ export default async function BlogPostPage({ params }: Params) {
       publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
     }))
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: post.title,
+    description: post.excerpt || post.title,
+    image: post.coverImage ? [post.coverImage] : undefined,
+    datePublished: post.publishedAt ? post.publishedAt.toISOString() : undefined,
+    dateModified: (post.updatedAt || post.publishedAt || new Date()).toISOString(),
+    author: {
+      '@type': 'Person',
+      name: post.authorName || 'Forke Engineering Team',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Forke',
+      url: 'https://www.forke.space',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.forke.space/icon.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.forke.space/blogs/${post.slug}`,
+    },
+    interactionStatistic: {
+      '@type': 'InteractionCounter',
+      interactionType: 'https://schema.org/ReadAction',
+      userInteractionCount: viewCount,
+    },
+  }
+
   return (
     <div className="min-h-screen bg-bg text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <BlogViewTracker slug={slug} />
       <Navbar />
       <main className="mx-auto w-full max-w-3xl px-4 pb-24 pt-28 sm:px-6">

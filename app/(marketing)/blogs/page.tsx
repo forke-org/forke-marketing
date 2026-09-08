@@ -12,10 +12,27 @@ import Navbar from '@/components/shared/Navbar'
 import Footer from '@/components/shared/Footer'
 import DotField from '@/components/shared/DotField'
 import { getPublishedBlogs, getPublishedBlogViewCounts } from '@/lib/blog-actions'
+import type { Metadata } from 'next'
 import BlogList, { type BlogCard } from './BlogList'
 
-// Always reflect the latest published posts.
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'The Forke Blogs — Engineering Notes & Product Deep Dives',
+  description: 'Stories, architectural updates, and technical ideas from the Forke engineering team. Deep-dives on systems, Git, micro-tasks, and developer culture.',
+  alternates: {
+    canonical: '/blogs',
+    types: {
+      'application/rss+xml': [{ url: 'https://www.forke.space/feed.xml', title: 'The Forke Blogs RSS Feed' }],
+    },
+  },
+  openGraph: {
+    title: 'The Forke Blogs — Engineering Notes & Product Deep Dives',
+    description: 'Stories, architectural updates, and technical ideas from the Forke engineering team.',
+    url: 'https://www.forke.space/blogs',
+    siteName: 'Forke',
+  },
+}
 
 export default async function BlogsIndexPage(props: {
   searchParams?: Promise<{ page?: string }>
@@ -38,8 +55,36 @@ export default async function BlogsIndexPage(props: {
     viewCount: viewCounts[r.slug] ?? 0,
   }))
 
+  const blogIndexJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'The Forke Blogs',
+    description: 'Engineering notes, systems architecture, and product updates from the Forke team.',
+    url: 'https://www.forke.space/blogs',
+    publisher: {
+      '@type': 'Organization',
+      name: 'Forke',
+      url: 'https://www.forke.space',
+      logo: 'https://www.forke.space/icon.png',
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: posts.map((p, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `https://www.forke.space/blogs/${p.slug}`,
+        name: p.title,
+        description: p.excerpt || p.title,
+      })),
+    },
+  }
+
   return (
     <div className="min-h-screen bg-bg text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogIndexJsonLd) }}
+      />
       <Navbar />
 
       {/* --- HERO (matches the Levels page header) --- */}
