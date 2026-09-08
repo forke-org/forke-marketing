@@ -15,6 +15,7 @@ import { db } from '@/lib/db'
 import { pageVisits } from '@/lib/db/schema'
 import { normalizeSource } from '@/lib/utils/attribution'
 import { getCountry, isBotUserAgent } from '@/lib/utils/analytics'
+import { isPublicMarketingRoute } from '@/middleware'
 /** Validate a 2-letter ISO country code coming from the middleware body. */
 function cleanCountry(raw: unknown): string | null {
   if (typeof raw !== 'string') return null
@@ -32,6 +33,11 @@ export const runtime = 'nodejs'
 
 export async function POST(req: NextRequest) {
   try {
+    const adminToken = req.cookies.get('admin_token')?.value
+    if (adminToken && adminToken.startsWith('forke_admin_session:')) {
+      return NextResponse.json({ ok: true, skipped: 'admin' })
+    }
+
     const consent = req.cookies.get('forke_cookie_consent')?.value
     if (consent === 'declined') {
       return NextResponse.json({ ok: true, skipped: 'consent_declined' })
@@ -45,8 +51,12 @@ export async function POST(req: NextRequest) {
     // Don't write bot rows at all — keeps the table small and the charts human.
     if (isBot) return NextResponse.json({ ok: true, skipped: 'bot' })
 
-    const sessionId = clean(body.sessionId, 64)
     const landingPath = clean(body.landingPath, 255) || '/'
+    if (!isPublicMarketingRoute(landingPath)) {
+      return NextResponse.json({ ok: true, skipped: 'non_marketing_route' })
+    }
+
+    const sessionId = clean(body.sessionId, 64)
 
     // 1-Device deduplication: prevent duplicate visit rows from the same device/session within 24 hours
     if (sessionId) {

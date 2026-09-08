@@ -158,26 +158,91 @@ function setDeviceCookie(res: NextResponse, deviceId: string) {
   })
 }
 
-function isPublicMarketingRoute(pathname: string): boolean {
-  // Exclude private, internal, auth, redirect, and media routes
+const RESERVED_NON_MARKETING_PREFIXES = [
+  '/admin',
+  '/api',
+  '/dashboard',
+  '/tasks',
+  '/earnings',
+  '/escrow',
+  '/submissions',
+  '/notifications',
+  '/settings',
+  '/ide',
+  '/auth',
+  '/signin',
+  '/register',
+  '/checkout',
+  '/setup',
+  '/login',
+  '/logout',
+  '/profile',
+  '/actuator',
+  '/wp-',
+  '/_',
+]
+
+const STATIC_MARKETING_PATHS = new Set([
+  '/',
+  '/whats-forke',
+  '/levels',
+  '/waitlist',
+  '/pricing',
+  '/changelog',
+  '/contact',
+  '/privacy',
+  '/terms',
+  '/refund',
+  '/mcp',
+  '/blogs',
+  '/blog',
+  '/docs',
+])
+
+export function isPublicMarketingRoute(pathname: string): boolean {
+  if (!pathname || pathname === '') return false
+  const cleanPath = pathname.split('?')[0].replace(/\/+$/, '') || '/'
+
+  // Explicitly reject any reserved / admin / dashboard / internal paths
+  for (const prefix of RESERVED_NON_MARKETING_PREFIXES) {
+    if (cleanPath === prefix || cleanPath.startsWith(`${prefix}/`)) {
+      return false
+    }
+  }
+
+  // Reject files, manifests, icons, images, probes
   if (
-    pathname.startsWith('/profile') ||
-    pathname.startsWith('/signin') ||
-    pathname.startsWith('/register') ||
-    pathname.startsWith('/checkout') ||
-    pathname.startsWith('/admin') ||
-    pathname.startsWith('/auth') ||
-    pathname.startsWith('/_') ||
-    pathname.endsWith('/opengraph-image') ||
-    pathname.endsWith('site.webmanifest') ||
-    pathname.endsWith('robots.txt') ||
-    pathname.endsWith('sitemap.xml') ||
-    pathname.endsWith('favicon.ico') ||
-    pathname.endsWith('icon.png')
+    cleanPath.includes('.') ||
+    cleanPath.endsWith('/opengraph-image') ||
+    cleanPath.includes('env') ||
+    cleanPath.includes('probe')
   ) {
     return false
   }
-  return true
+
+  // Allow static marketing landing pages
+  if (STATIC_MARKETING_PATHS.has(cleanPath)) {
+    return true
+  }
+
+  // Allow blog posts: /blogs/:slug or /blog/:slug
+  if (cleanPath.startsWith('/blogs/') || cleanPath.startsWith('/blog/')) {
+    const slug = cleanPath.replace(/^\/(blogs|blog)\//, '')
+    return slug.length > 0 && !slug.includes('/') && /^[a-zA-Z0-9_-]+$/.test(slug)
+  }
+
+  // Allow documentation pages: /docs/:slug
+  if (cleanPath.startsWith('/docs/')) {
+    const docSlug = cleanPath.replace(/^\/docs\//, '')
+    return docSlug.length > 0 && !docSlug.includes('/') && /^[a-zA-Z0-9_-]+$/.test(docSlug)
+  }
+
+  // Allow public creator / developer profile: /:username (e.g. /ayushmaninbox)
+  if (/^\/[a-zA-Z0-9_-]{1,39}$/.test(cleanPath)) {
+    return true
+  }
+
+  return false
 }
 
 async function fetchWaitlistStatus(origin: string): Promise<boolean> {
@@ -211,7 +276,7 @@ export async function middleware(req: NextRequest) {
   const domainOption = isProd ? { domain: '.forke.space' } : {}
 
   const adminToken = req.cookies.get('admin_token')?.value
-  const isAdmin = adminToken && adminToken.startsWith('forke_admin_session:')
+  const isAdmin = !!adminToken && adminToken.startsWith('forke_admin_session:')
 
   // Check or initialize device ID and session ID
   const existingDevice = req.cookies.get(DEVICE_COOKIE)?.value
@@ -224,16 +289,16 @@ export async function middleware(req: NextRequest) {
   const hasTrackingParams = TRACKING_PARAMS.some((p) => req.nextUrl.searchParams.has(p))
   const attribution = computeAttribution(req)
 
-  // Track visit via background ping if not admin and on a public marketing landing page
+  // Track visit via background ping if not admin and on a strictly public marketing landing page
   if (!isAdmin && isPublicMarketingRoute(pathname) && (isNewSession || hasTrackingParams || attribution.source !== 'direct')) {
     const trackUrl = new URL('/api/track', req.nextUrl.origin)
     if (trackUrl.hostname === 'localhost') {
       trackUrl.hostname = '127.0.0.1'
     }
     const country =
-      req.headers.get('x-vercel-ip-country') ||
       req.headers.get('cf-ipcountry') ||
       req.headers.get('x-country-code') ||
+      req.headers.get('x-real-ip-country') ||
       null
 
     fetch(trackUrl, {
@@ -241,7 +306,9 @@ export async function middleware(req: NextRequest) {
       headers: {
         'content-type': 'application/json',
         'user-agent': req.headers.get('user-agent') || '',
-        ...(req.cookies.get('forke_cookie_consent')
+        ...(req.cookies.get('admin_token')
+          ? { cookie: `admin_token=${req.cookies.get('admin_token')?.value}` }
+          : req.cookies.get('forke_cookie_consent')
           ? { cookie: `forke_cookie_consent=${req.cookies.get('forke_cookie_consent')?.value}` }
           : {}),
       },

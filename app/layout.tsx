@@ -80,7 +80,7 @@ import { CookieConsentBanner } from '@/components/ui/CookieConsentBanner'
 import { ClientAttributionTracker } from '@/components/providers/ClientAttributionTracker'
 
 // Load GA4 only in production with a configured ID, so local dev never pollutes
-// the live analytics. Set NEXT_PUBLIC_GA_ID in Vercel (e.g. G-XV7FKNZ4S6).
+// the live analytics. Set NEXT_PUBLIC_GA_ID in production environment (e.g. G-XV7FKNZ4S6).
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 
 export default function RootLayout({

@@ -12,6 +12,9 @@ export function ClientAttributionTracker() {
     if (typeof window === 'undefined') return
 
     try {
+      // Skip if logged in as admin
+      if (document.cookie.includes('admin_token=')) return
+
       const ref = document.referrer || ''
       const host = window.location.hostname.toLowerCase()
       
