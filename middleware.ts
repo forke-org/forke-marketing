@@ -168,6 +168,11 @@ const RESERVED_NON_MARKETING_PREFIXES = [
   '/submissions',
   '/notifications',
   '/settings',
+  '/messages',
+  '/support',
+  '/developers',
+  '/onboarding',
+  '/post-task',
   '/ide',
   '/auth',
   '/signin',
@@ -179,6 +184,10 @@ const RESERVED_NON_MARKETING_PREFIXES = [
   '/profile',
   '/actuator',
   '/wp-',
+  '/wp',
+  '/php',
+  '/env',
+  '/.env',
   '/_',
 ]
 
@@ -205,7 +214,7 @@ export function isPublicMarketingRoute(pathname: string): boolean {
 
   // Explicitly reject any reserved / admin / dashboard / internal paths
   for (const prefix of RESERVED_NON_MARKETING_PREFIXES) {
-    if (cleanPath === prefix || cleanPath.startsWith(`${prefix}/`)) {
+    if (cleanPath === prefix || cleanPath.startsWith(`${prefix}/`) || cleanPath.startsWith(prefix)) {
       return false
     }
   }
@@ -215,7 +224,8 @@ export function isPublicMarketingRoute(pathname: string): boolean {
     cleanPath.includes('.') ||
     cleanPath.endsWith('/opengraph-image') ||
     cleanPath.includes('env') ||
-    cleanPath.includes('probe')
+    cleanPath.includes('probe') ||
+    cleanPath.includes('config')
   ) {
     return false
   }
@@ -237,8 +247,17 @@ export function isPublicMarketingRoute(pathname: string): boolean {
     return docSlug.length > 0 && !docSlug.includes('/') && /^[a-zA-Z0-9_-]+$/.test(docSlug)
   }
 
-  // Allow public creator / developer profile: /:username (e.g. /ayushmaninbox)
-  if (/^\/[a-zA-Z0-9_-]{1,39}$/.test(cleanPath)) {
+  // Allow public creator / developer profile: /:username (minimum 2 chars, alphanumeric)
+  const username = cleanPath.slice(1)
+  if (/^[a-zA-Z0-9][a-zA-Z0-9_-]{1,38}$/.test(username)) {
+    if (
+      username.startsWith('wp') ||
+      username.startsWith('actuator') ||
+      username.includes('test') ||
+      username.length < 2
+    ) {
+      return false
+    }
     return true
   }
 
