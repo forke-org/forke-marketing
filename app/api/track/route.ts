@@ -33,11 +33,6 @@ export const runtime = 'nodejs'
 
 export async function POST(req: NextRequest) {
   try {
-    const adminToken = req.cookies.get('admin_token')?.value
-    if (adminToken && adminToken.startsWith('forke_admin_session:')) {
-      return NextResponse.json({ ok: true, skipped: 'admin' })
-    }
-
     const consent = req.cookies.get('forke_cookie_consent')?.value
     if (consent === 'declined') {
       return NextResponse.json({ ok: true, skipped: 'consent_declined' })
@@ -58,7 +53,7 @@ export async function POST(req: NextRequest) {
 
     const sessionId = clean(body.sessionId, 64)
 
-    // 1-Device deduplication: prevent duplicate visit rows from the same device/session within 24 hours
+    // Active session deduplication: record 1 visit per active 30-minute session
     if (sessionId) {
       const existing = await db
         .select({ id: pageVisits.id })
@@ -66,14 +61,13 @@ export async function POST(req: NextRequest) {
         .where(
           and(
             eq(pageVisits.sessionId, sessionId),
-            eq(pageVisits.landingPath, landingPath),
-            gt(pageVisits.createdAt, new Date(Date.now() - 24 * 60 * 60 * 1000))
+            gt(pageVisits.createdAt, new Date(Date.now() - 30 * 60 * 1000))
           )
         )
         .limit(1)
 
       if (existing.length > 0) {
-        return NextResponse.json({ ok: true, skipped: 'deduplicated' })
+        return NextResponse.json({ ok: true, skipped: 'session_active' })
       }
     }
 
@@ -120,7 +114,7 @@ export async function POST(req: NextRequest) {
       // Prefer the geo the middleware resolved from the ORIGINAL request. The edge geo
       // headers are absent on this internal fetch, so getCountry() is only a fallback
       // for any direct (non-middleware) caller.
-      country: cleanCountry(body.country) ?? getCountry(req.headers),
+      country: cleanCountry(body.country) ?? cleanCountry(req.headers.get('cf-ipcountry')) ?? getCountry(req.headers) ?? 'IN',
       isBot: false,
     })
 

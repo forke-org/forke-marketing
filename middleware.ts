@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import type { NextRequest, NextFetchEvent } from 'next/server'
 
 const ATTRIBUTION_COOKIE = 'forke_attribution'
 const SESSION_COOKIE = 'forke_session'
@@ -143,7 +143,7 @@ function setAttributionCookie(res: NextResponse, attribution: object) {
 function setSessionCookie(res: NextResponse, sessionId: string) {
   res.cookies.set(SESSION_COOKIE, sessionId, {
     path: '/',
-    maxAge: 60 * 60 * 24 * 30, // 30 days
+    maxAge: 60 * 30, // 30 minutes active session window
     sameSite: 'lax',
     domain: process.env.NODE_ENV === 'production' ? '.forke.space' : undefined,
   })
@@ -278,7 +278,7 @@ async function fetchWaitlistStatus(origin: string): Promise<boolean> {
   }
 }
 
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
   const pathname = req.nextUrl.pathname
 
   // Skip static files & API routes
@@ -294,9 +294,6 @@ export async function middleware(req: NextRequest) {
   const isProd = process.env.NODE_ENV === 'production'
   const domainOption = isProd ? { domain: '.forke.space' } : {}
 
-  const adminToken = req.cookies.get('admin_token')?.value
-  const isAdmin = !!adminToken && adminToken.startsWith('forke_admin_session:')
-
   // Check or initialize device ID and session ID
   const existingDevice = req.cookies.get(DEVICE_COOKIE)?.value
   const deviceId = existingDevice || newId()
@@ -308,28 +305,23 @@ export async function middleware(req: NextRequest) {
   const hasTrackingParams = TRACKING_PARAMS.some((p) => req.nextUrl.searchParams.has(p))
   const attribution = computeAttribution(req)
 
-  // Track visit via background ping if not admin and on a strictly public marketing landing page
-  if (!isAdmin && isPublicMarketingRoute(pathname) && (isNewSession || hasTrackingParams || attribution.source !== 'direct')) {
-    const trackUrl = new URL('/api/track', req.nextUrl.origin)
-    if (trackUrl.hostname === 'localhost') {
-      trackUrl.hostname = '127.0.0.1'
-    }
+  // Track visit via background ping on a strictly public marketing landing page
+  if (isPublicMarketingRoute(pathname) && (isNewSession || hasTrackingParams || attribution.source !== 'direct')) {
+    const trackOrigin = isProd ? 'http://127.0.0.1:3000' : req.nextUrl.origin
+    const trackUrl = new URL('/api/track', trackOrigin)
     const country =
       req.headers.get('cf-ipcountry') ||
       req.headers.get('x-country-code') ||
       req.headers.get('x-real-ip-country') ||
       null
 
-    fetch(trackUrl, {
+    const trackPromise = fetch(trackUrl, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
         'user-agent': req.headers.get('user-agent') || '',
-        ...(req.cookies.get('admin_token')
-          ? { cookie: `admin_token=${req.cookies.get('admin_token')?.value}` }
-          : req.cookies.get('forke_cookie_consent')
-          ? { cookie: `forke_cookie_consent=${req.cookies.get('forke_cookie_consent')?.value}` }
-          : {}),
+        'x-real-ip': req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '',
+        'cf-ipcountry': country || '',
       },
       body: JSON.stringify({
         sessionId,
@@ -342,6 +334,10 @@ export async function middleware(req: NextRequest) {
         country,
       }),
     }).catch(() => {})
+
+    if (ev?.waitUntil) {
+      ev.waitUntil(trackPromise)
+    }
   }
 
   if (hasTrackingParams) {
@@ -350,12 +346,10 @@ export async function middleware(req: NextRequest) {
       if (!TRACKING_PARAMS.includes(key)) cleanUrl.searchParams.set(key, value)
     })
     const redirect = NextResponse.redirect(cleanUrl)
-    if (!isAdmin) {
-      setDeviceCookie(redirect, deviceId)
-      setSessionCookie(redirect, sessionId)
-      if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
-        setAttributionCookie(redirect, attribution)
-      }
+    setDeviceCookie(redirect, deviceId)
+    setSessionCookie(redirect, sessionId)
+    if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
+      setAttributionCookie(redirect, attribution)
     }
     return redirect
   }
@@ -370,12 +364,10 @@ export async function middleware(req: NextRequest) {
     redirectUrl.search = req.nextUrl.search
     const res = NextResponse.redirect(redirectUrl)
     res.cookies.set('waitlist_active', waitlistEnabled ? 'true' : 'false', { path: '/', ...domainOption })
-    if (!isAdmin) {
-      setDeviceCookie(res, deviceId)
-      setSessionCookie(res, sessionId)
-      if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
-        setAttributionCookie(res, attribution)
-      }
+    setDeviceCookie(res, deviceId)
+    setSessionCookie(res, sessionId)
+    if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
+      setAttributionCookie(res, attribution)
     }
     return res
   }
@@ -383,14 +375,12 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   res.cookies.set('waitlist_active', waitlistEnabled ? 'true' : 'false', { path: '/', ...domainOption })
   res.cookies.set('site_access_public', siteAccess ? 'true' : 'false', { path: '/', ...domainOption })
-  if (!isAdmin) {
-    setDeviceCookie(res, deviceId)
-    setSessionCookie(res, sessionId)
-    const existingAttrCookie = req.cookies.get(ATTRIBUTION_COOKIE)?.value
-    const isExternalTouch = attribution.source !== 'direct' || attribution.campaign || hasTrackingParams
-    if ((!existingAttrCookie && isExternalTouch) || hasTrackingParams) {
-      setAttributionCookie(res, attribution)
-    }
+  setDeviceCookie(res, deviceId)
+  setSessionCookie(res, sessionId)
+  const existingAttrCookie = req.cookies.get(ATTRIBUTION_COOKIE)?.value
+  const isExternalTouch = attribution.source !== 'direct' || attribution.campaign || hasTrackingParams
+  if ((!existingAttrCookie && isExternalTouch) || hasTrackingParams) {
+    setAttributionCookie(res, attribution)
   }
 
   return res
