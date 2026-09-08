@@ -82,13 +82,14 @@ function sourceFromReferrerHost(host: string): string {
   return cleanDomain || 'direct'
 }
 
-function computeAttribution(req: NextRequest): {
+function computeAttribution(req: NextRequest, country?: string | null): {
   source: string
   medium?: string
   campaign?: string
   referrer?: string
   landingPage: string
   firstSeenAt: string
+  country?: string
 } {
   const search = req.nextUrl.searchParams
   const sourceParam = search.get('source') || search.get('utm_source')
@@ -121,6 +122,8 @@ function computeAttribution(req: NextRequest): {
     } catch (_) {}
   }
 
+  const cleanCountryCode = typeof country === 'string' && /^[a-zA-Z]{2}$/.test(country.trim()) ? country.trim().toUpperCase() : undefined
+
   return {
     source,
     medium: derivedMedium,
@@ -128,6 +131,7 @@ function computeAttribution(req: NextRequest): {
     referrer: validReferrer,
     landingPage: req.nextUrl.pathname.slice(0, 255),
     firstSeenAt: new Date().toISOString(),
+    country: cleanCountryCode,
   }
 }
 
@@ -302,18 +306,19 @@ export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
   const sessionId = existingSession || newId()
   const isNewSession = !existingSession
 
+  const country =
+    req.headers.get('cf-ipcountry') ||
+    req.headers.get('x-country-code') ||
+    req.headers.get('x-real-ip-country') ||
+    null
+
   const hasTrackingParams = TRACKING_PARAMS.some((p) => req.nextUrl.searchParams.has(p))
-  const attribution = computeAttribution(req)
+  const attribution = computeAttribution(req, country)
 
   // Track visit via background ping on a strictly public marketing landing page
   if (isPublicMarketingRoute(pathname) && (isNewSession || hasTrackingParams || attribution.source !== 'direct')) {
     const trackOrigin = isProd ? 'http://127.0.0.1:3000' : req.nextUrl.origin
     const trackUrl = new URL('/api/track', trackOrigin)
-    const country =
-      req.headers.get('cf-ipcountry') ||
-      req.headers.get('x-country-code') ||
-      req.headers.get('x-real-ip-country') ||
-      null
 
     const trackPromise = fetch(trackUrl, {
       method: 'POST',
@@ -322,6 +327,7 @@ export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
         'user-agent': req.headers.get('user-agent') || '',
         'x-real-ip': req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '',
         'cf-ipcountry': country || '',
+        'x-forke-session': sessionId,
       },
       body: JSON.stringify({
         sessionId,

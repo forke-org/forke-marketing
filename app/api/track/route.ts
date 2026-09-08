@@ -16,7 +16,8 @@ import { pageVisits } from '@/lib/db/schema'
 import { normalizeSource } from '@/lib/utils/attribution'
 import { getCountry, isBotUserAgent } from '@/lib/utils/analytics'
 import { isPublicMarketingRoute } from '@/middleware'
-/** Validate a 2-letter ISO country code coming from the middleware body. */
+
+/** Validate a 2-letter ISO country code coming from edge headers or body. */
 function cleanCountry(raw: unknown): string | null {
   if (typeof raw !== 'string') return null
   const code = raw.trim().toUpperCase()
@@ -51,31 +52,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true, skipped: 'non_marketing_route' })
     }
 
-    const sessionId = clean(body.sessionId, 64)
-
-    // Active session deduplication: record 1 visit per active 30-minute session
-    if (sessionId) {
-      const existing = await db
-        .select({ id: pageVisits.id })
-        .from(pageVisits)
-        .where(
-          and(
-            eq(pageVisits.sessionId, sessionId),
-            gt(pageVisits.createdAt, new Date(Date.now() - 30 * 60 * 1000))
-          )
-        )
-        .limit(1)
-
-      if (existing.length > 0) {
-        return NextResponse.json({ ok: true, skipped: 'session_active' })
-      }
-    }
+    // Resolve sessionId from body, cookie, or header
+    const sessionId =
+      clean(body.sessionId, 64) ||
+      clean(req.cookies.get('forke_session')?.value, 64) ||
+      clean(req.headers.get('x-forke-session'), 64) ||
+      null
 
     const referrer = clean(body.referrer, 255)
     let source = normalizeSource(typeof body.source === 'string' ? body.source : null)
     let medium = clean(body.medium, 64)
 
-    // Automatically detect search engines from referrer even if source wasn't passed in URL
+    // Automatically detect search engines and AI tools from referrer
     if (source === 'direct' && referrer) {
       const refLower = referrer.toLowerCase()
       if (/google|bing|yahoo|duckduckgo|brave|ecosia|baidu|startpage|kagi|naver|yandex/i.test(refLower)) {
@@ -104,6 +92,63 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Active session deduplication: record 1 visit per active 30-minute session
+    if (sessionId) {
+      const existing = await db
+        .select({ id: pageVisits.id, source: pageVisits.source, referrer: pageVisits.referrer })
+        .from(pageVisits)
+        .where(
+          and(
+            eq(pageVisits.sessionId, sessionId),
+            gt(pageVisits.createdAt, new Date(Date.now() - 30 * 60 * 1000))
+          )
+        )
+        .limit(1)
+
+      if (existing.length > 0) {
+        // If existing record was recorded as 'direct', but this follow-up has richer attribution
+        // (e.g. client detected search engine or external referrer), upgrade the existing row!
+        if (existing[0].source === 'direct' && source !== 'direct') {
+          await db
+            .update(pageVisits)
+            .set({
+              source,
+              medium,
+              campaign: clean(body.campaign, 64),
+              referrer,
+            })
+            .where(eq(pageVisits.id, existing[0].id))
+        }
+        return NextResponse.json({ ok: true, skipped: 'session_active' })
+      }
+    }
+
+    // Rapid duplicate debounce: prevent duplicate records within a 15-second window
+    if (!sessionId) {
+      const recentDupe = await db
+        .select({ id: pageVisits.id })
+        .from(pageVisits)
+        .where(
+          and(
+            eq(pageVisits.landingPath, landingPath),
+            gt(pageVisits.createdAt, new Date(Date.now() - 15 * 1000))
+          )
+        )
+        .limit(1)
+
+      if (recentDupe.length > 0) {
+        return NextResponse.json({ ok: true, skipped: 'rapid_duplicate' })
+      }
+    }
+
+    const resolvedCountry =
+      cleanCountry(body.country) ??
+      cleanCountry(req.headers.get('cf-ipcountry')) ??
+      cleanCountry(req.headers.get('x-country-code')) ??
+      cleanCountry(req.headers.get('x-real-ip-country')) ??
+      getCountry(req.headers) ??
+      'IN'
+
     await db.insert(pageVisits).values({
       sessionId,
       source,
@@ -111,16 +156,13 @@ export async function POST(req: NextRequest) {
       campaign: clean(body.campaign, 64),
       referrer,
       landingPath,
-      // Prefer the geo the middleware resolved from the ORIGINAL request. The edge geo
-      // headers are absent on this internal fetch, so getCountry() is only a fallback
-      // for any direct (non-middleware) caller.
-      country: cleanCountry(body.country) ?? cleanCountry(req.headers.get('cf-ipcountry')) ?? getCountry(req.headers) ?? 'IN',
+      country: resolvedCountry,
       isBot: false,
     })
 
     return NextResponse.json({ ok: true })
   } catch (error) {
-    // Tracking must never break a page load — swallow and report 204-ish.
+    // Tracking must never break a page load — swallow and report 200.
     console.error('track insert failed:', error)
     return NextResponse.json({ ok: false }, { status: 200 })
   }

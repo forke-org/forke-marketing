@@ -7,6 +7,12 @@
 
 import { useEffect } from 'react'
 
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null
+  const match = document.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]*)'))
+  return match ? decodeURIComponent(match[2]) : null
+}
+
 export function ClientAttributionTracker() {
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -26,7 +32,7 @@ export function ClientAttributionTracker() {
         return
       }
 
-      // Deduplicate per browser tab session so we don't spam on every internal route change
+      // Deduplicate per browser tab session so we don't fire on internal page transitions
       if (sessionStorage.getItem('forke_session_landed')) return
       sessionStorage.setItem('forke_session_landed', 'true')
 
@@ -36,6 +42,7 @@ export function ClientAttributionTracker() {
       let source = 'direct'
       let medium = 'direct'
       let refHost = ''
+      let isInternal = true
 
       if (ref) {
         try {
@@ -43,7 +50,7 @@ export function ClientAttributionTracker() {
         } catch {
           refHost = ref.replace(/^[a-z0-9_-]+:\/\//i, '').split('/')[0].toLowerCase().replace(/^www\./, '')
         }
-        const isInternal = !refHost || refHost === host || refHost.endsWith('.forke.space') || refHost === 'forke.space' || refHost.includes('localhost')
+        isInternal = !refHost || refHost === host || refHost.endsWith('.forke.space') || refHost === 'forke.space' || refHost.includes('localhost')
         if (!isInternal) {
           source = 'referral'
           medium = 'referral'
@@ -93,11 +100,23 @@ export function ClientAttributionTracker() {
       if (urlSource) source = urlSource
       if (urlMedium) medium = urlMedium
 
-      // Ping /api/track with client-captured landing data
+      const hasUrlParams = Boolean(urlSource || urlMedium || urlCampaign)
+      const hasExternalReferrer = Boolean(ref && refHost && !isInternal)
+
+      // If there is no external referrer and no tracking params, the server-side middleware
+      // already recorded this direct landing visit. Avoid redundant client pings.
+      if (!hasExternalReferrer && !hasUrlParams) {
+        return
+      }
+
+      const sessionId = getCookie('forke_session') || undefined
+
+      // Ping /api/track with client-captured landing data and session ID for deduplication
       fetch('/api/track', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
+          sessionId,
           source,
           medium,
           campaign: urlCampaign || undefined,
