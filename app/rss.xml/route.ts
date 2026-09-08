@@ -1,11 +1,6 @@
 /**
- * @fileoverview Forke Platform - RSS alias
+ * @fileoverview Forke Platform - RSS 2.0 Feed (alias)
  * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
  */
 
-import { NextResponse } from 'next/server'
-
-export function GET(req: Request) {
-  const url = new URL('/feed.xml', req.url)
-  return NextResponse.redirect(url, 301)
-}
+export { GET, dynamic } from '../feed.xml/route'
