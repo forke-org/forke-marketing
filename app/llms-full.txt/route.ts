@@ -17,7 +17,7 @@ export async function GET() {
       const date = b.publishedAt ? new Date(b.publishedAt).toISOString().split('T')[0] : ''
       return `### ${b.title}
 - URL: https://www.forke.space/blogs/${b.slug}
-- Author: ${b.authorName || 'Forke Engineering Team'}
+- Author: ${b.authorName || 'The Forke Team'}
 - Published: ${date}
 - Reading Time: ${b.readingMinutes} min
 - Summary: ${b.excerpt || 'No summary available.'}
@@ -39,7 +39,7 @@ ${md || ''}
 
   const content = `# Forke Platform — Full Documentation for LLMs (forke.space)
 
-> Forke is a developer micro-task and bounty marketplace where independent software engineers ship real code, earn money, and build verified on-chain and GitHub portfolios.
+> Forke is a developer-only micro-task and bounty marketplace. Engineers claim bite-sized coding tasks (30 minutes to 4 hours), ship real code via Git pull requests, level up their engineering tier, and receive instant UPI payouts upon approval.
 
 Canonical Website: https://www.forke.space/
 Organization: Forke Inc.
@@ -48,13 +48,14 @@ Organization: Forke Inc.
 
 ## 1. Platform Overview & Philosophy
 
-Forke eliminates traditional freelancing friction — no bidding wars, no hourly tracking, no bloated proposals. Instead, engineering work is broken down into scoped, discrete micro-tasks with transparent requirements and upfront escrow guarantees.
+Forke eliminates traditional freelancing friction — no bidding wars, no hourly tracking, no bloated proposals. Instead, engineering work is broken down into scoped, discrete micro-tasks (30 minutes to 4 hours) with transparent requirements and upfront escrow guarantees.
 
 ### Key Pillars:
-1. **Developer Autonomy**: Engineers claim tasks that match their skill level and interest.
-2. **Escrow Guarantee**: Bounties are funded before any work begins, ensuring zero risk of unpaid contributions.
-3. **Automated Review & GitHub Integration**: All code submissions occur via GitHub pull requests against the target project repository.
-4. **Verified Reputation**: Developers build on-chain and GitHub-backed track records with verifiable commits and earned XP levels.
+1. **Developer Autonomy**: Engineers claim tasks that match their skill level and interest from a level-gated feed.
+2. **Upfront Escrow Guarantee**: Bounties are funded before any work begins, ensuring zero risk of unpaid contributions.
+3. **Automated Review & GitHub Integration**: All code submissions occur via GitHub pull requests in isolated branches against the target project repository.
+4. **Verified Reputation**: Developers build GitHub-backed track records with verifiable commits and earned XP levels.
+5. **Instant UPI Payouts**: The moment a pull request is approved and merged upstream, the bounty is released directly to the engineer.
 
 ---
 
