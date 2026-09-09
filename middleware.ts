@@ -268,7 +268,14 @@ export function isPublicMarketingRoute(pathname: string): boolean {
   return false
 }
 
+let cachedWaitlistStatus: { enabled: boolean; expiry: number } | null = null
+
 async function fetchWaitlistStatus(origin: string): Promise<boolean> {
+  const now = Date.now()
+  if (cachedWaitlistStatus && now < cachedWaitlistStatus.expiry) {
+    return cachedWaitlistStatus.enabled
+  }
+
   const url = new URL('/api/waitlist/status', origin)
   if (url.hostname === 'localhost') {
     url.hostname = '127.0.0.1'
@@ -276,7 +283,9 @@ async function fetchWaitlistStatus(origin: string): Promise<boolean> {
   try {
     const res = await fetch(url, { cache: 'no-store' })
     const data = await res.json()
-    return data.enabled
+    const enabled = typeof data.enabled === 'boolean' ? data.enabled : true
+    cachedWaitlistStatus = { enabled, expiry: now + 30_000 } // 30s cache
+    return enabled
   } catch (e) {
     return true // Default enabled
   }
