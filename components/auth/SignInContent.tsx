@@ -71,7 +71,8 @@ function SignInContentInner() {
       if (result?.error) {
         setError('Invalid email or password.')
       } else if (result?.ok) {
-        const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:3001'
+        const isProdDomain = typeof window !== 'undefined' && window.location.hostname.endsWith('forke.space')
+        const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProdDomain ? 'https://dashboard.forke.space' : 'http://localhost:3001')
         window.location.href = `${dashboardUrl}/dashboard`
       }
     } catch (err) {

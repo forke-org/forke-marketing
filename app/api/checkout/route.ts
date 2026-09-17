@@ -43,11 +43,14 @@ export async function POST(request: Request) {
     const isProd = process.env.NODE_ENV === 'production'
     const domainOption = isProd ? { domain: '.forke.space' } : {}
 
+    const maxAge = 60 * 60 * 24 * 30 // 30 days persistent bypass
+
     cookieStore.set('site_access', 'granted', {
       httpOnly: true,
       secure: isProd,
       sameSite: 'lax',
       path: '/',
+      maxAge,
       ...domainOption,
     })
     cookieStore.set('site_access_public', 'true', {
@@ -55,6 +58,7 @@ export async function POST(request: Request) {
       secure: isProd,
       sameSite: 'lax',
       path: '/',
+      maxAge,
       ...domainOption,
     })
 

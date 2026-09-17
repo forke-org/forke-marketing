@@ -52,8 +52,9 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
-    const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:3001';
-    const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3002';
+    const isProd = process.env.NODE_ENV === 'production';
+    const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProd ? 'https://dashboard.forke.space' : 'http://localhost:3001');
+    const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || (isProd ? 'https://admin.forke.space' : 'http://localhost:3002');
     return [
       {
         source: '/dashboard/:path*',

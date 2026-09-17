@@ -89,8 +89,10 @@ function RegisterContentInner() {
     if (!role) return
     localStorage.setItem('forke_last_auth', provider)
     
+    const isProdDomain = typeof window !== 'undefined' && window.location.hostname.endsWith('forke.space')
+    const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProdDomain ? 'https://dashboard.forke.space' : 'http://localhost:3001')
     // For clients, we want to redirect back here to finish the form
-    const redirectTo = role === 'owner' ? '/register?role=owner' : '/dashboard'
+    const redirectTo = role === 'owner' ? '/register?role=owner' : `${dashboardUrl}/dashboard`
     
     if (provider === 'google') {
       await signInWithGoogle(role, redirectTo)
@@ -161,8 +163,10 @@ function RegisterContentInner() {
 
     const result = await registerDeveloperWithCredentials(data)
     if (result.success) {
-      document.cookie = "forke_role=developer; path=/; max-age=3600"
-      const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:3001'
+      const isProdDomain = typeof window !== 'undefined' && window.location.hostname.endsWith('forke.space')
+      const domainAttr = isProdDomain ? '; domain=.forke.space' : ''
+      document.cookie = `forke_role=developer; path=/; max-age=3600${domainAttr}`
+      const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProdDomain ? 'https://dashboard.forke.space' : 'http://localhost:3001')
       await signIn('credentials', {
         email: data.email,
         password: data.password,

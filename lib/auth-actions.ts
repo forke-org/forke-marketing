@@ -21,14 +21,17 @@ import { readAttributionCookie, readSessionId } from './utils/attribution'
 import { recordAuthEvent } from './actions/auth-events'
 
 export async function signInWithGoogle(role?: 'developer' | 'owner', redirectTo?: string) {
-  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:3001'
+  const isProd = process.env.NODE_ENV === 'production'
+  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProd ? 'https://dashboard.forke.space' : 'http://localhost:3001')
   const cookieStore = await cookies()
+  const domain = isProd ? '.forke.space' : undefined
   if (role) {
     cookieStore.set('forke_role', role, {
       path: '/',
       maxAge: 3600, // 1 hour
       httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProd,
+      domain,
     })
     cookieStore.delete('forke_login_intent')
   } else {
@@ -36,7 +39,8 @@ export async function signInWithGoogle(role?: 'developer' | 'owner', redirectTo?
       path: '/',
       maxAge: 600, // 10 minutes
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProd,
+      domain,
     })
     cookieStore.delete('forke_role')
   }
@@ -45,14 +49,17 @@ export async function signInWithGoogle(role?: 'developer' | 'owner', redirectTo?
 }
 
 export async function signInWithGitHub(role?: 'developer' | 'owner', redirectTo?: string) {
-  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'http://localhost:3001'
+  const isProd = process.env.NODE_ENV === 'production'
+  const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProd ? 'https://dashboard.forke.space' : 'http://localhost:3001')
   const cookieStore = await cookies()
+  const domain = isProd ? '.forke.space' : undefined
   if (role) {
     cookieStore.set('forke_role', role, {
       path: '/',
       maxAge: 3600,
       httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProd,
+      domain,
     })
     cookieStore.delete('forke_login_intent')
   } else {
@@ -60,7 +67,8 @@ export async function signInWithGitHub(role?: 'developer' | 'owner', redirectTo?
       path: '/',
       maxAge: 600, // 10 minutes
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProd,
+      domain,
     })
     cookieStore.delete('forke_role')
   }
