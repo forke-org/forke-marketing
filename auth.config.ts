@@ -84,6 +84,40 @@ export const authConfig = {
         return { ...token, ...session }
       }
       return token
+    },
+    async redirect({ url, baseUrl }) {
+      const isProd = process.env.NODE_ENV === 'production'
+      const defaultDashboard = process.env.NEXT_PUBLIC_DASHBOARD_URL
+        ? `${process.env.NEXT_PUBLIC_DASHBOARD_URL}/dashboard`
+        : (isProd ? 'https://dashboard.forke.space/dashboard' : 'http://localhost:3001/dashboard')
+
+      if (!url || url === '/' || url === baseUrl || url === `${baseUrl}/`) {
+        return defaultDashboard
+      }
+
+      if (url.startsWith('/')) {
+        if (url === '/dashboard' || url.startsWith('/dashboard/')) {
+          const dashboardOrigin = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProd ? 'https://dashboard.forke.space' : 'http://localhost:3001')
+          return `${dashboardOrigin}${url}`
+        }
+        return `${baseUrl}${url}`
+      }
+
+      try {
+        const parsed = new URL(url)
+        if (parsed.hostname.endsWith('forke.space') || parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
+          if (parsed.pathname === '/dashboard' || parsed.pathname.startsWith('/dashboard/')) {
+            const dashboardOrigin = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProd ? 'https://dashboard.forke.space' : 'http://localhost:3001')
+            return `${dashboardOrigin}${parsed.pathname}${parsed.search}`
+          }
+          if (parsed.pathname === '/' && (parsed.hostname === 'forke.space' || parsed.hostname === 'www.forke.space')) {
+            return defaultDashboard
+          }
+          return url
+        }
+      } catch {}
+
+      return defaultDashboard
     }
   }
 } satisfies NextAuthConfig
