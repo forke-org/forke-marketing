@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest, NextFetchEvent } from 'next/server'
+import { detectInAppSocial } from '@/lib/utils/in-app-social'
 
 const ATTRIBUTION_COOKIE = 'forke_attribution'
 const SESSION_COOKIE = 'forke_session'
@@ -120,6 +121,16 @@ function computeAttribution(req: NextRequest, country?: string | null): {
         }
       }
     } catch (_) {}
+  }
+
+  // Dark Social: Mobile in-app browsers (WhatsApp, Instagram, Telegram, LinkedIn, Discord, etc.)
+  // strip the Referer header completely. Detect via User-Agent signature when no external referrer exists.
+  if (source === 'direct' && !validReferrer) {
+    const inApp = detectInAppSocial(req.headers.get('user-agent'))
+    if (inApp) {
+      source = inApp.source
+      if (!derivedMedium) derivedMedium = inApp.medium
+    }
   }
 
   const cleanCountryCode = typeof country === 'string' && /^[a-zA-Z]{2}$/.test(country.trim()) ? country.trim().toUpperCase() : undefined

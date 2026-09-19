@@ -14,6 +14,7 @@ import { eq, and, gt } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { pageVisits } from '@/lib/db/schema'
 import { normalizeSource } from '@/lib/utils/attribution'
+import { detectInAppSocial } from '@/lib/utils/in-app-social'
 import { getCountry, detectBot } from '@/lib/utils/analytics'
 import { isPublicMarketingRoute } from '@/middleware'
 
@@ -114,6 +115,16 @@ export async function POST(req: NextRequest) {
       } else if (/linkedin|lnkd\.in/i.test(refLower)) {
         source = 'linkedin'
         if (!medium) medium = 'social'
+      }
+    }
+
+    // Dark Social: Mobile in-app browsers (WhatsApp, Instagram, Telegram, LinkedIn, Discord, etc.)
+    // strip the Referer header completely. Detect via User-Agent signature when no external referrer exists.
+    if (source === 'direct' && !referrer) {
+      const inApp = detectInAppSocial(ua)
+      if (inApp) {
+        source = inApp.source
+        if (!medium) medium = inApp.medium
       }
     }
 

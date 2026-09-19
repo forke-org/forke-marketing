@@ -108,6 +108,10 @@ function cleanField(raw?: string | null): string | undefined {
   return cleaned || undefined
 }
 
+export { detectInAppSocial } from './in-app-social'
+export type { InAppSocialResult } from './in-app-social'
+
+
 /**
  * Read the first-touch attribution cookie set by middleware.
  * Server-side only. Returns a safe { source: 'direct' } fallback when missing or malformed.
@@ -131,3 +135,4 @@ export async function readAttributionCookie(): Promise<Attribution> {
     return { source: 'direct' }
   }
 }
+

@@ -6,6 +6,7 @@
  */
 
 import { useEffect } from 'react'
+import { detectInAppSocial } from '@/lib/utils/in-app-social'
 
 function getCookie(name: string): string | null {
   if (typeof document === 'undefined') return null
@@ -103,11 +104,24 @@ export function ClientAttributionTracker() {
       const hasUrlParams = Boolean(urlSource || urlMedium || urlCampaign)
       const hasExternalReferrer = Boolean(ref && refHost && !isInternal)
 
-      // If there is no external referrer and no tracking params, the server-side middleware
-      // already recorded this direct landing visit. Avoid redundant client pings.
+      // Dark Social: Check for in-app browser signature in navigator.userAgent
+      let inAppSocial: { source: string; medium: string } | null = null
       if (!hasExternalReferrer && !hasUrlParams) {
+        inAppSocial = detectInAppSocial(navigator.userAgent)
+        if (inAppSocial) {
+          source = inAppSocial.source
+          medium = inAppSocial.medium
+        }
+      }
+
+      const hasInAppSocial = Boolean(inAppSocial)
+
+      // If there is no external referrer, no tracking params, and no in-app webview signature,
+      // the server-side middleware already recorded this direct landing visit. Avoid redundant client pings.
+      if (!hasExternalReferrer && !hasUrlParams && !hasInAppSocial) {
         return
       }
+
 
       const sessionId = getCookie('forke_session') || undefined
 
