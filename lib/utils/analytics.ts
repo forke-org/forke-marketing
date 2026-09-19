@@ -184,7 +184,14 @@ export function detectBot(
 
   // 6. Social Previews
   for (const [name, regex] of Object.entries(SOCIAL_PREVIEW_PATTERNS)) {
-    if (regex.test(ua)) return { isBot: true, category: 'social_preview', name }
+    if (regex.test(ua)) {
+      // Differentiate: Real human clicking link in WhatsApp in-app browser has full browser engine (Mozilla + WebKit/Safari/Chrome)
+      // vs WhatsApp preview crawler which only fetches og:image card metadata and lacks Mozilla browser engine.
+      if (name === 'WhatsApp' && /mozilla/i.test(ua) && /webkit|safari|chrome/i.test(ua)) {
+        continue // Real human user in WhatsApp mobile app
+      }
+      return { isBot: true, category: 'social_preview', name }
+    }
   }
 
   // 7. Monitors
