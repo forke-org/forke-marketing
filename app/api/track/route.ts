@@ -14,7 +14,7 @@ import { eq, and, gt } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { pageVisits } from '@/lib/db/schema'
 import { normalizeSource } from '@/lib/utils/attribution'
-import { getCountry, isBotUserAgent } from '@/lib/utils/analytics'
+import { getCountry, detectBot } from '@/lib/utils/analytics'
 import { isPublicMarketingRoute } from '@/middleware'
 
 /** Validate a 2-letter ISO country code coming from edge headers or body. */
@@ -42,12 +42,37 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => ({}))
 
     const ua = req.headers.get('user-agent')
-    const isBot = isBotUserAgent(ua)
-
-    // Don't write bot rows at all — keeps the table small and the charts human.
-    if (isBot) return NextResponse.json({ ok: true, skipped: 'bot' })
-
+    const host = req.headers.get('host') || req.headers.get('x-forwarded-host')
     const landingPath = clean(body.landingPath, 255) || '/'
+
+    const botResult = detectBot(ua, landingPath, host)
+
+    const resolvedCountry =
+      cleanCountry(body.country) ??
+      cleanCountry(req.headers.get('cf-ipcountry')) ??
+      cleanCountry(req.headers.get('x-country-code')) ??
+      cleanCountry(req.headers.get('x-real-ip-country')) ??
+      getCountry(req.headers) ??
+      'IN'
+
+    // Record verified bot crawlers and security probes into page_visits
+    if (botResult.isBot) {
+      await db.insert(pageVisits).values({
+        sessionId: null,
+        source: botResult.name || 'crawler',
+        medium: botResult.category || 'bot',
+        campaign: null,
+        referrer: clean(body.referrer, 255),
+        landingPath,
+        country: resolvedCountry,
+        isBot: true,
+        botCategory: botResult.category,
+        botName: botResult.name,
+        userAgentSnippet: clean(ua, 120),
+      })
+      return NextResponse.json({ ok: true, tracked: 'bot', category: botResult.category })
+    }
+
     if (!isPublicMarketingRoute(landingPath)) {
       return NextResponse.json({ ok: true, skipped: 'non_marketing_route' })
     }
@@ -141,14 +166,6 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const resolvedCountry =
-      cleanCountry(body.country) ??
-      cleanCountry(req.headers.get('cf-ipcountry')) ??
-      cleanCountry(req.headers.get('x-country-code')) ??
-      cleanCountry(req.headers.get('x-real-ip-country')) ??
-      getCountry(req.headers) ??
-      'IN'
-
     await db.insert(pageVisits).values({
       sessionId,
       source,
@@ -158,6 +175,9 @@ export async function POST(req: NextRequest) {
       landingPath,
       country: resolvedCountry,
       isBot: false,
+      botCategory: null,
+      botName: null,
+      userAgentSnippet: clean(ua, 120),
     })
 
     return NextResponse.json({ ok: true })
