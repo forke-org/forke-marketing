@@ -72,12 +72,12 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
+    <header className="fixed top-4 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
       <nav
         className={cn(
           "pointer-events-auto transition-all duration-300 ease-out",
-          // Attached to top with rounded bottom corners (compact notch capsule)
-          "rounded-b-[20px] sm:rounded-b-[24px]",
+          // Floating pill with all four corners fully rounded
+          isMobileMenuOpen ? "rounded-[24px]" : "rounded-full",
           // Compact width hugging contents with no giant empty space
           "w-fit max-w-[95vw]"
         )}
@@ -85,9 +85,7 @@ export default function Navbar() {
           backgroundColor: 'rgba(0, 0, 0, 0.45)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.45)'
         }}
       >
