@@ -11,13 +11,13 @@
  */
 
 import React, { useRef } from 'react'
-import { Button } from '@/components/ui/Button'
 import { useRouter } from 'next/navigation'
 import { ArrowRight } from 'lucide-react'
 import Aurora from './Aurora'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import TechStackTicker from './TechStackTicker'
+import GlassyButton from '@/components/ui/GlassyButton'
 
 export default function Hero() {
   const router = useRouter()
@@ -124,21 +124,19 @@ export default function Hero() {
         <div className="space-y-4 pt-1 w-full flex flex-col items-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
             {showWaitlisterView ? (
-              <Button
-                size="lg"
-                className="gsap-hero-btn group h-12 sm:h-13 px-8 rounded-full bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer"
+              <GlassyButton
+                className="gsap-hero-btn h-12 sm:h-13 px-8 text-[15px] font-semibold tracking-tight w-full sm:w-auto"
                 onClick={() => router.push('/waitlist')}
               >
                 Join the waitlist <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-              </Button>
+              </GlassyButton>
             ) : (
-              <Button
-                size="lg"
-                className="gsap-hero-btn group h-12 sm:h-13 px-8 rounded-full bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer"
+              <GlassyButton
+                className="gsap-hero-btn h-12 sm:h-13 px-8 text-[15px] font-semibold tracking-tight w-full sm:w-auto"
                 onClick={() => router.push('/signin')}
               >
                 Start earning <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-              </Button>
+              </GlassyButton>
             )}
             <a
               href="#how-it-works"

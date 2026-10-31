@@ -789,3 +789,169 @@ input[type="checkbox"]:not(.appearance-none):focus {
 
 
 
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Glassy 3D Parallax Button (Patrick Hill style)
+   ────────────────────────────────────────────────────────────────────────── */
+.glassy-button {
+  --_padding: 0 1.75rem;
+  --_transition-speed: 200ms;
+  --_hover-opacity: 0.4;
+  --_pressed-opacity: 0.15;
+  --_hover-blurriness: 5px;
+  --_pressed-blurriness: 10px;
+  --_frostiness: 0.3;
+  --_hover-offset: 0.35rem;
+  --_pressed-offset: 0.15rem;
+  --_motion-factor: 0.1;
+  --_surface: var(--color-accent, #FF7A00);
+  --_text-color: #0a0a0a;
+
+  outline: 0;
+  cursor: pointer;
+  font: inherit;
+  color: var(--_text-color);
+  font-weight: 600;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background-color: transparent;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.glassy-button span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: var(--_padding);
+  border-radius: inherit;
+  background-color: hsl(0 0% 100% / 0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition: background-color var(--_transition-speed),
+    backdrop-filter var(--_transition-speed),
+    translate var(--_transition-speed),
+    -webkit-backdrop-filter var(--_transition-speed);
+  position: relative;
+  z-index: 1;
+}
+
+.glassy-button span::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 171 171' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.74' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0;
+  transition: opacity var(--_transition-speed);
+  pointer-events: none;
+}
+
+.glassy-button::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--_surface);
+  transition: scale var(--_transition-speed),
+    translate var(--_transition-speed);
+  animation: glassy-exit forwards var(--_transition-speed);
+}
+
+.glassy-button:hover span,
+.glassy-button:focus-visible span {
+  outline: 1px solid hsl(0 0% 100% / 0.7);
+  background-color: hsl(0 0% 100% / var(--_hover-opacity));
+  -webkit-backdrop-filter: blur(var(--_hover-blurriness));
+  backdrop-filter: blur(var(--_hover-blurriness));
+  translate: 0 calc(var(--_hover-offset) * -1);
+}
+
+.glassy-button:hover span::before,
+.glassy-button:focus-visible span::before {
+  opacity: var(--_frostiness);
+}
+
+.glassy-button:hover::after,
+.glassy-button:focus-visible::after {
+  scale: 0.95;
+  translate: 0 0.125rem;
+  animation: glassy-enter forwards var(--_transition-speed);
+  transform: translate(
+    calc(var(--_x-motion, 0px) * var(--_motion-factor) * -1),
+    calc(var(--_y-motion, 0px) * var(--_motion-factor) * -1)
+  );
+}
+
+.glassy-button:active span {
+  -webkit-backdrop-filter: blur(var(--_pressed-blurriness));
+  backdrop-filter: blur(var(--_pressed-blurriness));
+  background-color: hsl(0 0% 100% / var(--_pressed-opacity));
+  translate: 0 calc(var(--_pressed-offset) * -1);
+}
+
+.glassy-button:active::after {
+  scale: 0.875;
+  translate: 0 0.25rem;
+}
+
+@keyframes glassy-enter {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(
+      calc(var(--_x-motion, 0px) * var(--_motion-factor) * -1),
+      calc(var(--_y-motion, 0px) * var(--_motion-factor) * -1)
+    );
+  }
+}
+
+@keyframes glassy-exit {
+  from {
+    transform: translate(
+      calc(var(--_x-motion, 0px) * var(--_motion-factor) * -1),
+      calc(var(--_y-motion, 0px) * var(--_motion-factor) * -1)
+    );
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+@media (hover: none) {
+  .glassy-button:hover span {
+    translate: none;
+    outline: none;
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glassy-button:hover::after {
+    scale: 1;
+    translate: none;
+    transform: none;
+  }
+  .glassy-button:active span {
+    -webkit-backdrop-filter: blur(var(--_pressed-blurriness));
+    backdrop-filter: blur(var(--_pressed-blurriness));
+    background-color: hsl(0 0% 100% / var(--_pressed-opacity));
+    translate: 0 0.125rem;
+  }
+  .glassy-button:active::after {
+    scale: 0.95;
+    translate: 0 0.125rem;
+  }
+}
