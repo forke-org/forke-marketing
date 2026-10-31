@@ -15,7 +15,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { useRouter } from 'next/navigation'
 import { ArrowRight, Flame, GitMerge } from 'lucide-react'
-import DotField from './DotField'
+import Aurora from './Aurora'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import TechStackTicker from './TechStackTicker'
@@ -139,28 +139,20 @@ export default function Hero() {
           backgroundRepeat: 'repeat',
         }}
       />
-      {/* Animated Background Components — clear circle follows Forky (center-low on mobile, right on desktop) */}
-      <div
-        className="absolute inset-0 z-[1] pointer-events-none opacity-50
-          [mask-image:radial-gradient(circle_at_50%_66%,transparent_8%,black_34%)]
-          [-webkit-mask-image:radial-gradient(circle_at_50%_66%,transparent_8%,black_34%)]
-          lg:[mask-image:radial-gradient(circle_at_80%_50%,transparent_10%,black_40%)]
-          lg:[-webkit-mask-image:radial-gradient(circle_at_80%_50%,transparent_10%,black_40%)]"
-      >
-        <DotField
-          dotRadius={1.2}
-          dotSpacing={22}
-          bulgeStrength={45}
-          glowRadius={150}
-          sparkle={false}
-          waveAmplitude={0}
-          cursorRadius={350}
-          cursorForce={0.1}
-          bulgeOnly
-          gradientFrom="#FF7A00"
-          gradientTo="#E66E00"
-          glowColor="#050505"
-        />
+      {/* Animated Background Components — Aurora */}
+      <div className="absolute top-0 left-0 w-full pointer-events-none z-[1] overflow-hidden">
+        <div style={{ width: '100%', height: '600px', position: 'relative' }}>
+          <Aurora
+            colorStops={["#f97316","#f97316","#f97316"]}
+            amplitude={1.4}
+            blend={0.5}
+            height={0.45}
+            speed={0.6}
+            glow={1.2}
+            layers={3}
+            mouseInteraction={false}
+          />
+        </div>
       </div>
 
 
