@@ -111,17 +111,17 @@ export default function Navbar() {
                 href={link.href}
                 className="group/link font-mono text-[12px] lg:text-[13px] lowercase text-[#EDEDED] hover:text-white transition-colors cursor-pointer whitespace-nowrap"
               >
-                <span className="text-accent/50 group-hover/link:text-accent transition-colors mr-0.5">/</span>
+                <span className="text-accent opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 mr-0.5 select-none">/</span>
                 {link.name.replace(/[?'’]/g, '').replace(/\s+/g, '-').toLowerCase()}
               </a>
             ))}
           </div>
 
-          {/* Right: Solid white contrasting CTA & Mobile Hamburger */}
+          {/* Right: Clean flat Get Started CTA (no shadow, no backdrop) & Mobile Hamburger */}
           <div className="flex items-center gap-2.5 shrink-0">
             <button
               onClick={handleCtaClick}
-              className="hidden sm:inline-flex items-center justify-center rounded-full px-4 py-1.5 h-8 text-[12px] font-semibold tracking-tight bg-white hover:bg-neutral-100 text-[#0a0a0a] shadow-[0_2px_12px_rgba(0,0,0,0.35)] transition-all cursor-pointer whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center rounded-full px-4 py-1.5 h-8 text-[12px] font-semibold tracking-tight bg-white hover:bg-neutral-100 text-[#0a0a0a] shadow-none transition-colors cursor-pointer whitespace-nowrap border-0"
             >
               {isLoggedIn
                 ? 'Dashboard'
@@ -169,16 +169,16 @@ export default function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="block rounded-lg px-3 py-1.5 text-[13px] text-[#EDEDED] hover:bg-white/[0.08] hover:text-white transition-colors cursor-pointer font-mono"
+                  className="group block rounded-lg px-3 py-1.5 text-[13px] text-[#EDEDED] hover:bg-white/[0.08] hover:text-white transition-colors cursor-pointer font-mono"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <span className="text-accent mr-1">/</span>
+                  <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-200 mr-1 select-none">/</span>
                   {link.name.replace(/[?'’]/g, '').replace(/\s+/g, '-').toLowerCase()}
                 </a>
               ))}
               <div className="pt-1.5">
                 <button
-                  className="w-full h-9 rounded-full bg-white hover:bg-neutral-100 text-[#0a0a0a] text-[12px] font-semibold tracking-tight shadow-md transition-all cursor-pointer flex items-center justify-center"
+                  className="w-full h-9 rounded-full bg-white hover:bg-neutral-100 text-[#0a0a0a] text-[12px] font-semibold tracking-tight shadow-none transition-colors cursor-pointer flex items-center justify-center border-0"
                   onClick={handleCtaClick}
                 >
                   {isLoggedIn
