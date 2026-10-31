@@ -14,6 +14,7 @@ import Verdict from '@/components/landing/Verdict'
 import Proof from '@/components/landing/Proof'
 import ReviewSystem from '@/components/landing/ReviewSystem'
 import { Rails, Section } from '@/components/landing/primitives'
+import GradualBlur from './GradualBlur'
 
 export const metadata: Metadata = {
   title: 'Forke — Ship Real Work, Get Paid',
@@ -22,7 +23,23 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#050505]">
+    <div className="relative flex flex-col min-h-screen bg-[#050505]">
+      {/* Top upside gradual blur */}
+      <GradualBlur
+        position="top"
+        height="6rem"
+        strength={2}
+        layers={8}
+        curve="linear"
+        exponential
+        tint="rgba(18, 15, 23, 0.6)"
+        autoHide
+        target="parent"
+        opacity={1}
+        saturation={1}
+        hoverIntensity={1}
+      />
+
       <Navbar />
       <main className="flex-grow">
         {/* Full-bleed cover — hero with Forky + ticker */}
