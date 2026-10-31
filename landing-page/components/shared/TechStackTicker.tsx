@@ -49,71 +49,81 @@ const TECH_STACKS: TechStackItem[] = [
   { name: "Angular", path: "angular/angular-original", themedPath: "angular/angular-plain" }
 ];
 
-export default function TechStackTicker({ isHeroEmbedded = false }: { isHeroEmbedded?: boolean }) {
-  const displayItems = [...TECH_STACKS, ...TECH_STACKS, ...TECH_STACKS] // Triple for seamless looping
-  const [hoveredIdx, setHoveredIdx] = React.useState<number | null>(null)
+function TechStackCard({ item }: { item: TechStackItem }) {
+  const imageUrl = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.path}.svg`
+  const themedImageUrl = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.themedPath}.svg`
 
   return (
-    <section className={cn(
-      "left-0 w-full h-14 bg-black border-t border-white/10 flex items-center overflow-hidden z-40",
-      isHeroEmbedded ? "absolute bottom-0" : "fixed bottom-0"
-    )}>
-      <div className="absolute left-0 top-0 h-full bg-black z-10 px-8 flex items-center gap-3 border-r border-white/10 select-none hidden sm:flex">
+    <div className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer transition-transform duration-200">
+      <div className="relative w-5 h-5 transition-transform duration-300 transform group-hover:scale-115">
+        {/* Themed Layer: Monochromatic Outline SVG with orange tint */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img 
+          src={themedImageUrl}
+          alt={item.name}
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-300 opacity-70 group-hover:opacity-0"
+          style={{
+            filter: 'brightness(0) saturate(100%) invert(52%) sepia(85%) saturate(2318%) hue-rotate(357deg) brightness(101%) contrast(106%)'
+          }}
+        />
+        
+        {/* Brand Layer: Original SVG Logo */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img 
+          src={imageUrl}
+          alt={item.name}
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+          style={item.hoverFilter ? { filter: item.hoverFilter } : undefined}
+        />
+      </div>
+      <span className="text-[13px] font-medium font-mono text-white/50 group-hover:text-white transition-colors duration-300">
+        {item.name}
+      </span>
+    </div>
+  )
+}
+
+export default function TechStackTicker({ 
+  className,
+  isHeroEmbedded = false 
+}: { 
+  className?: string;
+  isHeroEmbedded?: boolean 
+}) {
+  return (
+    <div className={cn("w-full bg-transparent flex flex-col items-center select-none", className)}>
+      {/* Title above the ticker */}
+      <div className="flex items-center justify-center gap-2.5 mb-3.5 select-none">
         <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-        <span className="text-[11px] tracking-wide text-white/70 whitespace-nowrap font-mono">
-          {'//'} supported stacks
+        <span className="text-[11px] sm:text-xs font-mono tracking-wider text-white/50 uppercase">
+          supported stacks
         </span>
       </div>
 
-      <div className="flex animate-ticker whitespace-nowrap pl-6 sm:pl-[260px] select-none">
-        {displayItems.map((item, index) => {
-          const isHovered = hoveredIdx === index
-          const imageUrl = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.path}.svg`
-          const themedImageUrl = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.themedPath}.svg`
-          return (
-            <div 
-              key={index} 
-              className="flex items-center gap-3 mx-8 group cursor-default"
-              onMouseEnter={() => setHoveredIdx(index)}
-              onMouseLeave={() => setHoveredIdx(null)}
-            >
-              <div className="relative w-5 h-5 transition-all duration-300 transform group-hover:scale-110">
-                {/* Themed Layer: Monochromatic Outline SVG with orange filter */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={themedImageUrl}
-                  alt={item.name}
-                  className={cn(
-                    "absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-300",
-                    isHovered ? "opacity-0" : "opacity-80"
-                  )}
-                  style={{
-                    filter: 'brightness(0) saturate(100%) invert(52%) sepia(85%) saturate(2318%) hue-rotate(357deg) brightness(101%) contrast(106%)'
-                  }}
-                />
-                
-                {/* Brand Layer: Original SVG Logo */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={imageUrl}
-                  alt={item.name}
-                  className={cn(
-                    "absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-300",
-                    isHovered ? "opacity-100" : "opacity-0"
-                  )}
-                  style={item.hoverFilter ? { filter: item.hoverFilter } : undefined}
-                />
-              </div>
-              <span 
-                style={{ color: isHovered ? '#FFFFFF' : 'rgba(255, 255, 255, 0.6)' }}
-                className="text-[13px] font-medium font-mono transition-colors duration-300"
-              >
-                {item.name}
-              </span>
-            </div>
-          )
-        })}
+      {/* Seamless horizontal ticker track with edge fade masks */}
+      <div 
+        className="relative w-full max-w-7xl mx-auto overflow-hidden py-2"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)'
+        }}
+      >
+        <div className="flex w-max animate-ticker whitespace-nowrap select-none">
+          {/* First set */}
+          <div className="flex shrink-0 items-center gap-10 sm:gap-12 pr-10 sm:pr-12">
+            {TECH_STACKS.map((item, index) => (
+              <TechStackCard key={`track-1-${item.name}-${index}`} item={item} />
+            ))}
+          </div>
+
+          {/* Cloned second set for mathematical infinite seamless looping */}
+          <div className="flex shrink-0 items-center gap-10 sm:gap-12 pr-10 sm:pr-12" aria-hidden="true">
+            {TECH_STACKS.map((item, index) => (
+              <TechStackCard key={`track-2-${item.name}-${index}`} item={item} />
+            ))}
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   )
 }

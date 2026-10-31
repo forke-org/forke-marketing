@@ -64,12 +64,16 @@ export default function Hero() {
       { opacity: 0, duration: 0.5 },
       0.45
     )
+    .from('.gsap-hero-ticker',
+      { opacity: 0, y: 16, duration: 0.6 },
+      0.55
+    )
   }, { scope: containerRef })
 
   return (
     <section 
       ref={containerRef} 
-      className="relative pt-32 pb-24 sm:pt-40 sm:pb-32 overflow-hidden bg-bg min-h-svh lg:min-h-[88vh] flex flex-col justify-center items-center"
+      className="relative pt-32 pb-14 sm:pt-40 sm:pb-20 overflow-hidden bg-bg min-h-svh lg:min-h-[88vh] flex flex-col justify-between items-center"
     >
       {/* Grain overlay — fixed, pointer-events-none, GPU-safe */}
       <div
@@ -97,7 +101,7 @@ export default function Hero() {
       </div>
 
       {/* Centered Main Content Area */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center space-y-7 sm:space-y-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center space-y-7 sm:space-y-8 my-auto">
         
         {/* Eyebrow badge */}
         <div className="gsap-hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 font-mono text-[11px] sm:text-xs text-white/60 shadow-[0_4px_20px_rgba(0,0,0,0.3)] backdrop-blur-md">
@@ -152,8 +156,8 @@ export default function Hero() {
 
       </div>
 
-      {/* Supported Tech Stack Ticker docked at the bottom of Hero */}
-      <div className="absolute bottom-0 left-0 w-full z-40">
+      {/* Supported Tech Stack Ticker placed seamlessly below CTA and metadata */}
+      <div className="w-full relative z-20 mt-14 sm:mt-18 gsap-hero-ticker">
         <TechStackTicker isHeroEmbedded />
       </div>
 
