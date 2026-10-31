@@ -56,12 +56,12 @@ function TechStackCard({ item }: { item: TechStackItem }) {
   return (
     <div className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer transition-transform duration-200">
       <div className="relative w-5 h-5 transition-transform duration-300 transform group-hover:scale-115">
-        {/* Themed Layer: Monochromatic Outline SVG with orange tint */}
+        {/* Themed Layer: Monochromatic Outline SVG with orange tint, increased opacity */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src={themedImageUrl}
           alt={item.name}
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-300 opacity-70 group-hover:opacity-0"
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none transition-opacity duration-300 opacity-85 group-hover:opacity-0"
           style={{
             filter: 'brightness(0) saturate(100%) invert(52%) sepia(85%) saturate(2318%) hue-rotate(357deg) brightness(101%) contrast(106%)'
           }}
@@ -76,7 +76,7 @@ function TechStackCard({ item }: { item: TechStackItem }) {
           style={item.hoverFilter ? { filter: item.hoverFilter } : undefined}
         />
       </div>
-      <span className="text-[13px] font-medium font-mono text-white/50 group-hover:text-white transition-colors duration-300">
+      <span className="text-[13px] font-medium font-mono text-white/75 group-hover:text-white transition-colors duration-300">
         {item.name}
       </span>
     </div>
@@ -92,10 +92,10 @@ export default function TechStackTicker({
 }) {
   return (
     <div className={cn("w-full bg-transparent flex flex-col items-center select-none", className)}>
-      {/* Title above the ticker */}
-      <div className="flex items-center justify-center mb-3.5 select-none">
-        <span className="text-[11px] sm:text-xs font-mono tracking-wider text-white/50 uppercase">
-          supported stacks
+      {/* Small monospace label above the row */}
+      <div className="flex items-center justify-center mb-3 select-none">
+        <span className="text-[11px] sm:text-xs font-mono tracking-wider text-white/75">
+          // supported stacks
         </span>
       </div>
 
@@ -103,8 +103,8 @@ export default function TechStackTicker({
       <div 
         className="relative w-full max-w-7xl mx-auto overflow-hidden py-2"
         style={{
-          maskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)'
+          maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
         }}
       >
         <div className="flex w-max animate-ticker whitespace-nowrap select-none">

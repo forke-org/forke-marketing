@@ -11,6 +11,7 @@
  */
 
 import React, { useRef } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ArrowRight } from 'lucide-react'
 import Aurora from './Aurora'
@@ -64,16 +65,30 @@ export default function Hero() {
       { opacity: 0, duration: 0.5 },
       0.45
     )
+    .from('.gsap-hero-mascot',
+      { y: 16, opacity: 0, duration: 0.6, ease: 'power2.out' },
+      0.48
+    )
     .from('.gsap-hero-ticker',
       { opacity: 0, y: 16, duration: 0.6 },
-      0.55
+      0.58
     )
+
+    // Gentle ambient floating animation on the mascot
+    gsap.to('.gsap-hero-mascot-img', {
+      y: '+=5',
+      duration: 3.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+      delay: 0.8
+    })
   }, { scope: containerRef })
 
   return (
     <section 
       ref={containerRef} 
-      className="relative pt-32 pb-14 sm:pt-40 sm:pb-20 overflow-hidden bg-bg min-h-svh lg:min-h-[88vh] flex flex-col justify-between items-center"
+      className="relative pt-28 pb-10 sm:pt-36 sm:pb-16 overflow-hidden bg-[#050505] min-h-svh flex flex-col justify-between items-center"
     >
       {/* Grain overlay — fixed, pointer-events-none, GPU-safe */}
       <div
@@ -84,28 +99,48 @@ export default function Hero() {
         }}
       />
 
-      {/* Animated Background Components — Aurora */}
-      <div className="absolute top-0 left-0 w-full pointer-events-none z-[1] overflow-hidden">
-        <div style={{ width: '100%', height: '600px', position: 'relative' }}>
+      {/* Aurora WebGL ambient background - masked to fade to pitch black by 45-50% */}
+      <div 
+        className="absolute top-0 left-0 w-full pointer-events-none z-[1] overflow-hidden h-[48%]"
+        style={{
+          maskImage: 'linear-gradient(to bottom, black 0%, black 25%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 25%, transparent 100%)'
+        }}
+      >
+        <div style={{ width: '100%', height: '100%', position: 'relative' }}>
           <Aurora
             colorStops={["#f97316","#f97316","#f97316"]}
-            amplitude={1.4}
+            amplitude={1.2}
             blend={0.5}
-            height={0.45}
+            height={0.5}
             speed={0.6}
-            glow={1.2}
+            glow={1.1}
             layers={3}
             mouseInteraction={false}
           />
         </div>
       </div>
 
+      {/* Subtle top atmospheric radial glow fading completely into black by 45% */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-[45%] pointer-events-none z-[1]"
+        style={{
+          background: 'radial-gradient(ellipse 80% 55% at 50% 0%, rgba(249, 115, 22, 0.22) 0%, rgba(249, 115, 22, 0.06) 50%, transparent 100%)'
+        }}
+      />
+
       {/* Centered Main Content Area */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center space-y-7 sm:space-y-8 my-auto">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center space-y-6 sm:space-y-7 my-auto">
         
-        {/* Eyebrow badge */}
-        <div className="gsap-hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 font-mono text-[11px] sm:text-xs text-white/60 shadow-[0_4px_20px_rgba(0,0,0,0.3)] backdrop-blur-md">
-          <span>$ git push origin <span className="text-accent">payday</span></span>
+        {/* Terminal Pill ("$ git push origin payday") with dark semi-opaque background */}
+        <div 
+          className="gsap-hero-eyebrow inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-[11px] sm:text-xs shadow-[0_4px_24px_rgba(0,0,0,0.5)] backdrop-blur-md select-none border"
+          style={{
+            backgroundColor: 'rgba(10, 10, 10, 0.6)',
+            borderColor: 'rgba(255, 255, 255, 0.12)'
+          }}
+        >
+          <span className="font-mono text-white/80">$ git push origin <span className="text-accent font-semibold">payday</span></span>
           <span className="animate-caret text-accent -ml-1">▍</span>
         </div>
 
@@ -115,7 +150,7 @@ export default function Hero() {
           Earn XP. <span className="font-serif italic font-normal text-accent">Get paid.</span>
         </h1>
 
-        {/* Subtitle */}
+        {/* Subtitle - sits cleanly on the dark background */}
         <p className="gsap-hero-subtitle text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed font-light">
           Claim scoped bounties from real startups, ship the fix, and cash out to UPI the moment your PR merges. No resumes. No interviews.
         </p>
@@ -146,16 +181,40 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Microcopy Metadata */}
-          <p className="gsap-hero-meta font-mono text-[11px] sm:text-xs text-white/40 tracking-wide pt-1">
+          {/* Microcopy Trust Line with monospace font and raised opacity */}
+          <p className="gsap-hero-meta font-mono text-[11px] sm:text-xs text-white/75 tracking-wider pt-1 select-none">
             escrow protected&nbsp;&nbsp;·&nbsp;&nbsp;instant UPI payouts&nbsp;&nbsp;·&nbsp;&nbsp;25 levels to climb
           </p>
         </div>
 
+        {/* Mascot Image centered below CTA buttons, overlapping bottom edge of gradient with soft orange glow */}
+        <div className="gsap-hero-mascot relative w-full flex flex-col items-center justify-center pt-2 sm:pt-3 pointer-events-none select-none">
+          {/* Soft orange glow behind mascot */}
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[280px] md:w-[320px] h-[130px] sm:h-[160px] rounded-full pointer-events-none z-0"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.32) 0%, rgba(249, 115, 22, 0.10) 45%, transparent 75%)',
+              filter: 'blur(22px)'
+            }}
+          />
+
+          {/* Mascot Image - responsive, scales down on mobile, never overlaps buttons */}
+          <div className="gsap-hero-mascot-img relative z-10 w-[140px] sm:w-[180px] md:w-[220px] lg:w-[240px] transition-transform duration-300">
+            <Image
+              src="/mascot.png"
+              alt="Forky Mascot"
+              width={240}
+              height={190}
+              priority
+              className="w-full h-auto object-contain object-bottom drop-shadow-[0_0_28px_rgba(249,115,22,0.32)]"
+            />
+          </div>
+        </div>
+
       </div>
 
-      {/* Supported Tech Stack Ticker placed seamlessly below CTA and metadata */}
-      <div className="w-full relative z-20 mt-14 sm:mt-18 gsap-hero-ticker">
+      {/* Supported Tech Stack Ticker */}
+      <div className="w-full relative z-20 mt-4 sm:mt-6 gsap-hero-ticker">
         <TechStackTicker isHeroEmbedded />
       </div>
 

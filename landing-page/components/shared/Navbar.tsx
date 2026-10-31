@@ -11,7 +11,6 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
 
 export default function Navbar() {
@@ -52,10 +51,6 @@ export default function Navbar() {
     }
   }, [])
 
-  // Gating evaluation:
-  // 1. Authenticated -> Show "Dashboard"
-  // 2. Not logged in + waitlist enabled + NO checkout pass -> Show "Join the waitlist" -> /waitlist
-  // 3. Not logged in + (waitlist disabled OR has checkout pass) -> Show "Get Started" -> /signin
   const showJoinWaitlist = !isLoggedIn && waitlistActive && !hasSiteAccess
 
   const navLinks = [
@@ -82,21 +77,23 @@ export default function Navbar() {
         className={cn(
           "pointer-events-auto transition-all duration-300 ease-out",
           // Attached to top with rounded bottom corners (compact notch capsule)
-          "rounded-b-[20px] sm:rounded-b-[24px] border-b border-x border-white/[0.12]",
-          // Glossy transparent glassmorphism
-          "backdrop-blur-2xl sm:backdrop-blur-3xl",
-          isScrolled || isMobileMenuOpen
-            ? "bg-black/60 border-white/[0.16] shadow-[0_16px_40px_rgba(0,0,0,0.65),inset_0_1px_1px_rgba(255,255,255,0.18)]"
-            : "bg-black/40 border-white/[0.10] shadow-[0_12px_32px_rgba(0,0,0,0.45),inset_0_1px_1px_rgba(255,255,255,0.14)]",
+          "rounded-b-[20px] sm:rounded-b-[24px]",
           // Compact width hugging contents with no giant empty space
-          "w-fit max-w-[95vw]",
-          // Glass gloss highlight gradient overlay
-          "before:absolute before:inset-0 before:rounded-b-[20px] sm:before:rounded-b-[24px] before:bg-gradient-to-b before:from-white/[0.08] before:to-transparent before:pointer-events-none"
+          "w-fit max-w-[95vw]"
         )}
+        style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.45)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
+          borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.45)'
+        }}
       >
-        {/* Main Header Bar - tightly grouped without excessive spacing */}
+        {/* Main Header Bar */}
         <div className="flex items-center gap-5 sm:gap-7 h-12 sm:h-13 px-4 sm:px-6">
-          {/* Left: Only forke* text, logo image removed */}
+          {/* Left: forke* text */}
           <a
             href={marketingUrl}
             className="group shrink-0 relative cursor-pointer select-none"
@@ -106,33 +103,32 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Center: Navigation Links */}
+          {/* Center: Navigation Links in monospace and brighter near-white text */}
           <div className="hidden md:flex items-center gap-4 lg:gap-6">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="group/link font-mono text-[12px] lg:text-[12.5px] lowercase text-white/60 hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+                className="group/link font-mono text-[12px] lg:text-[13px] lowercase text-[#EDEDED] hover:text-white transition-colors cursor-pointer whitespace-nowrap"
               >
-                <span className="text-accent/0 group-hover/link:text-accent/90 transition-colors">/</span>
+                <span className="text-accent/50 group-hover/link:text-accent transition-colors mr-0.5">/</span>
                 {link.name.replace(/[?'’]/g, '').replace(/\s+/g, '-').toLowerCase()}
               </a>
             ))}
           </div>
 
-          {/* Right: CTA & Mobile Hamburger */}
+          {/* Right: Solid white contrasting CTA & Mobile Hamburger */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <Button
-              variant="primary"
-              className="hidden sm:inline-flex rounded-full px-4 py-1.5 h-8 text-[12px] font-semibold tracking-tight bg-accent hover:bg-accent-hover text-[#0a0a0a] shadow-none transition-colors cursor-pointer whitespace-nowrap"
+            <button
               onClick={handleCtaClick}
+              className="hidden sm:inline-flex items-center justify-center rounded-full px-4 py-1.5 h-8 text-[12px] font-semibold tracking-tight bg-white hover:bg-neutral-100 text-[#0a0a0a] shadow-[0_2px_12px_rgba(0,0,0,0.35)] transition-all cursor-pointer whitespace-nowrap"
             >
               {isLoggedIn
                 ? 'Dashboard'
                 : showJoinWaitlist
                   ? 'Join the waitlist'
                   : 'Get Started'}
-            </Button>
+            </button>
 
             {/* Mobile Menu Button */}
             <button
@@ -162,9 +158,10 @@ export default function Navbar() {
         {/* Mobile Dropdown Panel */}
         <div
           className={cn(
-            "md:hidden grid transition-all duration-300 border-t border-white/[0.08]",
+            "md:hidden grid transition-all duration-300 border-t",
             isMobileMenuOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 pointer-events-none"
           )}
+          style={{ borderColor: 'rgba(255, 255, 255, 0.08)' }}
         >
           <div className="overflow-hidden">
             <div className="px-4 pb-4 pt-2.5 flex flex-col gap-1.5 min-w-[240px]">
@@ -172,7 +169,7 @@ export default function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="block rounded-lg px-3 py-1.5 text-[13px] text-white/70 hover:bg-white/[0.06] hover:text-white transition-colors cursor-pointer font-mono"
+                  className="block rounded-lg px-3 py-1.5 text-[13px] text-[#EDEDED] hover:bg-white/[0.08] hover:text-white transition-colors cursor-pointer font-mono"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <span className="text-accent mr-1">/</span>
@@ -180,9 +177,8 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="pt-1.5">
-                <Button
-                  variant="primary"
-                  className="w-full h-9 rounded-full bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[12px] font-semibold tracking-tight shadow-none transition-colors cursor-pointer"
+                <button
+                  className="w-full h-9 rounded-full bg-white hover:bg-neutral-100 text-[#0a0a0a] text-[12px] font-semibold tracking-tight shadow-md transition-all cursor-pointer flex items-center justify-center"
                   onClick={handleCtaClick}
                 >
                   {isLoggedIn
@@ -190,7 +186,7 @@ export default function Navbar() {
                     : showJoinWaitlist
                       ? 'Join the waitlist'
                       : 'Get Started'}
-                </Button>
+                </button>
               </div>
             </div>
           </div>
