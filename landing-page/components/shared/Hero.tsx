@@ -88,7 +88,7 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef} 
-      className="relative pt-28 pb-10 sm:pt-36 sm:pb-16 overflow-hidden bg-[#050505] min-h-svh flex flex-col justify-between items-center"
+      className="relative pt-28 pb-8 sm:pt-36 sm:pb-12 overflow-hidden bg-[#050505] min-h-svh flex flex-col justify-between items-center"
     >
       {/* Grain overlay — fixed, pointer-events-none, GPU-safe */}
       <div
@@ -130,7 +130,7 @@ export default function Hero() {
       />
 
       {/* Centered Main Content Area */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center space-y-6 sm:space-y-7 my-auto">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center flex flex-col items-center space-y-6 sm:space-y-7 my-auto">
         
         {/* Terminal Pill ("$ git push origin payday") with dark semi-opaque background */}
         <div 
@@ -187,34 +187,34 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Mascot Image centered below CTA buttons, overlapping bottom edge of gradient with soft orange glow */}
-        <div className="gsap-hero-mascot relative w-full flex flex-col items-center justify-center pt-2 sm:pt-3 pointer-events-none select-none">
-          {/* Soft orange glow behind mascot */}
+        {/* Mascot Image - 2.5x scaled (280-320px on desktop, ~180px on mobile) with lower half overlapping into the next section */}
+        <div className="gsap-hero-mascot relative w-full flex flex-col items-center justify-center mt-3 sm:mt-5 -mb-10 sm:-mb-16 md:-mb-20 z-30 pointer-events-none select-none">
+          {/* Strengthened soft orange radial glow behind mascot */}
           <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[280px] md:w-[320px] h-[130px] sm:h-[160px] rounded-full pointer-events-none z-0"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[340px] md:w-[420px] h-[160px] sm:h-[220px] md:h-[260px] rounded-full pointer-events-none z-0"
             style={{
-              background: 'radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.32) 0%, rgba(249, 115, 22, 0.10) 45%, transparent 75%)',
-              filter: 'blur(22px)'
+              background: 'radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.46) 0%, rgba(249, 115, 22, 0.18) 45%, transparent 72%)',
+              filter: 'blur(30px)'
             }}
           />
 
-          {/* Mascot Image - responsive, scales down on mobile, never overlaps buttons */}
-          <div className="gsap-hero-mascot-img relative z-10 w-[140px] sm:w-[180px] md:w-[220px] lg:w-[240px] transition-transform duration-300">
+          {/* Mascot Image: Responsive 280-320px on desktop, ~180px on mobile, no overlap on text or buttons */}
+          <div className="gsap-hero-mascot-img relative z-10 w-[180px] sm:w-[240px] md:w-[280px] lg:w-[310px] transition-transform duration-300">
             <Image
               src="/mascot.png"
               alt="Forky Mascot"
-              width={240}
-              height={190}
+              width={310}
+              height={206}
               priority
-              className="w-full h-auto object-contain object-bottom drop-shadow-[0_0_28px_rgba(249,115,22,0.32)]"
+              className="w-full h-auto object-contain object-bottom drop-shadow-[0_0_36px_rgba(249,115,22,0.42)]"
             />
           </div>
         </div>
 
       </div>
 
-      {/* Supported Tech Stack Ticker */}
-      <div className="w-full relative z-20 mt-4 sm:mt-6 gsap-hero-ticker">
+      {/* Supported Tech Stack Ticker (Anchored below with lower half of mascot overlapping in) */}
+      <div className="w-full relative z-10 pt-8 sm:pt-12 gsap-hero-ticker">
         <TechStackTicker isHeroEmbedded />
       </div>
 
