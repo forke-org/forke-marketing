@@ -11,7 +11,6 @@
  */
 
 import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
@@ -28,7 +27,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      setIsScrolled(window.scrollY > 15)
     }
     window.addEventListener('scroll', handleScroll)
 
@@ -79,116 +78,134 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed left-0 right-0 top-6 z-50 px-4 transition-all duration-300">
-      <div className="w-full max-w-7xl mx-auto min-[1920px]:max-w-[1920px]">
-        <div className={cn(
-          "overflow-hidden border transition-all duration-300",
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-4">
+      <nav
+        className={cn(
+          "pointer-events-auto transition-all duration-300 ease-out",
+          // Attached to top with rounded bottom corners (top-hanging tab notch)
+          "rounded-b-[22px] sm:rounded-b-[26px] border-b border-x border-white/[0.12]",
+          // Glossy transparent glassmorphism
+          "backdrop-blur-2xl sm:backdrop-blur-3xl",
           isScrolled || isMobileMenuOpen
-             ? "border-white/[0.12] bg-black/[0.5] backdrop-blur-3xl shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
-             : "border-white/[0.08] bg-black/[0.25] backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)]",
-          isMobileMenuOpen ? "rounded-[28px]" : "rounded-[28px] lg:rounded-full"
-        )}>
-          {/* Main header row */}
-          <div className="flex justify-between items-center h-16 sm:h-[4.25rem] px-4 sm:px-7">
-            {/* Always redirect to main www.forke.space on Logo Click */}
-            <a href={marketingUrl} className="flex items-center gap-2 group shrink-0 relative pt-2 cursor-pointer">
-              <div className="absolute -top-[20px] sm:-top-[26px] -left-3 sm:-left-4 w-[120px] sm:w-[150px] h-[72px] sm:h-[92px] z-20 pointer-events-none">
-                <Image
-                  src="/forke-assets/nav_peeking_forky.png"
-                  alt="Forke Logo"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <div className="w-[100px] sm:w-[130px] h-[40px]" /> {/* Spacer for the absolute mascot */}
-              <span className="text-2xl sm:text-[1.75rem] font-semibold tracking-[-0.04em] text-white -ml-4 sm:-ml-6 relative z-10">
-                forke<span className="text-accent">*</span>
-              </span>
-            </a>
+            ? "bg-black/55 border-white/[0.15] shadow-[0_16px_40px_rgba(0,0,0,0.65),inset_0_1px_1px_rgba(255,255,255,0.18)]"
+            : "bg-black/35 border-white/[0.10] shadow-[0_12px_32px_rgba(0,0,0,0.45),inset_0_1px_1px_rgba(255,255,255,0.14)]",
+          // Fluid width hugging contents like a top dynamic island
+          "w-full max-w-[96%] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl",
+          // Glass gloss highlight gradient overlay
+          "before:absolute before:inset-0 before:rounded-b-[22px] sm:before:rounded-b-[26px] before:bg-gradient-to-b before:from-white/[0.08] before:to-transparent before:pointer-events-none"
+        )}
+      >
+        {/* Main Header Bar */}
+        <div className="flex items-center justify-between h-14 sm:h-16 px-4 sm:px-6">
+          {/* Left: Forke Logo & Peeking Mascot */}
+          <a
+            href={marketingUrl}
+            className="flex items-center gap-2 group shrink-0 relative cursor-pointer select-none"
+          >
+            <div className="relative w-7 h-7 sm:w-8 sm:h-8 transition-transform duration-200 group-hover:scale-105">
+              <Image
+                src="/forke-assets/nav_peeking_forky.png"
+                alt="Forke Mascot"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            <span className="text-xl sm:text-[1.35rem] font-semibold tracking-[-0.04em] text-white">
+              forke<span className="text-accent">*</span>
+            </span>
+          </a>
 
-            {/* Center: Navigation Links */}
-            <div className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          {/* Center: Navigation Links */}
+          <div className="hidden md:flex items-center gap-5 lg:gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="group/link font-mono text-[12px] lg:text-[13px] lowercase text-white/60 hover:text-white transition-colors cursor-pointer"
+              >
+                <span className="text-accent/0 group-hover/link:text-accent/90 transition-colors">/</span>
+                {link.name.replace(/[?'’]/g, '').replace(/\s+/g, '-').toLowerCase()}
+              </a>
+            ))}
+          </div>
+
+          {/* Right: CTA & Mobile Hamburger */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <Button
+              variant="primary"
+              className="hidden sm:inline-flex rounded-full px-4 sm:px-5 py-1.5 sm:py-2 h-auto text-[12px] sm:text-[13px] font-semibold tracking-tight bg-accent hover:bg-accent-hover text-[#0a0a0a] shadow-none transition-colors cursor-pointer"
+              onClick={handleCtaClick}
+            >
+              {isLoggedIn
+                ? 'Dashboard'
+                : showJoinWaitlist
+                  ? 'Join the waitlist'
+                  : 'Get Started'}
+            </Button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden relative w-9 h-9 flex flex-col items-center justify-center gap-[4.5px] rounded-lg hover:bg-white/10 transition-colors cursor-pointer text-white"
+              aria-label="Menu"
+            >
+              <span
+                className={`block h-[1.5px] w-4.5 bg-white transition-all duration-300 ${
+                  isMobileMenuOpen ? 'translate-y-[6px] rotate-45' : ''
+                }`}
+              />
+              <span
+                className={`block h-[1.5px] w-4.5 bg-white transition-all duration-300 ${
+                  isMobileMenuOpen ? 'opacity-0' : ''
+                }`}
+              />
+              <span
+                className={`block h-[1.5px] w-4.5 bg-white transition-all duration-300 ${
+                  isMobileMenuOpen ? '-translate-y-[6px] -rotate-45' : ''
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Dropdown Panel */}
+        <div
+          className={cn(
+            "md:hidden grid transition-all duration-300 border-t border-white/[0.08]",
+            isMobileMenuOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 pointer-events-none"
+          )}
+        >
+          <div className="overflow-hidden">
+            <div className="px-5 pb-5 pt-3 flex flex-col gap-1.5">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="group/link font-mono text-[12.5px] lowercase text-white/55 hover:text-white transition-colors cursor-pointer"
+                  className="block rounded-xl px-3 py-2 text-[14px] text-white/70 hover:bg-white/[0.06] hover:text-white transition-colors cursor-pointer font-mono"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <span className="text-accent/0 group-hover/link:text-accent/80 transition-colors">/</span>{link.name.replace(/[?'’]/g, '').replace(/\s+/g, '-').toLowerCase()}
+                  <span className="text-accent mr-1">/</span>
+                  {link.name.replace(/[?'’]/g, '').replace(/\s+/g, '-').toLowerCase()}
                 </a>
               ))}
-            </div>
-            
-            {/* Right: CTA Section */}
-            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-              <Button 
-                variant="primary" 
-                className="hidden lg:inline-flex rounded-full px-5 py-2 h-auto text-[13px] font-semibold tracking-tight bg-accent hover:bg-accent-hover text-[#0a0a0a] shadow-none transition-colors cursor-pointer"
-                onClick={handleCtaClick}
-              >
-                {isLoggedIn 
-                  ? 'Dashboard' 
-                  : showJoinWaitlist 
-                    ? 'Join the waitlist' 
-                    : 'Get Started'}
-              </Button>
-
-              {/* Mobile Menu Button */}
-              <div className="lg:hidden flex items-center">
-                <button
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="relative w-10 h-10 flex flex-col items-center justify-center gap-[5px] rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
-                  aria-label="Menu"
+              <div className="pt-2">
+                <Button
+                  variant="primary"
+                  className="w-full h-10 rounded-full bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[13px] font-semibold tracking-tight shadow-none transition-colors cursor-pointer"
+                  onClick={handleCtaClick}
                 >
-                  <span
-                    className={`block h-[1.5px] w-5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'translate-y-[6.5px] rotate-45' : ''}`}
-                  />
-                  <span
-                    className={`block h-[1.5px] w-5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`}
-                  />
-                  <span
-                    className={`block h-[1.5px] w-5 bg-white transition-all duration-300 ${isMobileMenuOpen ? '-translate-y-[6.5px] -rotate-45' : ''}`}
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile menu expanded content */}
-          <div className={cn(
-            "lg:hidden grid transition-all duration-300",
-            isMobileMenuOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-          )}>
-            <div className="overflow-hidden">
-              <div className="px-5 pb-5 pt-2 flex flex-col gap-2">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="block rounded-xl px-3 py-2.5 text-[15px] text-white/70 hover:bg-white/[0.05] hover:text-white transition-colors cursor-pointer"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </a>
-                ))}
-                <div className="px-1 pt-2">
-                  <Button 
-                    variant="primary" 
-                    className="w-full h-11 rounded-xl bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[14px] font-semibold tracking-tight shadow-none transition-colors cursor-pointer"
-                    onClick={handleCtaClick}
-                  >
-                    {isLoggedIn 
-                      ? 'Dashboard' 
-                      : showJoinWaitlist 
-                        ? 'Join the waitlist' 
-                        : 'Get Started'}
-                  </Button>
-                </div>
+                  {isLoggedIn
+                    ? 'Dashboard'
+                    : showJoinWaitlist
+                      ? 'Join the waitlist'
+                      : 'Get Started'}
+                </Button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   )
 }
