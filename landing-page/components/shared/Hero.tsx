@@ -132,16 +132,17 @@ export default function Hero() {
       {/* Centered Main Content Area */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center flex flex-col items-center space-y-6 sm:space-y-7 my-auto">
         
-        {/* Terminal Pill ("$ git push origin payday") with dark semi-opaque background */}
+        {/* Terminal Pill ("$ git push origin payday") matching exact font, style, and colors */}
         <div 
-          className="gsap-hero-eyebrow inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-[11px] sm:text-xs shadow-[0_4px_24px_rgba(0,0,0,0.5)] backdrop-blur-md select-none border"
+          className="gsap-hero-eyebrow inline-flex items-center rounded-full px-4.5 py-1.5 font-mono text-xs sm:text-[13px] shadow-[0_2px_16px_rgba(0,0,0,0.45)] backdrop-blur-md select-none border"
           style={{
-            backgroundColor: 'rgba(10, 10, 10, 0.6)',
+            backgroundColor: 'rgba(15, 15, 15, 0.6)',
             borderColor: 'rgba(255, 255, 255, 0.12)'
           }}
         >
-          <span className="font-mono text-white/80">$ git push origin <span className="text-accent font-semibold">payday</span></span>
-          <span className="animate-caret text-accent -ml-1">▍</span>
+          <span className="text-white/60 tracking-normal">
+            $ git push origin <span className="text-accent">payday</span>
+          </span>
         </div>
 
         {/* Hero Title */}
