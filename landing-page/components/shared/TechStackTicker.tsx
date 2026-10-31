@@ -93,8 +93,7 @@ export default function TechStackTicker({
   return (
     <div className={cn("w-full bg-transparent flex flex-col items-center select-none", className)}>
       {/* Title above the ticker */}
-      <div className="flex items-center justify-center gap-2.5 mb-3.5 select-none">
-        <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+      <div className="flex items-center justify-center mb-3.5 select-none">
         <span className="text-[11px] sm:text-xs font-mono tracking-wider text-white/50 uppercase">
           supported stacks
         </span>
