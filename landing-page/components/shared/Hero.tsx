@@ -11,10 +11,9 @@
  */
 
 import React, { useRef } from 'react'
-import Image from 'next/image'
 import { Button } from '@/components/ui/Button'
 import { useRouter } from 'next/navigation'
-import { ArrowRight, Flame, GitMerge } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import Aurora from './Aurora'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -42,95 +41,36 @@ export default function Hero() {
   const showWaitlisterView = waitlistActive && !hasSiteAccess
 
   useGSAP(() => {
-    // 1. Entrance timeline — fast, quiet, no bounce
+    // 1. Entrance timeline — sleek, clean, centered
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
     tl.from('.gsap-hero-eyebrow',
-      { y: 10, opacity: 0.3, duration: 0.4 },
+      { y: 12, opacity: 0, duration: 0.5 },
       0.05
     )
     .from('.gsap-hero-title',
-      { y: 16, opacity: 0.4, duration: 0.5 },
-      0.1
-    )
-    .from('.gsap-hero-subtitle',
-      { y: 12, opacity: 0.3, duration: 0.4 },
+      { y: 20, opacity: 0, duration: 0.6 },
       0.15
     )
-    .from('.gsap-hero-btn',
-      { y: 8, opacity: 0.3, duration: 0.4, stagger: 0.06 },
-      0.2
-    )
-    .from('.gsap-hero-meta',
-      { opacity: 0.3, duration: 0.4 },
+    .from('.gsap-hero-subtitle',
+      { y: 16, opacity: 0, duration: 0.5 },
       0.25
     )
-    .from('.gsap-hero-mascot',
-      { scale: 0.98, opacity: 0.5, duration: 0.6, ease: 'power2.out' },
-      0.1
+    .from('.gsap-hero-btn',
+      { y: 12, opacity: 0, duration: 0.5, stagger: 0.08 },
+      0.35
     )
-    .from('.gsap-hero-badge',
-      { y: 14, opacity: 0, duration: 0.5, stagger: 0.08 },
-      0.3
+    .from('.gsap-hero-meta',
+      { opacity: 0, duration: 0.5 },
+      0.45
     )
-
-    // 2. Slow drift on the badges — subtle, no rotation
-    gsap.utils.toArray<HTMLElement>('.gsap-hero-badge').forEach((badge, index) => {
-      const yOffset = 7 + (index % 3) * 3
-      const duration = 5 + (index % 2) * 1.5
-      const delay = index * 0.4
-
-      gsap.to(badge, {
-        y: `+=${yOffset}`,
-        duration: duration,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-        delay: delay
-      })
-    })
-
-    // 3. Mouse Parallax Effect
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return
-
-      const { clientX, clientY } = e
-      const centerX = window.innerWidth / 2
-      const centerY = window.innerHeight / 2
-
-      const moveX = clientX - centerX
-      const moveY = clientY - centerY
-
-      // Mascot Parallax
-      gsap.to('.gsap-hero-mascot', {
-        x: moveX * 0.015,
-        y: moveY * 0.015,
-        duration: 1.2,
-        ease: 'power2.out',
-        overwrite: 'auto'
-      })
-
-      // Badges Parallax
-      gsap.utils.toArray<HTMLElement>('.gsap-hero-badge').forEach((badge) => {
-        const speed = parseFloat(badge.getAttribute('data-speed') || '0.04')
-        gsap.to(badge, {
-          x: moveX * speed,
-          y: moveY * speed,
-          duration: 1,
-          ease: 'power2.out',
-          overwrite: 'auto'
-        })
-      })
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
   }, { scope: containerRef })
 
   return (
-    <section ref={containerRef} className="relative pt-32 pb-14 overflow-hidden bg-bg min-h-svh lg:min-h-dvh flex items-start lg:items-center">
+    <section 
+      ref={containerRef} 
+      className="relative pt-32 pb-24 sm:pt-40 sm:pb-32 overflow-hidden bg-bg min-h-svh lg:min-h-[88vh] flex flex-col justify-center items-center"
+    >
       {/* Grain overlay — fixed, pointer-events-none, GPU-safe */}
       <div
         className="pointer-events-none absolute inset-0 z-[2] opacity-[0.025]"
@@ -139,6 +79,7 @@ export default function Hero() {
           backgroundRepeat: 'repeat',
         }}
       />
+
       {/* Animated Background Components — Aurora */}
       <div className="absolute top-0 left-0 w-full pointer-events-none z-[1] overflow-hidden">
         <div style={{ width: '100%', height: '600px', position: 'relative' }}>
@@ -155,152 +96,63 @@ export default function Hero() {
         </div>
       </div>
 
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full min-[1920px]:max-w-[1920px]">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-10 relative z-30">
-            <div className="space-y-6 text-center lg:text-left">
-              {/* Terminal eyebrow */}
-              <div className="gsap-hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 font-mono text-[11px] sm:text-xs text-white/55">
-                <span>$ git push origin <span className="text-accent">payday</span></span>
-                <span className="animate-caret text-accent -ml-1">▍</span>
-              </div>
-
-              <h1 className="gsap-hero-title text-[2.5rem] max-[420px]:text-[2.1rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.25rem] font-medium text-white leading-[1.04] tracking-[-0.04em]">
-                Ship real work. <br />
-                Earn XP. <span className="font-serif italic font-normal text-accent">Get paid.</span>
-              </h1>
-
-              <p className="gsap-hero-subtitle text-base max-[420px]:text-sm sm:text-base md:text-lg text-white/50 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
-                Claim scoped bounties from real startups, ship the fix, and cash out to UPI the moment your PR merges. No resumes. No interviews.
-              </p>
-            </div>
-
-            {/* CTA — flows under the text on desktop; on mobile it's lifted out (see below) so this is desktop-only here */}
-            <div className="hidden lg:block space-y-5 pt-2">
-              <div className="flex flex-col sm:flex-row gap-3">
-                {showWaitlisterView ? (
-                  <Button
-                    size="lg"
-                    className="gsap-hero-btn group h-12 px-7 py-0 gap-2 rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] font-semibold tracking-tight shadow-none transition-colors"
-                    onClick={() => router.push('/waitlist')}
-                  >
-                    Join the waitlist <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                  </Button>
-                ) : (
-                  <Button
-                    size="lg"
-                    className="gsap-hero-btn group h-12 px-7 py-0 gap-2 rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] font-semibold tracking-tight shadow-none transition-colors"
-                    onClick={() => router.push('/signin')}
-                  >
-                    Start earning <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                  </Button>
-                )}
-                <a
-                  href="#how-it-works"
-                  className="gsap-hero-btn h-12 px-6 rounded-lg border border-white/10 bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/20 text-white/75 hover:text-white text-[15px] font-medium inline-flex items-center justify-center transition-colors"
-                >
-                  See how it works
-                </a>
-              </div>
-              <p className="gsap-hero-meta font-mono text-[11px] text-white/35 tracking-wide">
-                escrow protected&nbsp;&nbsp;·&nbsp;&nbsp;instant UPI payouts&nbsp;&nbsp;·&nbsp;&nbsp;25 levels to climb
-              </p>
-            </div>
-
-          </div>
-
-          {/* Hero Visual Area - Orbital Layout (Mobile: absolute overlay pinned to the lower half so it never pushes the ticker down; Desktop: absolute right) */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-[44%] sm:top-[42%] w-[130%] max-[420px]:w-[120%] sm:w-[min(85%,56dvh)] md:w-[min(72%,60dvh)] aspect-square lg:top-1/2 lg:left-auto lg:translate-x-0 lg:-translate-y-1/2 lg:absolute lg:w-[1200px] lg:h-[1200px] lg:aspect-auto lg:right-[-300px] pointer-events-none z-0">
-
-            {/* The Mascot */}
-            <div
-              className="gsap-hero-mascot absolute inset-0 flex items-center justify-center z-10"
-              style={{
-                maskImage: 'radial-gradient(circle, black 70%, transparent 95%)',
-                WebkitMaskImage: 'radial-gradient(circle, black 70%, transparent 95%)',
-              }}
-            >
-               <Image
-                 src="/forke-assets/landing-assets/hero-image-forky.webp"
-                 alt="Forky Mascot"
-                 fill
-                 sizes="(max-width: 1024px) 130vw, 1200px"
-                 className="object-contain"
-                 priority
-                 fetchPriority="high"
-               />
-            </div>
-
-            {/* Floating task card — claim side */}
-            <div
-              className="gsap-hero-badge absolute top-[28%] left-[18%] lg:left-[24%] rounded-lg border border-white/10 bg-[#0c0c0f]/90 backdrop-blur-sm p-1.5 sm:p-2.5 lg:p-3 shadow-[0_16px_40px_rgba(0,0,0,0.55)] z-20 pointer-events-auto opacity-0 md:hidden lg:block"
-              data-speed="0.045"
-            >
-              <div className="flex items-center justify-between gap-2 sm:gap-4 lg:gap-6">
-                <span className="font-mono text-[7px] sm:text-[10px] lg:text-xs text-white/80">fix-navbar-overflow</span>
-                <span className="font-mono text-[7px] sm:text-[10px] lg:text-xs text-accent">₹300</span>
-              </div>
-              <div className="mt-1 lg:mt-1.5 flex items-center gap-1 lg:gap-1.5">
-                <span className="rounded border border-white/10 bg-white/[0.04] px-1 lg:px-1.5 py-0.5 font-mono text-[5px] sm:text-[7px] lg:text-[9px] text-white/45">bug fix</span>
-                <span className="rounded border border-white/10 bg-white/[0.04] px-1 lg:px-1.5 py-0.5 font-mono text-[5px] sm:text-[7px] lg:text-[9px] text-white/45">~1h</span>
-              </div>
-            </div>
-
-            {/* Floating merged card — payout side */}
-            <div
-              className="gsap-hero-badge absolute top-[42%] right-[19%] rounded-lg border border-emerald-500/20 bg-[#0c0c0f]/90 backdrop-blur-sm p-1.5 sm:p-2.5 lg:p-3 shadow-[0_16px_40px_rgba(0,0,0,0.55)] z-20 pointer-events-none opacity-0 md:hidden lg:block"
-              data-speed="0.05"
-            >
-              <div className="flex items-center gap-1 lg:gap-1.5">
-                <GitMerge className="w-2 h-2 sm:w-3 sm:h-3 lg:w-3.5 lg:h-3.5 text-emerald-400" />
-                <span className="font-mono text-[7px] sm:text-[10px] lg:text-xs text-white/80">pr #42 merged</span>
-              </div>
-              <p className="mt-1 lg:mt-1.5 font-mono text-[6px] sm:text-[9px] lg:text-[11px] text-emerald-400">payout sent → ₹800</p>
-            </div>
-
-            {/* Streak pill */}
-            <div
-              className="gsap-hero-badge absolute top-[24%] right-[42%] rounded-full border border-white/10 bg-[#0c0c0f]/90 backdrop-blur-sm px-2 py-1 sm:px-3 sm:py-1.5 lg:px-3.5 lg:py-2 flex md:hidden lg:flex items-center gap-1.5 lg:gap-2 shadow-[0_16px_40px_rgba(0,0,0,0.55)] z-20 pointer-events-none opacity-0"
-              data-speed="0.03"
-            >
-              <Flame className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 text-accent fill-accent" />
-              <span className="font-mono text-[7px] sm:text-[10px] lg:text-xs text-white/80">7-day streak</span>
-            </div>
-
-            {/* XP pill */}
-            <div
-              className="gsap-hero-badge absolute top-[58%] left-[28%] rounded-full border border-accent/25 bg-[#0c0c0f]/90 backdrop-blur-sm px-2 py-1 sm:px-2.5 sm:py-1.5 lg:px-3 lg:py-1.5 flex md:hidden lg:flex items-center z-10 pointer-events-none opacity-0 shadow-[0_16px_40px_rgba(0,0,0,0.55)]"
-              data-speed="0.06"
-            >
-              <span className="font-mono text-[7px] sm:text-[10px] lg:text-xs text-accent">+250 xp</span>
-            </div>
-          </div>
+      {/* Centered Main Content Area */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center flex flex-col items-center space-y-7 sm:space-y-8">
+        
+        {/* Eyebrow badge */}
+        <div className="gsap-hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 font-mono text-[11px] sm:text-xs text-white/60 shadow-[0_4px_20px_rgba(0,0,0,0.3)] backdrop-blur-md">
+          <span>$ git push origin <span className="text-accent">payday</span></span>
+          <span className="animate-caret text-accent -ml-1">▍</span>
         </div>
+
+        {/* Hero Title */}
+        <h1 className="gsap-hero-title text-4xl sm:text-6xl md:text-7xl lg:text-[5.25rem] font-medium text-white leading-[1.04] tracking-[-0.04em] max-w-4xl mx-auto">
+          Ship real work. <br />
+          Earn XP. <span className="font-serif italic font-normal text-accent">Get paid.</span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="gsap-hero-subtitle text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed font-light">
+          Claim scoped bounties from real startups, ship the fix, and cash out to UPI the moment your PR merges. No resumes. No interviews.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="space-y-4 pt-1 w-full flex flex-col items-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
+            {showWaitlisterView ? (
+              <Button
+                size="lg"
+                className="gsap-hero-btn group h-12 sm:h-13 px-8 rounded-full bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer"
+                onClick={() => router.push('/waitlist')}
+              >
+                Join the waitlist <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                className="gsap-hero-btn group h-12 sm:h-13 px-8 rounded-full bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer"
+                onClick={() => router.push('/signin')}
+              >
+                Start earning <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </Button>
+            )}
+            <a
+              href="#how-it-works"
+              className="gsap-hero-btn h-12 sm:h-13 px-7 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20 text-white/80 hover:text-white text-[15px] font-medium inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer"
+            >
+              See how it works
+            </a>
+          </div>
+
+          {/* Microcopy Metadata */}
+          <p className="gsap-hero-meta font-mono text-[11px] sm:text-xs text-white/40 tracking-wide pt-1">
+            escrow protected&nbsp;&nbsp;·&nbsp;&nbsp;instant UPI payouts&nbsp;&nbsp;·&nbsp;&nbsp;25 levels to climb
+          </p>
+        </div>
+
       </div>
 
-      {/* Mobile-only CTA — pinned below Forky, just above the ticker (anchored to the full-height section) */}
-      <div className="lg:hidden absolute bottom-24 left-4 right-4 sm:left-6 sm:right-6 z-30 flex">
-        {showWaitlisterView ? (
-          <Button
-            size="lg"
-            className="gsap-hero-btn group w-full h-12 sm:h-14 py-0 gap-2 rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] sm:text-base font-semibold tracking-tight shadow-none transition-colors flex items-center justify-center"
-            onClick={() => router.push('/waitlist')}
-          >
-            Join the waitlist <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-          </Button>
-        ) : (
-          <Button
-            size="lg"
-            className="gsap-hero-btn group w-full h-12 sm:h-14 py-0 gap-2 rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] sm:text-base font-semibold tracking-tight shadow-none transition-colors flex items-center justify-center"
-            onClick={() => router.push('/signin')}
-          >
-            Start earning <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-          </Button>
-        )}
-      </div>
-
-      {/* Supported Tech Stack Ticker at the bottom of Hero */}
+      {/* Supported Tech Stack Ticker docked at the bottom of Hero */}
       <div className="absolute bottom-0 left-0 w-full z-40">
         <TechStackTicker isHeroEmbedded />
       </div>
