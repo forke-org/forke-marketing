@@ -62,13 +62,9 @@ export default function Hero() {
       { y: 12, opacity: 0, duration: 0.5, stagger: 0.08 },
       0.35
     )
-    .from('.gsap-hero-meta',
-      { opacity: 0, duration: 0.5 },
-      0.45
-    )
     .from('.gsap-hero-mascot',
       { y: 16, opacity: 0, duration: 0.6, ease: 'power2.out' },
-      0.48
+      0.45
     )
     .from('.gsap-hero-ticker',
       { opacity: 0, y: 16, duration: 0.6 },
@@ -154,7 +150,7 @@ export default function Hero() {
           Claim scoped bounties from real startups, ship the fix, and cash out to UPI the moment your PR merges. No resumes. No interviews.
         </p>
 
-        {/* CTA Actions & Trust Line Container — 32px desktop / 28px mobile spacing from description */}
+        {/* CTA Actions Container — 32px desktop / 28px mobile spacing from description */}
         <div className="mt-8 w-full flex flex-col items-center">
           {/* CTA Buttons — exact 44px height, 18px horizontal padding, 12px border radius (matching reference inspection) */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
@@ -180,19 +176,10 @@ export default function Hero() {
               See how it works
             </a>
           </div>
-
-          {/* Microcopy Trust Line — IBM Plex Mono, 13-14px, subtle grey, 20px spacing below buttons */}
-          <p className="gsap-hero-meta font-mono text-[12.5px] sm:text-[13.5px] text-white/50 tracking-normal mt-5 select-none text-center">
-            <span>escrow protected</span>
-            <span className="text-white/25 mx-2.5 sm:mx-3">·</span>
-            <span>instant UPI payouts</span>
-            <span className="text-white/25 mx-2.5 sm:mx-3">·</span>
-            <span>25 levels to climb</span>
-          </p>
         </div>
 
-        {/* Mascot Image — 2.5x scaled (280-320px desktop, ~180px mobile) below trustline */}
-        <div className="gsap-hero-mascot relative w-full flex flex-col items-center justify-center mt-4 sm:mt-6 -mb-10 sm:-mb-16 md:-mb-20 z-30 pointer-events-none select-none">
+        {/* Mascot Image — 2.5x scaled (280-320px desktop, ~180px mobile) below CTA buttons */}
+        <div className="gsap-hero-mascot relative w-full flex flex-col items-center justify-center mt-6 sm:mt-8 -mb-10 sm:-mb-16 md:-mb-20 z-30 pointer-events-none select-none">
           {/* Strengthened soft orange radial glow behind mascot */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[340px] md:w-[420px] h-[160px] sm:h-[220px] md:h-[260px] rounded-full pointer-events-none z-0"
