@@ -34,7 +34,7 @@ function formatTimer(totalSeconds: number) {
 /* Card 1 Visual: Bounty Card */
 function ClaimVisual({ seconds }: { seconds: number }) {
   return (
-    <div className="w-full max-w-[310px] rounded-xl border border-white/10 bg-[#09090c] p-3 sm:p-3.5 shadow-[0_16px_40px_rgba(0,0,0,0.6)] transition-all duration-300 hover:border-white/20">
+    <div className="w-full max-w-[310px] rounded-xl border border-white/10 bg-[#09090c] p-3 sm:p-3.5 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
       <div className="flex items-start justify-between gap-3">
         <p className="text-[12.5px] font-semibold leading-snug text-white">Fix OAuth redirect loop</p>
         <span className="font-mono text-[12.5px] font-medium text-accent">₹450</span>
@@ -64,7 +64,7 @@ function ClaimVisual({ seconds }: { seconds: number }) {
 /* Card 4 Visual: Ship Developer Workflow */
 function ShipVisual({ shown }: { shown: number }) {
   return (
-    <div className="w-full max-w-[310px] rounded-xl border border-white/10 bg-[#09090c] p-3 sm:p-3.5 shadow-[0_16px_40px_rgba(0,0,0,0.6)] transition-all duration-300 hover:border-white/20">
+    <div className="w-full max-w-[310px] rounded-xl border border-white/10 bg-[#09090c] p-3 sm:p-3.5 shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
       <div className="flex items-center gap-2 border-b border-white/[0.06] pb-2">
         <GitPullRequest className="h-3.5 w-3.5 shrink-0 text-accent" />
         <span className="truncate font-mono text-[10.5px] text-white/80">dev/you/task-2841</span>
@@ -104,7 +104,7 @@ function ShipVisual({ shown }: { shown: number }) {
 /* Card 5 Visual: Get Paid Escrow Payout */
 function PaidVisual({ amount, done }: { amount: number; done: boolean }) {
   return (
-    <div className="w-full max-w-[310px] rounded-xl border border-dashed border-white/[0.16] bg-[#09090c] p-3 sm:p-3.5 font-mono shadow-[0_16px_40px_rgba(0,0,0,0.6)] transition-all duration-300 hover:border-white/25">
+    <div className="w-full max-w-[310px] rounded-xl border border-dashed border-white/[0.16] bg-[#09090c] p-3 sm:p-3.5 font-mono shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
       <div className="flex items-center justify-between">
         <p className="text-[9.5px] uppercase tracking-[0.14em] text-white/40">escrow release</p>
         <span className={`text-[9.5px] transition-colors duration-300 ${done ? 'text-emerald-400 font-semibold' : 'text-white/45'}`}>
@@ -226,11 +226,11 @@ export default function Pipeline() {
           {/* ── ROW 1: Wide (7 cols) / Narrow (5 cols) ── */}
 
           {/* CARD 1: CLAIM (Wide: 7 cols) */}
-          <div className="group relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
             {/* Orange Radial Gradient Background Pattern */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20 transition-opacity duration-300 group-hover:opacity-30"
+              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20"
             />
             {/* Visual Top */}
             <div className="relative z-10 flex-1 flex items-center justify-center py-2">
@@ -251,14 +251,12 @@ export default function Pipeline() {
           </div>
 
           {/* CARD 2: 30m–4h (Narrow: 5 cols) — Pure typography without nested card */}
-          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
             {/* Direct Typography Metric Display */}
             <div className="flex-1 flex flex-col justify-center">
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 30m–4h
               </p>
-              <p className="mt-2 text-[13px] text-white/55">scoped task size</p>
-              <p className="mt-1 font-mono text-[11px] text-white/30">bite-sized by design</p>
             </div>
             {/* Content Bottom */}
             <div className="mt-3">
@@ -271,14 +269,12 @@ export default function Pipeline() {
           {/* ── ROW 2: Narrow (5 cols) / Wide (7 cols) ── */}
 
           {/* CARD 3: <60s (Narrow: 5 cols) — Pure typography without nested card */}
-          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
             {/* Direct Typography Metric Display */}
             <div className="flex-1 flex flex-col justify-center">
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 &lt;60s
               </p>
-              <p className="mt-2 text-[13px] text-white/55">merge → UPI payout</p>
-              <p className="mt-1 font-mono text-[11px] text-white/30">escrow releases on merge</p>
             </div>
             {/* Content Bottom */}
             <div className="mt-3">
@@ -289,11 +285,11 @@ export default function Pipeline() {
           </div>
 
           {/* CARD 4: SHIP (Wide: 7 cols) */}
-          <div className="group relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
             {/* Orange Radial Gradient Background Pattern */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20 transition-opacity duration-300 group-hover:opacity-30"
+              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20"
             />
             {/* Visual Top */}
             <div className="relative z-10 flex-1 flex items-center justify-center py-2">
@@ -316,11 +312,11 @@ export default function Pipeline() {
           {/* ── ROW 3: Wide (7 cols) / Narrow (5 cols) ── */}
 
           {/* CARD 5: GET PAID (Wide: 7 cols) */}
-          <div className="group relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
             {/* Orange Radial Gradient Background Pattern */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20 transition-opacity duration-300 group-hover:opacity-30"
+              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20"
             />
             {/* Visual Top */}
             <div className="relative z-10 flex-1 flex items-center justify-center py-2">
@@ -341,14 +337,12 @@ export default function Pipeline() {
           </div>
 
           {/* CARD 6: 25 LEVELS (Narrow: 5 cols) — Pure typography without nested card */}
-          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
             {/* Direct Typography Metric Display */}
             <div className="flex-1 flex flex-col justify-center">
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 25 levels
               </p>
-              <p className="mt-2 text-[13px] text-white/55">levels to climb</p>
-              <p className="mt-1 font-mono text-[11px] text-white/30">newcomer → forke legend</p>
             </div>
             {/* Content Bottom */}
             <div className="mt-3">
