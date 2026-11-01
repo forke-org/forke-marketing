@@ -92,10 +92,10 @@ export default function TechStackTicker({
 }) {
   return (
     <div className={cn("w-full bg-transparent flex flex-col items-center select-none", className)}>
-      {/* Small monospace label above the row */}
-      <div className="flex items-center justify-center mb-3 select-none">
-        <span className="text-[11px] sm:text-xs font-mono tracking-wider text-white/75">
-          // supported stacks
+      {/* Label above the row — matching reference inspection (12px, 18px leading, 400 weight, 0px letter spacing, no slashes) */}
+      <div className="flex items-center justify-center mb-3 sm:mb-4 select-none">
+        <span className="text-[12px] leading-[18px] font-normal tracking-normal text-white/60">
+          supported stacks
         </span>
       </div>
 
