@@ -45,8 +45,8 @@ export default function LandingPage() {
         {/* Continuous layout container without vertical border rails */}
         <Rails>
           <Pipeline />
-          <Session n="002" />
-          <Verdict n="003" />
+          <Session />
+          <Verdict />
           <Proof n="004" />
           <LevelSystem />
           <ReviewSystem n="006" />

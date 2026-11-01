@@ -57,11 +57,15 @@ export function Section({
   )
 }
 
-export function Eyebrow({ n, label }: { n: string; label: string }) {
+export function Eyebrow({ n, label }: { n?: string; label: string }) {
   return (
     <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.08em] text-white/35">
-      <span className="text-accent/80">{n}</span>
-      <span className="h-px w-8 bg-white/15" />
+      {n && (
+        <>
+          <span className="text-accent/80">{n}</span>
+          <span className="h-px w-8 bg-white/15" />
+        </>
+      )}
       <span className="uppercase">{label}</span>
     </div>
   )

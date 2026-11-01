@@ -53,7 +53,7 @@ const OWNER_POINTS = [
   'Approve once — Forke merges and pays out automatically.',
 ]
 
-export default function Verdict({ n = '003', flush = false }: { n?: string; flush?: boolean }) {
+export default function Verdict({ n, flush = false }: { n?: string; flush?: boolean } = {}) {
   const showWaitlisterView = useWaitlisterView()
   const cardRef = useRef<HTMLDivElement>(null)
   const [live, setLive] = useState(false)
@@ -84,7 +84,7 @@ export default function Verdict({ n = '003', flush = false }: { n?: string; flus
       <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
         {/* Copy */}
         <Reveal>
-          <Eyebrow n={n} label="for owners" />
+          <Eyebrow label="for owners" />
           <H2 accent="freelancer.">Hire a merge, not a</H2>
           <p className="mt-5 max-w-lg text-base font-normal leading-relaxed text-white/50">
             Posting a ₹500 bug fix shouldn&apos;t take a week of proposals. Describe the
