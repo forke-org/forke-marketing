@@ -46,10 +46,10 @@ export default function LandingPage() {
         <Rails>
           <Pipeline />
           <Session />
+          <ReviewSystem n="006" />
           <Verdict />
           <Proof n="004" />
           <LevelSystem />
-          <ReviewSystem n="006" />
           <FAQ n="007" />
           <CTA />
         </Rails>
