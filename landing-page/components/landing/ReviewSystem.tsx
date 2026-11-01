@@ -58,7 +58,7 @@ const GATES = [
     code: '04 owner approves',
     sub: '✓',
     icon: UserCheck,
-    title: 'A human approves',
+    title: 'Owner approves',
     copy: 'The owner reads the verdict — not the code — and clicks approve. The merge and the payout are automatic.',
   },
 ]
@@ -312,6 +312,7 @@ function BlueprintScene() {
             width={150}
             label="01 checks"
             sub="ci"
+            accent
             isHovered={hoveredIndex === 0}
             onMouseEnter={(e) => handleTileEnter(0, e)}
             onMouseLeave={handleTileLeave}
@@ -331,6 +332,7 @@ function BlueprintScene() {
             width={150}
             label="03 risk score"
             sub="0–100"
+            accent
             isHovered={hoveredIndex === 2}
             onMouseEnter={(e) => handleTileEnter(2, e)}
             onMouseLeave={handleTileLeave}
