@@ -106,16 +106,10 @@ export default function Footer() {
                 alt="Forke Logo"
                 className="h-14 w-14 object-contain"
               />
-              <span className="text-[26px] font-semibold tracking-[-0.04em] text-white">
-                forke<span className="text-accent">*</span>
-              </span>
             </a>
             <p className="mt-4 max-w-xs text-sm font-normal leading-relaxed text-white/60">
               The micro-task marketplace where Indian developers earn real money by
               shipping real code.
-            </p>
-            <p className="mt-5 font-mono text-[11px] text-white/55">
-              {'//'} prove skill by shipping
             </p>
           </div>
 
