@@ -20,7 +20,7 @@ import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { useRouter } from 'next/navigation'
 import CardSwap, { Card } from './CardSwap'
-import { Eyebrow } from '@/components/landing/primitives'
+import { Eyebrow, H2 } from '@/components/landing/primitives'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -123,9 +123,9 @@ export default function LevelSystem() {
         <div className="gsap-lvl-content space-y-8 max-w-xl mx-auto lg:mx-0">
           <div className="space-y-4">
             <Eyebrow n="005" label="progression" />
-            <h2 className="text-4xl md:text-[3.25rem] font-semibold text-white tracking-[-0.035em] leading-[1.06]">
-              Script kiddie to <span className="font-serif italic font-medium text-accent">legend.</span>
-            </h2>
+            <H2 accent="legend." className="mt-0">
+              Script kiddie to
+            </H2>
             <p className="text-white/60 text-base md:text-lg font-normal leading-relaxed">
               Completing tasks earns XP. XP increases your level. Higher levels unlock larger bounties, better opportunities, and exclusive platform privileges. Consistency is rewarded—the more you ship, the faster you ascend.
             </p>

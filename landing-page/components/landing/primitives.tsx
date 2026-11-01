@@ -9,6 +9,7 @@
  */
 
 import React from 'react'
+import ScrollReveal from '@/components/ui/ScrollReveal'
 
 /**
  * Shared building blocks for the landing/marketing layout.
@@ -71,20 +72,37 @@ export function Eyebrow({ n, label }: { n?: string; label: string }) {
   )
 }
 
-/** Section heading — sans-medium with a single serif-italic accent word. */
+/** Section heading — sans-medium with a single serif-italic accent word. Powered by ScrollReveal */
 export function H2({
   children,
   accent,
   className = '',
 }: {
   children: React.ReactNode
-  accent: string
+  accent?: string
   className?: string
 }) {
+  const fullText = typeof children === 'string'
+    ? (accent ? `${children.trim()} ${accent.trim()}` : children)
+    : children
+
   return (
-    <h2 className={`mt-5 text-4xl md:text-[3.25rem] font-semibold tracking-[-0.035em] leading-[1.06] text-white ${className}`}>
-      {children}{' '}
-      <span className="font-serif italic font-medium text-accent">{accent}</span>
-    </h2>
+    <ScrollReveal
+      containerClassName={`mt-5 text-4xl md:text-[3.25rem] font-semibold tracking-[-0.035em] leading-[1.06] text-white ${className}`}
+      mode="scrub"
+      splitBy="words"
+      effect="fade"
+      stagger={0.05}
+      duration={0.8}
+      smoothing={0}
+      baseOpacity={0.1}
+      baseRotation={3}
+      baseOffset={0}
+      enableBlur={true}
+      blurStrength={4}
+      accent={accent}
+    >
+      {fullText}
+    </ScrollReveal>
   )
 }
