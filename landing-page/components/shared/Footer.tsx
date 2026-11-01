@@ -11,6 +11,7 @@
  */
 
 import React from 'react'
+import Aurora from './Aurora'
 
 const ic = 'h-[18px] w-[18px]'
 const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
@@ -96,7 +97,39 @@ export default function Footer() {
 
   return (
     <footer className="relative z-10 overflow-hidden" style={{ backgroundColor: 'var(--color-bg)' }}>
-      <div className="mx-auto max-w-7xl px-5 pt-16 md:px-10 md:pt-20 min-[1920px]:max-w-[1920px]">
+      {/* Aurora WebGL ambient background - upside down (emanating from bottom up) and not so bright */}
+      <div 
+        className="pointer-events-none absolute bottom-0 left-0 w-full overflow-hidden h-[55%] sm:h-[65%] z-0"
+        style={{
+          maskImage: 'linear-gradient(to top, black 0%, black 20%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to top, black 0%, black 20%, transparent 100%)'
+        }}
+      >
+        <div style={{ width: '100%', height: '100%', position: 'relative', opacity: 0.5 }}>
+          <Aurora
+            colorStops={["#f97316","#f97316","#f97316"]}
+            direction="bottom"
+            amplitude={1.0}
+            blend={0.5}
+            height={0.5}
+            speed={0.4}
+            glow={0.5}
+            brightness={0.7}
+            layers={2}
+            mouseInteraction={false}
+          />
+        </div>
+      </div>
+
+      {/* Subtle bottom atmospheric radial glow fading into black upwards - subdued / not so bright */}
+      <div 
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-[50%] z-0"
+        style={{
+          background: 'radial-gradient(ellipse 80% 55% at 50% 100%, rgba(249, 115, 22, 0.12) 0%, rgba(249, 115, 22, 0.03) 50%, transparent 100%)'
+        }}
+      />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-5 pt-16 md:px-10 md:pt-20 min-[1920px]:max-w-[1920px]">
         <div className="flex flex-col justify-between gap-10 md:flex-row md:items-start md:gap-8 lg:gap-12">
           {/* Brand */}
           <div className="shrink-0 md:max-w-xs lg:max-w-sm">
