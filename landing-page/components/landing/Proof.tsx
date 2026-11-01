@@ -212,14 +212,14 @@ export default function Proof({ n = '004' }: { n?: string }) {
               <Eyebrow n={n} label="proof of work" />
             </div>
             <H2 accent="compiles." className="text-center">A resume that</H2>
-            <p className="mt-4 max-w-md text-[15px] font-light leading-relaxed text-white/45">
+            <p className="mt-4 max-w-md text-[15px] font-normal leading-relaxed text-white/45">
               Every approved task lands on your public profile automatically —
               timestamped, client-rated, linked to the merged PR. Recruiters
               don&apos;t read claims. They read receipts.
             </p>
             <Link
               href={showWaitlisterView ? '/waitlist' : '/signin'}
-              className="group mt-6 inline-flex items-center gap-2 text-[14.5px] font-medium text-white/75 transition-colors hover:text-white"
+              className="group mt-6 inline-flex items-center gap-2 text-[14.5px] font-semibold text-white/75 transition-colors hover:text-white"
             >
               {showWaitlisterView ? 'Join the waitlist' : 'Claim your username'}
               <ArrowRight className="h-4 w-4 text-accent transition-transform group-hover:translate-x-0.5" />

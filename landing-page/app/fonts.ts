@@ -8,20 +8,26 @@
  * commercial license from Forke Inc. is strictly prohibited.
  */
 
-import { Instrument_Serif, JetBrains_Mono } from 'next/font/google'
-import { GeistSans } from 'geist/font/sans'
+import { Schibsted_Grotesk, Newsreader, IBM_Plex_Mono } from 'next/font/google'
 
-export const geistSans = GeistSans
-
-export const instrumentSerif = Instrument_Serif({
-  weight: '400',
+export const schibstedGrotesk = Schibsted_Grotesk({
   subsets: ['latin'],
-  variable: '--font-instrument-serif',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-schibsted-grotesk',
   display: 'swap',
 })
 
-export const jetbrainsMono = JetBrains_Mono({
+export const newsreader = Newsreader({
   subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
+  weight: '500',
+  style: 'italic',
+  variable: '--font-newsreader',
+  display: 'swap',
+})
+
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-ibm-plex-mono',
   display: 'swap',
 })

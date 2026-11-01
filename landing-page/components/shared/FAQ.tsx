@@ -48,7 +48,7 @@ export default function FAQ({ n = '007' }: { n?: string }) {
         <Reveal>
           <Eyebrow n={n} label="faq" />
           <H2 accent="answered.">Questions,</H2>
-          <p className="mt-5 max-w-sm text-[15px] font-light leading-relaxed text-white/45">
+          <p className="mt-5 max-w-sm text-[15px] font-normal leading-relaxed text-white/45">
             Everything you need to know about shipping and earning on Forke.
             Something else on your mind?
           </p>
@@ -80,7 +80,7 @@ export default function FAQ({ n = '007' }: { n?: string }) {
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span
-                      className={`flex-1 text-base font-medium tracking-[-0.01em] transition-colors md:text-lg ${
+                      className={`flex-1 text-base font-semibold tracking-[-0.01em] transition-colors md:text-lg ${
                         isOpen ? 'text-white' : 'text-white/65'
                       }`}
                     >
@@ -97,7 +97,7 @@ export default function FAQ({ n = '007' }: { n?: string }) {
                     style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
                   >
                     <div className="overflow-hidden">
-                      <p className="max-w-2xl pb-7 pl-[34px] text-[15px] font-light leading-relaxed text-white/50 md:pl-[42px]">
+                      <p className="max-w-2xl pb-7 pl-[34px] text-[15px] font-normal leading-relaxed text-white/50 md:pl-[42px]">
                         {faq.a}
                       </p>
                     </div>

@@ -107,7 +107,7 @@ export default function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
-                className="group/link font-mono text-[12px] lg:text-[13px] lowercase text-[#EDEDED] hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+                className="group/link font-medium text-[13px] lg:text-[14px] lowercase text-[#EDEDED] hover:text-white transition-colors cursor-pointer whitespace-nowrap"
               >
                 <span className="text-accent opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 mr-0.5 select-none">/</span>
                 {link.name.replace(/[?'’]/g, '').replace(/\s+/g, '-').toLowerCase()}
@@ -167,7 +167,7 @@ export default function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="group block rounded-lg px-3 py-1.5 text-[13px] text-[#EDEDED] hover:bg-white/[0.08] hover:text-white transition-colors cursor-pointer font-mono"
+                  className="group block rounded-lg px-3 py-1.5 text-[13.5px] text-[#EDEDED] hover:bg-white/[0.08] hover:text-white transition-colors cursor-pointer font-medium"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <span className="text-accent opacity-0 group-hover:opacity-100 transition-opacity duration-200 mr-1 select-none">/</span>

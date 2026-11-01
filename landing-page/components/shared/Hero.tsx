@@ -146,13 +146,13 @@ export default function Hero() {
         </div>
 
         {/* Hero Title */}
-        <h1 className="gsap-hero-title text-4xl sm:text-6xl md:text-7xl lg:text-[5.25rem] font-medium text-white leading-[1.04] tracking-[-0.04em] max-w-4xl mx-auto">
+        <h1 className="gsap-hero-title text-[clamp(2.35rem,5.8vw+0.5rem,5.25rem)] font-bold text-white leading-[0.98] sm:leading-[1.02] tracking-[-0.04em] max-w-4xl mx-auto">
           Ship real work. <br />
-          Earn XP. <span className="font-serif italic font-normal text-accent">Get paid.</span>
+          Earn XP. <span className="font-serif italic font-medium text-accent">Get paid.</span>
         </h1>
 
         {/* Subtitle - sits cleanly on the dark background */}
-        <p className="gsap-hero-subtitle text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed font-light">
+        <p className="gsap-hero-subtitle text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed font-normal">
           Claim scoped bounties from real startups, ship the fix, and cash out to UPI the moment your PR merges. No resumes. No interviews.
         </p>
 
@@ -176,7 +176,7 @@ export default function Hero() {
             )}
             <a
               href="#how-it-works"
-              className="gsap-hero-btn h-12 sm:h-13 px-7 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20 text-white/80 hover:text-white text-[15px] font-medium inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer"
+              className="gsap-hero-btn h-12 sm:h-13 px-7 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20 text-white/80 hover:text-white text-[15px] font-semibold inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer"
             >
               See how it works
             </a>

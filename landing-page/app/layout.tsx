@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { geistSans, instrumentSerif, jetbrainsMono } from '@/app/fonts'
+import { schibstedGrotesk, newsreader, ibmPlexMono } from '@/app/fonts'
 import './globals.css'
 
 export const viewport: Viewport = {
@@ -49,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+      className={`${schibstedGrotesk.variable} ${newsreader.variable} ${ibmPlexMono.variable}`}
       suppressHydrationWarning
     >
       <body className="antialiased bg-[#0A0A0A] text-[#FFFFFF] font-sans selection:bg-[#FF7A00] selection:text-black min-h-screen">

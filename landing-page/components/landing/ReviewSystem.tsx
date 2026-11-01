@@ -85,7 +85,7 @@ function Tile({
             : 'border-white/[0.14] bg-[#08080a]'
         }`}
       >
-        <span className={`font-mono text-[11px] font-semibold tracking-wide ${accent ? 'text-accent' : 'text-white/75'}`}>
+        <span className={`font-mono text-[11px] font-medium tracking-wide ${accent ? 'text-accent' : 'text-white/75'}`}>
           {label}
         </span>
         {sub && <span className="ml-auto font-mono text-[9px] text-white/30">{sub}</span>}
@@ -241,7 +241,7 @@ export default function ReviewSystem({ n = '006' }: { n?: string }) {
           <Eyebrow n={n} label="the review system" />
           <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <H2 accent="payout.">Four gates before every</H2>
-            <p className="max-w-md pb-1.5 text-[15px] font-light leading-relaxed text-white/45">
+            <p className="max-w-md pb-1.5 text-[15px] font-normal leading-relaxed text-white/45">
               No code reaches an owner — and no money moves — until every gate
               clears. That&apos;s why both sides can trust a stranger on the internet.
             </p>
@@ -265,8 +265,8 @@ export default function ReviewSystem({ n = '006' }: { n?: string }) {
                 </span>
                 <div>
                   <span className="font-mono text-[11px] text-accent/70">{gate.n}</span>
-                  <h3 className="mt-1 text-[17px] font-medium tracking-[-0.02em] text-white">{gate.title}</h3>
-                  <p className="mt-2 text-sm font-light leading-relaxed text-white/45">{gate.copy}</p>
+                  <h3 className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-white">{gate.title}</h3>
+                  <p className="mt-2 text-sm font-normal leading-relaxed text-white/45">{gate.copy}</p>
                 </div>
               </div>
             </Reveal>

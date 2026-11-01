@@ -75,7 +75,7 @@ export default function Stats() {
         {STATS.map((stat) => (
           <div key={stat.label} className="bg-[#050505] transition-colors hover:bg-[#0a0a0c]">
             <div data-stat-cell className="px-6 py-8 md:px-9 md:py-10">
-              <p className="font-mono text-2xl font-semibold tracking-tight text-white tabular-nums md:text-[1.9rem]">
+              <p className="font-mono text-2xl font-medium tracking-tight text-white tabular-nums md:text-[1.9rem]">
                 {'count' in stat && stat.count ? (
                   <span data-stat-count={stat.count}>{stat.value}</span>
                 ) : (

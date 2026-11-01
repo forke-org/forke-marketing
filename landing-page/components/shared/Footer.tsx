@@ -110,7 +110,7 @@ export default function Footer() {
                 forke<span className="text-accent">*</span>
               </span>
             </a>
-            <p className="mt-4 max-w-xs text-sm font-light leading-relaxed text-white/60">
+            <p className="mt-4 max-w-xs text-sm font-normal leading-relaxed text-white/60">
               The micro-task marketplace where Indian developers earn real money by
               shipping real code.
             </p>
@@ -122,7 +122,7 @@ export default function Footer() {
           {/* Link columns */}
           {columns.map((col) => (
             <div key={col.heading}>
-              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-white/60">
+              <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-white/60">
                 {col.heading}
               </p>
               <ul className="mt-5 space-y-3">
@@ -144,7 +144,7 @@ export default function Footer() {
 
           {/* Connect column */}
           <div>
-            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-white/60">
+            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-white/60">
               connect
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
@@ -177,7 +177,7 @@ export default function Footer() {
         aria-hidden="true"
         className="pointer-events-none relative mx-auto h-[16vw] max-w-7xl select-none overflow-hidden md:h-[13vw] min-[1920px]:max-w-[1920px]"
       >
-        <span className="text-outline absolute left-1/2 top-0 -translate-x-1/2 whitespace-nowrap text-[20vw] font-medium leading-[0.78] tracking-[-0.05em] md:text-[16vw]">
+        <span className="text-outline absolute left-1/2 top-0 -translate-x-1/2 whitespace-nowrap text-[20vw] font-bold leading-[0.78] tracking-[-0.05em] md:text-[16vw]">
           forke<span className="[-webkit-text-stroke:1px_rgba(255,122,0,0.55)]">*</span>
         </span>
       </div>

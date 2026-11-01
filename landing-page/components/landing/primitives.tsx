@@ -102,9 +102,9 @@ export function H2({
   className?: string
 }) {
   return (
-    <h2 className={`mt-5 text-4xl md:text-[3.25rem] font-medium tracking-[-0.035em] leading-[1.06] text-white ${className}`}>
+    <h2 className={`mt-5 text-4xl md:text-[3.25rem] font-semibold tracking-[-0.035em] leading-[1.06] text-white ${className}`}>
       {children}{' '}
-      <span className="font-serif italic font-normal text-accent">{accent}</span>
+      <span className="font-serif italic font-medium text-accent">{accent}</span>
     </h2>
   )
 }

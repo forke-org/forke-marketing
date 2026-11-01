@@ -123,10 +123,10 @@ export default function LevelSystem() {
         <div className="gsap-lvl-content space-y-8 max-w-xl mx-auto lg:mx-0">
           <div className="space-y-4">
             <Eyebrow n="005" label="progression" />
-            <h2 className="text-4xl md:text-[3.25rem] font-medium text-white tracking-[-0.035em] leading-[1.06]">
-              Script kiddie to <span className="font-serif italic font-normal text-accent">legend.</span>
+            <h2 className="text-4xl md:text-[3.25rem] font-semibold text-white tracking-[-0.035em] leading-[1.06]">
+              Script kiddie to <span className="font-serif italic font-medium text-accent">legend.</span>
             </h2>
-            <p className="text-white/60 text-base md:text-lg font-light leading-relaxed">
+            <p className="text-white/60 text-base md:text-lg font-normal leading-relaxed">
               Completing tasks earns XP. XP increases your level. Higher levels unlock larger bounties, better opportunities, and exclusive platform privileges. Consistency is rewarded—the more you ship, the faster you ascend.
             </p>
           </div>
@@ -176,10 +176,10 @@ export default function LevelSystem() {
                     {/* Header */}
                     <div>
                       <div className="flex items-center gap-3">
-                        <span className="text-[10px] font-mono text-accent border border-accent/30 bg-accent/5 px-2.5 py-0.5 rounded-md uppercase font-bold tracking-wider">
+                        <span className="text-[10px] font-mono text-accent border border-accent/30 bg-accent/5 px-2.5 py-0.5 rounded-md uppercase font-medium tracking-wider">
                           LVL {item.lvl}
                         </span>
-                        <span className="text-[10px] font-mono text-white/50 border border-white/10 bg-white/5 px-2 py-0.5 rounded-md font-bold">
+                        <span className="text-[10px] font-mono text-white/50 border border-white/10 bg-white/5 px-2 py-0.5 rounded-md font-medium">
                           {item.xpMultiplier}
                         </span>
                       </div>
@@ -204,11 +204,11 @@ export default function LevelSystem() {
                     <div className="flex items-baseline gap-6 border-t border-white/[0.04] pt-3">
                       <div>
                         <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest mb-0.5">Focus</p>
-                        <p className="text-xs text-white/70 font-mono font-semibold max-w-[190px] truncate">{item.tasks}</p>
+                        <p className="text-xs text-white/70 font-mono font-normal max-w-[190px] truncate">{item.tasks}</p>
                       </div>
                       <div>
                         <p className="text-[9px] text-white/30 uppercase font-bold tracking-widest mb-0.5">Bounty Range</p>
-                        <p className="text-xl font-bold font-mono text-accent leading-none">{item.range}</p>
+                        <p className="text-xl font-medium font-mono text-accent leading-none">{item.range}</p>
                       </div>
                     </div>
                   </div>

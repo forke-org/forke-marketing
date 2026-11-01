@@ -34,7 +34,7 @@ function ScoreBar({
     <div>
       <div className="flex items-baseline justify-between">
         <span className="font-mono text-[11px] text-white/45">{label}</span>
-        <span className="font-mono text-[12px] font-semibold text-white tabular-nums">{value}</span>
+        <span className="font-mono text-[12px] font-medium text-white tabular-nums">{value}</span>
       </div>
       <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-white/[0.07]">
         <div
@@ -86,7 +86,7 @@ export default function Verdict({ n = '003', flush = false }: { n?: string; flus
         <Reveal>
           <Eyebrow n={n} label="for owners" />
           <H2 accent="freelancer.">Hire a merge, not a</H2>
-          <p className="mt-5 max-w-lg text-base font-light leading-relaxed text-white/50">
+          <p className="mt-5 max-w-lg text-base font-normal leading-relaxed text-white/50">
             Posting a ₹500 bug fix shouldn&apos;t take a week of proposals. Describe the
             task, escrow the bounty, and review a verdict — Forke handles everything
             between.
@@ -101,7 +101,7 @@ export default function Verdict({ n = '003', flush = false }: { n?: string; flus
           </ul>
           <Link
             href={showWaitlisterView ? '/waitlist' : '/signin'}
-            className="group mt-9 inline-flex items-center gap-2 text-[14.5px] font-medium text-white/75 transition-colors hover:text-white"
+            className="group mt-9 inline-flex items-center gap-2 text-[14.5px] font-semibold text-white/75 transition-colors hover:text-white"
           >
             {showWaitlisterView ? 'Join the waitlist' : 'Post your first task'}
             <ArrowRight className="h-4 w-4 text-accent transition-transform group-hover:translate-x-0.5" />
@@ -141,7 +141,7 @@ export default function Verdict({ n = '003', flush = false }: { n?: string; flus
                 ))}
               </div>
 
-              <p className="mt-6 border-l-2 border-accent/50 pl-3.5 text-[13px] font-light leading-relaxed text-white/55">
+              <p className="mt-6 border-l-2 border-accent/50 pl-3.5 text-[13px] font-normal leading-relaxed text-white/55">
                 Implements the redirect fix exactly as scoped. Follows existing auth
                 patterns, adds two regression tests, touches no files outside scope.
                 Recommended: approve.
@@ -151,7 +151,7 @@ export default function Verdict({ n = '003', flush = false }: { n?: string; flus
                 <span className="inline-flex h-10 flex-1 items-center justify-center rounded-lg bg-accent text-[13px] font-semibold text-[#0a0a0a]">
                   Approve &amp; pay ₹800
                 </span>
-                <span className="inline-flex h-10 items-center justify-center rounded-lg border border-white/10 px-4 text-[13px] font-medium text-white/55">
+                <span className="inline-flex h-10 items-center justify-center rounded-lg border border-white/10 px-4 text-[13px] font-semibold text-white/55">
                   Request changes
                 </span>
               </div>

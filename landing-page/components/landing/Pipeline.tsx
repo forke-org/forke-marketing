@@ -37,8 +37,8 @@ function ClaimCard({ seconds }: { seconds: number }) {
   return (
     <div className="w-full max-w-[272px] rounded-xl border border-white/10 bg-[#0c0c0f] p-4 shadow-[0_24px_60px_rgba(0,0,0,0.55)]">
       <div className="flex items-start justify-between gap-3">
-        <p className="text-[13px] font-medium leading-snug text-white">Fix OAuth redirect loop</p>
-        <span className="font-mono text-[13px] font-semibold text-accent">₹450</span>
+        <p className="text-[13px] font-semibold leading-snug text-white">Fix OAuth redirect loop</p>
+        <span className="font-mono text-[13px] font-medium text-accent">₹450</span>
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
         {['react · tier 2', 'lvl 8+', 'trust 80%+'].map((chip) => (
@@ -101,7 +101,7 @@ function PaidCard({ amount, done }: { amount: number; done: boolean }) {
   return (
     <div className="w-full max-w-[272px] rounded-xl border border-dashed border-white/[0.16] bg-[#0c0c0f] p-4 font-mono shadow-[0_24px_60px_rgba(0,0,0,0.55)]">
       <p className="text-[10px] uppercase tracking-[0.14em] text-white/35">escrow release</p>
-      <p className="mt-1.5 text-[26px] font-semibold tracking-tight text-accent tabular-nums">
+      <p className="mt-1.5 text-[26px] font-medium tracking-tight text-accent tabular-nums">
         ₹{amount.toFixed(2)}
       </p>
       <div className="mt-3 space-y-1.5 text-[11px]">
@@ -237,7 +237,7 @@ export default function Pipeline() {
         <Eyebrow n="001" label="the pipeline" />
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <H2 accent="cash.">From claim to</H2>
-          <p className="max-w-md pb-1.5 text-[15px] font-light leading-relaxed text-white/45">
+          <p className="max-w-md pb-1.5 text-[15px] font-normal leading-relaxed text-white/45">
             One workflow, three moves. No proposals, no negotiation threads, no
             invoices — the pipeline does the trust work for you.
           </p>
@@ -258,8 +258,8 @@ export default function Pipeline() {
               {/* Caption */}
               <div className="flex-1 border-t border-white/[0.06] p-7 md:p-8">
                 <span className="font-mono text-[11px] text-accent/70">{step.n}</span>
-                <h3 className="mt-2 text-xl font-medium tracking-[-0.02em] text-white">{step.title}</h3>
-                <p className="mt-2.5 text-sm font-light leading-relaxed text-white/45">{step.copy}</p>
+                <h3 className="mt-2 text-xl font-semibold tracking-[-0.02em] text-white">{step.title}</h3>
+                <p className="mt-2.5 text-sm font-normal leading-relaxed text-white/45">{step.copy}</p>
               </div>
             </Reveal>
           </div>

@@ -51,7 +51,7 @@ function buildScenario(p: (typeof PERSONAS)[number]): Line[] {
     { segs: [{ t: '✓ build   ', c: OK }, { t: `✓ tests ${p.tests}   `, c: OK }, { t: '✓ lint   ', c: OK }, { t: '✓ scope', c: OK }], pause: 500 },
     { segs: [{ t: '✓ ', c: OK }, { t: 'ai review — approve', c: SOFT }, { t: ` · "${p.quote}"`, c: DIM }], pause: 560 },
     { segs: [{ t: '✓ ', c: OK }, { t: 'merged into main', c: SOFT }, { t: ' by owner', c: DIM }], pause: 760 },
-    { segs: [{ t: p.amount, c: 'text-accent font-semibold' }, { t: ` → ${p.name}@upi`, c: SOFT }, { t: ` · paid ${p.paid} after merge`, c: DIM }], pause: 600 },
+    { segs: [{ t: p.amount, c: 'text-accent font-medium' }, { t: ` → ${p.name}@upi`, c: SOFT }, { t: ` · paid ${p.paid} after merge`, c: DIM }], pause: 600 },
     { segs: [{ t: p.xp, c: 'text-accent/80' }, { t: ` · ${p.tail}`, c: DIM }], pause: 900 },
     { segs: [{ t: '$ ', c: ACCENT }, { t: `forke claim ${p.next}`, c: CMD }, { t: ` --stack ${p.nextStack}`, c: DIM }], pause: 480 },
     { segs: [{ t: '✓ ', c: OK }, { t: 'reserved', c: SOFT }, { t: ' · 20:00 to activate', c: DIM }], pause: 420 },
