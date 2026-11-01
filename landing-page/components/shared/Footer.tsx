@@ -67,6 +67,55 @@ const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
 ]
 
 export default function Footer() {
+  const [footerHeight, setFooterHeight] = React.useState<number>(0)
+  const [isRevealed, setIsRevealed] = React.useState(false)
+  const [isNearBottom, setIsNearBottom] = React.useState(false)
+  const footerInnerRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    const updateDimensions = () => {
+      if (footerInnerRef.current) {
+        setFooterHeight(footerInnerRef.current.offsetHeight)
+      }
+    }
+
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateDimensions()
+    })
+    if (footerInnerRef.current) {
+      resizeObserver.observe(footerInnerRef.current)
+    }
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const windowHeight = window.innerHeight
+      const docHeight = document.documentElement.scrollHeight
+
+      // Logo reveal animation based on scroll position near the bottom
+      if (scrollY + windowHeight > docHeight - 100) {
+        setIsRevealed(true)
+      } else if (scrollY + windowHeight <= docHeight - 150) {
+        setIsRevealed(false)
+      }
+
+      const currentHeight = footerInnerRef.current?.offsetHeight || 600
+      setIsNearBottom(scrollY + windowHeight >= docHeight - currentHeight - 50)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('resize', updateDimensions)
+      window.removeEventListener('scroll', handleScroll)
+      resizeObserver.disconnect()
+    }
+  }, [])
+
+  const isFixed = footerHeight > 0
 
   const columns: { heading: string; links: { name: string; href: string; external?: boolean }[] }[] = [
     {
@@ -96,116 +145,140 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="relative z-10 overflow-hidden" style={{ backgroundColor: 'var(--color-bg)' }}>
-      {/* Aurora WebGL ambient background - upside down (emanating from bottom up) and not so bright */}
+    <footer 
+      className="relative z-0 w-full overflow-hidden" 
+      style={{ 
+        height: footerHeight > 0 ? `${footerHeight}px` : undefined,
+        clipPath: 'polygon(0% 0, 100% 0%, 100% 100%, 0 100%)',
+        backgroundColor: 'var(--color-bg)' 
+      }}
+    >
       <div 
-        className="pointer-events-none absolute bottom-0 left-0 w-full overflow-hidden h-[55%] sm:h-[65%] z-0"
-        style={{
-          maskImage: 'linear-gradient(to top, black 0%, black 20%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to top, black 0%, black 20%, transparent 100%)'
+        ref={footerInnerRef}
+        className={`footer__inner w-full overflow-hidden ${
+          isFixed ? 'fixed bottom-0 left-0 z-0' : 'relative z-10'
+        }`}
+        style={{ 
+          backgroundColor: 'var(--color-bg)',
+          pointerEvents: isNearBottom ? 'auto' : 'none'
         }}
       >
-        <div style={{ width: '100%', height: '100%', position: 'relative', opacity: 0.5 }}>
-          <Aurora
-            colorStops={["#f97316","#f97316","#f97316"]}
-            direction="bottom"
-            amplitude={1.0}
-            blend={0.5}
-            height={0.5}
-            speed={0.4}
-            glow={0.5}
-            brightness={0.7}
-            layers={2}
-            mouseInteraction={false}
-          />
-        </div>
-      </div>
-
-      {/* Subtle bottom atmospheric radial glow fading into black upwards - subdued / not so bright */}
-      <div 
-        className="pointer-events-none absolute bottom-0 left-0 right-0 h-[50%] z-0"
-        style={{
-          background: 'radial-gradient(ellipse 80% 55% at 50% 100%, rgba(249, 115, 22, 0.12) 0%, rgba(249, 115, 22, 0.03) 50%, transparent 100%)'
-        }}
-      />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-5 pt-16 md:px-10 md:pt-20 min-[1920px]:max-w-[1920px]">
-        <div className="flex flex-col justify-between gap-10 md:flex-row md:items-start md:gap-8 lg:gap-12">
-          {/* Brand */}
-          <div className="shrink-0 md:max-w-xs lg:max-w-sm">
-            <a href="/" className="inline-flex items-center transition-opacity hover:opacity-80">
-              <img
-                src="/forke-assets/forke_logo.png"
-                alt="Forke Logo"
-                className="h-14 w-14 object-contain"
-              />
-            </a>
-            <p className="mt-4 max-w-xs text-sm font-normal leading-relaxed text-white/60">
-              The micro-task marketplace where Indian developers earn real money by
-              shipping real code.
-            </p>
+        {/* Aurora WebGL ambient background - upside down (emanating from bottom up) and not so bright */}
+        <div 
+          className="pointer-events-none absolute bottom-0 left-0 w-full overflow-hidden h-[55%] sm:h-[65%] z-0"
+          style={{
+            maskImage: 'linear-gradient(to top, black 0%, black 20%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to top, black 0%, black 20%, transparent 100%)'
+          }}
+        >
+          <div style={{ width: '100%', height: '100%', position: 'relative', opacity: 0.5 }}>
+            <Aurora
+              colorStops={["#f97316","#f97316","#f97316"]}
+              direction="bottom"
+              amplitude={1.0}
+              blend={0.5}
+              height={0.5}
+              speed={0.4}
+              glow={0.5}
+              brightness={0.7}
+              layers={2}
+              mouseInteraction={false}
+            />
           </div>
+        </div>
 
-          {/* Link & Connect columns shifted to right side with controlled gap */}
-          <div className="flex flex-wrap items-start gap-8 sm:gap-10 md:gap-10 lg:gap-14 md:justify-end">
-            {columns.map((col) => (
-              <div key={col.heading} className="min-w-[90px] sm:min-w-[105px]">
-                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
-                  {col.heading}
-                </p>
-                <ul className="mt-5 space-y-3">
-                  {col.links.map((link) => (
-                    <li key={link.name}>
-                      <a
-                        href={link.href}
-                        {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                        className="font-mono text-[13px] text-white/60 transition-colors hover:text-white"
-                      >
-                        {link.name}
-                        {link.external && ' ↗'}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+        {/* Subtle bottom atmospheric radial glow fading into black upwards - subdued / not so bright */}
+        <div 
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-[50%] z-0"
+          style={{
+            background: 'radial-gradient(ellipse 80% 55% at 50% 100%, rgba(249, 115, 22, 0.12) 0%, rgba(249, 115, 22, 0.03) 50%, transparent 100%)'
+          }}
+        />
 
-            {/* Connect column */}
-            <div className="w-[184px]">
-              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
-                connect
+        <div className="relative z-10 mx-auto max-w-7xl px-5 pt-16 md:px-10 md:pt-20 min-[1920px]:max-w-[1920px]">
+          <div className="flex flex-col justify-between gap-10 md:flex-row md:items-start md:gap-8 lg:gap-12">
+            {/* Brand */}
+            <div className="shrink-0 md:max-w-xs lg:max-w-sm">
+              <a href="/" className="inline-flex items-center transition-opacity hover:opacity-80">
+                <img
+                  src="/forke-assets/forke_logo.png"
+                  alt="Forke Logo"
+                  className="h-14 w-14 object-contain"
+                />
+              </a>
+              <p className="mt-4 max-w-xs text-sm font-normal leading-relaxed text-white/60">
+                The micro-task marketplace where Indian developers earn real money by
+                shipping real code.
               </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {SOCIALS.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    aria-label={s.label}
-                    title={s.label}
-                    {...(s.href.startsWith('http')
-                      ? { target: '_blank', rel: 'noopener noreferrer' }
-                      : {})}
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] text-white/60 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                  >
-                    {s.icon}
-                  </a>
-                ))}
+            </div>
+
+            {/* Link & Connect columns shifted to right side with controlled gap */}
+            <div className="flex flex-wrap items-start gap-8 sm:gap-10 md:gap-10 lg:gap-14 md:justify-end">
+              {columns.map((col) => (
+                <div key={col.heading} className="min-w-[90px] sm:min-w-[105px]">
+                  <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
+                    {col.heading}
+                  </p>
+                  <ul className="mt-5 space-y-3">
+                    {col.links.map((link) => (
+                      <li key={link.name}>
+                        <a
+                          href={link.href}
+                          {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                          className="font-mono text-[13px] text-white/60 transition-colors hover:text-white"
+                        >
+                          {link.name}
+                          {link.external && ' ↗'}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+
+              {/* Connect column */}
+              <div className="w-[184px]">
+                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
+                  connect
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {SOCIALS.map((s) => (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      aria-label={s.label}
+                      title={s.label}
+                      {...(s.href.startsWith('http')
+                        ? { target: '_blank', rel: 'noopener noreferrer' }
+                        : {})}
+                      className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] text-white/60 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
+                    >
+                      {s.icon}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Giant solid wordmark like NOTHIN' reference */}
-        <div className="mt-16 select-none overflow-hidden sm:mt-20 md:mt-24">
-          <div className="text-center font-bold tracking-[-0.05em] leading-[0.82] text-white text-[clamp(4.5rem,20vw,18rem)] whitespace-nowrap select-none">
-            forke<span className="text-accent">*</span>
+          {/* Giant solid wordmark with reveal animation */}
+          <div className="logo mt-16 select-none overflow-hidden sm:mt-20 md:mt-24">
+            <div 
+              className={`text-center font-bold tracking-[-0.05em] leading-[0.82] text-white text-[clamp(4.5rem,20vw,18rem)] whitespace-nowrap select-none transition-all duration-[800ms] ease-out ${
+                isRevealed 
+                  ? 'translate-y-0 opacity-100 show' 
+                  : 'translate-y-[50px] opacity-0'
+              }`}
+            >
+              forke<span className="text-accent">*</span>
+            </div>
           </div>
-        </div>
 
-        {/* Bottom text row below wordmark */}
-        <div className="mt-8 flex flex-col items-center justify-between gap-3 pb-8 pt-4 font-mono text-[11px] text-white/60 md:flex-row md:pb-10">
-          <span>© 2026 forke — all rights reserved</span>
-          <span>made in india · paid in rupees</span>
+          {/* Bottom text row below wordmark */}
+          <div className="mt-8 flex flex-col items-center justify-between gap-3 pb-8 pt-4 font-mono text-[11px] text-white/60 md:flex-row md:pb-10">
+            <span>© 2026 forke — all rights reserved</span>
+            <span>made in india · paid in rupees</span>
+          </div>
         </div>
       </div>
     </footer>
