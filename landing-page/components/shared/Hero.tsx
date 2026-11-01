@@ -126,13 +126,21 @@ export default function Hero() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center flex flex-col items-center my-auto">
         
         {/* Supported by 20 Rev */}
-        <div className="gsap-hero-eyebrow flex flex-col items-center justify-center select-none gap-2 sm:gap-2.5">
-          <span className="text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.2em] uppercase text-white/45">
-            Supported by
-          </span>
-          <div className="flex items-center justify-center text-white/60">
-            <Rev20Logo className="h-9 sm:h-10 w-auto" />
-          </div>
+        <div className="gsap-hero-eyebrow flex flex-col items-center justify-center">
+          <a
+            href="https://20rev.com/?source=forke.space"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Supported by 20 Rev"
+            className="group flex flex-col items-center justify-center gap-2 sm:gap-2.5 transition-all duration-300 cursor-pointer"
+          >
+            <span className="text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.2em] uppercase text-white/45 group-hover:text-white/70 transition-colors duration-300">
+              Supported by
+            </span>
+            <div className="flex items-center justify-center text-white/60 group-hover:text-white/95 group-hover:scale-[1.03] active:scale-[0.98] transition-all duration-300">
+              <Rev20Logo className="h-9 sm:h-10 w-auto" />
+            </div>
+          </a>
         </div>
 
         {/* Hero Title — editorial proportion (88-100px desktop, weight 500, compact 0.98-1.02 leading, 32-40px spacing from pill) */}

@@ -5,7 +5,6 @@ import FirstMerge from '@/components/shared/FirstMerge'
 import LevelSystem from '@/components/shared/LevelSystem'
 import FAQ from '@/components/shared/FAQ'
 import CTA from '@/components/shared/CTA'
-import SupportedBy from '@/components/landing/SupportedBy'
 import Footer from '@/components/shared/Footer'
 import Pipeline from '@/components/landing/Pipeline'
 import Session from '@/components/landing/Session'
@@ -54,7 +53,6 @@ export default function LandingPage() {
           <LevelSystem />
           <ReviewSystem n="006" />
           <FAQ n="007" />
-          <SupportedBy />
           <CTA />
         </Rails>
       </main>
