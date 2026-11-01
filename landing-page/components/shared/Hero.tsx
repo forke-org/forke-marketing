@@ -19,6 +19,7 @@ import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import TechStackTicker from './TechStackTicker'
 import { Button } from '@/components/ui/Button'
+import Rev20Logo from '@/components/ui/Rev20Logo'
 
 export default function Hero() {
   const router = useRouter()
@@ -124,11 +125,14 @@ export default function Hero() {
       {/* Centered Main Content Area */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center flex flex-col items-center my-auto">
         
-        {/* Terminal Eyebrow ("$ git push origin payday") — clean, transparent, no backdrop or shadow */}
-        <div className="gsap-hero-eyebrow inline-flex items-center rounded-lg px-3.5 py-1.5 font-mono text-xs sm:text-[13px] border border-white/10 bg-transparent select-none">
-          <span className="text-white/70 tracking-normal">
-            $ git push origin <span className="text-accent">payday</span>
+        {/* Supported by 20 Rev */}
+        <div className="gsap-hero-eyebrow flex flex-col items-center justify-center select-none gap-2 sm:gap-2.5">
+          <span className="text-[10px] sm:text-[11px] font-sans font-medium tracking-[0.2em] uppercase text-white/45">
+            Supported by
           </span>
+          <div className="flex items-center justify-center text-white/60">
+            <Rev20Logo className="h-9 sm:h-10 w-auto" />
+          </div>
         </div>
 
         {/* Hero Title — editorial proportion (88-100px desktop, weight 500, compact 0.98-1.02 leading, 32-40px spacing from pill) */}
