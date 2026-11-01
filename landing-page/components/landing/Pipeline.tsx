@@ -14,6 +14,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Check, GitPullRequest } from 'lucide-react'
 import { Section, H2 } from './primitives'
 import Reveal from './Reveal'
+import Noise from '@/components/ui/Noise'
 
 /* ── Step vignettes — crisp miniatures of the real Forke product UI. ────────── */
 
@@ -232,6 +233,19 @@ export default function Pipeline() {
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20"
             />
+            {/* Noise Grain Texture */}
+            <Noise
+              opacity={0.05}
+              size={1}
+              fps={0}
+              blendMode="overlay"
+              contrast={0.45}
+              colored={false}
+              dust={0}
+              scratches={0}
+              scanlines={0}
+              flicker={0}
+            />
             {/* Visual Top */}
             <div className="relative z-10 flex-1 flex items-center justify-center py-2">
               <ClaimVisual seconds={timerSeconds} />
@@ -251,15 +265,28 @@ export default function Pipeline() {
           </div>
 
           {/* CARD 2: 30m–4h (Narrow: 5 cols) — Pure typography without nested card */}
-          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
+          <div className="relative overflow-hidden lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
+            {/* Noise Grain Texture */}
+            <Noise
+              opacity={0.05}
+              size={1}
+              fps={0}
+              blendMode="overlay"
+              contrast={0.45}
+              colored={false}
+              dust={0}
+              scratches={0}
+              scanlines={0}
+              flicker={0}
+            />
             {/* Direct Typography Metric Display */}
-            <div className="flex-1 flex flex-col justify-center">
+            <div className="relative z-10 flex-1 flex flex-col justify-center">
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 30m–4h
               </p>
             </div>
             {/* Content Bottom */}
-            <div className="mt-3">
+            <div className="relative z-10 mt-3">
               <p className="text-[13px] text-white/55 leading-relaxed font-normal">
                 Every task is scoped between 30 minutes to 4 hours. Ship focused code and earn without endless review cycles.
               </p>
@@ -269,15 +296,28 @@ export default function Pipeline() {
           {/* ── ROW 2: Narrow (5 cols) / Wide (7 cols) ── */}
 
           {/* CARD 3: <60s (Narrow: 5 cols) — Pure typography without nested card */}
-          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
+          <div className="relative overflow-hidden lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
+            {/* Noise Grain Texture */}
+            <Noise
+              opacity={0.05}
+              size={1}
+              fps={0}
+              blendMode="overlay"
+              contrast={0.45}
+              colored={false}
+              dust={0}
+              scratches={0}
+              scanlines={0}
+              flicker={0}
+            />
             {/* Direct Typography Metric Display */}
-            <div className="flex-1 flex flex-col justify-center">
+            <div className="relative z-10 flex-1 flex flex-col justify-center">
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 &lt;60s
               </p>
             </div>
             {/* Content Bottom */}
-            <div className="mt-3">
+            <div className="relative z-10 mt-3">
               <p className="text-[13px] text-white/55 leading-relaxed font-normal">
                 Automated escrow releases funds to your UPI handle in under 60 seconds the moment your pull request merges into main.
               </p>
@@ -290,6 +330,19 @@ export default function Pipeline() {
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20"
+            />
+            {/* Noise Grain Texture */}
+            <Noise
+              opacity={0.05}
+              size={1}
+              fps={0}
+              blendMode="overlay"
+              contrast={0.45}
+              colored={false}
+              dust={0}
+              scratches={0}
+              scanlines={0}
+              flicker={0}
             />
             {/* Visual Top */}
             <div className="relative z-10 flex-1 flex items-center justify-center py-2">
@@ -318,6 +371,19 @@ export default function Pipeline() {
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20"
             />
+            {/* Noise Grain Texture */}
+            <Noise
+              opacity={0.05}
+              size={1}
+              fps={0}
+              blendMode="overlay"
+              contrast={0.45}
+              colored={false}
+              dust={0}
+              scratches={0}
+              scanlines={0}
+              flicker={0}
+            />
             {/* Visual Top */}
             <div className="relative z-10 flex-1 flex items-center justify-center py-2">
               <PaidVisual amount={amount} done={paidDone} />
@@ -337,15 +403,28 @@ export default function Pipeline() {
           </div>
 
           {/* CARD 6: 25 LEVELS (Narrow: 5 cols) — Pure typography without nested card */}
-          <div className="lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
+          <div className="relative overflow-hidden lg:col-span-5 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between min-h-[290px] sm:min-h-[310px]">
+            {/* Noise Grain Texture */}
+            <Noise
+              opacity={0.05}
+              size={1}
+              fps={0}
+              blendMode="overlay"
+              contrast={0.45}
+              colored={false}
+              dust={0}
+              scratches={0}
+              scanlines={0}
+              flicker={0}
+            />
             {/* Direct Typography Metric Display */}
-            <div className="flex-1 flex flex-col justify-center">
+            <div className="relative z-10 flex-1 flex flex-col justify-center">
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 25 levels
               </p>
             </div>
             {/* Content Bottom */}
-            <div className="mt-3">
+            <div className="relative z-10 mt-3">
               <p className="text-[13px] text-white/55 leading-relaxed font-normal">
                 Earn XP with every merged PR. Level up from newcomer to Forke legend to unlock higher-tier bounties and exclusive startup repos.
               </p>
