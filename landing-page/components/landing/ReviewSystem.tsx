@@ -10,7 +10,7 @@
  * commercial license from Forke Inc. is strictly prohibited.
  */
 
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Cpu, Sparkles, Gauge, UserCheck } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -25,8 +25,7 @@ if (typeof window !== 'undefined') {
 /**
  * The review system as a 3D blueprint — an isometric scene built entirely in
  * CSS: a floating PR chip in the center, four extruded gate tiles around it,
- * dashed connectors and slow spinner rings. Labels stay on-plane like a real
- * isometric technical drawing.
+ * dashed connectors and slow spinner rings.
  */
 
 const GATES = [
@@ -64,63 +63,58 @@ const GATES = [
   },
 ]
 
-/** An extruded isometric tile: a dim base plate with a raised top face. */
+/** An extruded isometric tile: stable hit-target to prevent flicker, rich 3D lighting on hover */
 function Tile({
   className = '',
   width,
   label,
   sub,
   accent = false,
-  gate,
   isHovered = false,
   onMouseEnter,
   onMouseLeave,
-  onClick,
 }: {
   className?: string
   width: number
   label: string
   sub?: string
   accent?: boolean
-  gate?: (typeof GATES)[0]
   isHovered?: boolean
-  onMouseEnter?: () => void
+  onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeave?: () => void
-  onClick?: () => void
 }) {
   return (
     <div
-      className={`absolute cursor-pointer transition-transform duration-300 ${className}`}
+      className={`absolute cursor-pointer select-none ${className}`}
       style={{
         width,
         transformStyle: 'preserve-3d',
-        transform: isHovered ? 'translateZ(14px)' : 'translateZ(0px)',
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      onClick={onClick}
     >
       {/* base plate (extrusion shadow) */}
       <div
-        className={`absolute inset-0 rounded-lg border transition-colors duration-300 ${
+        className={`absolute inset-0 rounded-lg border transition-colors duration-200 ${
           isHovered
-            ? 'border-accent/40 bg-[#080503]'
+            ? 'border-accent/50 bg-[#0a0704]'
             : 'border-white/[0.07] bg-[#050505]'
         }`}
         style={{ transform: 'translateZ(-14px)' }}
       />
-      {/* top face */}
+      {/* top face — stationary hit area with luminous visual glow */}
       <div
-        className={`relative flex items-center gap-2.5 rounded-lg border px-4 py-3 transition-all duration-300 ${
+        className={`relative flex items-center gap-2.5 rounded-lg border px-4 py-3 transition-all duration-200 ${
           isHovered
-            ? 'border-accent bg-[#120d08] shadow-[0_0_35px_rgba(255,122,0,0.35)]'
+            ? 'border-accent bg-[#140e08] shadow-[0_0_35px_rgba(255,122,0,0.45),inset_0_0_15px_rgba(255,122,0,0.15)] scale-[1.03]'
             : accent
             ? 'border-accent/40 bg-[#0c0a08] shadow-[0_0_30px_rgba(255,122,0,0.15)]'
             : 'border-white/[0.14] bg-[#08080a] hover:border-white/30'
         }`}
+        style={{ transform: isHovered ? 'translateZ(10px)' : 'translateZ(0px)' }}
       >
         <span
-          className={`font-mono text-[11px] font-medium tracking-wide transition-colors duration-300 ${
+          className={`font-mono text-[11px] font-medium tracking-wide transition-colors duration-200 ${
             isHovered
               ? 'text-accent font-semibold'
               : accent
@@ -132,37 +126,14 @@ function Tile({
         </span>
         {sub && (
           <span
-            className={`ml-auto font-mono text-[9px] transition-colors duration-300 ${
-              isHovered ? 'text-accent/80' : 'text-white/30'
+            className={`ml-auto font-mono text-[9px] transition-colors duration-200 ${
+              isHovered ? 'text-accent font-medium' : 'text-white/30'
             }`}
           >
             {sub}
           </span>
         )}
       </div>
-
-      {/* 3D Billboard Floating Tooltip on Hover */}
-      {isHovered && gate && (
-        <div
-          className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-[260px] sm:w-[280px] rounded-xl border border-accent/50 bg-[#0a0806]/95 p-3.5 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_30px_rgba(255,122,0,0.25)] backdrop-blur-md z-50 text-left"
-          style={{
-            transform: 'rotateZ(45deg) rotateX(-57deg) translateZ(35px)',
-            transformOrigin: 'bottom center',
-          }}
-        >
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-accent/20 text-accent font-mono text-[10px] font-bold">
-              {gate.n}
-            </span>
-            <h4 className="text-[12px] font-semibold text-white tracking-tight truncate">
-              {gate.title}
-            </h4>
-          </div>
-          <p className="text-[11px] leading-relaxed text-white/70 font-normal">
-            {gate.copy}
-          </p>
-        </div>
-      )}
     </div>
   )
 }
@@ -198,21 +169,14 @@ function SpinnerRing({ className = '' }: { className?: string }) {
   )
 }
 
-function BlueprintScene({
-  hoveredIndex,
-  onHoverGate,
-  onClickGate,
-}: {
-  hoveredIndex: number | null
-  onHoverGate: (index: number | null) => void
-  onClickGate: (index: number) => void
-}) {
+function BlueprintScene() {
   const sceneRef = useRef<HTMLDivElement>(null)
   const cameraRef = useRef<HTMLDivElement>(null)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number; isAbove: boolean } | null>(null)
+  const leaveTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Scroll-tied parallax: the blueprint board lifts and tilts toward you as the
-  // section scrolls through, so the static iso scene gains depth on scroll. Only
-  // the camera wrapper moves — the intricate board transform below is untouched.
+  // Scroll-tied parallax on camera
   useGSAP(
     () => {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -235,13 +199,50 @@ function BlueprintScene({
     { scope: sceneRef }
   )
 
+  const handleTileEnter = (idx: number, e: React.MouseEvent<HTMLDivElement>) => {
+    if (leaveTimerRef.current) {
+      clearTimeout(leaveTimerRef.current)
+      leaveTimerRef.current = null
+    }
+    const sceneEl = sceneRef.current
+    if (sceneEl) {
+      const tileRect = e.currentTarget.getBoundingClientRect()
+      const sceneRect = sceneEl.getBoundingClientRect()
+      const relY = tileRect.top - sceneRect.top
+      setTooltipPos({
+        x: tileRect.left - sceneRect.left + tileRect.width / 2,
+        y: relY,
+        isAbove: relY > 140,
+      })
+    }
+    setHoveredIndex(idx)
+  }
+
+  const handleTileLeave = () => {
+    if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current)
+    leaveTimerRef.current = setTimeout(() => {
+      setHoveredIndex(null)
+      setTooltipPos(null)
+    }, 120)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current)
+    }
+  }, [])
+
   return (
     <div
       ref={sceneRef}
       className="relative mx-auto h-[340px] sm:h-[460px] md:h-[540px] lg:h-[600px] w-full max-w-5xl select-none"
     >
       {/* Perspective camera */}
-      <div ref={cameraRef} className="absolute inset-0 will-change-transform" style={{ perspective: '1400px', perspectiveOrigin: '50% 30%' }}>
+      <div
+        ref={cameraRef}
+        className="absolute inset-0 will-change-transform"
+        style={{ perspective: '1400px', perspectiveOrigin: '50% 30%' }}
+      >
         {/* The isometric drawing plane */}
         <div
           className="absolute left-1/2 top-1/2 h-[680px] w-[680px] origin-center [--blueprint-scale:scale(0.65)] sm:[--blueprint-scale:scale(0.88)] md:[--blueprint-scale:scale(1.16)] lg:[--blueprint-scale:scale(1.26)]"
@@ -293,11 +294,9 @@ function BlueprintScene({
             width={150}
             label="01 checks"
             sub="ci"
-            gate={GATES[0]}
             isHovered={hoveredIndex === 0}
-            onMouseEnter={() => onHoverGate(0)}
-            onMouseLeave={() => onHoverGate(null)}
-            onClick={() => onClickGate(0)}
+            onMouseEnter={(e) => handleTileEnter(0, e)}
+            onMouseLeave={handleTileLeave}
           />
           <Tile
             className="left-[262px] top-[60px]"
@@ -305,22 +304,18 @@ function BlueprintScene({
             label="02 ai review"
             sub="llm"
             accent
-            gate={GATES[1]}
             isHovered={hoveredIndex === 1}
-            onMouseEnter={() => onHoverGate(1)}
-            onMouseLeave={() => onHoverGate(null)}
-            onClick={() => onClickGate(1)}
+            onMouseEnter={(e) => handleTileEnter(1, e)}
+            onMouseLeave={handleTileLeave}
           />
           <Tile
             className="right-[0px] top-[316px]"
             width={150}
             label="03 risk score"
             sub="0–100"
-            gate={GATES[2]}
             isHovered={hoveredIndex === 2}
-            onMouseEnter={() => onHoverGate(2)}
-            onMouseLeave={() => onHoverGate(null)}
-            onClick={() => onClickGate(2)}
+            onMouseEnter={(e) => handleTileEnter(2, e)}
+            onMouseLeave={handleTileLeave}
           />
           <Tile
             className="left-[256px] bottom-[58px]"
@@ -328,11 +323,9 @@ function BlueprintScene({
             label="04 owner approves"
             sub="✓"
             accent
-            gate={GATES[3]}
             isHovered={hoveredIndex === 3}
-            onMouseEnter={() => onHoverGate(3)}
-            onMouseLeave={() => onHoverGate(null)}
-            onClick={() => onClickGate(3)}
+            onMouseEnter={(e) => handleTileEnter(3, e)}
+            onMouseLeave={handleTileLeave}
           />
 
           {/* ── Capability pills around the board ─────────────────────────── */}
@@ -355,16 +348,39 @@ function BlueprintScene({
             'radial-gradient(ellipse 65% 60% at 50% 50%, transparent 60%, #050505 98%)',
         }}
       />
+
+      {/* 2D Native HD Hover Card — zero 3D matrix blur, zero flicker, crystal-clear typography */}
+      {hoveredIndex !== null && tooltipPos && (
+        <div
+          className="pointer-events-none absolute z-50 transition-all duration-200 ease-out animate-in fade-in zoom-in-95"
+          style={{
+            left: `${tooltipPos.x}px`,
+            top: `${tooltipPos.y}px`,
+            transform: tooltipPos.isAbove
+              ? 'translate(-50%, calc(-100% - 14px))'
+              : 'translate(-50%, 28px)',
+          }}
+        >
+          <div className="w-[280px] sm:w-[320px] rounded-xl border border-accent/50 bg-[#090806]/95 p-4 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_30px_rgba(255,122,0,0.25)] backdrop-blur-md">
+            <div className="flex items-center gap-2.5 mb-2">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-accent/20 text-accent font-mono text-[10.5px] font-bold">
+                {GATES[hoveredIndex].n}
+              </span>
+              <h4 className="text-[13.5px] font-semibold text-white tracking-tight">
+                {GATES[hoveredIndex].title}
+              </h4>
+            </div>
+            <p className="text-[12px] leading-relaxed text-white/75 font-normal">
+              {GATES[hoveredIndex].copy}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 export default function ReviewSystem({ n }: { n?: string } = {}) {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
-  const activeGate = GATES[hoveredIndex !== null ? hoveredIndex : activeIndex]
-
   return (
     <Section id="review" className="relative overflow-hidden px-5 pt-16 pb-20 md:px-10 md:pt-24 md:pb-28">
       <div className="relative">
@@ -374,70 +390,10 @@ export default function ReviewSystem({ n }: { n?: string } = {}) {
           </H2>
         </Reveal>
 
-        {/* The blueprint — scaled up for prominent visibility */}
+        {/* The blueprint — scaled up for prominent visibility with HD interactive hover tooltips */}
         <Reveal delay={150}>
           <div className="mt-8 md:mt-12">
-            <BlueprintScene
-              hoveredIndex={hoveredIndex}
-              onHoverGate={setHoveredIndex}
-              onClickGate={setActiveIndex}
-            />
-          </div>
-        </Reveal>
-
-        {/* Interactive Gate Inspection HUD Card */}
-        <Reveal delay={250} className="mt-6 md:mt-8 flex justify-center">
-          <div className="w-full max-w-2xl rounded-2xl border border-white/[0.08] bg-[#08080a]/90 p-5 sm:p-6 shadow-[0_12px_40px_rgba(0,0,0,0.6)] backdrop-blur-md">
-            {/* Gate selector pills */}
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 pb-4 border-b border-white/[0.06]">
-              {GATES.map((gate, i) => {
-                const isCurrent = (hoveredIndex !== null ? hoveredIndex : activeIndex) === i
-                return (
-                  <button
-                    key={gate.n}
-                    type="button"
-                    onClick={() => setActiveIndex(i)}
-                    onMouseEnter={() => {
-                      setHoveredIndex(i)
-                      setActiveIndex(i)
-                    }}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-[11px] sm:text-[11.5px] transition-all duration-200 cursor-pointer ${
-                      isCurrent
-                        ? 'border border-accent/50 bg-accent/15 text-accent shadow-[0_0_15px_rgba(255,122,0,0.18)] font-medium scale-[1.02]'
-                        : 'border border-white/[0.08] bg-white/[0.03] text-white/55 hover:text-white/90 hover:bg-white/[0.06]'
-                    }`}
-                  >
-                    <gate.icon className="w-3.5 h-3.5" />
-                    <span>{gate.code}</span>
-                  </button>
-                )
-              })}
-            </div>
-
-            {/* Gate details display */}
-            <div className="pt-4 flex flex-col sm:flex-row sm:items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/[0.08] text-accent shadow-[0_0_20px_rgba(255,122,0,0.12)]">
-                {React.createElement(activeGate.icon, { className: 'h-5 w-5', strokeWidth: 1.8 })}
-              </span>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[10.5px] uppercase tracking-wider text-accent font-medium">
-                    Gate {activeGate.n}
-                  </span>
-                  <span className="text-white/20">·</span>
-                  <span className="font-mono text-[10.5px] text-white/40 uppercase">
-                    {activeGate.sub}
-                  </span>
-                </div>
-                <h3 className="text-base sm:text-lg font-semibold text-white tracking-tight mt-0.5">
-                  {activeGate.title}
-                </h3>
-                <p className="mt-1 text-[13px] sm:text-[13.5px] text-white/60 leading-relaxed font-normal">
-                  {activeGate.copy}
-                </p>
-              </div>
-            </div>
+            <BlueprintScene />
           </div>
         </Reveal>
       </div>
