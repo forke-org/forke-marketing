@@ -137,8 +137,8 @@ export default function Hero() {
           Earn XP. <span className="font-serif italic font-medium text-accent inline-block sm:inline ml-1 sm:ml-2">Get paid.</span>
         </h1>
 
-        {/* Supporting Description — secondary, readable, 18-20px desktop, 16px mobile, 1.5 leading, 800px max width, 24-28px spacing from heading */}
-        <p className="gsap-hero-subtitle mt-6 sm:mt-7 text-[16px] sm:text-[17.5px] md:text-[19px] lg:text-[19.5px] text-white/60 max-w-[800px] mx-auto leading-[1.5] font-normal text-center">
+        {/* Supporting Description — exact 20px size, 30px (1.5) line height, 500 medium weight, -0.4px tracking from reference inspection */}
+        <p className="gsap-hero-subtitle mt-6 sm:mt-7 text-[16px] sm:text-[18px] md:text-[20px] leading-[25px] sm:leading-[27px] md:leading-[30px] font-medium tracking-[-0.4px] text-white/70 max-w-[680px] mx-auto text-center">
           Claim scoped bounties from real startups, ship the fix, and cash out to UPI the moment your PR merges. No resumes. No interviews.
         </p>
 
