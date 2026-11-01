@@ -19,7 +19,6 @@ import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import TechStackTicker from './TechStackTicker'
 import { Button } from '@/components/ui/Button'
-import ButtonGrain from '@/components/ui/ButtonGrain'
 
 export default function Hero() {
   const router = useRouter()
@@ -145,37 +144,28 @@ export default function Hero() {
 
         {/* CTA Actions & Trust Line Container — 32px desktop / 28px mobile spacing from description */}
         <div className="mt-8 w-full flex flex-col items-center">
-          {/* CTA Buttons — refined 56px height, 24-26px horizontal padding, 16px font-semibold, 16px gap, tactile film grain */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 w-full sm:w-auto">
+          {/* CTA Buttons — exact 44px height, 18px horizontal padding, 12px border radius (matching reference inspection) */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
             {showWaitlisterView ? (
               <Button
-                size="lg"
-                className="gsap-hero-btn group relative overflow-hidden h-[52px] sm:h-[56px] px-6 sm:px-[26px] rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15.5px] sm:text-[16px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2"
+                className="gsap-hero-btn group h-[44px] px-[18px] py-[12px] rounded-[12px] bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[12px] sm:text-[12.5px] leading-[18px] font-normal sm:font-medium tracking-normal shadow-none transition-colors w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-1.5"
                 onClick={() => router.push('/waitlist')}
               >
-                <ButtonGrain opacity={0.10} warmTone />
-                <span className="relative z-10 flex items-center gap-2">
-                  Join the waitlist <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                </span>
+                Join the waitlist <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
               </Button>
             ) : (
               <Button
-                size="lg"
-                className="gsap-hero-btn group relative overflow-hidden h-[52px] sm:h-[56px] px-6 sm:px-[26px] rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15.5px] sm:text-[16px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2"
+                className="gsap-hero-btn group h-[44px] px-[18px] py-[12px] rounded-[12px] bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[12px] sm:text-[12.5px] leading-[18px] font-normal sm:font-medium tracking-normal shadow-none transition-colors w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-1.5"
                 onClick={() => router.push('/signin')}
               >
-                <ButtonGrain opacity={0.10} warmTone />
-                <span className="relative z-10 flex items-center gap-2">
-                  Start earning <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                </span>
+                Start earning <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
               </Button>
             )}
             <a
               href="#how-it-works"
-              className="gsap-hero-btn relative overflow-hidden h-[52px] sm:h-[56px] px-6 sm:px-[26px] rounded-lg border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20 text-white/80 hover:text-white text-[15.5px] sm:text-[16px] font-semibold inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer shadow-none"
+              className="gsap-hero-btn h-[44px] px-[18px] py-[12px] rounded-[12px] border border-white/10 bg-[#141414]/90 hover:bg-white/[0.08] hover:border-white/20 text-white/90 hover:text-white text-[12px] sm:text-[12.5px] leading-[18px] font-normal sm:font-medium tracking-normal inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer shadow-none"
             >
-              <ButtonGrain opacity={0.08} />
-              <span className="relative z-10">See how it works</span>
+              See how it works
             </a>
           </div>
 
