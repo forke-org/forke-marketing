@@ -284,6 +284,7 @@ export default function Pipeline() {
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 30m–4h
               </p>
+              <p className="mt-2 text-[13px] text-white/55">scoped task size</p>
             </div>
             {/* Content Bottom */}
             <div className="relative z-10 mt-3">
@@ -315,6 +316,7 @@ export default function Pipeline() {
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 &lt;60s
               </p>
+              <p className="mt-2 text-[13px] text-white/55">merge → UPI payout</p>
             </div>
             {/* Content Bottom */}
             <div className="relative z-10 mt-3">
@@ -422,6 +424,7 @@ export default function Pipeline() {
               <p className="font-mono text-4xl sm:text-5xl font-medium tracking-tight text-white tabular-nums">
                 25 levels
               </p>
+              <p className="mt-2 text-[13px] text-white/55">levels to climb</p>
             </div>
             {/* Content Bottom */}
             <div className="relative z-10 mt-3">
