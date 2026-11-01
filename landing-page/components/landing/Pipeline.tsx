@@ -226,13 +226,18 @@ export default function Pipeline() {
           {/* ── ROW 1: Wide (7 cols) / Narrow (5 cols) ── */}
 
           {/* CARD 1: CLAIM (Wide: 7 cols) */}
-          <div className="lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="group relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+            {/* Orange Radial Gradient Background Pattern */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20 transition-opacity duration-300 group-hover:opacity-30"
+            />
             {/* Visual Top */}
-            <div className="flex-1 flex items-center justify-center py-2">
+            <div className="relative z-10 flex-1 flex items-center justify-center py-2">
               <ClaimVisual seconds={timerSeconds} />
             </div>
             {/* Content Bottom */}
-            <div className="mt-3">
+            <div className="relative z-10 mt-3">
               <span className="font-mono text-[10px] uppercase tracking-wider text-accent/80 font-medium">
                 01 // CLAIM
               </span>
@@ -284,13 +289,18 @@ export default function Pipeline() {
           </div>
 
           {/* CARD 4: SHIP (Wide: 7 cols) */}
-          <div className="lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="group relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+            {/* Orange Radial Gradient Background Pattern */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20 transition-opacity duration-300 group-hover:opacity-30"
+            />
             {/* Visual Top */}
-            <div className="flex-1 flex items-center justify-center py-2">
+            <div className="relative z-10 flex-1 flex items-center justify-center py-2">
               <ShipVisual shown={checksShown} />
             </div>
             {/* Content Bottom */}
-            <div className="mt-3">
+            <div className="relative z-10 mt-3">
               <span className="font-mono text-[10px] uppercase tracking-wider text-accent/80 font-medium">
                 02 // SHIP
               </span>
@@ -306,13 +316,18 @@ export default function Pipeline() {
           {/* ── ROW 3: Wide (7 cols) / Narrow (5 cols) ── */}
 
           {/* CARD 5: GET PAID (Wide: 7 cols) */}
-          <div className="lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+          <div className="group relative overflow-hidden lg:col-span-7 rounded-2xl border border-white/[0.08] bg-[#0c0c0f] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/[0.16] hover:bg-[#0e0e12] min-h-[290px] sm:min-h-[310px]">
+            {/* Orange Radial Gradient Background Pattern */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-0 [background:radial-gradient(125%_125%_at_50%_10%,#000000_40%,#FF7A00_100%)] opacity-20 transition-opacity duration-300 group-hover:opacity-30"
+            />
             {/* Visual Top */}
-            <div className="flex-1 flex items-center justify-center py-2">
+            <div className="relative z-10 flex-1 flex items-center justify-center py-2">
               <PaidVisual amount={amount} done={paidDone} />
             </div>
             {/* Content Bottom */}
-            <div className="mt-3">
+            <div className="relative z-10 mt-3">
               <span className="font-mono text-[10px] uppercase tracking-wider text-accent/80 font-medium">
                 03 // GET PAID
               </span>
