@@ -76,8 +76,8 @@ export default function Navbar() {
       <nav
         className={cn(
           "pointer-events-auto transition-all duration-300 ease-out",
-          // Floating pill with all four corners fully rounded
-          isMobileMenuOpen ? "rounded-[24px]" : "rounded-full",
+          // Floating rectangular shape
+          "rounded-xl",
           // Compact width hugging contents with no giant empty space
           "w-fit max-w-[95vw]"
         )}
@@ -119,7 +119,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2.5 shrink-0">
             <button
               onClick={handleCtaClick}
-              className="hidden sm:inline-flex items-center justify-center rounded-full px-4 py-1.5 h-8 text-[12px] font-semibold tracking-tight bg-white hover:bg-neutral-100 text-[#0a0a0a] shadow-none transition-colors cursor-pointer whitespace-nowrap border-0"
+              className="hidden sm:inline-flex items-center justify-center rounded-lg px-4 py-1.5 h-8 text-[12px] font-semibold tracking-tight bg-white hover:bg-neutral-100 text-[#0a0a0a] shadow-none transition-colors cursor-pointer whitespace-nowrap border-0"
             >
               {isLoggedIn
                 ? 'Dashboard'
@@ -176,7 +176,7 @@ export default function Navbar() {
               ))}
               <div className="pt-1.5">
                 <button
-                  className="w-full h-9 rounded-full bg-white hover:bg-neutral-100 text-[#0a0a0a] text-[12px] font-semibold tracking-tight shadow-none transition-colors cursor-pointer flex items-center justify-center border-0"
+                  className="w-full h-9 rounded-lg bg-white hover:bg-neutral-100 text-[#0a0a0a] text-[12px] font-semibold tracking-tight shadow-none transition-colors cursor-pointer flex items-center justify-center border-0"
                   onClick={handleCtaClick}
                 >
                   {isLoggedIn
