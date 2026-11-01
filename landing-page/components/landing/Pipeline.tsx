@@ -214,8 +214,8 @@ export default function Pipeline() {
 
   return (
     <Section id="pipeline" className="px-5 pt-10 sm:pt-14 md:pt-16 pb-14 md:pb-20 lg:pb-24 md:px-10">
-      <Reveal>
-        <H2 accent="cash." className="mt-0">From claim to</H2>
+      <Reveal className="text-center">
+        <H2 accent="cash." className="mt-0 text-center">From claim to</H2>
       </Reveal>
 
       {/* ── Compact Alternating Bento Grid ── */}
