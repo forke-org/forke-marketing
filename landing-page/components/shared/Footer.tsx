@@ -95,7 +95,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="relative z-10 overflow-hidden border-t border-white/[0.07]" style={{ backgroundColor: 'var(--color-bg)' }}>
+    <footer className="relative z-10 overflow-hidden" style={{ backgroundColor: 'var(--color-bg)' }}>
       <div className="mx-auto max-w-7xl px-5 pt-16 md:px-10 md:pt-20 min-[1920px]:max-w-[1920px]">
         <div className="grid gap-8 md:gap-12 sm:grid-cols-2 md:grid-cols-[1.8fr_1fr_1fr_1fr_1.2fr]">
           {/* Brand */}
@@ -166,20 +166,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/[0.05] py-7 font-mono text-[11px] text-white/60 md:flex-row">
+        {/* Giant solid wordmark like NOTHIN' reference */}
+        <div className="mt-16 select-none overflow-hidden sm:mt-20 md:mt-24">
+          <div className="text-center font-bold tracking-[-0.05em] leading-[0.82] text-white text-[clamp(4.5rem,20vw,18rem)] whitespace-nowrap select-none">
+            forke<span className="text-accent">*</span>
+          </div>
+        </div>
+
+        {/* Bottom text row below wordmark */}
+        <div className="mt-8 flex flex-col items-center justify-between gap-3 pb-8 pt-4 font-mono text-[11px] text-white/60 md:flex-row md:pb-10">
           <span>© 2026 forke — all rights reserved</span>
           <span>made in india · paid in rupees</span>
         </div>
-      </div>
-
-      {/* Giant outlined wordmark, clipped at the page edge */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none relative mx-auto h-[16vw] max-w-7xl select-none overflow-hidden md:h-[13vw] min-[1920px]:max-w-[1920px]"
-      >
-        <span className="text-outline absolute left-1/2 top-0 -translate-x-1/2 whitespace-nowrap text-[20vw] font-bold leading-[0.78] tracking-[-0.05em] md:text-[16vw]">
-          forke<span className="[-webkit-text-stroke:1px_rgba(255,122,0,0.55)]">*</span>
-        </span>
       </div>
     </footer>
   )
