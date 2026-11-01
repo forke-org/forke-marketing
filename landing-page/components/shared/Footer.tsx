@@ -94,14 +94,15 @@ export default function Footer() {
       const windowHeight = window.innerHeight
       const docHeight = document.documentElement.scrollHeight
 
-      // Logo reveal animation based on scroll position near the bottom
-      if (scrollY + windowHeight > docHeight - 100) {
+      const currentHeight = footerInnerRef.current?.offsetHeight || 650
+
+      // Reveal animation when coming to the footer
+      if (scrollY + windowHeight > docHeight - currentHeight * 0.75) {
         setIsRevealed(true)
-      } else if (scrollY + windowHeight <= docHeight - 150) {
+      } else if (scrollY + windowHeight <= docHeight - currentHeight - 40) {
         setIsRevealed(false)
       }
 
-      const currentHeight = footerInnerRef.current?.offsetHeight || 600
       setIsNearBottom(scrollY + windowHeight >= docHeight - currentHeight - 50)
     }
 
@@ -198,7 +199,11 @@ export default function Footer() {
         <div className="relative z-10 mx-auto max-w-7xl px-5 pt-16 md:px-10 md:pt-20 min-[1920px]:max-w-[1920px]">
           <div className="flex flex-col justify-between gap-10 md:flex-row md:items-start md:gap-8 lg:gap-12">
             {/* Brand */}
-            <div className="shrink-0 md:max-w-xs lg:max-w-sm">
+            <div 
+              className={`shrink-0 md:max-w-xs lg:max-w-sm transition-all duration-[800ms] ease-out ${
+                isRevealed ? 'translate-y-0 opacity-100' : 'translate-y-[40px] opacity-0'
+              }`}
+            >
               <a href="/" className="inline-flex items-center transition-opacity hover:opacity-80">
                 <img
                   src="/forke-assets/forke_logo.png"
@@ -213,7 +218,11 @@ export default function Footer() {
             </div>
 
             {/* Link & Connect columns shifted to right side with controlled gap */}
-            <div className="flex flex-wrap items-start gap-8 sm:gap-10 md:gap-10 lg:gap-14 md:justify-end">
+            <div 
+              className={`flex flex-wrap items-start gap-8 sm:gap-10 md:gap-10 lg:gap-14 md:justify-end transition-all duration-[800ms] ease-out delay-[60ms] ${
+                isRevealed ? 'translate-y-0 opacity-100' : 'translate-y-[40px] opacity-0'
+              }`}
+            >
               {columns.map((col) => (
                 <div key={col.heading} className="min-w-[90px] sm:min-w-[105px]">
                   <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
@@ -264,7 +273,7 @@ export default function Footer() {
           {/* Giant solid wordmark with reveal animation */}
           <div className="logo mt-16 select-none overflow-hidden sm:mt-20 md:mt-24">
             <div 
-              className={`text-center font-bold tracking-[-0.05em] leading-[0.82] text-white text-[clamp(4.5rem,20vw,18rem)] whitespace-nowrap select-none transition-all duration-[800ms] ease-out ${
+              className={`text-center font-bold tracking-[-0.05em] leading-[0.82] text-white text-[clamp(4.5rem,20vw,18rem)] whitespace-nowrap select-none transition-all duration-[800ms] ease-out delay-[120ms] ${
                 isRevealed 
                   ? 'translate-y-0 opacity-100 show' 
                   : 'translate-y-[50px] opacity-0'
@@ -275,7 +284,11 @@ export default function Footer() {
           </div>
 
           {/* Bottom text row below wordmark */}
-          <div className="mt-8 flex flex-col items-center justify-between gap-3 pb-8 pt-4 font-mono text-[11px] text-white/60 md:flex-row md:pb-10">
+          <div 
+            className={`mt-8 flex flex-col items-center justify-between gap-3 pb-8 pt-4 font-mono text-[11px] text-white/60 md:flex-row md:pb-10 transition-all duration-[800ms] ease-out delay-[180ms] ${
+              isRevealed ? 'translate-y-0 opacity-100' : 'translate-y-[30px] opacity-0'
+            }`}
+          >
             <span>© 2026 forke — all rights reserved</span>
             <span>made in india · paid in rupees</span>
           </div>
