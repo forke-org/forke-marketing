@@ -15,7 +15,7 @@ import { Cpu, Sparkles, Gauge, UserCheck } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { Section, Eyebrow, H2 } from './primitives'
+import { Section, H2 } from './primitives'
 import Reveal from './Reveal'
 
 if (typeof window !== 'undefined') {
@@ -233,19 +233,14 @@ function BlueprintScene() {
   )
 }
 
-export default function ReviewSystem({ n = '006' }: { n?: string }) {
+export default function ReviewSystem({ n }: { n?: string } = {}) {
   return (
     <Section id="review" className="relative overflow-hidden px-5 py-16 md:px-10 md:py-24">
       <div className="relative">
-        <Reveal>
-          <Eyebrow n={n} label="the review system" />
-          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-            <H2 accent="payout.">Four gates before every</H2>
-            <p className="max-w-md pb-1.5 text-[15px] font-normal leading-relaxed text-white/45">
-              No code reaches an owner — and no money moves — until every gate
-              clears. That&apos;s why both sides can trust a stranger on the internet.
-            </p>
-          </div>
+        <Reveal className="text-center">
+          <H2 accent="payout." className="mt-0 text-center">
+            Four gates before every
+          </H2>
         </Reveal>
 
         {/* The blueprint */}
