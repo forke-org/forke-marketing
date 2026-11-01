@@ -18,7 +18,7 @@ import Aurora from './Aurora'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import TechStackTicker from './TechStackTicker'
-import GlassyButton from '@/components/ui/GlassyButton'
+import { Button } from '@/components/ui/Button'
 
 export default function Hero() {
   const router = useRouter()
@@ -132,15 +132,9 @@ export default function Hero() {
       {/* Centered Main Content Area */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center flex flex-col items-center space-y-6 sm:space-y-7 my-auto">
         
-        {/* Terminal Pill ("$ git push origin payday") matching exact font, style, and colors */}
-        <div 
-          className="gsap-hero-eyebrow inline-flex items-center rounded-full px-4.5 py-1.5 font-mono text-xs sm:text-[13px] shadow-[0_2px_16px_rgba(0,0,0,0.45)] backdrop-blur-md select-none border"
-          style={{
-            backgroundColor: 'rgba(15, 15, 15, 0.6)',
-            borderColor: 'rgba(255, 255, 255, 0.12)'
-          }}
-        >
-          <span className="text-white/60 tracking-normal">
+        {/* Terminal Eyebrow ("$ git push origin payday") — clean, transparent, no backdrop or shadow */}
+        <div className="gsap-hero-eyebrow inline-flex items-center rounded-full px-4 py-1.5 font-mono text-xs sm:text-[13px] border border-white/10 bg-transparent select-none">
+          <span className="text-white/70 tracking-normal">
             $ git push origin <span className="text-accent">payday</span>
           </span>
         </div>
@@ -160,23 +154,25 @@ export default function Hero() {
         <div className="space-y-4 pt-1 w-full flex flex-col items-center">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
             {showWaitlisterView ? (
-              <GlassyButton
-                className="gsap-hero-btn h-12 sm:h-13 px-8 text-[15px] font-semibold tracking-tight w-full sm:w-auto"
+              <Button
+                size="lg"
+                className="gsap-hero-btn group h-12 sm:h-13 px-8 rounded-full bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2"
                 onClick={() => router.push('/waitlist')}
               >
                 Join the waitlist <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-              </GlassyButton>
+              </Button>
             ) : (
-              <GlassyButton
-                className="gsap-hero-btn h-12 sm:h-13 px-8 text-[15px] font-semibold tracking-tight w-full sm:w-auto"
+              <Button
+                size="lg"
+                className="gsap-hero-btn group h-12 sm:h-13 px-8 rounded-full bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2"
                 onClick={() => router.push('/signin')}
               >
                 Start earning <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-              </GlassyButton>
+              </Button>
             )}
             <a
               href="#how-it-works"
-              className="gsap-hero-btn h-12 sm:h-13 px-7 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20 text-white/80 hover:text-white text-[15px] font-semibold inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer"
+              className="gsap-hero-btn h-12 sm:h-13 px-7 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20 text-white/80 hover:text-white text-[15px] font-semibold inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer shadow-none"
             >
               See how it works
             </a>
@@ -207,7 +203,7 @@ export default function Hero() {
               width={310}
               height={206}
               priority
-              className="w-full h-auto object-contain object-bottom drop-shadow-[0_0_36px_rgba(249,115,22,0.42)]"
+              className="w-full h-auto object-contain object-bottom "
             />
           </div>
         </div>
