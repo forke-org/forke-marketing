@@ -239,7 +239,7 @@ export default function Pipeline() {
             {/* Content Bottom */}
             <div className="relative z-10 mt-3">
               <span className="font-mono text-[10px] uppercase tracking-wider text-accent/80 font-medium">
-                01 // CLAIM
+                01
               </span>
               <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white uppercase mt-0.5">
                 Claim bounties
@@ -302,7 +302,7 @@ export default function Pipeline() {
             {/* Content Bottom */}
             <div className="relative z-10 mt-3">
               <span className="font-mono text-[10px] uppercase tracking-wider text-accent/80 font-medium">
-                02 // SHIP
+                02
               </span>
               <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white uppercase mt-0.5">
                 Ship the fix
@@ -329,7 +329,7 @@ export default function Pipeline() {
             {/* Content Bottom */}
             <div className="relative z-10 mt-3">
               <span className="font-mono text-[10px] uppercase tracking-wider text-accent/80 font-medium">
-                03 // GET PAID
+                03
               </span>
               <h3 className="text-lg sm:text-xl font-bold tracking-tight text-white uppercase mt-0.5">
                 Get paid
