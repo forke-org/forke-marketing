@@ -36,12 +36,12 @@ export function Rails({
       <div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 left-0 hidden w-px lg:block z-10"
-        style={{ background: railGradient }}
+        style={{ background: fadeTop || fadeBottom ? railGradient : RAIL }}
       />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 right-0 hidden w-px lg:block z-10"
-        style={{ background: railGradient }}
+        style={{ background: fadeTop || fadeBottom ? railGradient : RAIL }}
       />
       {children}
     </div>
@@ -50,12 +50,7 @@ export function Rails({
 
 /** Crosshair joints for the top corners of a full-rail-width section. */
 export function Crosses() {
-  return (
-    <>
-      <span aria-hidden className="ui-cross hidden lg:block left-0 top-0 -translate-x-1/2 -translate-y-1/2">+</span>
-      <span aria-hidden className="ui-cross hidden lg:block right-0 top-0 translate-x-1/2 -translate-y-1/2">+</span>
-    </>
-  )
+  return null
 }
 
 export function Section({
@@ -66,16 +61,14 @@ export function Section({
 }: {
   id?: string
   className?: string
-  /** Skip the top hairline + crosses — for sections that follow a faded edge. */
   flush?: boolean
   children: React.ReactNode
 }) {
   return (
     <section
       id={id}
-      className={`relative ${flush ? '' : 'border-t border-white/[0.06]'} ${className}`}
+      className={`relative ${className}`}
     >
-      {!flush && <Crosses />}
       {children}
     </section>
   )

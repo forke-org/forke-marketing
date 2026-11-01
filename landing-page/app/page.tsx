@@ -44,17 +44,11 @@ export default function LandingPage() {
         {/* Full-bleed cover — hero with Forky + ticker */}
         <Hero />
 
-        {/* Ledger block one — rails dissolve before the video */}
-        <Rails fadeBottom>
+        {/* Continuous rails from starting page to ending page */}
+        <Rails>
           <Pipeline />
           <Session n="002" />
-        </Rails>
-
-        {/* Full-bleed brand moment — the video carries its own edge fades */}
-        <FirstMerge />
-
-        {/* Ledger block two — rails fade back in, then dissolve before the CTA */}
-        <Rails fadeTop fadeBottom>
+          <FirstMerge />
           <Verdict n="003" flush />
           <Proof n="004" />
           <Section>
@@ -62,10 +56,9 @@ export default function LandingPage() {
           </Section>
           <ReviewSystem n="006" />
           <FAQ n="007" />
+          <SupportedBy />
+          <CTA />
         </Rails>
-
-        <SupportedBy />
-        <CTA />
       </main>
       <Footer />
     </div>
