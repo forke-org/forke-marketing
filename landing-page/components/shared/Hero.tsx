@@ -178,8 +178,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Mascot Image — 2.5x scaled (280-320px desktop, ~180px mobile) below CTA buttons */}
-        <div className="gsap-hero-mascot relative w-full flex flex-col items-center justify-center mt-6 sm:mt-8 -mb-10 sm:-mb-16 md:-mb-20 z-30 pointer-events-none select-none">
+        {/* Mascot Image — comfortable breathing space from CTA buttons, overlapping down into ticker */}
+        <div className="gsap-hero-mascot relative w-full flex flex-col items-center justify-center mt-12 sm:mt-16 md:mt-20 -mb-6 sm:-mb-10 md:-mb-14 z-30 pointer-events-none select-none">
           {/* Strengthened soft orange radial glow behind mascot */}
           <div 
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[340px] md:w-[420px] h-[160px] sm:h-[220px] md:h-[260px] rounded-full pointer-events-none z-0"
