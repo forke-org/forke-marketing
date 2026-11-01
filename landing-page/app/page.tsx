@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import Navbar from '@/components/shared/Navbar'
 import Hero from '@/components/shared/Hero'
-import FirstMerge from '@/components/shared/FirstMerge'
 import LevelSystem from '@/components/shared/LevelSystem'
 import FAQ from '@/components/shared/FAQ'
 import CTA from '@/components/shared/CTA'
@@ -47,8 +46,7 @@ export default function LandingPage() {
         <Rails>
           <Pipeline />
           <Session n="002" />
-          <FirstMerge />
-          <Verdict n="003" flush />
+          <Verdict n="003" />
           <Proof n="004" />
           <LevelSystem />
           <ReviewSystem n="006" />
