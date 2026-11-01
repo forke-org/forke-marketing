@@ -169,11 +169,18 @@ function SpinnerRing({ className = '' }: { className?: string }) {
   )
 }
 
+interface TooltipPosition {
+  cardX: number
+  cardBottomY: number
+  tileX: number
+  tileTopY: number
+}
+
 function BlueprintScene() {
   const sceneRef = useRef<HTMLDivElement>(null)
   const cameraRef = useRef<HTMLDivElement>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number; isAbove: boolean } | null>(null)
+  const [tooltipPos, setTooltipPos] = useState<TooltipPosition | null>(null)
   const leaveTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   // Scroll-tied parallax on camera
@@ -208,11 +215,22 @@ function BlueprintScene() {
     if (sceneEl) {
       const tileRect = e.currentTarget.getBoundingClientRect()
       const sceneRect = sceneEl.getBoundingClientRect()
-      const relY = tileRect.top - sceneRect.top
+      const tileX = tileRect.left - sceneRect.left + tileRect.width / 2
+      const tileTopY = tileRect.top - sceneRect.top
+
+      // 32px leader string between the card bottom and button top
+      const STRING_LENGTH = 32
+      const cardBottomY = tileTopY - STRING_LENGTH
+
+      // Clamp cardX to prevent the card (width ~300px) from overflowing screen bounds
+      const halfWidth = 150
+      const cardX = Math.max(halfWidth + 12, Math.min(sceneRect.width - halfWidth - 12, tileX))
+
       setTooltipPos({
-        x: tileRect.left - sceneRect.left + tileRect.width / 2,
-        y: relY,
-        isAbove: relY > 140,
+        cardX,
+        cardBottomY,
+        tileX,
+        tileTopY,
       })
     }
     setHoveredIndex(idx)
@@ -235,7 +253,7 @@ function BlueprintScene() {
   return (
     <div
       ref={sceneRef}
-      className="relative mx-auto h-[340px] sm:h-[460px] md:h-[540px] lg:h-[600px] w-full max-w-5xl select-none"
+      className="relative mx-auto h-[360px] sm:h-[480px] md:h-[560px] lg:h-[620px] w-full max-w-5xl select-none overflow-visible"
     >
       {/* Perspective camera */}
       <div
@@ -243,11 +261,11 @@ function BlueprintScene() {
         className="absolute inset-0 will-change-transform"
         style={{ perspective: '1400px', perspectiveOrigin: '50% 30%' }}
       >
-        {/* The isometric drawing plane */}
+        {/* The isometric drawing plane (centered slightly lower to give ample top headroom for cards 02 & 03) */}
         <div
           className="absolute left-1/2 top-1/2 h-[680px] w-[680px] origin-center [--blueprint-scale:scale(0.65)] sm:[--blueprint-scale:scale(0.88)] md:[--blueprint-scale:scale(1.16)] lg:[--blueprint-scale:scale(1.26)]"
           style={{
-            transform: 'translate(-50%, -54%) rotateX(57deg) rotateZ(-45deg) var(--blueprint-scale)',
+            transform: 'translate(-50%, -46%) rotateX(57deg) rotateZ(-45deg) var(--blueprint-scale)',
             transformStyle: 'preserve-3d',
           }}
         >
@@ -349,16 +367,42 @@ function BlueprintScene() {
         }}
       />
 
-      {/* 2D Native HD Hover Card — zero 3D matrix blur, zero flicker, crystal-clear typography */}
+      {/* Dotted String Connector + Anchor Pin in Glowing Orange */}
+      {hoveredIndex !== null && tooltipPos && (
+        <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible z-40">
+          <defs>
+            <filter id="orange-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="0" dy="0" stdDeviation="2.5" floodColor="#FF7A00" floodOpacity="0.85" />
+            </filter>
+          </defs>
+          {/* Orange Dotted String Leader Line */}
+          <line
+            x1={tooltipPos.cardX}
+            y1={tooltipPos.cardBottomY}
+            x2={tooltipPos.tileX}
+            y2={tooltipPos.tileTopY}
+            stroke="#FF7A00"
+            strokeWidth="2"
+            strokeDasharray="4 3"
+            strokeLinecap="round"
+            filter="url(#orange-glow)"
+          />
+          {/* Top connection bead at card bottom */}
+          <circle cx={tooltipPos.cardX} cy={tooltipPos.cardBottomY} r="2.5" fill="#FF7A00" />
+          {/* Bottom anchor pin bead resting on the button */}
+          <circle cx={tooltipPos.tileX} cy={tooltipPos.tileTopY} r="4" fill="#FF7A00" filter="url(#orange-glow)" />
+          <circle cx={tooltipPos.tileX} cy={tooltipPos.tileTopY} r="1.5" fill="#FFFFFF" />
+        </svg>
+      )}
+
+      {/* 2D Native HD Hover Card — Always shows ABOVE button, zero blur, zero flicker */}
       {hoveredIndex !== null && tooltipPos && (
         <div
           className="pointer-events-none absolute z-50 transition-all duration-200 ease-out animate-in fade-in zoom-in-95"
           style={{
-            left: `${tooltipPos.x}px`,
-            top: `${tooltipPos.y}px`,
-            transform: tooltipPos.isAbove
-              ? 'translate(-50%, calc(-100% - 14px))'
-              : 'translate(-50%, 28px)',
+            left: `${tooltipPos.cardX}px`,
+            top: `${tooltipPos.cardBottomY}px`,
+            transform: 'translate(-50%, -100%)',
           }}
         >
           <div className="w-[280px] sm:w-[320px] rounded-xl border border-accent/50 bg-[#090806]/95 p-4 shadow-[0_12px_40px_rgba(0,0,0,0.85),0_0_30px_rgba(255,122,0,0.25)] backdrop-blur-md">
@@ -392,7 +436,7 @@ export default function ReviewSystem({ n }: { n?: string } = {}) {
 
         {/* The blueprint — scaled up for prominent visibility with HD interactive hover tooltips */}
         <Reveal delay={150}>
-          <div className="mt-8 md:mt-12">
+          <div className="mt-12 md:mt-16">
             <BlueprintScene />
           </div>
         </Reveal>
