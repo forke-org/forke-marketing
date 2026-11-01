@@ -15,6 +15,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ArrowRight } from 'lucide-react'
 import Aurora from './Aurora'
+import ScrollFloat from './ScrollFloat'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import TechStackTicker from './TechStackTicker'
@@ -50,25 +51,21 @@ export default function Hero() {
       { y: 12, opacity: 0, duration: 0.5 },
       0.05
     )
-    .from('.gsap-hero-title',
-      { y: 20, opacity: 0, duration: 0.6 },
-      0.15
-    )
     .from('.gsap-hero-subtitle',
       { y: 16, opacity: 0, duration: 0.5 },
-      0.25
+      0.4
     )
     .from('.gsap-hero-btn',
       { y: 12, opacity: 0, duration: 0.5, stagger: 0.08 },
-      0.35
+      0.5
     )
     .from('.gsap-hero-mascot',
       { y: 16, opacity: 0, duration: 0.6, ease: 'power2.out' },
-      0.45
+      0.6
     )
     .from('.gsap-hero-ticker',
       { opacity: 0, y: 16, duration: 0.6 },
-      0.58
+      0.72
     )
 
     // Gentle ambient floating animation on the mascot
@@ -139,11 +136,26 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Hero Title — editorial proportion (88-100px desktop, weight 500, compact 0.98-1.02 leading, 32-40px spacing from pill) */}
-        <h1 className="gsap-hero-title mt-8 sm:mt-10 text-[clamp(2.5rem,5.8vw+0.75rem,6rem)] font-medium text-white leading-[1.0] sm:leading-[1.02] tracking-[-0.038em] max-w-5xl mx-auto">
-          Ship real work. <br />
-          Earn XP. <span className="font-serif italic font-medium text-accent inline-block sm:inline ml-1 sm:ml-2">Get paid.</span>
-        </h1>
+        {/* Hero Title — with ScrollFloat opening animation from React Bits */}
+        <ScrollFloat
+          as="h1"
+          autoPlay={true}
+          delay={0.15}
+          effect="float"
+          splitBy="chars"
+          direction="up"
+          order="start"
+          animationDuration={1}
+          ease="back.inOut(2)"
+          stagger={0.025}
+          distance={120}
+          stretch={2.3}
+          containerClassName="mt-8 sm:mt-10 text-[clamp(2.5rem,5.8vw+0.75rem,6rem)] font-medium text-white leading-[1.0] sm:leading-[1.02] tracking-[-0.038em] max-w-5xl mx-auto text-center"
+          accent="Get paid."
+          accentClassName="font-serif italic font-medium text-accent inline-block sm:inline ml-1 sm:ml-2"
+        >
+          {"Ship real work.\nEarn XP. Get paid."}
+        </ScrollFloat>
 
         {/* Supporting Description — exact 20px size, 30px (1.5) line height, 500 medium weight, -0.4px tracking from reference inspection */}
         <p className="gsap-hero-subtitle mt-6 sm:mt-7 text-[16px] sm:text-[18px] md:text-[20px] leading-[25px] sm:leading-[27px] md:leading-[30px] font-medium tracking-[-0.4px] text-white/70 max-w-[680px] mx-auto text-center">
