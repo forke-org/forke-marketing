@@ -97,9 +97,9 @@ export default function Footer() {
   return (
     <footer className="relative z-10 overflow-hidden" style={{ backgroundColor: 'var(--color-bg)' }}>
       <div className="mx-auto max-w-7xl px-5 pt-16 md:px-10 md:pt-20 min-[1920px]:max-w-[1920px]">
-        <div className="grid gap-8 md:gap-12 sm:grid-cols-2 md:grid-cols-[1.8fr_1fr_1fr_1fr_1.2fr]">
+        <div className="flex flex-col justify-between gap-10 md:flex-row md:items-start md:gap-8 lg:gap-12">
           {/* Brand */}
-          <div className="md:col-span-1">
+          <div className="shrink-0 md:max-w-xs lg:max-w-sm">
             <a href="/" className="inline-flex items-center transition-opacity hover:opacity-80">
               <img
                 src="/forke-assets/forke_logo.png"
@@ -119,49 +119,51 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Link columns */}
-          {columns.map((col) => (
-            <div key={col.heading}>
-              <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-white/60">
-                {col.heading}
-              </p>
-              <ul className="mt-5 space-y-3">
-                {col.links.map((link) => (
-                  <li key={link.name}>
-                    <a
-                      href={link.href}
-                      {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      className="font-mono text-[13px] text-white/60 transition-colors hover:text-white"
-                    >
-                      {link.name}
-                      {link.external && ' ↗'}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Link & Connect columns shifted to right side with controlled gap */}
+          <div className="flex flex-wrap items-start gap-8 sm:gap-10 md:gap-10 lg:gap-14 md:justify-end">
+            {columns.map((col) => (
+              <div key={col.heading} className="min-w-[90px] sm:min-w-[105px]">
+                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
+                  {col.heading}
+                </p>
+                <ul className="mt-5 space-y-3">
+                  {col.links.map((link) => (
+                    <li key={link.name}>
+                      <a
+                        href={link.href}
+                        {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                        className="font-mono text-[13px] text-white/60 transition-colors hover:text-white"
+                      >
+                        {link.name}
+                        {link.external && ' ↗'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
 
-          {/* Connect column */}
-          <div>
-            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-white/60">
-              connect
-            </p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {SOCIALS.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  aria-label={s.label}
-                  title={s.label}
-                  {...(s.href.startsWith('http')
-                    ? { target: '_blank', rel: 'noopener noreferrer' }
-                    : {})}
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] text-white/60 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                >
-                  {s.icon}
-                </a>
-              ))}
+            {/* Connect column */}
+            <div className="w-[184px]">
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
+                connect
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {SOCIALS.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    aria-label={s.label}
+                    title={s.label}
+                    {...(s.href.startsWith('http')
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] text-white/60 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
+                  >
+                    {s.icon}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
