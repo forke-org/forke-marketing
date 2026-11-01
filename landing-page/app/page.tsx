@@ -7,7 +7,6 @@ import FAQ from '@/components/shared/FAQ'
 import CTA from '@/components/shared/CTA'
 import SupportedBy from '@/components/landing/SupportedBy'
 import Footer from '@/components/shared/Footer'
-import Stats from '@/components/landing/Stats'
 import Pipeline from '@/components/landing/Pipeline'
 import Session from '@/components/landing/Session'
 import Verdict from '@/components/landing/Verdict'
@@ -47,7 +46,6 @@ export default function LandingPage() {
 
         {/* Ledger block one — rails dissolve before the video */}
         <Rails fadeBottom>
-          <Stats />
           <Pipeline />
           <Session n="002" />
         </Rails>

@@ -211,7 +211,7 @@ export default function Pipeline() {
   const paidDone = amount >= 800
 
   return (
-    <Section id="pipeline" className="px-5 py-16 md:px-10 md:py-24">
+    <Section id="pipeline" className="px-5 pt-12 sm:pt-16 md:pt-20 pb-16 md:pb-24 lg:pb-28 md:px-10">
       <Reveal>
         <Eyebrow n="001" label="the pipeline" />
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
@@ -227,7 +227,7 @@ export default function Pipeline() {
       <Reveal delay={120}>
         <div
           ref={gridRef}
-          className="mt-14 overflow-hidden rounded-2xl lg:rounded-3xl border border-white/[0.08] bg-[#070709] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.7)] flex flex-col lg:flex-row items-stretch lg:min-h-[640px]"
+          className="mt-10 sm:mt-12 lg:mt-14 overflow-hidden rounded-2xl lg:rounded-3xl border border-white/[0.08] bg-[#070709] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.7)] flex flex-col lg:flex-row items-stretch lg:min-h-[640px]"
         >
           {/* ── LEFT COLUMN — CLAIM (~26% width, 65% upper / 35% lower) ── */}
           <div className="flex flex-col lg:w-[26%] lg:flex-[26_26_0%] border-b lg:border-b-0 lg:border-r border-white/[0.08]">
