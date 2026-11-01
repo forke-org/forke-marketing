@@ -131,25 +131,25 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* Hero Title — refined clamp (88-96px desktop max, compact 0.98-1.01 leading, 32px desktop / 24px mobile spacing) */}
-        <h1 className="gsap-hero-title mt-6 sm:mt-8 text-[clamp(2.75rem,5.5vw+1rem,5.75rem)] font-bold text-white leading-[0.98] sm:leading-[1.01] tracking-[-0.04em] max-w-5xl mx-auto">
+        {/* Hero Title — editorial proportion (88-100px desktop, weight 500, compact 0.98-1.02 leading, 32-40px spacing from pill) */}
+        <h1 className="gsap-hero-title mt-8 sm:mt-10 text-[clamp(2.5rem,5.8vw+0.75rem,6rem)] font-medium text-white leading-[1.0] sm:leading-[1.02] tracking-[-0.038em] max-w-5xl mx-auto">
           Ship real work. <br />
-          Earn XP. <span className="font-serif italic font-medium text-accent inline-block sm:inline ml-1 sm:ml-1.5">Get paid.</span>
+          Earn XP. <span className="font-serif italic font-medium text-accent inline-block sm:inline ml-1 sm:ml-2">Get paid.</span>
         </h1>
 
-        {/* Supporting Description — refined size (18-20px desktop, 16-17px mobile, 1.5 leading, 760px max width, 24px desktop / 20px mobile spacing) */}
-        <p className="gsap-hero-subtitle mt-5 sm:mt-6 text-[16px] sm:text-[17px] md:text-[18.5px] lg:text-[19px] text-white/60 max-w-[760px] mx-auto leading-[1.5] font-normal text-center">
+        {/* Supporting Description — secondary, readable, 18-20px desktop, 16px mobile, 1.5 leading, 800px max width, 24-28px spacing from heading */}
+        <p className="gsap-hero-subtitle mt-6 sm:mt-7 text-[16px] sm:text-[17.5px] md:text-[19px] lg:text-[19.5px] text-white/60 max-w-[800px] mx-auto leading-[1.5] font-normal text-center">
           Claim scoped bounties from real startups, ship the fix, and cash out to UPI the moment your PR merges. No resumes. No interviews.
         </p>
 
-        {/* CTA Actions & Trust Line Container — 32px desktop / 24px mobile spacing from description */}
-        <div className="mt-6 sm:mt-8 w-full flex flex-col items-center">
-          {/* CTA Buttons — 56-58px height, 16px desktop / 12-14px mobile gap, consistent padding */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
+        {/* CTA Actions & Trust Line Container — 32px desktop / 28px mobile spacing from description */}
+        <div className="mt-8 w-full flex flex-col items-center">
+          {/* CTA Buttons — refined 56px height, 24-26px horizontal padding, 16px font-semibold, 16px gap */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 w-full sm:w-auto">
             {showWaitlisterView ? (
               <Button
                 size="lg"
-                className="gsap-hero-btn group h-[54px] sm:h-[58px] px-8 sm:px-9 rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] sm:text-[15.5px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2"
+                className="gsap-hero-btn group h-[52px] sm:h-[56px] px-6 sm:px-[26px] rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15.5px] sm:text-[16px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2"
                 onClick={() => router.push('/waitlist')}
               >
                 Join the waitlist <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -157,7 +157,7 @@ export default function Hero() {
             ) : (
               <Button
                 size="lg"
-                className="gsap-hero-btn group h-[54px] sm:h-[58px] px-8 sm:px-9 rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15px] sm:text-[15.5px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2"
+                className="gsap-hero-btn group h-[52px] sm:h-[56px] px-6 sm:px-[26px] rounded-lg bg-accent hover:bg-accent-hover text-[#0a0a0a] text-[15.5px] sm:text-[16px] font-semibold tracking-tight shadow-none transition-colors w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2"
                 onClick={() => router.push('/signin')}
               >
                 Start earning <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -165,14 +165,14 @@ export default function Hero() {
             )}
             <a
               href="#how-it-works"
-              className="gsap-hero-btn h-[54px] sm:h-[58px] px-7 sm:px-8 rounded-lg border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20 text-white/80 hover:text-white text-[15px] sm:text-[15.5px] font-semibold inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer shadow-none"
+              className="gsap-hero-btn h-[52px] sm:h-[56px] px-6 sm:px-[26px] rounded-lg border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/20 text-white/80 hover:text-white text-[15.5px] sm:text-[16px] font-semibold inline-flex items-center justify-center transition-colors w-full sm:w-auto cursor-pointer shadow-none"
             >
               See how it works
             </a>
           </div>
 
-          {/* Microcopy Trust Line — IBM Plex Mono, 13-14px, subtle grey, 20px desktop / 16px mobile spacing above */}
-          <p className="gsap-hero-meta font-mono text-[12.5px] sm:text-[13.5px] text-white/55 tracking-normal mt-4 sm:mt-5 select-none text-center">
+          {/* Microcopy Trust Line — IBM Plex Mono, 13-14px, subtle grey, 20px spacing below buttons */}
+          <p className="gsap-hero-meta font-mono text-[12.5px] sm:text-[13.5px] text-white/50 tracking-normal mt-5 select-none text-center">
             <span>escrow protected</span>
             <span className="text-white/25 mx-2.5 sm:mx-3">·</span>
             <span>instant UPI payouts</span>
