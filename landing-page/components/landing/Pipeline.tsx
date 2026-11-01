@@ -12,7 +12,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { Check, GitPullRequest } from 'lucide-react'
-import { Section, Eyebrow, H2 } from './primitives'
+import { Section, H2 } from './primitives'
 import Reveal from './Reveal'
 
 /* ── Step vignettes — crisp miniatures of the real Forke product UI. ────────── */
@@ -214,14 +214,7 @@ export default function Pipeline() {
   return (
     <Section id="pipeline" className="px-5 pt-10 sm:pt-14 md:pt-16 pb-14 md:pb-20 lg:pb-24 md:px-10">
       <Reveal>
-        <Eyebrow n="001" label="the pipeline" />
-        <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-          <H2 accent="cash.">From claim to</H2>
-          <p className="max-w-md pb-1 text-[14.5px] font-normal leading-relaxed text-white/45">
-            One workflow, three moves. No proposals, no negotiation threads, no
-            invoices — the pipeline does the trust work for you.
-          </p>
-        </div>
+        <H2 accent="cash." className="mt-0">From claim to</H2>
       </Reveal>
 
       {/* ── Compact Alternating Bento Grid ── */}
