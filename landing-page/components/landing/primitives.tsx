@@ -11,38 +11,21 @@
 import React from 'react'
 
 /**
- * Shared building blocks for the landing/marketing "ledger" layout.
- * Content lives between two vertical rails; sections start with a hairline and
- * crosshair joints mark where hairlines meet the rails. Rails can fade at
- * either end so full-bleed moments (video, CTA) blend in smoothly.
+ * Shared building blocks for the landing/marketing layout.
+ * Content lives in a centered max-w-7xl responsive wrapper.
  */
-
-const RAIL = 'rgba(255, 255, 255, 0.07)'
 
 export function Rails({
   children,
   className = '',
-  fadeTop = false,
-  fadeBottom = false,
 }: {
   children: React.ReactNode
   className?: string
   fadeTop?: boolean
   fadeBottom?: boolean
 }) {
-  const railGradient = `linear-gradient(to bottom, ${fadeTop ? 'transparent' : RAIL}, ${RAIL} 160px, ${RAIL} calc(100% - 160px), ${fadeBottom ? 'transparent' : RAIL})`
   return (
     <div className={`relative mx-auto max-w-7xl min-[1920px]:max-w-[1920px] ${className}`}>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 hidden w-px lg:block z-10"
-        style={{ background: fadeTop || fadeBottom ? railGradient : RAIL }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-px lg:block z-10"
-        style={{ background: fadeTop || fadeBottom ? railGradient : RAIL }}
-      />
       {children}
     </div>
   )

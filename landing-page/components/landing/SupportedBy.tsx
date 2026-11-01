@@ -14,7 +14,7 @@ import React from 'react'
 
 export default function SupportedBy() {
   return (
-    <section className="py-12 bg-bg flex flex-col items-center justify-center">
+    <section className="py-12 bg-transparent flex flex-col items-center justify-center">
       <div className="text-center space-y-4">
         <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">
           supported by

@@ -71,7 +71,7 @@ export default function FirstMerge() {
   )
 
   return (
-    <div ref={containerRef} className="w-full relative overflow-hidden bg-bg">
+    <div ref={containerRef} className="w-full relative overflow-hidden bg-[#050505]">
       {/* Edge blending overlays */}
       <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_30px_rgba(5,5,5,1)] md:shadow-[inset_0_0_80px_rgba(5,5,5,1)]" />
       <div className="absolute top-0 left-0 right-0 h-8 md:h-28 bg-gradient-to-b from-[#050505] to-transparent pointer-events-none z-10" />

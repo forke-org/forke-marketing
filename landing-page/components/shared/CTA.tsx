@@ -135,7 +135,7 @@ export default function CTA() {
   }, { scope: containerRef })
 
   return (
-    <section ref={containerRef} className="py-16 sm:py-24 bg-bg relative overflow-hidden">
+    <section ref={containerRef} className="py-16 sm:py-24 bg-transparent relative overflow-hidden">
       {/* ===== PHONE-ONLY CTA — clean centered card (matches /levels styling) ===== */}
       <div className="md:hidden max-w-7xl mx-auto px-4 relative z-10 min-[1920px]:max-w-[1920px]">
         <div className="gsap-cta-card p-8 rounded-[2.5rem] bg-[#0a0a0a] border border-white/[0.04] shadow-2xl relative overflow-hidden text-center opacity-0">

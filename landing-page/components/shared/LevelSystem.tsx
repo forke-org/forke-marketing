@@ -113,7 +113,7 @@ export default function LevelSystem() {
 
 
   return (
-    <section ref={containerRef} id="levels" className="py-16 md:py-24 px-5 md:px-10 bg-bg relative overflow-hidden">
+    <section ref={containerRef} id="levels" className="py-16 md:py-24 px-5 md:px-10 bg-transparent relative overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-accent-muted)_0%,_transparent_70%)] opacity-10 pointer-events-none" />
 

@@ -52,7 +52,7 @@ export default function RootLayout({
       className={`${schibstedGrotesk.variable} ${newsreader.variable} ${ibmPlexMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased bg-[#0A0A0A] text-[#FFFFFF] font-sans selection:bg-[#FF7A00] selection:text-black min-h-screen">
+      <body className="antialiased bg-[#050505] text-[#FFFFFF] font-sans selection:bg-[#FF7A00] selection:text-black min-h-screen">
         {children}
       </body>
     </html>

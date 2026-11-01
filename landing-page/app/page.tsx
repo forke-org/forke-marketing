@@ -12,7 +12,7 @@ import Session from '@/components/landing/Session'
 import Verdict from '@/components/landing/Verdict'
 import Proof from '@/components/landing/Proof'
 import ReviewSystem from '@/components/landing/ReviewSystem'
-import { Rails, Section } from '@/components/landing/primitives'
+import { Rails } from '@/components/landing/primitives'
 import GradualBlur from './GradualBlur'
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function LandingPage() {
         layers={8}
         curve="linear"
         exponential
-        tint="rgba(18, 15, 23, 0.6)"
+        tint="transparent"
         autoHide
         target="parent"
         opacity={1}
@@ -44,16 +44,14 @@ export default function LandingPage() {
         {/* Full-bleed cover — hero with Forky + ticker */}
         <Hero />
 
-        {/* Continuous rails from starting page to ending page */}
+        {/* Continuous layout container without vertical border rails */}
         <Rails>
           <Pipeline />
           <Session n="002" />
           <FirstMerge />
           <Verdict n="003" flush />
           <Proof n="004" />
-          <Section>
-            <LevelSystem />
-          </Section>
+          <LevelSystem />
           <ReviewSystem n="006" />
           <FAQ n="007" />
           <SupportedBy />
