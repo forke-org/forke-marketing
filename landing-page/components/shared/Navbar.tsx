@@ -60,6 +60,15 @@ export default function Navbar() {
     { name: 'Contact Us', href: `${marketingUrl}/contact` },
   ]
 
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault()
+    setIsMobileMenuOpen(false)
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
+
   const handleCtaClick = () => {
     setIsMobileMenuOpen(false)
     if (isLoggedIn) {
@@ -93,8 +102,10 @@ export default function Navbar() {
         <div className="flex items-center gap-5 sm:gap-7 h-12 sm:h-13 px-4 sm:px-6">
           {/* Left: forke* text */}
           <a
-            href={marketingUrl}
+            href="#"
+            onClick={scrollToTop}
             className="group shrink-0 relative cursor-pointer select-none"
+            aria-label="Back to top"
           >
             <span className="text-lg sm:text-xl font-semibold tracking-[-0.04em] text-white">
               forke<span className="text-accent">*</span>
