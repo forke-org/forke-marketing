@@ -17,7 +17,7 @@ import { ArrowRight, Lock, Search } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { Section, Eyebrow, H2 } from './primitives'
+import { Section, H2 } from './primitives'
 import Reveal from './Reveal'
 import { useWaitlisterView } from './useWaitlisterView'
 
@@ -203,15 +203,12 @@ export default function Proof({ n = '004' }: { n?: string }) {
   }, { scope: wrapRef })
 
   return (
-    <Section id="proof" className="overflow-hidden px-5 pb-10 pt-16 md:px-10 md:pb-16 md:pt-24">
+    <Section id="proof" className="overflow-hidden px-5 pb-10 pt-14 md:px-10 md:pb-16 md:pt-20">
       <div ref={wrapRef}>
         {/* Centered headline above the laptop — Apple product-page composition */}
         <Reveal>
           <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-            <div className="flex justify-center">
-              <Eyebrow n={n} label="proof of work" />
-            </div>
-            <H2 accent="compiles." className="text-center">A resume that</H2>
+            <H2 accent="compiles." className="mt-0 text-center">A resume that</H2>
             <p className="mt-4 max-w-md text-[15px] font-normal leading-relaxed text-white/45">
               Every approved task lands on your public profile automatically —
               timestamped, client-rated, linked to the merged PR. Recruiters

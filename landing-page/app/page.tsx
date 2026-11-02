@@ -48,7 +48,7 @@ export default function LandingPage() {
           <Session />
           <ReviewSystem />
           <Verdict />
-          <Proof n="004" />
+          <Proof />
           <LevelSystem />
           <FAQ n="007" />
           <CTA />
