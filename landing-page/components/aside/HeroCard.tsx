@@ -10,7 +10,6 @@ import Image from 'next/image'
 import { ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Download, GitPullRequest, RotateCcw, Terminal, Zap, Shield, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Rev20Logo } from '@/components/ui/Rev20Logo'
-import SpecularButton from '@/components/ui/SpecularButton'
 
 export default function HeroCard() {
   const [activeTab, setActiveTab] = useState<'terminal' | 'diff' | 'payout'>('terminal')
@@ -160,28 +159,15 @@ export default function HeroCard() {
             </span>
           </h1>
 
-          {/* Single CTA: SpecularButton */}
+          {/* CTA Button (Single 'Get started ->' button, no hover state) */}
           <div className="flex items-center justify-center">
-            <SpecularButton
-              size="lg"
-              radius={18}
-              tint="#000000"
-              tintOpacity={0.2}
-              textColor="#f5f5f5"
-              lineColor="#f97316"
-              baseColor="#f97316"
-              intensity={1}
-              idleIntensity={0.35}
-              shineSize={10}
-              shineFade={34}
-              thickness={1.2}
-              glow={1}
-              followMouse={false}
-              proximity={250}
+            <button
               onClick={handleCtaClick}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-black px-6 py-3 text-sm font-semibold tracking-tight shadow-xl cursor-pointer"
             >
-              Get Started
-            </SpecularButton>
+              <span>Get started</span>
+              <ArrowRight className="size-4" />
+            </button>
           </div>
         </header>
 
