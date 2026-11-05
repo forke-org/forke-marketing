@@ -91,12 +91,12 @@ export default function AsideFooter() {
   ]
 
   return (
-    <footer className="relative py-14 sm:py-16 xl:py-24 border-t border-white/[0.08] bg-[#050505] overflow-hidden">
-      {/* Warm bottom atmospheric radial glow fading into black upwards */}
+    <footer className="relative py-14 sm:py-16 xl:py-24 border-t border-black/[0.08] bg-white overflow-hidden text-[#0a0a0a]">
+      {/* Subtle bottom warm glow */}
       <div 
-        className="pointer-events-none absolute bottom-0 left-0 right-0 h-[70%] z-0"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-[60%] z-0"
         style={{
-          background: 'radial-gradient(ellipse 75% 50% at 50% 100%, rgba(255, 122, 0, 0.16) 0%, rgba(255, 122, 0, 0.04) 50%, transparent 100%)'
+          background: 'radial-gradient(ellipse 75% 50% at 50% 100%, rgba(255, 122, 0, 0.08) 0%, rgba(255, 122, 0, 0.02) 50%, transparent 100%)'
         }}
       />
 
@@ -112,7 +112,7 @@ export default function AsideFooter() {
                 className="h-14 w-14 object-contain"
               />
             </a>
-            <p className="mt-4 max-w-xs text-sm font-normal leading-relaxed text-white/60">
+            <p className="mt-4 max-w-xs text-sm font-normal leading-relaxed text-neutral-600">
               The micro-task marketplace where Indian developers earn real money by
               shipping real code.
             </p>
@@ -130,7 +130,7 @@ export default function AsideFooter() {
                     <li key={link.label}>
                       <a
                         href={link.href}
-                        className="text-white/60 hover:text-white transition-colors hover:underline underline-offset-4"
+                        className="text-neutral-600 hover:text-black transition-colors hover:underline underline-offset-4"
                       >
                         {link.label}
                       </a>
@@ -154,7 +154,7 @@ export default function AsideFooter() {
                     title={s.label}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.02] text-white/60 transition-colors hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-600 transition-colors hover:border-neutral-400 hover:bg-neutral-100 hover:text-black"
                   >
                     {s.icon}
                   </a>
@@ -165,18 +165,18 @@ export default function AsideFooter() {
         </div>
 
         {/* Big Wordmark Divider (Forke Brand Signature) */}
-        <div className="py-8 border-t border-white/[0.06] select-none overflow-hidden">
-          <div className="text-center font-bold tracking-[-0.05em] leading-[0.82] text-white text-[clamp(4.5rem,20vw,18rem)] whitespace-nowrap">
+        <div className="py-8 border-t border-black/[0.08] select-none overflow-hidden">
+          <div className="text-center font-bold tracking-[-0.05em] leading-[0.82] text-neutral-900 text-[clamp(4.5rem,20vw,18rem)] whitespace-nowrap">
             forke<span className="text-accent">*</span>
           </div>
         </div>
 
         {/* Bottom Metadata & Copyright Row */}
-        <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/50">
+        <div className="pt-6 border-t border-black/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-neutral-500">
           <p>© 2026 forke — all rights reserved</p>
           <div className="flex items-center gap-6">
             <span>made in india · paid in rupees</span>
-            <span className="text-accent">● System Operational</span>
+            <span className="text-accent font-semibold">● System Operational</span>
           </div>
         </div>
       </div>

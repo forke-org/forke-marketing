@@ -10,14 +10,14 @@ import { ArrowRight } from 'lucide-react'
 
 export default function ManifestoSection() {
   return (
-    <div id="manifesto" className="mx-auto w-full border-b border-white/15">
+    <div id="manifesto" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         {/* div.border-x with exact Aside stroke & spacing: 144px top (pt-36), 56px x (px-14), 96px bottom (pb-24) */}
-        <div className="border-x border-white/15 px-6 sm:px-8 md:px-14 xl:px-36 pt-24 md:pt-36 pb-20 md:pb-24 gap-16 lg:flex">
+        <div className="border-x border-black/[0.08] px-6 sm:px-8 md:px-14 xl:px-36 pt-24 md:pt-36 pb-20 md:pb-24 gap-16 lg:flex">
           {/* Left Eyebrow Column */}
           <div className="mb-8 w-64 shrink-0">
             <a 
-              className="text-brand-content inline-flex items-center gap-1.5 text-sm font-medium decoration-accent/50 decoration-dotted decoration-2 underline-offset-4 hover:underline md:text-base group" 
+              className="text-accent inline-flex items-center gap-1.5 text-sm font-medium decoration-accent/50 decoration-dotted decoration-2 underline-offset-4 hover:underline md:text-base group" 
               href="#manifesto"
             >
               <span>Introducing Forke</span>
@@ -27,12 +27,12 @@ export default function ManifestoSection() {
 
           {/* Right Text Column */}
           <div className="space-y-8 max-w-3xl">
-            <p className="font-display text-white/60 text-base sm:text-lg xl:text-xl font-normal leading-relaxed">
-              <span className="font-semibold text-white">Today’s tech hiring process is broken.</span>{' '}
+            <p className="font-display text-neutral-600 text-base sm:text-lg xl:text-xl font-normal leading-relaxed">
+              <span className="font-semibold text-[#0a0a0a]">Today’s tech hiring process is broken.</span>{' '}
               Resumes lie, LeetCode tests rote memorization over real engineering, and recruiters judge talent by college tags rather than what you can build. Developers waste weeks on artificial interviews and unpaid assignments with zero feedback.
             </p>
-            <p className="font-display text-white/60 text-base sm:text-lg xl:text-xl font-normal leading-relaxed">
-              <span className="font-semibold text-white">Forke is the marketplace built for pure proof of work.</span>{' '}
+            <p className="font-display text-neutral-600 text-base sm:text-lg xl:text-xl font-normal leading-relaxed">
+              <span className="font-semibold text-[#0a0a0a]">Forke is the marketplace built for pure proof of work.</span>{' '}
               We connect Indian developers with fast-moving startups through scoped, paid engineering bounties. Claim an issue, write production code that passes CI, merge your pull request, and cash out directly to UPI upon maintainer verification.
             </p>
           </div>

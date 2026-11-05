@@ -28,14 +28,14 @@
   --color-accent-muted: rgba(255, 122, 0, 0.1);
   --color-accent-light: rgba(255, 122, 0, 0.05);
   --color-accent-text: #FF7A00;
-  --color-bg: #050505;
-  --color-bg-surface: #050505;
-  --color-text-primary: #FFFFFF;
-  --color-text-muted: #888888;
-  --color-border: #222222;
-  --color-surface: #121212;
-  --color-surface-hover: #1A1A1A;
-  --color-muted: #888888;
+  --color-bg: #FFFFFF;
+  --color-bg-surface: #FFFFFF;
+  --color-text-primary: #0A0A0A;
+  --color-text-muted: #666666;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-surface: #F9FAFB;
+  --color-surface-hover: #F3F4F6;
+  --color-muted: #666666;
   --lanyard-scale: 1;
   --term-scale: calc((min(1920px, 100vw) - 80px) * 0.5526 / 672px);
 }

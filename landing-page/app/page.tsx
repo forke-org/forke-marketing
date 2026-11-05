@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="relative flex flex-col min-h-screen bg-[#060608] text-white selection:bg-[#FF7A00] selection:text-black">
+    <div className="relative flex flex-col min-h-screen bg-white text-[#0a0a0a] selection:bg-[#FF7A00] selection:text-white">
       {/* Sticky Navigation that appears on scroll */}
       <StickyNav />
 

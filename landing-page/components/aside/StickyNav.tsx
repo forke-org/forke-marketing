@@ -40,7 +40,7 @@ export default function StickyNav() {
   return (
     <nav
       className={cn(
-        "font-display fixed top-0 left-0 isolate z-50 w-full transition-all duration-300 bg-[#060608]/90 backdrop-blur-md border-b border-white/[0.08] px-4 sm:px-6 lg:px-12",
+        "font-display fixed top-0 left-0 isolate z-50 w-full transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-black/[0.08] px-4 sm:px-6 lg:px-12",
         isVisible 
           ? "translate-y-0 opacity-100 pointer-events-auto" 
           : "-translate-y-full opacity-0 pointer-events-none"
@@ -53,30 +53,30 @@ export default function StickyNav() {
           onClick={scrollToTop}
           className="select-none flex items-center gap-1.5 cursor-pointer"
         >
-          <span className="text-xl font-bold tracking-tight text-white">
+          <span className="text-xl font-bold tracking-tight text-[#0a0a0a]">
             forke<span className="text-accent">*</span>
           </span>
         </a>
 
         {/* Center Links */}
-        <ul className="hidden md:flex items-center gap-8 lg:gap-10 font-mono text-xs sm:text-sm text-white/70">
+        <ul className="hidden md:flex items-center gap-8 lg:gap-10 font-mono text-xs sm:text-sm text-neutral-600">
           <li>
-            <a href={`${marketingUrl}/whats-forke`} className="hover:text-white transition-colors">
+            <a href={`${marketingUrl}/whats-forke`} className="hover:text-black transition-colors">
               whats-forke
             </a>
           </li>
           <li>
-            <a href={`${marketingUrl}/levels`} className="hover:text-white transition-colors">
+            <a href={`${marketingUrl}/levels`} className="hover:text-black transition-colors">
               levels
             </a>
           </li>
           <li>
-            <a href={`${marketingUrl}/blogs`} className="hover:text-white transition-colors">
+            <a href={`${marketingUrl}/blogs`} className="hover:text-black transition-colors">
               blogs
             </a>
           </li>
           <li>
-            <a href={`${marketingUrl}/contact`} className="hover:text-white transition-colors">
+            <a href={`${marketingUrl}/contact`} className="hover:text-black transition-colors">
               contact-us
             </a>
           </li>
@@ -86,7 +86,7 @@ export default function StickyNav() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleCtaClick}
-            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-white hover:bg-neutral-100 text-black px-4 py-1.5 text-xs font-semibold tracking-tight shadow transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+            className="inline-flex items-center justify-center gap-1.5 rounded-full bg-black hover:bg-neutral-800 text-white px-4 py-1.5 text-xs font-semibold tracking-tight shadow transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
             <span>Get Started</span>
             <ArrowRight className="size-3" />

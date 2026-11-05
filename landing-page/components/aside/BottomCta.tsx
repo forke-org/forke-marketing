@@ -16,16 +16,24 @@ export default function BottomCta() {
   }
 
   return (
-    <div className="mx-auto w-full py-16 sm:py-20 xl:py-28">
+    <div className="mx-auto w-full py-16 sm:py-20 xl:py-28 bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
-        <div 
-          className="relative overflow-hidden rounded-3xl bg-cover bg-center px-6 py-20 text-center sm:px-10 sm:py-28 xl:py-36 border border-white/15 shadow-2xl"
-          style={{
-            backgroundImage: "url('/forke-assets/landing-assets/hero-bg.webp')",
-          }}
-        >
+        <div className="relative overflow-hidden rounded-3xl bg-[#0b0c10] px-6 py-20 text-center sm:px-10 sm:py-28 xl:py-36 border border-neutral-200/80 shadow-2xl">
+          {/* Ambient Video Background */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster="/forke-assets/landing-assets/hero-bg.webp"
+            className="absolute inset-0 h-full w-full object-cover object-center pointer-events-none z-0"
+          >
+            <source src="/forke-assets/landing-assets/hero-bg.webm" type="video/webm" />
+          </video>
+
           {/* Subtle dark gradient overlay */}
-          <div className="absolute inset-0 bg-black/65 backdrop-blur-[2px] pointer-events-none" />
+          <div className="absolute inset-0 bg-black/65 backdrop-blur-[2px] pointer-events-none z-[1]" />
 
           {/* Inner ring */}
           <div className="pointer-events-none absolute inset-0 z-20 rounded-3xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]" />
