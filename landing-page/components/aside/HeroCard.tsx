@@ -10,6 +10,7 @@ import Image from 'next/image'
 import { ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Download, GitPullRequest, RotateCcw, Terminal, Zap, Shield, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Rev20Logo } from '@/components/ui/Rev20Logo'
+import SpecularButton from '@/components/ui/SpecularButton'
 
 export default function HeroCard() {
   const [activeTab, setActiveTab] = useState<'terminal' | 'diff' | 'payout'>('terminal')
@@ -159,21 +160,29 @@ export default function HeroCard() {
             </span>
           </h1>
 
-          {/* CTA Button Group (Aside Style - Directly below headline) */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
+          {/* Single CTA: React Bits SpecularButton */}
+          <div className="flex items-center justify-center">
+            <SpecularButton
+              size="lg"
+              radius={18}
+              tint="#000000"
+              tintOpacity={0.25}
+              blur={10}
+              textColor="#f5f5f5"
+              lineColor="#ffffff"
+              baseColor="#ffffff"
+              intensity={1.1}
+              idleIntensity={0.35}
+              shineSize={12}
+              shineFade={34}
+              thickness={1.2}
+              glow={1}
+              followMouse={true}
+              proximity={250}
               onClick={handleCtaClick}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-white hover:bg-neutral-100 text-black px-6 py-3 text-sm font-semibold tracking-tight shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             >
-              <span>Claim your username</span>
-              <ArrowRight className="size-4" />
-            </button>
-            <a
-              href="#pillars"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-black/35 backdrop-blur-md hover:bg-black/50 text-white px-5 py-3 text-sm font-medium transition-colors"
-            >
-              Explore Bounties
-            </a>
+              Get started
+            </SpecularButton>
           </div>
         </header>
 
