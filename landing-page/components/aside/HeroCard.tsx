@@ -19,10 +19,10 @@ export default function HeroCard() {
   const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.forke.space'
 
   const navLinks = [
-    { name: "What's Forke?", href: '#manifesto' },
-    { name: 'Proof of Work', href: '#pillars' },
-    { name: 'Instant Settlement', href: '#settlement' },
-    { name: 'Reputation', href: '#reputation' },
+    { name: 'whats-forke', href: `${marketingUrl}/whats-forke` },
+    { name: 'levels', href: `${marketingUrl}/levels` },
+    { name: 'blogs', href: `${marketingUrl}/blogs` },
+    { name: 'contact-us', href: `${marketingUrl}/contact` },
   ]
 
   const handleCtaClick = () => {
@@ -61,12 +61,12 @@ export default function HeroCard() {
           </a>
 
           {/* Nav Links */}
-          <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 text-sm font-medium text-white/80 md:flex">
+          <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 lg:gap-10 font-mono text-xs sm:text-sm text-white/70 md:flex">
             {navLinks.map((link) => (
               <li key={link.name}>
                 <a 
                   href={link.href} 
-                  className="transition-colors hover:text-white drop-shadow-sm font-medium hover:underline underline-offset-4 decoration-accent/60"
+                  className="transition-colors hover:text-white drop-shadow-sm font-medium"
                 >
                   {link.name}
                 </a>
@@ -98,7 +98,7 @@ export default function HeroCard() {
         {/* Mobile Dropdown */}
         {isMobileMenuOpen && (
           <div className="relative z-30 md:hidden px-4 pb-4">
-            <div className="rounded-xl bg-black/85 backdrop-blur-xl border border-white/10 p-4 space-y-3">
+            <div className="rounded-xl bg-black/85 backdrop-blur-xl border border-white/10 p-4 space-y-3 font-mono">
               {navLinks.map((link) => (
                 <a
                   key={link.name}

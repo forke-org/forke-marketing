@@ -59,25 +59,25 @@ export default function StickyNav() {
         </a>
 
         {/* Center Links */}
-        <ul className="hidden md:flex items-center gap-8 text-sm font-medium text-white/70">
+        <ul className="hidden md:flex items-center gap-8 lg:gap-10 font-mono text-xs sm:text-sm text-white/70">
           <li>
-            <a href="#manifesto" className="hover:text-white transition-colors">
-              What's Forke?
+            <a href={`${marketingUrl}/whats-forke`} className="hover:text-white transition-colors">
+              whats-forke
             </a>
           </li>
           <li>
-            <a href="#pillars" className="hover:text-white transition-colors">
-              Proof of Work
+            <a href={`${marketingUrl}/levels`} className="hover:text-white transition-colors">
+              levels
             </a>
           </li>
           <li>
-            <a href="#settlement" className="hover:text-white transition-colors">
-              Instant Settlement
+            <a href={`${marketingUrl}/blogs`} className="hover:text-white transition-colors">
+              blogs
             </a>
           </li>
           <li>
-            <a href="#reputation" className="hover:text-white transition-colors">
-              Reputation
+            <a href={`${marketingUrl}/contact`} className="hover:text-white transition-colors">
+              contact-us
             </a>
           </li>
         </ul>
