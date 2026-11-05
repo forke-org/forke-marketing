@@ -17,6 +17,7 @@
 
   /* Font mapping for Next.js Fonts */
   --font-sans: var(--font-schibsted-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-schibsted-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
@@ -1019,3 +1020,22 @@ input[type="checkbox"]:not(.appearance-none):focus {
   );
 }
 
+
+
+/* Aside.com style utilities */
+.text-brand-content {
+  color: #FF7A00;
+}
+.border-glass {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+.bg-web-content-background {
+  background-color: rgba(13, 14, 18, 0.94);
+}
+.tracking-display {
+  letter-spacing: -0.025em;
+}
+.font-semimedium {
+  font-weight: 550;
+}

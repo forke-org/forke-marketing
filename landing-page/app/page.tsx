@@ -1,60 +1,49 @@
 import { Metadata } from 'next'
-import Navbar from '@/components/shared/Navbar'
-import Hero from '@/components/shared/Hero'
-import LevelSystem from '@/components/shared/LevelSystem'
-import FAQ from '@/components/shared/FAQ'
-import CTA from '@/components/shared/CTA'
-import Footer from '@/components/shared/Footer'
-import Pipeline from '@/components/landing/Pipeline'
-import Session from '@/components/landing/Session'
-import Verdict from '@/components/landing/Verdict'
-import Proof from '@/components/landing/Proof'
-import ReviewSystem from '@/components/landing/ReviewSystem'
-import { Rails } from '@/components/landing/primitives'
-import GradualBlur from './GradualBlur'
+import HeroCard from '@/components/aside/HeroCard'
+import StickyNav from '@/components/aside/StickyNav'
+import ManifestoSection from '@/components/aside/ManifestoSection'
+import PillarsSection from '@/components/aside/PillarsSection'
+import SettlementSection from '@/components/aside/SettlementSection'
+import TrustSection from '@/components/aside/TrustSection'
+import BottomCta from '@/components/aside/BottomCta'
+import AsideFooter from '@/components/aside/AsideFooter'
 
 export const metadata: Metadata = {
   title: 'Forke — Ship Real Work, Get Paid',
-  description: 'The premier micro-task marketplace for developers. Complete coding bounties, level up your engineering skills, and earn rewards for your contributions.',
+  description: 'The micro-task marketplace where Indian developers earn real money by shipping real code.',
 }
 
 export default function LandingPage() {
   return (
-    <div className="relative flex flex-col min-h-screen bg-[#050505]">
-      {/* Top upside gradual blur */}
-      <GradualBlur
-        position="top"
-        height="6rem"
-        strength={2}
-        layers={8}
-        curve="linear"
-        exponential
-        tint="transparent"
-        autoHide
-        target="parent"
-        opacity={1}
-        saturation={1}
-        hoverIntensity={1}
-      />
+    <div className="relative flex flex-col min-h-screen bg-[#060608] text-white selection:bg-[#FF7A00] selection:text-black">
+      {/* Sticky Navigation that appears on scroll */}
+      <StickyNav />
 
-      <Navbar />
-      <main className="flex-grow">
-        {/* Full-bleed cover — hero with Forky + ticker */}
-        <Hero />
+      <main className="flex-grow w-full">
+        {/* Top Hero Container with Background Image & Product Stage */}
+        <HeroCard />
 
-        {/* Continuous layout container without vertical border rails */}
-        <Rails>
-          <Pipeline />
-          <Session />
-          <ReviewSystem />
-          <Verdict />
-          <Proof />
-          <LevelSystem />
-          <FAQ n="007" />
-          <CTA />
-        </Rails>
+        {/* Aside Tuck-Under Spacer: pulls the section border-x up behind the hero mockup */}
+        <div className="-mb-20 sm:-mb-24" aria-hidden="true" />
+
+        {/* Section 1: Introducing Forke / Manifesto */}
+        <ManifestoSection />
+
+        {/* Section 2: Proof of Work & Core Pillars */}
+        <PillarsSection />
+
+        {/* Section 3: Instant Settlement & Escrow Vault */}
+        <SettlementSection />
+
+        {/* Section 4: Fair & Meritocratic Reputation */}
+        <TrustSection />
+
+        {/* Section 5: Bottom CTA Banner */}
+        <BottomCta />
       </main>
-      <Footer />
+
+      {/* Global Footer */}
+      <AsideFooter />
     </div>
   )
 }
