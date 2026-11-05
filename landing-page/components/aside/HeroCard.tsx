@@ -134,9 +134,29 @@ export default function HeroCard() {
           </a>
 
           {/* Main Display Headline */}
-          <h1 className="font-display text-white text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-[-0.025em] leading-[1.08] mb-8 drop-shadow-xl">
+          <h1 className="font-display text-white text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-[-0.025em] leading-[1.14] mb-8 drop-shadow-xl">
             Ship real work. <br />
-            Earn XP. <span className="font-serif italic font-normal text-accent">Get paid.</span>
+            Earn XP.{' '}
+            <span className="relative inline-block">
+              Get paid.
+              {/* Orange Scribble Underline */}
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 255 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="none"
+                className="absolute -bottom-2 sm:-bottom-2.5 left-0 w-full h-3 sm:h-4 text-accent pointer-events-none drop-shadow-[0_2px_8px_rgba(255,122,0,0.45)]"
+              >
+                <path
+                  d="M4 14.5C55 5 135 4 251 10.5M16 19.5C82 12.5 178 10.5 245 16.5"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
           </h1>
 
           {/* CTA Button Group (Aside Style - Directly below headline) */}
