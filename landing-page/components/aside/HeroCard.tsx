@@ -31,14 +31,22 @@ export default function HeroCard() {
 
   return (
     <div className="p-2 pb-0 sm:p-3 sm:pb-0 md:p-4 md:pb-0 w-full relative z-10">
-      <div 
-        className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-cover bg-center shadow-2xl border border-white/10"
-        style={{
-          backgroundImage: "url('/forke-assets/landing-assets/hero-bg.webp')",
-        }}
-      >
+      <div className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-[#0b0c10] shadow-2xl border border-white/10">
+        {/* Ambient Video Background (WebM looping animated background) */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="/forke-assets/landing-assets/hero-bg.webp"
+          className="absolute inset-0 h-full w-full object-cover object-center pointer-events-none z-0"
+        >
+          <source src="/forke-assets/landing-assets/hero-bg.webm" type="video/webm" />
+        </video>
+
         {/* Subtle dark gradient overlay to ensure perfect contrast for both dark and bright areas */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/85 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/85 pointer-events-none z-[1]" />
 
         {/* Inner Border Ring */}
         <div className="pointer-events-none absolute inset-0 z-20 rounded-2xl md:rounded-3xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]" />
