@@ -133,10 +133,10 @@ export default function HeroCard() {
             <ChevronRight className="size-3 opacity-50 -ml-0.5 group-hover:translate-x-0.5 transition-transform" />
           </a>
 
-          {/* Main Display Headline (Aside Style: Clean Grotesque Sans, No Italic, Direct 2-Line Sentence Structure) */}
-          <h1 className="font-display text-white text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-medium tracking-[-0.025em] leading-[1.12] mb-8 drop-shadow-lg">
-            The developer hiring platform, <br />
-            but it’s pure proof of work.
+          {/* Main Display Headline */}
+          <h1 className="font-display text-white text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-[-0.025em] leading-[1.08] mb-8 drop-shadow-xl">
+            Ship real work. <br />
+            Earn XP. <span className="font-serif italic font-normal text-accent">Get paid.</span>
           </h1>
 
           {/* CTA Button Group (Aside Style - Directly below headline) */}
