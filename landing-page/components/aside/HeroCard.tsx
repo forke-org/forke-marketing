@@ -160,28 +160,27 @@ export default function HeroCard() {
             </span>
           </h1>
 
-          {/* Single CTA: React Bits SpecularButton */}
+          {/* Single CTA: SpecularButton */}
           <div className="flex items-center justify-center">
             <SpecularButton
               size="lg"
               radius={18}
               tint="#000000"
-              tintOpacity={0.25}
-              blur={10}
+              tintOpacity={0.2}
               textColor="#f5f5f5"
-              lineColor="#ffffff"
-              baseColor="#ffffff"
-              intensity={1.1}
+              lineColor="#f97316"
+              baseColor="#f97316"
+              intensity={1}
               idleIntensity={0.35}
-              shineSize={12}
+              shineSize={10}
               shineFade={34}
               thickness={1.2}
               glow={1}
-              followMouse={true}
+              followMouse={false}
               proximity={250}
               onClick={handleCtaClick}
             >
-              Get started
+              Get Started
             </SpecularButton>
           </div>
         </header>
