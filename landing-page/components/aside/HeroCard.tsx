@@ -137,7 +137,7 @@ export default function HeroCard() {
           <h1 className="font-display text-white text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-[-0.025em] leading-[1.14] mb-8 drop-shadow-xl">
             Ship real work. <br />
             Earn XP.{' '}
-            <span className="relative inline-block font-serif italic font-medium text-accent">
+            <span className="relative inline-block">
               Get paid.
               {/* Orange Scribble Underline */}
               <svg

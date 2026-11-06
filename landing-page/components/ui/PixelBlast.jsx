@@ -1,62 +1,14 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-
-export interface PixelBlastProps {
-  variant?: 'square' | 'circle' | 'triangle' | 'diamond' | 'cross' | 'ring' | 'asterisk' | 'mascot';
-  pixelSize?: number;
-  color?: string;
-  accentColor?: string;
-  className?: string;
-  style?: React.CSSProperties;
-  patternScale?: number;
-  patternDensity?: number;
-  pixelSizeJitter?: number;
-  enableRipples?: boolean;
-  rippleIntensityScale?: number;
-  rippleThickness?: number;
-  rippleSpeed?: number;
-  autoPauseOffscreen?: boolean;
-  speed?: number;
-  transparent?: boolean;
-  edgeFade?: number;
-  noiseAmount?: number;
-  softness?: number;
-  smoothing?: number;
-  glow?: number;
-  twinkle?: number;
-  drift?: number;
-  driftAngle?: number;
-  hoverEffect?: 'none' | 'grow' | 'reveal';
-  hoverRadius?: number;
-  autoRipple?: number;
-  tiltX?: number;
-  tiltY?: number;
-  intro?: boolean;
-  variation?: number;
-  lightMode?: boolean;
-  dpr?: number;
-  mascotSrc?: string;
-  mascotCenterX?: number;
-  mascotCenterY?: number;
-  mascotScale?: number;
-}
+import { useEffect, useRef } from 'react';
+import './PixelBlast.css';
 
 const MAX_CLICKS = 10;
 const INTRO_SECONDS = 1.8;
-const SHAPES: Record<string, number> = {
-  square: 0,
-  circle: 1,
-  triangle: 2,
-  diamond: 3,
-  cross: 4,      // Maps to Forke 6-arm Asterisk (*)
-  ring: 5,
-  asterisk: 4,   // Forke 6-arm Asterisk (*)
-  mascot: 7
-};
-const HOVERS: Record<string, number> = { none: 0, grow: 1, reveal: 2 };
-const bayer2 = (x: number, y: number) => (Math.floor(x) / 2 + Math.floor(y) * Math.floor(y) * 0.75) % 1;
-const bayer8 = (x: number, y: number) => (bayer2(x / 4, y / 4) * 0.25 + bayer2(x / 2, y / 2)) * 0.25 + bayer2(x, y);
+const SHAPES = { square: 0, circle: 1, triangle: 2, diamond: 3, cross: 4, ring: 5 };
+const HOVERS = { none: 0, grow: 1, reveal: 2 };
+const bayer2 = (x, y) => (Math.floor(x) / 2 + Math.floor(y) * Math.floor(y) * 0.75) % 1;
+const bayer8 = (x, y) => (bayer2(x / 4, y / 4) * 0.25 + bayer2(x / 2, y / 2)) * 0.25 + bayer2(x, y);
 const BAYER_TABLE = Array.from({ length: 64 }, (_, i) => bayer8(i % 8, Math.floor(i / 8)).toFixed(6)).join(', ');
 const RANGE_MIN = -6;
 const RANGE_MAX = 10;
@@ -86,7 +38,6 @@ float unpack16(vec2 c) {
 const CELL_FRAGMENT = `#version 300 es
 precision highp float;
 precision highp int;
-const int MAX_CLICKS = 10;
 
 uniform vec2 uResolution;
 uniform float uTime;
@@ -107,9 +58,6 @@ uniform float uMouseRadius;
 uniform float uMousePresence;
 uniform float uIntro;
 uniform sampler2D uPrev;
-uniform sampler2D uMascot;
-uniform vec2 uMascotCenter;
-uniform float uMascotScale;
 uniform float uDecay;
 uniform float uFresh;
 
@@ -151,33 +99,6 @@ float fbm2(vec2 uv, float t) {
   return sum * 0.5 + 0.5;
 }
 
-float sdForkyMascot(vec2 p) {
-  // 1. Body: squircle / chubby egg
-  float body = length(vec2(p.x, (p.y + 0.05) * 1.1)) - 0.22;
-
-  // 2. Left ear: rotated ellipse
-  vec2 e1 = vec2((p.x + 0.11) * 0.939 - (p.y - 0.18) * 0.342, (p.x + 0.11) * 0.342 + (p.y - 0.18) * 0.939);
-  float ear1 = (length(e1 / vec2(0.065, 0.11)) - 1.0) * 0.065;
-
-  // 3. Right ear: rotated -20 deg
-  vec2 e2 = vec2((p.x - 0.11) * 0.939 + (p.y - 0.18) * 0.342, -(p.x - 0.11) * 0.342 + (p.y - 0.18) * 0.939);
-  float ear2 = (length(e2 / vec2(0.065, 0.11)) - 1.0) * 0.065;
-
-  // 4. Tail: curved hook on the right
-  float tail = length(vec2(p.x - 0.24, p.y + 0.06)) - 0.065;
-  float tip = max(abs(p.x - 0.27) + abs(p.y + 0.01) - 0.05, p.x - 0.31);
-
-  // 5. Paws: bottom lobes
-  float paw1 = (length(vec2((p.x + 0.12) / 0.08, (p.y + 0.23) / 0.04)) - 1.0) * 0.05;
-  float paw2 = (length(vec2((p.x - 0.12) / 0.08, (p.y + 0.23) / 0.04)) - 1.0) * 0.05;
-
-  float d = min(body, min(ear1, min(ear2, min(paw1, paw2))));
-  if (p.x > 0.15) {
-    d = min(d, min(tail, tip));
-  }
-  return d;
-}
-
 void main() {
   ivec2 texel = ivec2(gl_FragCoord.xy);
   float aspectRatio = uResolution.x / uResolution.y;
@@ -187,36 +108,9 @@ void main() {
   vec2 uv = cellCoord / uResolution * vec2(aspectRatio, 1.0);
 
   float base = fbm2(uv + uDrift, uTime * 0.05);
-  base = base * 0.5 - 0.65;
-  float feed = base + (uDensity - 0.5) * 0.3;
-
-  // Mascot shape synthesis during animation
-  // Positioned via uMascotCenter with gentle floating motion
-  vec2 mascotCenter = vec2(uMascotCenter.x, uMascotCenter.y + sin(uTime * 0.8) * 0.03);
-  float mascotScale = uMascotScale > 0.0 ? uMascotScale : 0.55;
-  vec2 pMascot = (uv - mascotCenter) / mascotScale;
-  
-  // Calculate procedural mascot SDF (Forky body, ears, tail, paws)
-  float dMascot = sdForkyMascot(pMascot);
-  float mascotMask = smoothstep(0.03, -0.03, dMascot);
-
-  // Sample mascot texture for facial details (eyes, horns)
-  vec2 mUV = pMascot + 0.5;
-  if (mUV.x >= 0.0 && mUV.x <= 1.0 && mUV.y >= 0.0 && mUV.y <= 1.0) {
-    vec4 mSample = texture(uMascot, vec2(mUV.x, 1.0 - mUV.y));
-    float alphaVal = mSample.a > 0.05 ? mSample.a : mSample.r;
-    mascotMask = max(mascotMask, alphaVal);
-  }
-
-  // Energy wave breathing through the mascot during animation
-  float pulse = 0.85 + 0.15 * sin(uTime * 1.8 - dMascot * 12.0);
-  mascotMask *= pulse;
-
-  // Modulate cell feed with animated mascot shape
-  feed = mix(feed, max(feed, mascotMask * 0.95 - 0.10), 0.78);
-
+  float feed = (base - 0.5) * 1.2 + (uDensity - 0.5) * 1.5;
   if (uEnableRipples == 1) {
-    for (int i = 0; i < MAX_CLICKS; ++i) {
+    for (int i = 0; i < ${MAX_CLICKS}; ++i) {
       vec2 pos = uClickPos[i];
       if (pos.x < 0.0) continue;
       vec2 cuv = (((pos - uResolution * 0.5 - cellPixelSize * 0.5) / uResolution)) * vec2(aspectRatio, 1.0);
@@ -238,7 +132,7 @@ void main() {
     float shown = smoothstep(front + 0.04, front - 0.06, r);
     float ring = exp(-pow((r - front) / 0.07, 2.0)) * (1.0 - uIntro);
     feed = mix(-1.0, feed, shown);
-    feed = max(feed, ring * 1.4 + mascotMask * ring * 1.8);
+    feed = max(feed, ring * 1.4);
   }
 
   float brush = 0.0;
@@ -267,7 +161,6 @@ uniform float uPixelJitter;
 uniform float uEdgeFade;
 uniform int uShapeType;
 uniform sampler2D uCells;
-uniform sampler2D uMascot;
 uniform ivec2 uOrigin;
 uniform ivec2 uCellCount;
 uniform float uSoftness;
@@ -326,29 +219,18 @@ float maskDiamond(vec2 p, float cov) {
   return step(abs(p.x - 0.49) + abs(p.y - 0.49), r);
 }
 
-// Forke 6-arm Asterisk (*)
-float maskAsterisk(vec2 p, float cov) {
+float maskCross(vec2 p, float cov) {
   float s = sqrt(clamp(cov, 0.0, 1.0));
   vec2 c = p - 0.5;
-  float arm = 0.46 * s;
-  float bar = 0.13 * s + 0.015;
-
-  // 1. Horizontal bar (0 deg)
-  vec2 q0 = abs(c);
-  float d0 = max(q0.x - arm, q0.y - bar);
-
-  // 2. Bar at 60 deg (cos 60 = 0.5, sin 60 = 0.8660254)
-  vec2 c1 = vec2(c.x * 0.5 + c.y * 0.8660254, -c.x * 0.8660254 + c.y * 0.5);
-  vec2 q1 = abs(c1);
-  float d1 = max(q1.x - arm, q1.y - bar);
-
-  // 3. Bar at -60 deg
-  vec2 c2 = vec2(c.x * 0.5 - c.y * 0.8660254, c.x * 0.8660254 + c.y * 0.5);
-  vec2 q2 = abs(c2);
-  float d2 = max(q2.x - arm, q2.y - bar);
-
-  float d = min(d0, min(d1, d2));
-  float aa = max(aaFrom(vec2(1.0, 1.0)), 1e-4);
+  vec2 q = abs(c);
+  float arm = 0.42 * s;
+  float bar = 0.13 * s + 0.02;
+  float a1 = max(q.x - arm, q.y - bar);
+  float a2 = max(q.x - bar, q.y - arm);
+  float d = min(a1, a2);
+  bool horizontal = a1 < a2 ? q.x - arm > q.y - bar : q.x - bar > q.y - arm;
+  vec2 grad = horizontal ? vec2(sign(c.x), 0.0) : vec2(0.0, sign(c.y));
+  float aa = max(aaFrom(grad), 1e-4);
   return 1.0 - smoothstep(-aa * 0.5, aa * 0.5, d);
 }
 
@@ -431,9 +313,8 @@ void main() {
     M = maskDiamond(pixelUV, coverage);
     area = 0.62;
   } else if (uShapeType == 4) {
-    // Cross / Asterisk (*) -> Forke 6-arm Asterisk
-    M = maskAsterisk(pixelUV, coverage);
-    area = 0.44;
+    M = maskCross(pixelUV, coverage);
+    area = 0.41;
   } else if (uShapeType == 5) {
     M = maskRing(pixelUV, coverage);
     area = 0.41;
@@ -473,9 +354,8 @@ void main() {
 
   float hot = clamp(heat, 0.0, 1.0);
   float tone = smoothstep(0.3, 1.0, density) * 0.85;
-  vec3 activeAccent = uLightMode > 0.5 ? mix(uColor, vec3(0.98, 0.45, 0.08), 0.5) : uAccent;
-  vec3 color = mix(uColor, activeAccent, max(tone, hot));
-  vec3 lit = uLightMode > 0.5 ? color * (1.0 - 0.15 * hot) : mix(color, vec3(1.0), 0.45 * hot);
+  vec3 color = mix(uColor, uAccent, max(tone, hot));
+  vec3 lit = uLightMode > 0.5 ? color * (1.0 - 0.35 * hot) : mix(color, vec3(1.0), 0.45 * hot);
   if (uNoise > 0.0) {
     float n = hash(floor(gl_FragCoord.xy) + floor(uTime * 60.0));
     lit = clamp(lit + (n - 0.5) * uNoise, 0.0, 1.0);
@@ -492,148 +372,155 @@ void main() {
   fragColor = vec4(premul, alpha);
 }`;
 
-const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-const compile = (gl: WebGL2RenderingContext, type: number, source: string) => {
+const compile = (gl, type, source) => {
   const shader = gl.createShader(type);
   if (!shader) return null;
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    console.error(gl.getShaderInfoLog(shader));
-    gl.deleteShader(shader);
-    return null;
-  }
-  return shader;
+  if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
+  gl.deleteShader(shader);
+  return null;
 };
 
-const link = (gl: WebGL2RenderingContext, fragmentSource: string) => {
-  const vs = compile(gl, gl.VERTEX_SHADER, VERTEX);
-  const fs = compile(gl, gl.FRAGMENT_SHADER, fragmentSource);
-  if (!vs || !fs) return null;
+const link = (gl, fragmentSource) => {
+  const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX);
+  const fragment = compile(gl, gl.FRAGMENT_SHADER, fragmentSource);
   const program = gl.createProgram();
-  if (!program) return null;
-  gl.attachShader(program, vs);
-  gl.attachShader(program, fs);
+  if (!vertex || !fragment || !program) return null;
+  gl.attachShader(program, vertex);
+  gl.attachShader(program, fragment);
   gl.linkProgram(program);
+  gl.deleteShader(vertex);
+  gl.deleteShader(fragment);
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.error(gl.getProgramInfoLog(program));
     gl.deleteProgram(program);
     return null;
   }
-  const uniforms: Record<string, WebGLUniformLocation> = {};
+  const uniforms = {};
   const count = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
   for (let i = 0; i < count; i++) {
     const info = gl.getActiveUniform(program, i);
     if (!info) continue;
-    const loc = gl.getUniformLocation(program, info.name);
-    if (loc) uniforms[info.name] = loc;
+    const name = info.name.replace(/\[0\]$/, '');
+    uniforms[name] = gl.getUniformLocation(program, name);
   }
   return { program, uniforms };
 };
 
-const colorCache = new Map<string, number[]>();
+const colorCache = new Map();
 
-const hexToRgb = (hex: string) => {
-  if (colorCache.has(hex)) return colorCache.get(hex)!;
-  const [r, g, b] = parseHex(hex);
-  const out = [r / 255, g / 255, b / 255];
-  colorCache.set(hex, out);
-  return out;
+const hexToRgb = hex => {
+  const key = String(hex);
+  const cached = colorCache.get(key);
+  if (cached) return cached;
+  const rgb = parseHex(hex);
+  if (colorCache.size > 64) colorCache.clear();
+  colorCache.set(key, rgb);
+  return rgb;
 };
 
-const parseHex = (hex: string) => {
-  let c = hex.replace('#', '');
-  if (c.length === 3) c = c.split('').map(x => x + x).join('');
-  const num = parseInt(c, 16);
-  return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+const parseHex = hex => {
+  let h = String(hex || '#ffffff')
+    .replace('#', '')
+    .trim();
+  if (h.length === 3 || h.length === 4)
+    h = h
+      .slice(0, 3)
+      .split('')
+      .map(c => c + c)
+      .join('');
+  const num = parseInt(h.slice(0, 6), 16);
+  if (Number.isNaN(num)) return [1, 1, 1];
+  return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
 };
 
 const randomFloat = () => {
-  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-    const u = new Uint32Array(1);
-    crypto.getRandomValues(u);
-    return u[0] / 0xffffffff;
+  if (typeof window !== 'undefined' && window.crypto?.getRandomValues) {
+    const u32 = new Uint32Array(1);
+    window.crypto.getRandomValues(u32);
+    return u32[0] / 0xffffffff;
   }
   return Math.random();
 };
 
-const invert3 = (m: number[]) => {
-  const [a00, a01, a02, a10, a11, a12, a20, a21, a22] = m;
-  const b01 = a22 * a11 - a12 * a21;
-  const b11 = -a22 * a10 + a12 * a20;
-  const b21 = a21 * a10 - a11 * a20;
-  const det = a00 * b01 + a01 * b11 + a02 * b21;
-  if (!det) return null;
-  const inv = 1 / det;
+const invert3 = m => {
+  const [a, b, c, d, e, f, g, h, i] = m;
+  const A = e * i - f * h;
+  const B = -(d * i - f * g);
+  const C = d * h - e * g;
+  const det = a * A + b * B + c * C || 1;
   return [
-    b01 * inv,
-    (-a22 * a01 + a02 * a21) * inv,
-    (a12 * a01 - a02 * a11) * inv,
-    b11 * inv,
-    (a22 * a00 - a02 * a20) * inv,
-    (-a12 * a00 + a02 * a10) * inv,
-    b21 * inv,
-    (-a21 * a00 + a01 * a20) * inv,
-    (a11 * a00 - a01 * a10) * inv
+    A / det,
+    -(b * i - c * h) / det,
+    (b * f - c * e) / det,
+    B / det,
+    (a * i - c * g) / det,
+    -(a * f - c * d) / det,
+    C / det,
+    -(a * h - b * g) / det,
+    (a * e - b * d) / det
   ];
 };
 
-const multiply3 = (x: number[], y: number[]) => {
+const multiply3 = (x, y) => {
   const out = new Array(9);
-  for (let row = 0; row < 3; row++) {
-    for (let col = 0; col < 3; col++) {
-      out[row * 3 + col] =
-        x[row * 3 + 0] * y[0 * 3 + col] +
-        x[row * 3 + 1] * y[1 * 3 + col] +
-        x[row * 3 + 2] * y[2 * 3 + col];
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      out[r * 3 + c] = x[r * 3] * y[c] + x[r * 3 + 1] * y[3 + c] + x[r * 3 + 2] * y[6 + c];
     }
   }
   return out;
 };
 
-const planeFor = (tiltX: number, tiltY: number, width: number, height: number) => {
-  const radX = (tiltX * Math.PI) / 180;
-  const radY = (tiltY * Math.PI) / 180;
-  const cx = Math.cos(radX);
-  const sx = Math.sin(radX);
-  const cy = Math.cos(radY);
-  const sy = Math.sin(radY);
-  const rx = [1, 0, 0, 0, cx, -sx, 0, sx, cx];
-  const ry = [cy, 0, sy, 0, 1, 0, -sy, 0, cy];
-  const rot = multiply3(ry, rx);
-  const fov = 800;
-  const trans = [1, 0, -width / 2, 0, 1, -height / 2, 0, 0, fov];
-  const forward = multiply3(rot, trans);
+const planeFor = (tiltX, tiltY, width, height) => {
+  const ax = (tiltX * Math.PI) / 180;
+  const ay = (tiltY * Math.PI) / 180;
+  const depth = Math.max(width, height) * 1.25;
+  const cx = width / 2;
+  const cy = height / 2;
+  const tilt = [
+    Math.cos(ay),
+    0,
+    0,
+    Math.sin(ax) * Math.sin(ay),
+    Math.cos(ax),
+    0,
+    (Math.sin(ay) * Math.cos(ax)) / depth,
+    -Math.sin(ax) / depth,
+    1
+  ];
+  const forward = multiply3(multiply3([1, 0, cx, 0, 1, cy, 0, 0, 1], tilt), [1, 0, -cx, 0, 1, -cy, 0, 0, 1]);
   return invert3(forward);
 };
 
-export default function PixelBlast({
-  variant = 'cross',
+const PixelBlast = ({
+  variant = 'square',
   pixelSize = 3,
-  color = '#f97316',
-  accentColor = '#000000',
-  className = '',
-  style = {},
-  patternScale = 1.7,
-  patternDensity = 0.65,
-  pixelSizeJitter = 0.09,
+  color = '#B497CF',
+  accentColor,
+  className,
+  style,
+  patternScale = 2,
+  patternDensity = 1,
+  pixelSizeJitter = 0,
   enableRipples = true,
   rippleIntensityScale = 1,
   rippleThickness = 0.1,
   rippleSpeed = 0.3,
   autoPauseOffscreen = true,
-  speed = 0.6,
+  speed = 0.5,
   transparent = true,
-  edgeFade = 0.25,
+  edgeFade = 0.5,
   noiseAmount = 0,
   softness = 0.6,
   smoothing = 1,
   glow = 0.4,
-  twinkle = 0.2,
+  twinkle = 0.25,
   drift = 0.2,
   driftAngle = 30,
-  hoverEffect = 'none',
+  hoverEffect = 'reveal',
   hoverRadius = 140,
   autoRipple = 0,
   tiltX = 0,
@@ -641,17 +528,13 @@ export default function PixelBlast({
   intro = true,
   variation,
   lightMode = false,
-  dpr,
-  mascotSrc = '/forke-assets/mascot_mask.png',
-  mascotCenterX = 0,
-  mascotCenterY = 0,
-  mascotScale = 0.55
-}: PixelBlastProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  dpr
+}) => {
+  const containerRef = useRef(null);
+  const canvasRef = useRef(null);
+  const wakeRef = useRef(null);
   const settings = {
-    variant: SHAPES[variant] ?? 4,
+    variant: SHAPES[variant] ?? 0,
     pixelSize: Math.max(0.5, pixelSize),
     color,
     accentColor: accentColor || color,
@@ -681,11 +564,7 @@ export default function PixelBlast({
     intro,
     variation,
     lightMode,
-    dpr,
-    mascotSrc,
-    mascotCenterX,
-    mascotCenterY,
-    mascotScale
+    dpr
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -693,17 +572,14 @@ export default function PixelBlast({
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
-    if (!container || !canvas) return undefined;
-
-    const gl = canvas.getContext('webgl2', {
+    const gl = canvas?.getContext('webgl2', {
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
       depth: false,
       stencil: false
     });
-    if (!gl) return undefined;
-
+    if (!container || !canvas || !gl) return undefined;
     const cellShader = link(gl, CELL_FRAGMENT);
     const mainShader = link(gl, MAIN_FRAGMENT);
     if (!cellShader || !mainShader) return undefined;
@@ -711,7 +587,7 @@ export default function PixelBlast({
     const mu = mainShader.uniforms;
     const vao = gl.createVertexArray();
 
-    const makeTexture = (filter: number) => {
+    const makeTexture = filter => {
       const texture = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
@@ -721,7 +597,6 @@ export default function PixelBlast({
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
       return texture;
     };
-
     const targets = [0, 1].map(() => {
       const texture = makeTexture(gl.LINEAR);
       const framebuffer = gl.createFramebuffer();
@@ -731,37 +606,8 @@ export default function PixelBlast({
     });
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-    // Mascot Mask Texture Setup
-    const mascotTexture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, mascotTexture);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-    // 1x1 initial fallback pixel (white)
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255, 255, 255, 255]));
-
-    const mascotImg = new Image();
-    mascotImg.crossOrigin = 'anonymous';
-    mascotImg.src = settings.mascotSrc;
-    mascotImg.onload = () => {
-      if (!gl.isContextLost()) {
-        gl.bindTexture(gl.TEXTURE_2D, mascotTexture);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, mascotImg);
-        fresh = true;
-      }
-    };
-
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-    const view: { width: number; height: number; ratio: number; plane: number[] | null; tiltKey: string } = {
-      width: 1,
-      height: 1,
-      ratio: 1,
-      plane: null,
-      tiltKey: ''
-    };
+    const view = { width: 1, height: 1, ratio: 1, plane: null, tiltKey: '' };
     const cells = { x: 0, y: 0, w: 1, h: 1, key: '' };
     const pointer = { x: 0, y: 0, inside: false };
     const mouse = { x: 0, y: 0, ready: false };
@@ -783,21 +629,11 @@ export default function PixelBlast({
     let raf = 0;
     let last = 0;
     let visible = true;
+    let quiet = 0;
 
-    const patternTime = (s: typeof settings) => timeOffset + elapsed * s.speed;
+    const patternTime = s => timeOffset + elapsed * s.speed;
 
-    const toPlane = (x: number, y: number) => {
-      if (!view.plane) return [x, y];
-      const m = view.plane;
-      const invY = canvas.height - y;
-      const z = m[2] * x + m[5] * invY + m[8];
-      if (z <= 0.001) return [-Infinity, -Infinity];
-      const px = (m[0] * x + m[3] * invY + m[6]) / z;
-      const py = (m[1] * x + m[4] * invY + m[7]) / z;
-      return [px, canvas.height - py];
-    };
-
-    const layoutCells = (s: typeof settings) => {
+    const layoutCells = s => {
       const ps = s.pixelSize * view.ratio;
       const cps = 8 * ps;
       const w = canvas.width;
@@ -859,7 +695,7 @@ export default function PixelBlast({
 
     const planeClicks = new Float32Array(MAX_CLICKS * 2);
 
-    const stepCells = (s: typeof settings, decay: number) => {
+    const stepCells = (s, decay) => {
       for (let k = 0; k < MAX_CLICKS; k++) {
         if (clickPos[k * 2] < 0) {
           planeClicks[k * 2] = -1;
@@ -880,12 +716,6 @@ export default function PixelBlast({
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, source.texture);
       gl.uniform1i(cu.uPrev, 0);
-
-      // Bind mascot texture unit 1
-      gl.activeTexture(gl.TEXTURE1);
-      gl.bindTexture(gl.TEXTURE_2D, mascotTexture);
-      gl.uniform1i(cu.uMascot, 1);
-
       gl.uniform2f(cu.uResolution, canvas.width, canvas.height);
       gl.uniform1f(cu.uTime, patternTime(s));
       gl.uniform1f(cu.uPixelSize, s.pixelSize * view.ratio);
@@ -904,8 +734,6 @@ export default function PixelBlast({
       gl.uniform1f(cu.uMouseRadius, s.hoverRadius * view.ratio);
       gl.uniform1f(cu.uMousePresence, presence);
       gl.uniform1f(cu.uIntro, introClock);
-      if (cu.uMascotCenter) gl.uniform2f(cu.uMascotCenter, s.mascotCenterX, s.mascotCenterY);
-      if (cu.uMascotScale) gl.uniform1f(cu.uMascotScale, s.mascotScale);
       gl.uniform1f(cu.uDecay, decay);
       gl.uniform1f(cu.uFresh, fresh ? 1 : 0);
       gl.bindVertexArray(vao);
@@ -923,8 +751,7 @@ export default function PixelBlast({
       gl.useProgram(mainShader.program);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, targets[current].texture);
-      if (mu.uCells) gl.uniform1i(mu.uCells, 0);
-
+      gl.uniform1i(mu.uCells, 0);
       gl.uniform3fv(mu.uColor, hexToRgb(s.color));
       gl.uniform3fv(mu.uAccent, hexToRgb(s.accentColor));
       gl.uniform2f(mu.uResolution, canvas.width, canvas.height);
@@ -951,152 +778,187 @@ export default function PixelBlast({
       }
       gl.bindVertexArray(vao);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      gl.bindVertexArray(null);
     };
 
-    const addClick = (x: number, y: number) => {
-      clickPos[clickIndex * 2] = x;
-      clickPos[clickIndex * 2 + 1] = y;
-      clickAt[clickIndex] = clock;
-      clickAge[clickIndex] = 0;
-      clickIndex = (clickIndex + 1) % MAX_CLICKS;
+    const toPlane = (x, y) => {
+      const m = view.plane;
+      if (!m) return [x, y];
+      const h = canvas.height;
+      const cy = h - y;
+      const z = m[6] * x + m[7] * cy + m[8];
+      if (z <= 1e-4) return [-1e6, -1e6];
+      return [(m[0] * x + m[1] * cy + m[2]) / z, h - (m[3] * x + m[4] * cy + m[5]) / z];
     };
 
-    const updatePlane = (s: typeof settings) => {
-      const key = `${s.tiltX}:${s.tiltY}:${canvas.width}:${canvas.height}`;
-      if (key === view.tiltKey) return;
-      view.tiltKey = key;
+    const updatePlane = s => {
       view.plane = s.tiltX || s.tiltY ? planeFor(s.tiltX, s.tiltY, canvas.width, canvas.height) : null;
+      view.tiltKey = `${s.tiltX}:${s.tiltY}:${canvas.width}:${canvas.height}`;
     };
 
     const resize = () => {
       const s = settingsRef.current;
-      const rect = container.getBoundingClientRect();
-      const pr = s.dpr || Math.min(window.devicePixelRatio || 1, 2);
-      const w = Math.max(1, Math.floor(rect.width * pr));
-      const h = Math.max(1, Math.floor(rect.height * pr));
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
+      view.width = Math.max(1, container.clientWidth);
+      view.height = Math.max(1, container.clientHeight);
+      view.ratio = Math.min(s.dpr || window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.round(view.width * view.ratio));
+      canvas.height = Math.max(1, Math.round(view.height * view.ratio));
+      if (!mouse.ready) {
+        mouse.ready = true;
+        mouse.x = canvas.width / 2;
+        mouse.y = canvas.height / 2;
       }
-      view.width = w;
-      view.height = h;
-      view.ratio = pr;
       updatePlane(s);
       layoutCells(s);
+      stepCells(s, 0);
+      draw();
+      wake();
     };
 
-    resize();
-    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null;
-    ro?.observe(container);
-
-    const onPointerMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX - rect.left) * view.ratio;
-      const y = (e.clientY - rect.top) * view.ratio;
-      pointer.inside = x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height;
+    const frame = now => {
+      raf = 0;
+      const s = settingsRef.current;
+      if (!visible && s.autoPauseOffscreen) return;
+      if (document.hidden) return;
+      const dt = last ? clamp((now - last) / 1000, 0, 1 / 20) : 0;
+      last = now;
+      if (!reduce) elapsed += dt;
+      clock += dt;
+      if (!reduce && s.drift) {
+        const angle = (s.driftAngle * Math.PI) / 180;
+        driftX += Math.cos(angle) * s.drift * dt * 0.05;
+        driftY += Math.sin(angle) * s.drift * dt * 0.05;
+      }
+      if (!reduce && s.enableRipples && s.autoRipple > 0 && introClock >= 1) {
+        nextAuto -= dt;
+        if (nextAuto <= 0) {
+          nextAuto = s.autoRipple * (0.7 + Math.random() * 0.6);
+          addRipple((0.15 + Math.random() * 0.7) * view.width, (0.15 + Math.random() * 0.7) * view.height);
+        }
+      }
+      for (let k = 0; k < MAX_CLICKS; k++) clickAge[k] = (clock - clickAt[k]) * 0.5;
+      const targetX = pointer.x * view.ratio;
+      const targetY = (view.height - pointer.y) * view.ratio;
+      const follow = 1 - Math.exp(-dt / 0.08);
       if (pointer.inside) {
+        mouse.x += (targetX - mouse.x) * follow;
+        mouse.y += (targetY - mouse.y) * follow;
+      }
+      presence += ((pointer.inside ? 1 : 0) - presence) * (1 - Math.exp(-dt / 0.25));
+      const key = `${s.tiltX}:${s.tiltY}:${canvas.width}:${canvas.height}`;
+      if (key !== view.tiltKey) updatePlane(s);
+      layoutCells(s);
+      const decay = s.hoverEffect ? Math.exp(-dt / 0.45) : 0;
+      stepCells(s, decay);
+      draw();
+      if (introClock < 1) introClock = Math.min(1, introClock + dt / INTRO_SECONDS);
+      let busy = !reduce && (s.speed !== 0 || s.drift !== 0 || s.twinkle > 0 || (s.autoRipple > 0 && s.enableRipples));
+      busy = busy || introClock < 1 || presence > 0.001;
+      for (let k = 0; k < MAX_CLICKS; k++) busy = busy || (clickPos[k * 2] >= 0 && clickAge[k] < 8);
+      quiet = busy ? 0 : quiet + dt;
+      if (quiet < 1.5) raf = requestAnimationFrame(frame);
+    };
+
+    function wake() {
+      quiet = 0;
+      if (!raf && (visible || !settingsRef.current.autoPauseOffscreen) && !document.hidden) {
+        last = 0;
+        raf = requestAnimationFrame(frame);
+      }
+    }
+
+    const locate = event => {
+      const rect = container.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      return { x, y, inside: x >= 0 && y >= 0 && x <= rect.width && y <= rect.height };
+    };
+
+    const onPointerMove = event => {
+      const { x, y, inside } = locate(event);
+      const was = pointer.inside;
+      pointer.inside = inside;
+      if (inside) {
         pointer.x = x;
         pointer.y = y;
+        if (!was) {
+          mouse.x = x * view.ratio;
+          mouse.y = (view.height - y) * view.ratio;
+        }
       }
+      if (inside || was) wake();
     };
 
-    const onPointerDown = (e: PointerEvent) => {
+    function addRipple(x, y) {
+      clickPos[clickIndex * 2] = x * view.ratio;
+      clickPos[clickIndex * 2 + 1] = (view.height - y) * view.ratio;
+      clickAt[clickIndex] = clock;
+      clickIndex = (clickIndex + 1) % MAX_CLICKS;
+      wake();
+    }
+
+    const onPointerDown = event => {
       const s = settingsRef.current;
-      if (!s.enableRipples) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX - rect.left) * view.ratio;
-      const y = (e.clientY - rect.top) * view.ratio;
-      if (x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height) {
-        addClick(x, y);
-      }
+      const { x, y, inside } = locate(event);
+      if (!inside || reduce || !s.enableRipples) return;
+      addRipple(x, y);
     };
 
     const onPointerLeave = () => {
       pointer.inside = false;
+      wake();
     };
 
-    const onVisibility = () => {
-      visible = document.visibilityState !== 'hidden';
-      if (visible) last = performance.now();
-    };
+    const onVisibility = () => wake();
 
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(container);
+    const intersection = new IntersectionObserver(entries => {
+      visible = entries.some(entry => entry.isIntersecting);
+      if (visible) wake();
+    });
+    intersection.observe(container);
     window.addEventListener('pointermove', onPointerMove, { passive: true });
     window.addEventListener('pointerdown', onPointerDown, { passive: true });
     document.documentElement.addEventListener('pointerleave', onPointerLeave);
     document.addEventListener('visibilitychange', onVisibility);
-
-    const loop = (now: number) => {
-      raf = requestAnimationFrame(loop);
-      if (!visible) return;
-      if (!last) last = now;
-      const dt = Math.min((now - last) / 1000, 0.1);
-      last = now;
-
-      const s = settingsRef.current;
-      clock += dt;
-      elapsed += dt;
-
-      if (introClock < 1) {
-        introClock = Math.min(1, introClock + dt / INTRO_SECONDS);
-      }
-
-      for (let i = 0; i < MAX_CLICKS; i++) {
-        if (clickPos[i * 2] >= 0) {
-          clickAge[i] = clock - clickAt[i];
-          if (clickAge[i] > 4.0) {
-            clickPos[i * 2] = -1;
-            clickPos[i * 2 + 1] = -1;
-          }
-        }
-      }
-
-      if (s.autoRipple > 0) {
-        nextAuto -= dt;
-        if (nextAuto <= 0) {
-          nextAuto = s.autoRipple + randomFloat() * s.autoRipple;
-          addClick(randomFloat() * canvas.width, randomFloat() * canvas.height);
-        }
-      }
-
-      const rad = (s.driftAngle * Math.PI) / 180;
-      driftX += Math.cos(rad) * s.drift * dt * 0.1;
-      driftY += Math.sin(rad) * s.drift * dt * 0.1;
-
-      if (pointer.inside) {
-        presence = Math.min(1, presence + dt * 4.0);
-        mouse.x += (pointer.x - mouse.x) * Math.min(1, dt * 12.0);
-        mouse.y += (pointer.y - mouse.y) * Math.min(1, dt * 12.0);
-      } else {
-        presence = Math.max(0, presence - dt * 2.0);
-      }
-
-      const decay = Math.exp(-dt * 3.0);
-      stepCells(s, decay);
-      draw();
-    };
-
-    raf = requestAnimationFrame(loop);
+    resize();
+    wakeRef.current = wake;
 
     return () => {
       cancelAnimationFrame(raf);
+      wakeRef.current = null;
+      resizeObserver.disconnect();
+      intersection.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerdown', onPointerDown);
       document.documentElement.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibility);
-      ro?.disconnect();
+      for (const target of targets) {
+        gl.deleteTexture(target.texture);
+        gl.deleteFramebuffer(target.framebuffer);
+      }
+      gl.deleteVertexArray(vao);
+      gl.deleteProgram(cellShader.program);
+      gl.deleteProgram(mainShader.program);
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, []);
+
+  useEffect(() => {
+    wakeRef.current?.();
+  });
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full overflow-hidden ${className}`}
+      className={`pixel-blast-container${className ? ` ${className}` : ''}`}
       style={style}
+      aria-label="PixelBlast interactive background"
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 block w-full h-full"
-      />
+      <canvas ref={canvasRef} className="pixel-blast-canvas" aria-hidden="true" />
     </div>
   );
-}
+};
+
+export default PixelBlast;

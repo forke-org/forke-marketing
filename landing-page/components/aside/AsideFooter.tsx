@@ -91,7 +91,7 @@ export default function AsideFooter() {
   ]
 
   return (
-    <footer className="relative py-14 sm:py-16 xl:py-24 border-t border-black/[0.08] bg-white overflow-hidden text-[#0a0a0a]">
+    <footer className="relative py-14 sm:py-16 xl:py-24 border-t border-black/[0.08] bg-transparent overflow-hidden text-[#0a0a0a]">
       {/* Subtle bottom warm glow */}
       <div 
         className="pointer-events-none absolute bottom-0 left-0 right-0 h-[60%] z-0"
