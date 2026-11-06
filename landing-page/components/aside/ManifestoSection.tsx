@@ -10,7 +10,7 @@ import { ArrowRight } from 'lucide-react'
 
 export default function ManifestoSection() {
   return (
-    <div id="manifesto" className="mx-auto w-full border-b border-black/[0.08] bg-transparent">
+    <div id="manifesto" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         {/* div.border-x with exact Aside stroke & spacing: 144px top (pt-36), 56px x (px-14), 96px bottom (pb-24) */}
         <div className="border-x border-black/[0.08] px-6 sm:px-8 md:px-14 xl:px-36 pt-24 md:pt-36 pb-20 md:pb-24 gap-16 lg:flex">

@@ -10,7 +10,7 @@ import { ArrowRight, CheckCircle2, Lock, Shield, Zap, Receipt, Landmark } from '
 
 export default function SettlementSection() {
   return (
-    <section id="settlement" className="mx-auto w-full border-b border-black/[0.08] bg-transparent">
+    <section id="settlement" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         <div className="border-x border-black/[0.08] px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-28 xl:px-36">
           {/* Header */}

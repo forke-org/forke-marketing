@@ -107,8 +107,9 @@ void main() {
   vec2 cellCoord = cellId * cellPixelSize;
   vec2 uv = cellCoord / uResolution * vec2(aspectRatio, 1.0);
 
-  float base = fbm2(uv + uDrift, uTime * 0.15);
-  float feed = (base - 0.5) * 1.3 + (uDensity - 0.5) * 1.4;
+  float base = fbm2(uv + uDrift, uTime * 0.05);
+  base = base * 0.5 - 0.65;
+  float feed = base + (uDensity - 0.5) * 0.3;
   if (uEnableRipples == 1) {
     for (int i = 0; i < ${MAX_CLICKS}; ++i) {
       vec2 pos = uClickPos[i];
@@ -353,19 +354,19 @@ void main() {
   glow *= fade;
 
   float hot = clamp(heat, 0.0, 1.0);
-  float tone = smoothstep(0.2, 0.9, density) * 0.85;
-  vec3 color = mix(uColor, uAccent, max(tone, hot * 0.5));
-  vec3 lit = mix(color, vec3(1.0, 0.92, 0.8), 0.35 * hot);
+  float tone = smoothstep(0.3, 1.0, density) * 0.85;
+  vec3 color = mix(uColor, uAccent, max(tone, hot));
+  vec3 lit = uLightMode > 0.5 ? color * (1.0 - 0.35 * hot) : mix(color, vec3(1.0), 0.45 * hot);
   if (uNoise > 0.0) {
     float n = hash(floor(gl_FragCoord.xy) + floor(uTime * 60.0));
     lit = clamp(lit + (n - 0.5) * uNoise, 0.0, 1.0);
   }
 
-  vec3 haze = mix(color, vec3(1.0, 0.75, 0.35), 0.35);
+  vec3 haze = uLightMode > 0.5 ? mix(color, vec3(1.0), 0.35) : color;
   float alpha = M + glow * (1.0 - M);
   vec3 premul = lit * M + haze * glow * (1.0 - M);
   if (uTransparent < 0.5) {
-    vec3 paper = vec3(1.0);
+    vec3 paper = vec3(uLightMode > 0.5 ? 1.0 : 0.0);
     fragColor = vec4(premul + paper * (1.0 - alpha), 1.0);
     return;
   }
@@ -818,17 +819,18 @@ const PixelBlast = ({
     const frame = now => {
       raf = 0;
       const s = settingsRef.current;
+      if (!visible && s.autoPauseOffscreen) return;
       if (document.hidden) return;
-      const dt = last ? clamp((now - last) / 1000, 0, 1 / 20) : 0.016;
+      const dt = last ? clamp((now - last) / 1000, 0, 1 / 20) : 0;
       last = now;
-      elapsed += dt;
+      if (!reduce) elapsed += dt;
       clock += dt;
-      if (s.drift) {
+      if (!reduce && s.drift) {
         const angle = (s.driftAngle * Math.PI) / 180;
-        driftX += Math.cos(angle) * s.drift * dt * 0.15;
-        driftY += Math.sin(angle) * s.drift * dt * 0.15;
+        driftX += Math.cos(angle) * s.drift * dt * 0.05;
+        driftY += Math.sin(angle) * s.drift * dt * 0.05;
       }
-      if (s.enableRipples && s.autoRipple > 0 && introClock >= 1) {
+      if (!reduce && s.enableRipples && s.autoRipple > 0 && introClock >= 1) {
         nextAuto -= dt;
         if (nextAuto <= 0) {
           nextAuto = s.autoRipple * (0.7 + Math.random() * 0.6);
@@ -851,13 +853,16 @@ const PixelBlast = ({
       stepCells(s, decay);
       draw();
       if (introClock < 1) introClock = Math.min(1, introClock + dt / INTRO_SECONDS);
-
-      // Keep continuous animation running at full 60fps
-      raf = requestAnimationFrame(frame);
+      let busy = !reduce && (s.speed !== 0 || s.drift !== 0 || s.twinkle > 0 || (s.autoRipple > 0 && s.enableRipples));
+      busy = busy || introClock < 1 || presence > 0.001;
+      for (let k = 0; k < MAX_CLICKS; k++) busy = busy || (clickPos[k * 2] >= 0 && clickAge[k] < 8);
+      quiet = busy ? 0 : quiet + dt;
+      if (quiet < 1.5) raf = requestAnimationFrame(frame);
     };
 
     function wake() {
-      if (!raf && !document.hidden) {
+      quiet = 0;
+      if (!raf && (visible || !settingsRef.current.autoPauseOffscreen) && !document.hidden) {
         last = 0;
         raf = requestAnimationFrame(frame);
       }
@@ -882,7 +887,7 @@ const PixelBlast = ({
           mouse.y = (view.height - y) * view.ratio;
         }
       }
-      wake();
+      if (inside || was) wake();
     };
 
     function addRipple(x, y) {
@@ -896,7 +901,7 @@ const PixelBlast = ({
     const onPointerDown = event => {
       const s = settingsRef.current;
       const { x, y, inside } = locate(event);
-      if (!inside || !s.enableRipples) return;
+      if (!inside || reduce || !s.enableRipples) return;
       addRipple(x, y);
     };
 

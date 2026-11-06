@@ -30,7 +30,7 @@ export default function HeroCard() {
   }
 
   return (
-    <div className="p-2 pb-0 sm:p-3 sm:pb-0 md:p-4 md:pb-0 w-full relative z-10">
+    <div id="hero-section" className="p-2 pb-0 sm:p-3 sm:pb-0 md:p-4 md:pb-0 w-full relative z-10">
       <div className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-[#0b0c10] shadow-2xl border border-white/10">
         {/* Ambient Video Background (WebM looping animated background) */}
         <video
@@ -74,16 +74,8 @@ export default function HeroCard() {
             ))}
           </ul>
 
-          {/* Right Action CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <button
-              onClick={handleCtaClick}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-neutral-100 text-black px-4 py-2 text-xs font-semibold tracking-tight shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-            >
-              <span>Get Started</span>
-              <ArrowRight className="size-3.5" />
-            </button>
-          </div>
+          {/* Right spacer (Get Started removed from landing page navbar per user request) */}
+          <div className="hidden md:flex items-center w-10" />
 
           {/* Mobile Menu Button */}
           <button
@@ -109,12 +101,6 @@ export default function HeroCard() {
                   {link.name}
                 </a>
               ))}
-              <button
-                onClick={handleCtaClick}
-                className="w-full mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-white text-black py-2.5 text-xs font-semibold"
-              >
-                Get Started <ArrowRight className="size-3.5" />
-              </button>
             </div>
           </div>
         )}

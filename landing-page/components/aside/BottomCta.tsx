@@ -16,7 +16,7 @@ export default function BottomCta() {
   }
 
   return (
-    <div className="mx-auto w-full py-16 sm:py-20 xl:py-28 bg-transparent">
+    <div className="mx-auto w-full py-16 sm:py-20 xl:py-28 bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         <div className="relative overflow-hidden rounded-3xl bg-[#0b0c10] px-6 py-20 text-center sm:px-10 sm:py-28 xl:py-36 border border-neutral-200/80 shadow-2xl">
           {/* Ambient Video Background */}
