@@ -3,7 +3,7 @@ import HeroCard from '@/components/aside/HeroCard'
 import StickyNav from '@/components/aside/StickyNav'
 import GradualBlur from '@/components/ui/GradualBlur'
 import ManifestoSection from '@/components/aside/ManifestoSection'
-import PillarsSection from '@/components/aside/PillarsSection'
+import SupportedStacksSection from '@/components/aside/SupportedStacksSection'
 import SettlementSection from '@/components/aside/SettlementSection'
 import TrustSection from '@/components/aside/TrustSection'
 import BottomCta from '@/components/aside/BottomCta'
@@ -44,8 +44,8 @@ export default function LandingPage() {
         {/* Section 1: Introducing Forke / Manifesto */}
         <ManifestoSection />
 
-        {/* Section 2: Proof of Work & Core Pillars */}
-        <PillarsSection />
+        {/* Section 2: Supported Tech Stacks (Aside 3D App Perspective Grid) */}
+        <SupportedStacksSection />
 
         {/* Section 3: Instant Settlement & Escrow Vault */}
         <SettlementSection />
