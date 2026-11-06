@@ -30,8 +30,11 @@ export default function HeroCard() {
   }
 
   return (
-    <div id="hero-section" className="p-2 pb-0 sm:p-3 sm:pb-0 md:p-4 md:pb-0 w-full relative z-10">
-      <div className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-[#0b0c10] shadow-2xl border border-white/10">
+    <div id="hero-section" className="p-2 pb-0 sm:p-3 sm:pb-0 md:p-4 md:pb-0 w-full relative z-20">
+      {/* Ambient drop shadow under the hero card onto the white section below (Aside style) */}
+      <div className="absolute -bottom-4 inset-x-8 sm:inset-x-16 h-12 bg-black/25 blur-2xl pointer-events-none z-0" />
+
+      <div className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-[#0b0c10] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35)] border border-white/10 z-10">
         {/* Ambient Video Background (WebM looping animated background) */}
         <video
           autoPlay
@@ -47,6 +50,10 @@ export default function HeroCard() {
 
         {/* Subtle dark gradient overlay to ensure perfect contrast for both dark and bright areas */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/85 pointer-events-none z-[1]" />
+
+        {/* Deep shadow in the down area of the video background (Aside style) */}
+        <div className="absolute inset-x-0 bottom-0 h-72 sm:h-96 bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none z-[2]" />
+        <div className="absolute inset-x-0 bottom-0 h-36 sm:h-48 bg-gradient-to-t from-black/95 to-transparent pointer-events-none z-[2]" />
 
         {/* Inner Border Ring */}
         <div className="pointer-events-none absolute inset-0 z-20 rounded-2xl md:rounded-3xl shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)]" />
