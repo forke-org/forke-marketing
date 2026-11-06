@@ -27,29 +27,30 @@ export default function LandingPage() {
           variant="cross"
           pixelSize={3}
           color="#f97316"
+          accentColor="#FF851B"
           patternScale={1.7}
           patternDensity={0.65}
           softness={0.6}
-          glow={0.4}
-          twinkle={0.2}
-          drift={0.2}
-          hoverEffect="none"
-          enableRipples
-          edgeFade={0.25}
-          accentColor="#000000"
+          glow={0.5}
+          twinkle={0.25}
+          drift={0.35}
+          hoverEffect="reveal"
+          enableRipples={true}
+          edgeFade={0.2}
           pixelSizeJitter={0.09}
-          smoothing={1}
-          speed={0.6}
+          smoothing={0.9}
+          speed={0.8}
           driftAngle={30}
-          hoverRadius={140}
-          rippleSpeed={0.3}
-          rippleThickness={0.1}
-          rippleIntensityScale={1}
-          autoRipple={0}
+          hoverRadius={160}
+          rippleSpeed={0.35}
+          rippleThickness={0.12}
+          rippleIntensityScale={1.2}
+          autoRipple={2.5}
           tiltX={0}
           tiltY={0}
-          intro
-          lightMode={false}
+          intro={true}
+          lightMode={true}
+          transparent={true}
         />
       </div>
 
