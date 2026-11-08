@@ -10,6 +10,7 @@ import Image from 'next/image'
 import { ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Download, GitPullRequest, RotateCcw, Terminal, Zap, Shield, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Rev20Logo } from '@/components/ui/Rev20Logo'
+import GooeyNav from '@/components/ui/GooeyNav'
 
 export default function HeroCard() {
   const [activeTab, setActiveTab] = useState<'terminal' | 'diff' | 'payout'>('terminal')
@@ -67,19 +68,27 @@ export default function HeroCard() {
             </span>
           </a>
 
-          {/* Nav Links */}
-          <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 lg:gap-10 font-mono text-xs sm:text-sm text-white/70 md:flex">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <a 
-                  href={link.href} 
-                  className="transition-colors hover:text-white drop-shadow-sm font-medium"
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
-          </ul>
+          {/* Nav Links with GooeyNav Background */}
+          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center md:flex font-mono">
+            <GooeyNav
+              items={navLinks.map((link) => ({
+                label: link.name,
+                href: link.href,
+              }))}
+              initialActiveIndex={0}
+              theme="light"
+              size="md"
+              frame
+              particleCount={15}
+              spread={56}
+              animationTime={600}
+              timeVariance={300}
+              gooeyness={0.5}
+              wobble={0.5}
+              hoverEffect
+              colors={["#ff5a1f", "#ff8a3a", "#ffb020"]}
+            />
+          </div>
 
           {/* Right spacer (Get Started removed from landing page navbar per user request) */}
           <div className="hidden md:flex items-center w-10" />

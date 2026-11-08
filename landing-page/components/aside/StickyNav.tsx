@@ -62,8 +62,10 @@ export default function StickyNav() {
       <div className="w-full max-w-4xl">
         <Menu
           setActive={setActive}
-          className="items-center justify-between px-4 sm:px-6 py-2.5 bg-white/95 backdrop-blur-md border border-black/[0.08] shadow-[0_10px_35px_rgba(0,0,0,0.1)]"
+          className="items-center justify-between px-4 sm:px-6 py-2.5 bg-[rgba(240,240,243,0.85)] backdrop-blur-[20px] backdrop-saturate-[1.6] border-0 shadow-[0_22px_44px_-22px_rgba(24,24,27,0.3),0_6px_16px_-10px_rgba(24,24,27,0.16)] rounded-full relative"
         >
+          {/* GooeyNav Light Theme Rim Highlight & Inset Border */}
+          <span className="absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(24,24,27,0.07),inset_0_1px_0_rgba(255,255,255,0.95)] pointer-events-none" />
           {/* Brand Logo (Left) */}
           <a
             href="#"
