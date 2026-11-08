@@ -4,6 +4,7 @@ import StickyNav from '@/components/aside/StickyNav'
 import GradualBlur from '@/components/ui/GradualBlur'
 import ManifestoSection from '@/components/aside/ManifestoSection'
 import SupportedStacksSection from '@/components/aside/SupportedStacksSection'
+import FeaturesPipelineSection from '@/components/aside/FeaturesPipelineSection'
 import SettlementSection from '@/components/aside/SettlementSection'
 import TrustSection from '@/components/aside/TrustSection'
 import BottomCta from '@/components/aside/BottomCta'
@@ -46,6 +47,9 @@ export default function LandingPage() {
 
         {/* Section 2: Supported Tech Stacks (Aside 3D App Perspective Grid) */}
         <SupportedStacksSection />
+
+        {/* Section 2.5: The Pipeline / Features (Calendly-style Interactive Showcase with Orange Gradient) */}
+        <FeaturesPipelineSection />
 
         {/* Section 3: Instant Settlement & Escrow Vault */}
         <SettlementSection />
