@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "displayFont";
+  src: url("/fonts/AsideDisplay_Variable.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: "displayFont Fallback";
+  src: local("Arial");
+  ascent-override: 102.43%;
+  descent-override: 25.9%;
+  line-gap-override: 0.0%;
+  size-adjust: 92.76%;
+}
+
 @theme {
   --color-accent: var(--color-accent);
   --color-accent-hover: var(--color-accent-hover);
@@ -17,7 +33,7 @@
 
   /* Font mapping for Next.js Fonts */
   --font-sans: var(--font-schibsted-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-schibsted-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: "displayFont", "displayFont Fallback", var(--font-schibsted-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
@@ -91,6 +107,31 @@ img {
 }
 
 @layer utilities {
+  .hero-display-headline {
+    font-family: displayFont, "displayFont Fallback", sans-serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 38px;
+    letter-spacing: -0.34px;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .hero-display-headline {
+      font-size: 40px;
+      line-height: 44px;
+      letter-spacing: -0.4px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hero-display-headline {
+      font-size: 44px;
+      line-height: 48px;
+      letter-spacing: -0.44px;
+    }
+  }
+
   .landing-icons-mask {
     -webkit-mask-image: linear-gradient(#000 0% 74%, rgba(0, 0, 0, 0) 100%);
     mask-image: linear-gradient(#000 0% 74%, rgba(0, 0, 0, 0) 100%);

@@ -127,7 +127,14 @@ export default function HeroCard() {
           </a>
 
           {/* Main Display Headline */}
-          <h1 className="font-display text-white text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-[-0.025em] leading-[1.14] mb-8 drop-shadow-xl">
+          <h1
+            className="hero-display-headline text-white mb-8 drop-shadow-xl"
+            style={{
+              fontFamily: 'displayFont, "displayFont Fallback"',
+              fontWeight: 400,
+              textAlign: 'center',
+            }}
+          >
             Ship real work. <br />
             Earn XP.{' '}
             <span className="relative inline-block">
