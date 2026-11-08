@@ -3,19 +3,23 @@
 /**
  * @fileoverview Forke Platform - Supported Stacks 3D Showcase Section
  * Replicates the exact Aside website 3D perspective app grid, spacing, and styling,
- * displaying the 24 modern developer stacks supported by Forke bounties.
+ * with exact 135x74 rendered dimensions, 400px base cell projection, radial contact
+ * shadows, and 24 modern developer stacks supported by Forke bounties.
  * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
  */
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 interface TechStack {
   name: string
   category: string
   bg: string
   border?: string
+  isLight?: boolean
   icon: React.ReactNode
 }
 
@@ -26,13 +30,13 @@ const TECH_STACKS: TechStack[] = [
     name: 'Next.js',
     category: 'Framework',
     bg: '#000000',
+    border: 'rgba(255, 255, 255, 0.14)',
     icon: (
       <svg viewBox="0 0 180 180" className="size-full fill-white">
-        <mask height="180" width="180" x="0" y="0" id="mask0_next">
+        <mask height="180" width="180" x="0" y="0" id="m_next">
           <circle cx="90" cy="90" fill="#fff" r="90" />
         </mask>
-        <g mask="url(#mask0_next)">
-          <circle cx="90" cy="90" fill="#000" r="90" />
+        <g mask="url(#m_next)">
           <path d="M149.508 157.086L69.838 54.498H54.498V125.5H66.838V70.825L138.835 163.665C142.613 161.71 146.185 159.506 149.508 157.086Z" fill="#fff" />
           <rect fill="#fff" height="71" width="12.34" x="115.66" y="54.498" />
         </g>
@@ -43,21 +47,23 @@ const TECH_STACKS: TechStack[] = [
     name: 'TypeScript',
     category: 'Language',
     bg: '#3178C6',
+    border: 'rgba(255, 255, 255, 0.18)',
     icon: (
-      <svg viewBox="0 0 128 128" className="size-full">
-        <path d="M1.5 63.5C1.5 29.3 29.3 1.5 63.5 1.5S125.5 29.3 125.5 63.5 97.7 125.5 63.5 125.5 1.5 97.7 1.5 63.5z" fill="#3178C6" />
-        <path d="M70.1 76.5c1.8 3.5 4.6 6.3 8.3 8.3 3.8 2 8 3 12.8 3 4 0 7.4-.7 10.3-2.1 2.9-1.4 5.2-3.4 6.8-6 1.6-2.6 2.4-5.6 2.4-9 0-3.3-.8-6.1-2.4-8.5-1.6-2.4-3.8-4.3-6.7-5.8-2.9-1.5-6.8-2.9-11.7-4.3-5.2-1.5-9.3-3.1-12.4-4.7-3.1-1.6-5.4-3.7-6.9-6.3-1.5-2.6-2.3-5.7-2.3-9.4 0-3.9 1-7.4 3.1-10.4s5.1-5.4 9.1-7.2c4-1.8 8.8-2.7 14.4-2.7 5.4 0 10.2.9 14.5 2.7 4.3 1.8 7.7 4.5 10.2 8.1l-10.7 8.9c-1.8-2.4-4-4.2-6.5-5.4-2.5-1.2-5.3-1.8-8.4-1.8-3.4 0-6.2.7-8.4 2.1-2.2 1.4-3.3 3.4-3.3 6.1 0 2.2.7 4 2.1 5.4 1.4 1.4 3.4 2.6 6.1 3.6 2.7 1 6.5 2.2 11.4 3.6 5.8 1.6 10.4 3.4 13.9 5.2 3.5 1.8 6.1 4.2 7.8 7.2 1.7 3 2.6 6.7 2.6 11.1 0 4.6-1.2 8.7-3.6 12.3s-5.9 6.4-10.5 8.4c-4.6 2-10 3-16.2 3-7 0-13.1-1.3-18.3-4-5.2-2.7-9.3-6.6-12.2-11.8l10.9-8.8zM42.2 41.2v67.1H29.1V41.2H4.8V29.7h61.7v11.5H42.2z" fill="#fff" />
+      <svg viewBox="0 0 128 128" className="size-full fill-white">
+        <path d="M42.2 41.2v67.1H29.1V41.2H4.8V29.7h61.7v11.5H42.2z" />
+        <path d="M70.1 76.5c1.8 3.5 4.6 6.3 8.3 8.3 3.8 2 8 3 12.8 3 4 0 7.4-.7 10.3-2.1 2.9-1.4 5.2-3.4 6.8-6 1.6-2.6 2.4-5.6 2.4-9 0-3.3-.8-6.1-2.4-8.5-1.6-2.4-3.8-4.3-6.7-5.8-2.9-1.5-6.8-2.9-11.7-4.3-5.2-1.5-9.3-3.1-12.4-4.7-3.1-1.6-5.4-3.7-6.9-6.3-1.5-2.6-2.3-5.7-2.3-9.4 0-3.9 1-7.4 3.1-10.4s5.1-5.4 9.1-7.2c4-1.8 8.8-2.7 14.4-2.7 5.4 0 10.2.9 14.5 2.7 4.3 1.8 7.7 4.5 10.2 8.1l-10.7 8.9c-1.8-2.4-4-4.2-6.5-5.4-2.5-1.2-5.3-1.8-8.4-1.8-3.4 0-6.2.7-8.4 2.1-2.2 1.4-3.3 3.4-3.3 6.1 0 2.2.7 4 2.1 5.4 1.4 1.4 3.4 2.6 6.1 3.6 2.7 1 6.5 2.2 11.4 3.6 5.8 1.6 10.4 3.4 13.9 5.2 3.5 1.8 6.1 4.2 7.8 7.2 1.7 3 2.6 6.7 2.6 11.1 0 4.6-1.2 8.7-3.6 12.3s-5.9 6.4-10.5 8.4c-4.6 2-10 3-16.2 3-7 0-13.1-1.3-18.3-4-5.2-2.7-9.3-6.6-12.2-11.8l10.9-8.8z" />
       </svg>
     ),
   },
   {
     name: 'React',
     category: 'Library',
-    bg: '#20232A',
+    bg: '#1A1C23',
+    border: 'rgba(97, 218, 251, 0.25)',
     icon: (
       <svg viewBox="-11.5 -10.23174 23 20.46348" className="size-full">
-        <circle cx="0" cy="0" r="2.05" fill="#61dafb" />
-        <g stroke="#61dafb" strokeWidth="1" fill="none">
+        <circle cx="0" cy="0" r="2.1" fill="#61dafb" />
+        <g stroke="#61dafb" strokeWidth="1.15" fill="none">
           <ellipse rx="11" ry="4.2" />
           <ellipse rx="11" ry="4.2" transform="rotate(60)" />
           <ellipse rx="11" ry="4.2" transform="rotate(120)" />
@@ -68,7 +74,8 @@ const TECH_STACKS: TechStack[] = [
   {
     name: 'Python',
     category: 'Language',
-    bg: '#1e293b',
+    bg: '#1E293B',
+    border: 'rgba(255, 255, 255, 0.12)',
     icon: (
       <svg viewBox="0 0 110 110" className="size-full">
         <path d="M54.4 2C39.2 2 40 8.6 40 8.6l.01 9h14.7v4.3H26.3S11 20.1 11 35.5s13.4 14.8 13.4 14.8h4.5v-6.5c0-7.4 6.4-7.4 6.4-7.4h14.5s6.1.1 6.1-5.9V9.7S57.1 2 54.4 2zm-8.2 5.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6z" fill="#3776AB" />
@@ -79,7 +86,8 @@ const TECH_STACKS: TechStack[] = [
   {
     name: 'Rust',
     category: 'Systems',
-    bg: '#000000',
+    bg: '#141414',
+    border: 'rgba(255, 255, 255, 0.12)',
     icon: (
       <svg viewBox="0 0 106 106" className="size-full fill-white">
         <path d="M53 2C24.8 2 2 24.8 2 53s22.8 51 51 51 51-22.8 51-51S81.2 2 53 2zm18.3 75.8L63.5 61H51.8v16.8H40V28.2h24.8c13.2 0 20.1 7.4 20.1 16.7 0 7.5-4.4 13.2-12.1 15.1l8.5 17.8h-10zM51.8 51.5h11.2c5.8 0 9.2-2.8 9.2-7.2s-3.4-7.2-9.2-7.2H51.8v14.4z" />
@@ -90,9 +98,10 @@ const TECH_STACKS: TechStack[] = [
     name: 'Go',
     category: 'Backend',
     bg: '#00ADD8',
+    border: 'rgba(255, 255, 255, 0.2)',
     icon: (
-      <svg viewBox="0 0 100 100" className="size-full fill-white">
-        <text x="50%" y="68%" textAnchor="middle" fontSize="56" fontWeight="900" fontFamily="sans-serif">GO</text>
+      <svg viewBox="0 0 120 70" className="size-full fill-white">
+        <path d="M36.2 34.6c0 9.6-7.3 17.4-17.6 17.4S1 44.2 1 34.6 8.3 17.2 18.6 17.2c6.2 0 11.2 2.8 14.4 7.4l-7.3 4.2c-1.8-2.6-4.2-4.1-7.1-4.1-5.2 0-9.4 4.3-9.4 9.9s4.2 9.9 9.4 9.9c4.3 0 7.6-2.6 8.8-6.4H18.6v-6.7h17.6v3.2zm38.1 0c0 9.6-7.8 17.4-18.1 17.4s-18.1-7.8-18.1-17.4 7.8-17.4 18.1-17.4 18.1 7.8 18.1 17.4zm-8.2 0c0-5.6-4.2-9.9-9.9-9.9s-9.9 4.3-9.9 9.9 4.2 9.9 9.9 9.9 9.9-4.3 9.9-9.9z" />
       </svg>
     ),
   },
@@ -100,6 +109,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'PostgreSQL',
     category: 'Database',
     bg: '#336791',
+    border: 'rgba(255, 255, 255, 0.18)',
     icon: (
       <svg viewBox="0 0 128 128" className="size-full fill-white">
         <path d="M64 12C35.3 12 12 35.3 12 64s23.3 52 52 52 52-23.3 52-52S92.7 12 64 12zm23.8 62.4c-1.8 9.3-8.8 15.6-18.4 15.6H50.8v-36h18.6c9.6 0 16.6 6.3 18.4 15.6v4.8z" opacity="0.9" />
@@ -110,7 +120,8 @@ const TECH_STACKS: TechStack[] = [
   {
     name: 'Node.js',
     category: 'Runtime',
-    bg: '#1e293b',
+    bg: '#1E293B',
+    border: 'rgba(95, 160, 78, 0.25)',
     icon: (
       <svg viewBox="0 0 128 128" className="size-full fill-[#5FA04E]">
         <path d="M64 10.5L16.2 38.1v55.2L64 121l47.8-27.6V38.1L64 10.5zm33.1 73.6L64 103 30.9 84.1V46.3L64 27.4l33.1 18.9v37.8z" />
@@ -122,7 +133,8 @@ const TECH_STACKS: TechStack[] = [
   {
     name: 'Supabase',
     category: 'Backend',
-    bg: '#1c1917',
+    bg: '#171B19',
+    border: 'rgba(62, 207, 142, 0.25)',
     icon: (
       <svg viewBox="0 0 109 113" className="size-full">
         <path d="M63.7 110.2c-2.4 3-7.2 1.8-7.9-2.1L45.4 51.9h47.2c4.4 0 6.8 5.1 4 8.5L63.7 110.2z" fill="#3ECF8E" />
@@ -134,6 +146,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'Docker',
     category: 'DevOps',
     bg: '#1D63ED',
+    border: 'rgba(255, 255, 255, 0.18)',
     icon: (
       <svg viewBox="0 0 24 24" className="size-full fill-white">
         <path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.186.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.186.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.186.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.185-.186H5.136a.186.186 0 00-.186.185v1.888c0 .102.084.185.186.185m-2.928 0h2.12a.185.185 0 00.185-.185V9.006a.185.185 0 00-.185-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.184.185" />
@@ -143,9 +156,11 @@ const TECH_STACKS: TechStack[] = [
   {
     name: 'GitHub',
     category: 'VCS & CI',
-    bg: '#0D1117',
+    bg: '#FFFFFF',
+    border: 'rgba(0, 0, 0, 0.1)',
+    isLight: true,
     icon: (
-      <svg viewBox="0 0 24 24" className="size-full fill-white">
+      <svg viewBox="0 0 24 24" className="size-full fill-[#18181B]">
         <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
       </svg>
     ),
@@ -154,6 +169,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'Tailwind CSS',
     category: 'Styling',
     bg: '#0F172A',
+    border: 'rgba(56, 189, 248, 0.25)',
     icon: (
       <svg viewBox="0 0 24 24" className="size-full fill-[#38BDF8]">
         <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z" />
@@ -164,6 +180,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'GraphQL',
     category: 'API',
     bg: '#E535AB',
+    border: 'rgba(255, 255, 255, 0.2)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full fill-white">
         <path d="M50 10L84.6 30v40L50 90 15.4 70V30L50 10zm0 11.5L23.4 34.2v31.6L50 78.5l26.6-12.7V34.2L50 21.5z" />
@@ -180,6 +197,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'Redis',
     category: 'Cache',
     bg: '#DC382D',
+    border: 'rgba(255, 255, 255, 0.2)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full fill-white">
         <path d="M50 18L15 36l35 18 35-18-35-18z" />
@@ -192,6 +210,8 @@ const TECH_STACKS: TechStack[] = [
     name: 'Bun',
     category: 'Runtime',
     bg: '#FBF0DF',
+    border: 'rgba(0, 0, 0, 0.08)',
+    isLight: true,
     icon: (
       <svg viewBox="0 0 100 100" className="size-full">
         <circle cx="50" cy="50" r="40" fill="#E8B87D" />
@@ -204,7 +224,8 @@ const TECH_STACKS: TechStack[] = [
   {
     name: 'Prisma',
     category: 'ORM',
-    bg: '#2D3748',
+    bg: '#1A202C',
+    border: 'rgba(90, 103, 216, 0.25)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full fill-[#5A67D8]">
         <path d="M48 10L18 80l64-15L48 10zm4 18l19 39-41 10 22-49z" />
@@ -217,6 +238,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'Svelte',
     category: 'Framework',
     bg: '#FF3E00',
+    border: 'rgba(255, 255, 255, 0.2)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full fill-white">
         <path d="M78 28c-4-8-14-13-25-11-13 2-24 13-22 26 1 8 7 14 13 18l12 7c6 4 9 9 8 15-1 8-9 13-17 12-7-1-12-6-14-13l-13 4c3 13 13 22 27 23 16 1 29-10 31-25 1-9-4-17-12-22l-12-7c-5-3-8-8-7-13 1-6 6-10 12-10 5 0 9 3 11 7l11-4z" />
@@ -227,6 +249,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'Vue.js',
     category: 'Framework',
     bg: '#1A2332',
+    border: 'rgba(66, 184, 131, 0.25)',
     icon: (
       <svg viewBox="0 0 256 221" className="size-full">
         <path d="M204.8 0H256L128 220.8 0 0h97.92L128 51.2 157.44 0h47.36z" fill="#42B883" />
@@ -238,6 +261,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'FastAPI',
     category: 'Backend',
     bg: '#05998B',
+    border: 'rgba(255, 255, 255, 0.2)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full fill-white">
         <path d="M54 10L24 55h22L40 90l36-48H52l12-32h-10z" />
@@ -248,6 +272,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'Kubernetes',
     category: 'Cloud',
     bg: '#326CE5',
+    border: 'rgba(255, 255, 255, 0.2)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full fill-white">
         <circle cx="50" cy="50" r="14" fill="#326CE5" stroke="#fff" strokeWidth="6" />
@@ -259,6 +284,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'AWS',
     category: 'Cloud',
     bg: '#232F3E',
+    border: 'rgba(255, 255, 255, 0.12)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full">
         <text x="50%" y="45%" textAnchor="middle" fontSize="32" fontWeight="900" fill="#fff" fontFamily="sans-serif">aws</text>
@@ -270,6 +296,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'Linux',
     category: 'OS',
     bg: '#18181B',
+    border: 'rgba(255, 255, 255, 0.12)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full fill-white">
         <circle cx="50" cy="38" r="18" fill="#FEE135" />
@@ -284,6 +311,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'MongoDB',
     category: 'Database',
     bg: '#001E2B',
+    border: 'rgba(0, 237, 100, 0.25)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full">
         <path d="M50 12c-4 12-16 26-16 44 0 16 10 28 20 32v-76h-4zm0 0c4 12 16 26 16 44 0 16-10 28-20 32v-76h4z" fill="#00ED64" />
@@ -294,6 +322,7 @@ const TECH_STACKS: TechStack[] = [
     name: 'C++',
     category: 'Systems',
     bg: '#00599C',
+    border: 'rgba(255, 255, 255, 0.2)',
     icon: (
       <svg viewBox="0 0 100 100" className="size-full fill-white">
         <text x="50%" y="65%" textAnchor="middle" fontSize="42" fontWeight="900" fontFamily="sans-serif">C++</text>
@@ -302,27 +331,38 @@ const TECH_STACKS: TechStack[] = [
   },
 ]
 
+// Aside Scaling Constants for 3760x1360 3D Icon Grid
+const L_BASE = 3856
+const S_BASE = 1432 * Math.cos((48 * Math.PI) / 180) // 958.23
+
 export default function SupportedStacksSection() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [scale, setScale] = useState(1)
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(0.3375) // Default to standard desktop scale
+  const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (!containerRef.current) return
-      const width = containerRef.current.clientWidth
-      // Aside auto-scaling algorithm for 3D perspective grid
-      if (width < 640) {
-        setScale(Math.max(0.48, width / 960))
-      } else if (width < 1024) {
-        setScale(Math.max(0.75, width / 1200))
-      } else {
-        setScale(Math.min(1.08, Math.max(0.92, width / 1380)))
-      }
+  useIsomorphicLayoutEffect(() => {
+    const el = scrollerRef.current || containerRef.current
+    if (!el) return
+
+    const update = (w: number, h: number) => {
+      let n = Math.max(0, w) / L_BASE
+      const factor = w < 640 ? 1.8 : w < 1024 ? 1.35 : 1
+      const s = Math.min(
+        Math.max(n, Math.min((Math.max(0, h) / S_BASE) * 0.88, n * factor)),
+        1
+      )
+      setScale(s)
+      setMounted(true)
     }
 
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    update(el.clientWidth, el.clientHeight)
+
+    const observer = new ResizeObserver(([entry]) => {
+      update(entry.contentRect.width, entry.contentRect.height)
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
   return (
@@ -331,7 +371,7 @@ export default function SupportedStacksSection() {
         {/* Soft Background Gradient like Aside */}
         <div className="to-background bg-gradient-to-b from-neutral-50/70">
           {/* Header Block with Aside vertical border-x */}
-          <div className="border-x border-black/[0.08] px-6 py-12 sm:px-8 sm:py-16 md:px-14 md:py-24 xl:px-36 !pb-6">
+          <div className="border-x border-black/[0.08] px-6 py-12 sm:px-8 sm:py-16 md:px-14 md:py-24 xl:px-36 !pb-4">
             <div className="text-center max-w-3xl mx-auto">
               <p className="mb-2 lg:mb-4">
                 <a
@@ -349,32 +389,32 @@ export default function SupportedStacksSection() {
             </div>
           </div>
 
-          {/* 3D Tilted Icons Perspective Wall (Exact Aside perspective & mask) */}
-          <div className="border-x border-black/[0.08] px-2 sm:px-4 md:px-8 xl:px-20 !p-0">
+          {/* 3D Tilted Icons Perspective Wall (Exact Aside perspective, mask, and dimensions) */}
+          <div className="border-x border-black/[0.08] px-6 py-12 sm:px-8 sm:py-16 md:px-14 md:py-24 xl:px-36 !p-0">
             <div
               ref={containerRef}
-              className="landing-icons-mask relative -mt-8 sm:-mt-12 md:-mt-16 h-80 sm:h-96 md:h-[430px] w-full overflow-hidden select-none"
+              className="landing-icons-mask relative -mt-8 sm:-mt-12 md:-mt-16 h-[380px] sm:h-[420px] md:h-[450px] w-full overflow-hidden select-none"
               role="img"
               aria-label="Supported tech stack icons that Forke supports"
             >
               <div
-                className="absolute inset-y-0 right-0 left-0 flex h-80 sm:h-96 md:h-[430px] items-end justify-center overflow-hidden"
+                ref={scrollerRef}
+                className="absolute inset-y-0 right-0 left-0 flex h-[380px] sm:h-[420px] md:h-[450px] items-end justify-center overflow-hidden lg:right-10 lg:left-10 xl:right-12 xl:left-12"
                 style={{
                   perspective: '1200px',
-                  perspectiveOrigin: '50% 100%',
+                  perspectiveOrigin: 'calc(50% + 12px) 100%',
                 }}
               >
-                {/* 3D Perspective Plane */}
+                {/* 3D Perspective Plane (3760x1360 grid with 400px items that scale down to 135x74 on screen) */}
                 <div
                   className="grid origin-bottom overflow-visible"
                   style={{
-                    width: 1260,
-                    height: 520,
-                    gridTemplateColumns: 'repeat(8, 126px)',
-                    gridTemplateRows: 'repeat(3, 126px)',
-                    gap: '28px 28px',
-                    transformOrigin: '50% bottom',
-                    transform: `rotateX(46deg) scale(${scale})`,
+                    width: 3760,
+                    height: 1360,
+                    gridTemplateColumns: 'repeat(8, 400px)',
+                    gap: 80,
+                    transformOrigin: 'calc(50% + 12px) bottom',
+                    transform: `rotateX(48deg) scale(${scale})`,
                     transformStyle: 'preserve-3d',
                   }}
                 >
@@ -383,64 +423,90 @@ export default function SupportedStacksSection() {
                     return (
                       <motion.div
                         key={stack.name}
-                        className="relative shrink-0 cursor-pointer group"
+                        className="relative shrink-0 cursor-default hover:z-10 group"
                         style={{
-                          transformStyle: 'preserve-3d',
+                          width: 400,
+                          height: 400,
+                          transformStyle: 'flat',
+                          transformOrigin: '200px 200px',
                         }}
-                        initial={{ opacity: 0, y: 50 }}
+                        initial={{ opacity: 0, y: 48, scale: 0.92 }}
                         whileInView={{
                           opacity: 1,
                           y: 0,
+                          scale: 1,
                           transition: {
-                            duration: 0.5,
-                            delay: 0.04 * index,
+                            duration: 0.45,
+                            delay: 0.05 + 0.06 * row,
                             ease: [0.22, 1, 0.36, 1],
                           },
                         }}
-                        viewport={{ once: true, amount: 0.2 }}
+                        viewport={{ once: true, amount: 0.05 }}
                       >
-                        {/* Radial Contact Shadow Beneath Each Card */}
+                        {/* Radial Contact Shadow Beneath Each Icon */}
                         <motion.div
-                          className="pointer-events-none absolute -bottom-3 inset-x-2 h-7 rounded-full"
+                          className="pointer-events-none absolute z-0 rounded-full"
+                          aria-hidden="true"
                           style={{
+                            left: 200,
+                            bottom: 6,
+                            width: 312,
+                            height: 88,
+                            x: '-50%',
                             background:
-                              'radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.18) 35%, transparent 72%)',
-                            filter: 'blur(6px)',
+                              'radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.28) 28%, rgba(0,0,0,0.1) 54%, transparent 76%)',
+                            transformOrigin: 'center center',
+                            filter: 'blur(10px)',
                           }}
                           whileHover={{
-                            scale: 1.35,
-                            opacity: 0.5,
-                            filter: 'blur(12px)',
-                            transition: { duration: 0.2 },
+                            opacity: 0.38,
+                            scaleX: 1.32,
+                            scaleY: 1.24,
+                            filter: 'blur(24px)',
+                            transition: { duration: 0.2, ease: 'easeOut' },
                           }}
                         />
 
-                        {/* Interactive Squircle App Card */}
+                        {/* Interactive Squircle App Card (Matches div.absolute with 0px padding, z-10, 135x74 rendered) */}
                         <motion.div
-                          className="relative size-[120px] rounded-2xl sm:rounded-3xl p-6 border border-black/[0.08] shadow-[0_12px_28px_-6px_rgba(0,0,0,0.12)] flex flex-col items-center justify-center transition-all overflow-hidden"
+                          className="absolute inset-0 z-10 rounded-[80px] flex items-center justify-center border shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden"
                           style={{
                             backgroundColor: stack.bg,
+                            borderColor: stack.border || 'rgba(0, 0, 0, 0.08)',
                             backfaceVisibility: 'hidden',
+                            padding: 0,
                           }}
                           whileHover={{
-                            y: -28,
-                            scale: 1.14,
-                            boxShadow: '0 25px 40px -10px rgba(0,0,0,0.3)',
+                            y: -40,
+                            scale: 1.1,
+                            boxShadow: '0 24px 48px -12px rgba(0,0,0,0.28)',
                             transition: { duration: 0.2, ease: 'easeOut' },
                           }}
                           whileTap={{ scale: 0.96 }}
                         >
                           {/* Glossy top-light reflection like Aside & iOS app icons */}
-                          <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none rounded-t-2xl" />
+                          <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 via-white/5 to-transparent pointer-events-none rounded-t-[80px]" />
 
-                          {/* Center Icon */}
-                          <div className="size-13 sm:size-14 flex items-center justify-center relative z-10 drop-shadow-md">
+                          {/* Center Stack Icon (Pre-scaled Y to compensate for 48deg 3D tilt compression) */}
+                          <div
+                            className="size-[240px] flex items-center justify-center relative z-10 drop-shadow-sm p-2"
+                            style={{
+                              transform: 'scaleY(1.38)',
+                              transformOrigin: 'center center',
+                            }}
+                          >
                             {stack.icon}
                           </div>
 
                           {/* Tooltip on Hover */}
-                          <div className="absolute inset-x-0 bottom-1 text-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                            <span className="text-[10px] font-mono font-bold tracking-tight text-white/90 drop-shadow">
+                          <div className="absolute inset-x-0 bottom-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                            <span
+                              className={`text-[26px] font-sans font-semibold tracking-tight px-4 py-1.5 rounded-full ${
+                                stack.isLight
+                                  ? 'text-[#2E1C0C] bg-white/90 shadow'
+                                  : 'text-white/95 bg-black/50 backdrop-blur-sm'
+                              } drop-shadow`}
+                            >
                               {stack.name}
                             </span>
                           </div>
@@ -455,8 +521,8 @@ export default function SupportedStacksSection() {
         </div>
 
         {/* Narrative Paragraph with Aside Border-X Alignment */}
-        <div className="border-x border-black/[0.08] px-6 py-16 sm:px-8 md:py-20 xl:px-64 lg:px-48 text-left sm:text-center">
-          <p className="font-display text-[#0a0a0a] text-base sm:text-lg xl:text-xl font-normal leading-relaxed max-w-3xl mx-auto">
+        <div className="border-x border-black/[0.08] px-6 py-12 sm:px-8 md:py-16 xl:px-64 lg:px-48 text-left sm:text-center">
+          <p className="font-display text-[#0a0a0a] text-base xl:text-lg font-normal leading-relaxed max-w-3xl mx-auto">
             Unlike other freelancing platforms that force you into bidding wars and take 20% platform fees, Forke lets you write code in any stack with automated CI verification. That means you can build with the exact frameworks and tools you master. From UI fixes in Next.js to high-throughput backend services in Go and Rust—every merged PR is rewarded.
           </p>
         </div>
