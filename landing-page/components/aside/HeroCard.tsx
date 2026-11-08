@@ -146,7 +146,7 @@ export default function HeroCard() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 preserveAspectRatio="none"
-                className="absolute -bottom-2 sm:-bottom-2.5 left-0 w-full h-3 sm:h-4 text-accent pointer-events-none drop-shadow-[0_2px_8px_rgba(255,122,0,0.45)]"
+                className="absolute -bottom-2 sm:-bottom-3 md:-bottom-4 left-0 w-full h-3.5 sm:h-4 md:h-5 text-accent pointer-events-none drop-shadow-[0_2px_8px_rgba(255,122,0,0.45)]"
               >
                 <path
                   d="M4 14.5C55 5 135 4 251 10.5M16 19.5C82 12.5 178 10.5 245 16.5"
