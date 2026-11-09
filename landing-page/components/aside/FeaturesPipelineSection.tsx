@@ -28,50 +28,57 @@ import {
 
 interface FeatureTab {
   id: string
-  metric: string
+  number: string
   title: string
-  note: string
   description: string
   icon: React.ReactNode
+  tag: string
 }
 
 const FEATURE_TABS: FeatureTab[] = [
   {
     id: 'claim',
-    metric: '30m–4h',
-    title: 'scoped task size',
-    note: 'bite-sized by design',
+    number: '01',
+    title: 'Claim scoped bounties',
     description:
       'Browse tasks gated to your skill tier and trust score. Claiming locks the issue exclusively for you — 20 minutes to activate, and nobody can snipe it.',
-    icon: <Lock className="size-4" />,
-  },
-  {
-    id: 'payout',
-    metric: '<60s',
-    title: 'merge → UPI payout',
-    note: 'escrow releases on merge',
-    description:
-      'Client founders deposit bounty funds into escrow upfront. The second the maintainer approves and merges your PR, funds release directly to your UPI ID in under 60 seconds.',
-    icon: <Zap className="size-4" />,
+    icon: <Lock className="size-5" />,
+    tag: '30m - 4h',
   },
   {
     id: 'ship',
-    metric: '4-layer',
-    title: 'review pipeline',
-    note: 'build · tests · ai · human',
+    number: '02',
+    title: 'Automated CI verification',
     description:
       'Work in an isolated Forke branch — never on the owner’s repository. Submit a PR; automated builds, test suites, and AI scope checks verify your code before human review.',
-    icon: <GitPullRequest className="size-4" />,
+    icon: <GitPullRequest className="size-5" />,
+    tag: '4-layer check',
+  },
+  {
+    id: 'payout',
+    number: '03',
+    title: 'Instant UPI escrow release',
+    description:
+      'Client founders deposit bounty funds into escrow upfront. The second the maintainer approves and merges your PR, funds release directly to your UPI ID in under 60 seconds.',
+    icon: <Zap className="size-5" />,
+    tag: '<60s payout',
   },
   {
     id: 'reputation',
-    metric: '25',
-    title: 'levels to climb',
-    note: 'newcomer → forke legend',
+    number: '04',
+    title: 'Verified XP & proof-of-work',
     description:
       'Climb from L1 bug fixer to L25 repo architect. Every merged pull request mints immutable XP, raises your trust score, and unlocks higher bounty tiers across the platform.',
-    icon: <Award className="size-4" />,
+    icon: <Award className="size-5" />,
+    tag: '25 levels',
   },
+]
+
+const STAT_METRICS = [
+  { value: '30m–4h', label: 'scoped task size', note: 'bite-sized by design' },
+  { value: '<60s', label: 'merge → UPI payout', note: 'escrow releases on merge' },
+  { value: '4-layer', label: 'review pipeline', note: 'build · tests · ai · human' },
+  { value: '25', label: 'levels to climb', note: 'newcomer → forke legend' },
 ]
 
 export default function FeaturesPipelineSection() {
@@ -95,22 +102,58 @@ export default function FeaturesPipelineSection() {
     <section id="pipeline" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         <div className="border-x border-black/[0.08]">
+          {/* Section Header: Eyebrow Badge + Display Headline */}
+          <div className="border-b border-black/[0.08] px-6 py-10 sm:px-8 sm:py-12 md:px-14 md:py-14 xl:px-20">
+            {/* Eyebrow Badge */}
+            <div className="mb-4">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
+                <Sparkles className="size-3.5" />
+                <span>001 — The Pipeline</span>
+              </span>
+            </div>
+
+            {/* Main Headline */}
+            <h2
+              className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15]"
+              style={{
+                fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                fontWeight: 400,
+              }}
+            >
+              From claim to{' '}
+              <span className="text-[#FF7A00]">
+                cash.
+              </span>
+            </h2>
+          </div>
+
+          {/* First 4 Cards: Statistics Horizontal Four-Column Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 border-b border-black/[0.08] bg-neutral-50/50">
+            {STAT_METRICS.map((stat, idx) => (
+              <div
+                key={stat.label}
+                className={`p-6 sm:p-8 ${
+                  idx !== 0 ? 'border-t sm:border-t-0 md:border-l border-black/[0.08]' : ''
+                } ${idx === 1 ? 'border-l border-black/[0.08] md:border-l' : ''}`}
+              >
+                <div className="font-mono text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#0a0a0a] mb-1.5">
+                  {stat.value}
+                </div>
+                <div className="text-xs sm:text-sm font-medium text-neutral-800">
+                  {stat.label}
+                </div>
+                <div className="font-mono text-[11px] text-neutral-500 mt-0.5">
+                  {stat.note}
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* Main 2-Column Showcase (Calendly Style with Gradient Orange Background) */}
           <div className="px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-24 xl:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-              {/* Left Column: Title + Interactive Tab Accordion List */}
+              {/* Left Column: Interactive Tab Accordion List (Next 4 cards: 5, 6, 7, 8) */}
               <div className="lg:col-span-6 flex flex-col justify-center">
-                {/* Main Headline */}
-                <h2
-                  className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15] mb-8"
-                  style={{
-                    fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
-                    fontWeight: 400,
-                  }}
-                >
-                  From claim to cash.
-                </h2>
-
                 {/* Interactive Vertical Tab Accordion */}
                 <div
                   className="space-y-0 divide-y divide-black/[0.08] border-y border-black/[0.08]"
@@ -123,40 +166,32 @@ export default function FeaturesPipelineSection() {
                       <div
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`group cursor-pointer py-4 sm:py-5 transition-all ${
+                        className={`group cursor-pointer py-5 transition-all ${
                           isActive ? 'opacity-100' : 'opacity-65 hover:opacity-100'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
-                            {/* Slab Metric Badge */}
+                          <div className="flex items-center gap-3.5">
                             <div
-                              className={`min-w-[76px] sm:min-w-[88px] text-center font-mono text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl transition-all shrink-0 ${
+                              className={`size-9 rounded-xl flex items-center justify-center transition-colors ${
                                 isActive
                                   ? 'bg-[#FF7A00] text-white shadow-sm'
-                                  : 'bg-neutral-100 text-neutral-800 group-hover:bg-neutral-200'
+                                  : 'bg-neutral-100 text-neutral-600 group-hover:bg-neutral-200 group-hover:text-black'
                               }`}
                             >
-                              {tab.metric}
+                              {tab.icon}
                             </div>
-
-                            {/* Slab Title & Sub-note */}
-                            <div className="flex flex-col min-w-0">
-                              <span
-                                className={`text-base sm:text-lg font-semibold tracking-tight transition-colors truncate ${
-                                  isActive ? 'text-[#0a0a0a]' : 'text-neutral-700 group-hover:text-black'
-                                }`}
-                              >
-                                {tab.title}
-                              </span>
-                              <span className="font-mono text-[11px] text-neutral-500 truncate">
-                                {tab.note}
-                              </span>
-                            </div>
+                            <span
+                              className={`text-base sm:text-lg font-semibold tracking-tight transition-colors ${
+                                isActive ? 'text-[#0a0a0a]' : 'text-neutral-700 group-hover:text-black'
+                              }`}
+                            >
+                              {tab.title}
+                            </span>
                           </div>
 
                           <div
-                            className={`size-8 rounded-lg flex items-center justify-center border transition-all shrink-0 ${
+                            className={`size-8 rounded-lg flex items-center justify-center border transition-all ${
                               isActive
                                 ? 'bg-[#0a0a0a] text-white border-black'
                                 : 'bg-neutral-50 text-neutral-400 border-neutral-200 group-hover:border-neutral-400 group-hover:text-black'
@@ -180,7 +215,7 @@ export default function FeaturesPipelineSection() {
                               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                               className="overflow-hidden"
                             >
-                              <p className="pt-3 pl-[90px] sm:pl-[104px] text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed pr-6">
+                              <p className="pt-3 pl-12 text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed pr-8">
                                 {tab.description}
                               </p>
                             </motion.div>
