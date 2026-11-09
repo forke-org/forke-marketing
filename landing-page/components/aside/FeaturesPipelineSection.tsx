@@ -74,11 +74,43 @@ const FEATURE_TABS: FeatureTab[] = [
   },
 ]
 
-const STAT_METRICS = [
-  { value: '30m–4h', label: 'scoped task size', note: 'bite-sized by design' },
-  { value: '<60s', label: 'merge → UPI payout', note: 'escrow releases on merge' },
-  { value: '4-layer', label: 'review pipeline', note: 'build · tests · ai · human' },
-  { value: '25', label: 'levels to climb', note: 'newcomer → forke legend' },
+interface StatMetric {
+  value: string
+  label: string
+  note: string
+  tag: string
+  icon: React.ReactNode
+}
+
+const STAT_METRICS: StatMetric[] = [
+  {
+    value: '30m–4h',
+    label: 'Scoped task size',
+    note: 'Bite-sized issues locked exclusively for you.',
+    tag: '30m - 4h',
+    icon: <Clock className="size-5" />,
+  },
+  {
+    value: '<60s',
+    label: 'Merge → UPI payout',
+    note: 'Escrow releases instantly upon maintainer merge.',
+    tag: '<60s payout',
+    icon: <Zap className="size-5" />,
+  },
+  {
+    value: '4-layer',
+    label: 'Review pipeline',
+    note: 'Automated build, test suite, AI & human verification.',
+    tag: '4-layer check',
+    icon: <Shield className="size-5" />,
+  },
+  {
+    value: '25',
+    label: 'Levels to climb',
+    note: 'Climb from newcomer to legendary repo architect.',
+    tag: '25 levels',
+    icon: <Award className="size-5" />,
+  },
 ]
 
 export default function FeaturesPipelineSection() {
@@ -102,42 +134,50 @@ export default function FeaturesPipelineSection() {
     <section id="pipeline" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         <div className="border-x border-black/[0.08]">
-          {/* Top Stat Metrics Strip (from user design) */}
-          <div className="grid grid-cols-2 md:grid-cols-4 border-b border-black/[0.08] bg-neutral-50/50">
-            {STAT_METRICS.map((stat, idx) => (
-              <div
-                key={stat.label}
-                className={`p-6 sm:p-8 ${
-                  idx !== 0 ? 'border-t sm:border-t-0 md:border-l border-black/[0.08]' : ''
-                } ${idx === 1 ? 'border-l border-black/[0.08] md:border-l' : ''}`}
-              >
-                <div className="font-mono text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#0a0a0a] mb-1.5">
-                  {stat.value}
+          {/* Top 4 Feature Metric Cards ("like others in the down features showing") */}
+          <div className="border-b border-black/[0.08] p-6 sm:p-8 md:p-12 bg-neutral-50/40">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {STAT_METRICS.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="p-6 rounded-2xl bg-white border border-neutral-200/80 hover:border-neutral-300 hover:shadow-sm transition-all flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="size-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent group-hover:scale-105 transition-transform">
+                        {stat.icon}
+                      </div>
+                      <span className="text-[10px] font-mono text-accent bg-accent/10 px-2 py-0.5 rounded border border-accent/20 font-semibold">
+                        {stat.tag}
+                      </span>
+                    </div>
+                    <div
+                      className="text-2xl sm:text-3xl font-normal text-[#0a0a0a] mb-1.5"
+                      style={{
+                        fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                        fontWeight: 400,
+                      }}
+                    >
+                      {stat.value}
+                    </div>
+                    <h3 className="text-sm font-semibold text-neutral-800 mb-1">
+                      {stat.label}
+                    </h3>
+                    <p className="text-xs text-neutral-500 font-normal leading-relaxed">
+                      {stat.note}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-xs sm:text-sm font-medium text-neutral-800">
-                  {stat.label}
-                </div>
-                <div className="font-mono text-[11px] text-neutral-500 mt-0.5">
-                  {stat.note}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Main 2-Column Showcase (Calendly Style with Gradient Orange Background) */}
           <div className="px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-24 xl:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-              {/* Left Column: Eyebrow + Title + Interactive Tab Accordion List */}
+              {/* Left Column: Title + Interactive Tab Accordion List */}
               <div className="lg:col-span-6 flex flex-col justify-center">
-                {/* Eyebrow Badge */}
-                <div className="mb-4">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
-                    <Sparkles className="size-3.5" />
-                    <span>001 — The Pipeline</span>
-                  </span>
-                </div>
-
-                {/* Main Headline */}
+                {/* Main Headline (without 001 badge, and cash in normal text color) */}
                 <h2
                   className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15] mb-8"
                   style={{
@@ -145,10 +185,7 @@ export default function FeaturesPipelineSection() {
                     fontWeight: 400,
                   }}
                 >
-                  From claim to{' '}
-                  <span className="text-[#FF7A00]">
-                    cash.
-                  </span>
+                  From claim to cash.
                 </h2>
 
                 {/* Interactive Vertical Tab Accordion */}
