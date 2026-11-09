@@ -39,7 +39,7 @@
 * **Database & ORM:** PostgreSQL, [Drizzle ORM](https://orm.drizzle.team/)
 * **Authentication:** NextAuth / [Auth.js v5](https://authjs.dev/)
 * **Storage & CDN:** Cloudflare R2 (S3-compatible)
-* **Email:** Resend
+* **Email:** Forke Mail (mail.forke.space)
 
 ---
 
