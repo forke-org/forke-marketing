@@ -71,6 +71,16 @@ const nextConfig: NextConfig = {
         destination: `${adminUrl}/admin/:path*`,
         permanent: false,
       },
+      {
+        source: '/mail',
+        destination: 'https://mail.forke.space',
+        permanent: false,
+      },
+      {
+        source: '/mail/:path*',
+        destination: 'https://mail.forke.space/:path*',
+        permanent: false,
+      },
     ];
   },
 };
