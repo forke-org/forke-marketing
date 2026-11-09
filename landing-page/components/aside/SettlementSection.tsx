@@ -24,7 +24,13 @@ export default function SettlementSection() {
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
             </p>
-            <h2 className="font-display text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-bold tracking-tight leading-tight mb-4">
+            <h2
+              className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-tight mb-4"
+              style={{
+                fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                fontWeight: 400,
+              }}
+            >
               Bounties that pay out instantly. <br className="hidden sm:block" />
               Merged is paid.
             </h2>

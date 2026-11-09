@@ -374,7 +374,13 @@ export default function SupportedStacksSection() {
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
               </p>
-              <h2 className="font-display text-[#0a0a0a] font-bold text-3xl leading-tight sm:text-4xl sm:leading-tight xl:text-5xl xl:leading-tight">
+              <h2
+                className="text-[#0a0a0a] font-normal text-3xl leading-tight sm:text-4xl sm:leading-tight xl:text-5xl xl:leading-tight"
+                style={{
+                  fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                  fontWeight: 400,
+                }}
+              >
                 Any language you write code in,<br />
                 Forke supports your work.
               </h2>

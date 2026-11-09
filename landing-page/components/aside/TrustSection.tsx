@@ -51,7 +51,13 @@ export default function TrustSection() {
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
             </p>
-            <h2 className="font-display text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-bold tracking-tight leading-tight mb-4">
+            <h2
+              className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-tight mb-4"
+              style={{
+                fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                fontWeight: 400,
+              }}
+            >
               No pedigree needed. <br className="hidden sm:block" />
               Your code is your credential.
             </h2>

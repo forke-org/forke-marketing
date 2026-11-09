@@ -45,7 +45,13 @@ export default function BottomCta() {
               <span>EARN REAL MONEY BY SHIPPING CODE</span>
             </div>
 
-            <h2 className="font-display text-white text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] mb-6 drop-shadow-md">
+            <h2
+              className="text-white text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-normal tracking-tight leading-[1.1] mb-6 drop-shadow-md"
+              style={{
+                fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                fontWeight: 400,
+              }}
+            >
               Stop grinding LeetCode. <br />
               Start shipping for real money.
             </h2>

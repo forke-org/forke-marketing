@@ -138,17 +138,18 @@ export default function FeaturesPipelineSection() {
                 </div>
 
                 {/* Main Headline */}
-                <h2 className="font-display text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-bold tracking-tight leading-[1.15] mb-4">
+                <h2
+                  className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15] mb-8"
+                  style={{
+                    fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                    fontWeight: 400,
+                  }}
+                >
                   From claim to{' '}
-                  <span className="font-serif italic font-normal text-[#FF7A00]">
+                  <span className="text-[#FF7A00]">
                     cash.
                   </span>
                 </h2>
-
-                {/* Subhead Description */}
-                <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed mb-8 max-w-xl">
-                  One workflow, three moves. No proposals, no negotiation threads, no invoices — the pipeline does the trust work for you.
-                </p>
 
                 {/* Interactive Vertical Tab Accordion */}
                 <div

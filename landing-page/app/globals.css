@@ -106,6 +106,12 @@ img {
   user-select: none;
 }
 
+@layer base {
+  h1, h2, .font-display {
+    font-family: "displayFont", "displayFont Fallback", sans-serif;
+  }
+}
+
 @layer utilities {
   .hero-display-headline {
     font-family: displayFont, "displayFont Fallback", sans-serif;
