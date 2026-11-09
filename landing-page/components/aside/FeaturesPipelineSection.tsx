@@ -28,88 +28,49 @@ import {
 
 interface FeatureTab {
   id: string
-  number: string
+  metric: string
   title: string
+  note: string
   description: string
   icon: React.ReactNode
-  tag: string
 }
 
 const FEATURE_TABS: FeatureTab[] = [
   {
     id: 'claim',
-    number: '01',
-    title: 'Claim scoped bounties',
+    metric: '30m–4h',
+    title: 'scoped task size',
+    note: 'bite-sized by design',
     description:
       'Browse tasks gated to your skill tier and trust score. Claiming locks the issue exclusively for you — 20 minutes to activate, and nobody can snipe it.',
-    icon: <Lock className="size-5" />,
-    tag: '30m - 4h',
-  },
-  {
-    id: 'ship',
-    number: '02',
-    title: 'Automated CI verification',
-    description:
-      'Work in an isolated Forke branch — never on the owner’s repository. Submit a PR; automated builds, test suites, and AI scope checks verify your code before human review.',
-    icon: <GitPullRequest className="size-5" />,
-    tag: '4-layer check',
+    icon: <Lock className="size-4" />,
   },
   {
     id: 'payout',
-    number: '03',
-    title: 'Instant UPI escrow release',
+    metric: '<60s',
+    title: 'merge → UPI payout',
+    note: 'escrow releases on merge',
     description:
       'Client founders deposit bounty funds into escrow upfront. The second the maintainer approves and merges your PR, funds release directly to your UPI ID in under 60 seconds.',
-    icon: <Zap className="size-5" />,
-    tag: '<60s payout',
+    icon: <Zap className="size-4" />,
+  },
+  {
+    id: 'ship',
+    metric: '4-layer',
+    title: 'review pipeline',
+    note: 'build · tests · ai · human',
+    description:
+      'Work in an isolated Forke branch — never on the owner’s repository. Submit a PR; automated builds, test suites, and AI scope checks verify your code before human review.',
+    icon: <GitPullRequest className="size-4" />,
   },
   {
     id: 'reputation',
-    number: '04',
-    title: 'Verified XP & proof-of-work',
+    metric: '25',
+    title: 'levels to climb',
+    note: 'newcomer → forke legend',
     description:
       'Climb from L1 bug fixer to L25 repo architect. Every merged pull request mints immutable XP, raises your trust score, and unlocks higher bounty tiers across the platform.',
-    icon: <Award className="size-5" />,
-    tag: '25 levels',
-  },
-]
-
-interface StatMetric {
-  value: string
-  label: string
-  note: string
-  tag: string
-  icon: React.ReactNode
-}
-
-const STAT_METRICS: StatMetric[] = [
-  {
-    value: '30m–4h',
-    label: 'Scoped task size',
-    note: 'Bite-sized issues locked exclusively for you.',
-    tag: '30m - 4h',
-    icon: <Clock className="size-5" />,
-  },
-  {
-    value: '<60s',
-    label: 'Merge → UPI payout',
-    note: 'Escrow releases instantly upon maintainer merge.',
-    tag: '<60s payout',
-    icon: <Zap className="size-5" />,
-  },
-  {
-    value: '4-layer',
-    label: 'Review pipeline',
-    note: 'Automated build, test suite, AI & human verification.',
-    tag: '4-layer check',
-    icon: <Shield className="size-5" />,
-  },
-  {
-    value: '25',
-    label: 'Levels to climb',
-    note: 'Climb from newcomer to legendary repo architect.',
-    tag: '25 levels',
-    icon: <Award className="size-5" />,
+    icon: <Award className="size-4" />,
   },
 ]
 
@@ -134,50 +95,12 @@ export default function FeaturesPipelineSection() {
     <section id="pipeline" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         <div className="border-x border-black/[0.08]">
-          {/* Top 4 Feature Metric Cards ("like others in the down features showing") */}
-          <div className="border-b border-black/[0.08] p-6 sm:p-8 md:p-12 bg-neutral-50/40">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {STAT_METRICS.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="p-6 rounded-2xl bg-white border border-neutral-200/80 hover:border-neutral-300 hover:shadow-sm transition-all flex flex-col justify-between group"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="size-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent group-hover:scale-105 transition-transform">
-                        {stat.icon}
-                      </div>
-                      <span className="text-[10px] font-mono text-accent bg-accent/10 px-2 py-0.5 rounded border border-accent/20 font-semibold">
-                        {stat.tag}
-                      </span>
-                    </div>
-                    <div
-                      className="text-2xl sm:text-3xl font-normal text-[#0a0a0a] mb-1.5"
-                      style={{
-                        fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
-                        fontWeight: 400,
-                      }}
-                    >
-                      {stat.value}
-                    </div>
-                    <h3 className="text-sm font-semibold text-neutral-800 mb-1">
-                      {stat.label}
-                    </h3>
-                    <p className="text-xs text-neutral-500 font-normal leading-relaxed">
-                      {stat.note}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Main 2-Column Showcase (Calendly Style with Gradient Orange Background) */}
           <div className="px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-24 xl:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               {/* Left Column: Title + Interactive Tab Accordion List */}
               <div className="lg:col-span-6 flex flex-col justify-center">
-                {/* Main Headline (without 001 badge, and cash in normal text color) */}
+                {/* Main Headline */}
                 <h2
                   className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15] mb-8"
                   style={{
@@ -200,32 +123,40 @@ export default function FeaturesPipelineSection() {
                       <div
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`group cursor-pointer py-5 transition-all ${
+                        className={`group cursor-pointer py-4 sm:py-5 transition-all ${
                           isActive ? 'opacity-100' : 'opacity-65 hover:opacity-100'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-3.5">
+                          <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
+                            {/* Slab Metric Badge */}
                             <div
-                              className={`size-9 rounded-xl flex items-center justify-center transition-colors ${
+                              className={`min-w-[76px] sm:min-w-[88px] text-center font-mono text-xs sm:text-sm font-bold px-2.5 py-1.5 rounded-xl transition-all shrink-0 ${
                                 isActive
                                   ? 'bg-[#FF7A00] text-white shadow-sm'
-                                  : 'bg-neutral-100 text-neutral-600 group-hover:bg-neutral-200 group-hover:text-black'
+                                  : 'bg-neutral-100 text-neutral-800 group-hover:bg-neutral-200'
                               }`}
                             >
-                              {tab.icon}
+                              {tab.metric}
                             </div>
-                            <span
-                              className={`text-base sm:text-lg font-semibold tracking-tight transition-colors ${
-                                isActive ? 'text-[#0a0a0a]' : 'text-neutral-700 group-hover:text-black'
-                              }`}
-                            >
-                              {tab.title}
-                            </span>
+
+                            {/* Slab Title & Sub-note */}
+                            <div className="flex flex-col min-w-0">
+                              <span
+                                className={`text-base sm:text-lg font-semibold tracking-tight transition-colors truncate ${
+                                  isActive ? 'text-[#0a0a0a]' : 'text-neutral-700 group-hover:text-black'
+                                }`}
+                              >
+                                {tab.title}
+                              </span>
+                              <span className="font-mono text-[11px] text-neutral-500 truncate">
+                                {tab.note}
+                              </span>
+                            </div>
                           </div>
 
                           <div
-                            className={`size-8 rounded-lg flex items-center justify-center border transition-all ${
+                            className={`size-8 rounded-lg flex items-center justify-center border transition-all shrink-0 ${
                               isActive
                                 ? 'bg-[#0a0a0a] text-white border-black'
                                 : 'bg-neutral-50 text-neutral-400 border-neutral-200 group-hover:border-neutral-400 group-hover:text-black'
@@ -249,7 +180,7 @@ export default function FeaturesPipelineSection() {
                               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                               className="overflow-hidden"
                             >
-                              <p className="pt-3 pl-12 text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed pr-8">
+                              <p className="pt-3 pl-[90px] sm:pl-[104px] text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed pr-6">
                                 {tab.description}
                               </p>
                             </motion.div>
