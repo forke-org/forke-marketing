@@ -19,6 +19,8 @@ import bcrypt from 'bcryptjs'
 import { logAudit } from './actions/audit-actions'
 import { readAttributionCookie, readSessionId } from './utils/attribution'
 import { recordAuthEvent } from './actions/auth-events'
+import { isWaitlistEnabled } from './db/settings'
+import { hasSiteAccess } from './site-access'
 
 export async function signInWithGoogle(role?: 'developer' | 'owner', redirectTo?: string) {
   const isProd = process.env.NODE_ENV === 'production'
@@ -81,6 +83,12 @@ export async function signOutAction() {
 }
 
 export async function registerDeveloperWithCredentials(formData: any) {
+  // Sign-up is closed while the waitlist lock is on, unless the visitor holds
+  // a valid (signed) bypass cookie. Enforced here too, not only on the page.
+  if (process.env.NODE_ENV !== 'development' && (await isWaitlistEnabled()) && !(await hasSiteAccess())) {
+    return { success: false, error: 'Sign-up is not open yet. Join the waitlist instead.' }
+  }
+
   const { firstName, lastName, email, password, confirmPassword, username, receivePromotions } = formData
 
   if (!firstName || !lastName || !email || !password || !confirmPassword || !username) {

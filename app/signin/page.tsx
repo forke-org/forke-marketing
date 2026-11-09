@@ -10,9 +10,9 @@
 
 import { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
 import SignInContent from '@/components/auth/SignInContent'
 import { isWaitlistEnabled } from '@/lib/db/settings'
+import { hasSiteAccess } from '@/lib/site-access'
 import { buildOpenGraph, buildTwitter } from '@/lib/utils/og'
 import { auth } from '@/auth'
 
@@ -45,9 +45,9 @@ export default async function SignInPage() {
     redirect(`${dashboardUrl}/dashboard`)
   }
 
-  const hasSiteAccess = (await cookies()).get('site_access')?.value === 'granted'
+  const siteAccess = await hasSiteAccess()
   const isDev = process.env.NODE_ENV === 'development'
-  if (!isDev && (await isWaitlistEnabled()) && !hasSiteAccess) {
+  if (!isDev && (await isWaitlistEnabled()) && !siteAccess) {
     notFound()
   }
   return <SignInContent />

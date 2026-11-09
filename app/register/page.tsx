@@ -10,9 +10,9 @@
 
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { cookies } from 'next/headers'
 import RegisterContent from '@/components/auth/RegisterContent'
 import { isWaitlistEnabled } from '@/lib/db/settings'
+import { hasSiteAccess } from '@/lib/site-access'
 import { buildOpenGraph, buildTwitter } from '@/lib/utils/og'
 
 // While the waitlist lock is on, sign-up is closed — this route 404s. EXCEPT for
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
 }
 
 export default async function RegisterPage() {
-  const hasSiteAccess = (await cookies()).get('site_access')?.value === 'granted'
+  const siteAccess = await hasSiteAccess()
   const isDev = process.env.NODE_ENV === 'development'
-  if (!isDev && (await isWaitlistEnabled()) && !hasSiteAccess) {
+  if (!isDev && (await isWaitlistEnabled()) && !siteAccess) {
     notFound()
   }
   return <RegisterContent />
