@@ -3,21 +3,20 @@
 /**
  * @fileoverview Forke Platform - Interactive Features & Pipeline Section
  * Calendly-style interactive tabbed showcase with gradient orange background,
- * displaying Forke's core pipeline ("From claim to cash.") and real task workflow mockups.
+ * displaying Forke's core pipeline ("From claim to cash.") with 8 vertically stacked features
+ * (4 static statistics rows followed by 4 pipeline features) alongside the real-time workflow mockup.
  * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
  */
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  ArrowRight,
   ArrowUpRight,
   CheckCircle2,
   GitPullRequest,
   Lock,
   Shield,
   Sparkles,
-  Terminal,
   Zap,
   Clock,
   Award,
@@ -33,147 +32,166 @@ interface FeatureTab {
   description: string
   icon: React.ReactNode
   tag: string
+  mockupType: 'claim' | 'payout' | 'ship' | 'reputation'
 }
 
-const FEATURE_TABS: FeatureTab[] = [
+const ALL_FEATURES: FeatureTab[] = [
+  // FIRST 4 CARDS — Static Statistics:
+  {
+    id: 'stat-task',
+    number: '01',
+    title: '30m–4h — Scoped task size',
+    description:
+      'Bite-sized by design. Scoped engineering issues tailored to be completed in 30 minutes to 4 hours without dragged-out timelines or scope creep.',
+    icon: <Clock className="size-5" />,
+    tag: '30m - 4h',
+    mockupType: 'claim',
+  },
+  {
+    id: 'stat-payout',
+    number: '02',
+    title: '<60s — Merge → UPI payout',
+    description:
+      'Escrow releases on merge. Client funds are pre-deposited in escrow and transfer directly to your UPI ID in under 60 seconds once your PR is verified.',
+    icon: <Wallet className="size-5" />,
+    tag: '<60s payout',
+    mockupType: 'payout',
+  },
+  {
+    id: 'stat-review',
+    number: '03',
+    title: '4-layer — Review pipeline',
+    description:
+      'Build · tests · ai · human. Automated builds, unit tests, and AI scope verification validate your pull request before a human maintainer signs off.',
+    icon: <Shield className="size-5" />,
+    tag: '4-layer check',
+    mockupType: 'ship',
+  },
+  {
+    id: 'stat-levels',
+    number: '04',
+    title: '25 — Levels to climb',
+    description:
+      'Newcomer → forke legend. Climb 25 levels of meritocratic reputation, mint immutable XP with each merged contribution, and unlock higher bounty tiers.',
+    icon: <TrendingUp className="size-5" />,
+    tag: '25 levels',
+    mockupType: 'reputation',
+  },
+
+  // NEXT 4 CARDS — Existing Pipeline Features:
   {
     id: 'claim',
-    number: '01',
+    number: '05',
     title: 'Claim scoped bounties',
     description:
       'Browse tasks gated to your skill tier and trust score. Claiming locks the issue exclusively for you — 20 minutes to activate, and nobody can snipe it.',
     icon: <Lock className="size-5" />,
     tag: '30m - 4h',
+    mockupType: 'claim',
   },
   {
     id: 'ship',
-    number: '02',
+    number: '06',
     title: 'Automated CI verification',
     description:
       'Work in an isolated Forke branch — never on the owner’s repository. Submit a PR; automated builds, test suites, and AI scope checks verify your code before human review.',
     icon: <GitPullRequest className="size-5" />,
     tag: '4-layer check',
+    mockupType: 'ship',
   },
   {
     id: 'payout',
-    number: '03',
+    number: '07',
     title: 'Instant UPI escrow release',
     description:
       'Client founders deposit bounty funds into escrow upfront. The second the maintainer approves and merges your PR, funds release directly to your UPI ID in under 60 seconds.',
     icon: <Zap className="size-5" />,
     tag: '<60s payout',
+    mockupType: 'payout',
   },
   {
     id: 'reputation',
-    number: '04',
+    number: '08',
     title: 'Verified XP & proof-of-work',
     description:
       'Climb from L1 bug fixer to L25 repo architect. Every merged pull request mints immutable XP, raises your trust score, and unlocks higher bounty tiers across the platform.',
     icon: <Award className="size-5" />,
     tag: '25 levels',
+    mockupType: 'reputation',
   },
 ]
 
-const STAT_METRICS = [
-  { value: '30m–4h', label: 'scoped task size', note: 'bite-sized by design' },
-  { value: '<60s', label: 'merge → UPI payout', note: 'escrow releases on merge' },
-  { value: '4-layer', label: 'review pipeline', note: 'build · tests · ai · human' },
-  { value: '25', label: 'levels to climb', note: 'newcomer → forke legend' },
-]
-
 export default function FeaturesPipelineSection() {
-  const [activeTab, setActiveTab] = useState<string>('claim')
+  const [activeTab, setActiveTab] = useState<string>('stat-task')
   const [isPaused, setIsPaused] = useState<boolean>(false)
 
-  // Auto-advance tabs every 5s if user hasn't paused/hovered
+  // Auto-advance tabs every 5.5s if user hasn't paused/hovered
   useEffect(() => {
     if (isPaused) return
     const timer = setInterval(() => {
       setActiveTab((current) => {
-        const currentIndex = FEATURE_TABS.findIndex((t) => t.id === current)
-        const nextIndex = (currentIndex + 1) % FEATURE_TABS.length
-        return FEATURE_TABS[nextIndex].id
+        const currentIndex = ALL_FEATURES.findIndex((t) => t.id === current)
+        const nextIndex = (currentIndex + 1) % ALL_FEATURES.length
+        return ALL_FEATURES[nextIndex].id
       })
     }, 5500)
     return () => clearInterval(timer)
   }, [isPaused])
 
+  const activeItem = ALL_FEATURES.find((f) => f.id === activeTab) || ALL_FEATURES[4]
+  const currentMockup = activeItem.mockupType
+
   return (
     <section id="pipeline" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         <div className="border-x border-black/[0.08]">
-          {/* Section Header: Eyebrow Badge + Display Headline */}
-          <div className="border-b border-black/[0.08] px-6 py-10 sm:px-8 sm:py-12 md:px-14 md:py-14 xl:px-20">
-            {/* Eyebrow Badge */}
-            <div className="mb-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
-                <Sparkles className="size-3.5" />
-                <span>001 — The Pipeline</span>
-              </span>
-            </div>
-
-            {/* Main Headline */}
-            <h2
-              className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15]"
-              style={{
-                fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
-                fontWeight: 400,
-              }}
-            >
-              From claim to{' '}
-              <span className="text-[#FF7A00]">
-                cash.
-              </span>
-            </h2>
-          </div>
-
-          {/* First 4 Cards: Statistics Horizontal Four-Column Row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 border-b border-black/[0.08] bg-neutral-50/50">
-            {STAT_METRICS.map((stat, idx) => (
-              <div
-                key={stat.label}
-                className={`p-6 sm:p-8 ${
-                  idx !== 0 ? 'border-t sm:border-t-0 md:border-l border-black/[0.08]' : ''
-                } ${idx === 1 ? 'border-l border-black/[0.08] md:border-l' : ''}`}
-              >
-                <div className="font-mono text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#0a0a0a] mb-1.5">
-                  {stat.value}
-                </div>
-                <div className="text-xs sm:text-sm font-medium text-neutral-800">
-                  {stat.label}
-                </div>
-                <div className="font-mono text-[11px] text-neutral-500 mt-0.5">
-                  {stat.note}
-                </div>
-              </div>
-            ))}
-          </div>
-
           {/* Main 2-Column Showcase (Calendly Style with Gradient Orange Background) */}
           <div className="px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-24 xl:px-20">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-              {/* Left Column: Interactive Tab Accordion List (Next 4 cards: 5, 6, 7, 8) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+              {/* Left Column: Eyebrow + Title + 8 Vertically Stacked Cards */}
               <div className="lg:col-span-6 flex flex-col justify-center">
-                {/* Interactive Vertical Tab Accordion */}
+                {/* Eyebrow Badge */}
+                <div className="mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
+                    <Sparkles className="size-3.5" />
+                    <span>001 — The Pipeline</span>
+                  </span>
+                </div>
+
+                {/* Main Headline */}
+                <h2
+                  className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15] mb-8"
+                  style={{
+                    fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                    fontWeight: 400,
+                  }}
+                >
+                  From claim to{' '}
+                  <span className="text-[#FF7A00]">
+                    cash.
+                  </span>
+                </h2>
+
+                {/* Single Vertical List of All 8 Cards */}
                 <div
                   className="space-y-0 divide-y divide-black/[0.08] border-y border-black/[0.08]"
                   onMouseEnter={() => setIsPaused(true)}
                   onMouseLeave={() => setIsPaused(false)}
                 >
-                  {FEATURE_TABS.map((tab) => {
+                  {ALL_FEATURES.map((tab) => {
                     const isActive = activeTab === tab.id
                     return (
                       <div
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`group cursor-pointer py-5 transition-all ${
+                        className={`group cursor-pointer py-4 sm:py-4.5 transition-all ${
                           isActive ? 'opacity-100' : 'opacity-65 hover:opacity-100'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-3.5">
+                          <div className="flex items-center gap-3.5 min-w-0">
                             <div
-                              className={`size-9 rounded-xl flex items-center justify-center transition-colors ${
+                              className={`size-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
                                 isActive
                                   ? 'bg-[#FF7A00] text-white shadow-sm'
                                   : 'bg-neutral-100 text-neutral-600 group-hover:bg-neutral-200 group-hover:text-black'
@@ -191,7 +209,7 @@ export default function FeaturesPipelineSection() {
                           </div>
 
                           <div
-                            className={`size-8 rounded-lg flex items-center justify-center border transition-all ${
+                            className={`size-8 rounded-lg flex items-center justify-center border shrink-0 transition-all ${
                               isActive
                                 ? 'bg-[#0a0a0a] text-white border-black'
                                 : 'bg-neutral-50 text-neutral-400 border-neutral-200 group-hover:border-neutral-400 group-hover:text-black'
@@ -227,9 +245,9 @@ export default function FeaturesPipelineSection() {
                 </div>
               </div>
 
-              {/* Right Column: Large Rounded Container with Orange Gradient Background */}
+              {/* Right Column: Large Rounded Container with Orange Gradient Background (Completely Unchanged) */}
               <div
-                className="lg:col-span-6"
+                className="lg:col-span-6 lg:sticky lg:top-28 self-start"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
@@ -259,7 +277,7 @@ export default function FeaturesPipelineSection() {
                   {/* Inner Dynamic Mockup Card (Framer Motion Crossfade) */}
                   <div className="relative z-10 w-full max-w-sm sm:max-w-md">
                     <AnimatePresence mode="wait">
-                      {activeTab === 'claim' && (
+                      {currentMockup === 'claim' && (
                         <motion.div
                           key="claim-card"
                           initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -321,7 +339,7 @@ export default function FeaturesPipelineSection() {
                         </motion.div>
                       )}
 
-                      {activeTab === 'ship' && (
+                      {currentMockup === 'ship' && (
                         <motion.div
                           key="ship-card"
                           initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -383,7 +401,7 @@ export default function FeaturesPipelineSection() {
                         </motion.div>
                       )}
 
-                      {activeTab === 'payout' && (
+                      {currentMockup === 'payout' && (
                         <motion.div
                           key="payout-card"
                           initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -431,7 +449,7 @@ export default function FeaturesPipelineSection() {
                         </motion.div>
                       )}
 
-                      {activeTab === 'reputation' && (
+                      {currentMockup === 'reputation' && (
                         <motion.div
                           key="reputation-card"
                           initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -450,47 +468,46 @@ export default function FeaturesPipelineSection() {
                                 Level 14 · Full-Stack Specialist
                               </div>
                             </div>
-                            <span className="px-2.5 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-bold">
+                            <span className="px-2.5 py-1 rounded-lg bg-orange-50 border border-orange-200 text-[#FF5A1F] font-mono text-xs font-bold">
                               Rank #42
                             </span>
                           </div>
 
-                          {/* Trust Score & Lifetime Payout */}
-                          <div className="grid grid-cols-2 gap-2.5 mb-4 font-mono text-xs">
-                            <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-150">
-                              <div className="text-neutral-400 text-[10px] uppercase">
+                          {/* Trust Score & Lifetime Earnings */}
+                          <div className="grid grid-cols-2 gap-3 mb-5 font-mono text-xs">
+                            <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-150">
+                              <span className="text-neutral-400 block mb-1 text-[10px] uppercase tracking-wider">
                                 Trust Score
-                              </div>
-                              <div className="text-base font-bold text-emerald-600 mt-0.5">
+                              </span>
+                              <span className="text-emerald-700 font-bold text-sm">
                                 94% Top Tier
-                              </div>
+                              </span>
                             </div>
-                            <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-150">
-                              <div className="text-neutral-400 text-[10px] uppercase">
+                            <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-150">
+                              <span className="text-neutral-400 block mb-1 text-[10px] uppercase tracking-wider">
                                 Lifetime Paid
-                              </div>
-                              <div className="text-base font-bold text-[#0a0a0a] mt-0.5">
+                              </span>
+                              <span className="text-[#0a0a0a] font-bold text-sm">
                                 ₹18,400.00
-                              </div>
+                              </span>
                             </div>
                           </div>
 
-                          {/* Level Progress Bar */}
-                          <div className="font-mono text-xs mb-1.5 flex justify-between text-neutral-600">
-                            <span>Level 14 → 15</span>
-                            <span className="font-bold text-[#FF5A1F]">3,450 / 4,000 XP</span>
-                          </div>
-                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden mb-3">
-                            <div
-                              className="h-full bg-gradient-to-r from-[#FFA048] to-[#FF5A1F] rounded-full"
-                              style={{ width: '86%' }}
-                            />
+                          {/* XP Level Progress Bar */}
+                          <div>
+                            <div className="flex justify-between font-mono text-xs text-neutral-500 mb-1.5">
+                              <span>Level 14 → 15</span>
+                              <span className="font-semibold text-neutral-800">3,450 / 4,000 XP</span>
+                            </div>
+                            <div className="h-2 rounded-full bg-neutral-100 overflow-hidden">
+                              <div className="h-full bg-gradient-to-r from-[#FF7A00] to-[#FF5A1F] rounded-full w-[86%]" />
+                            </div>
                           </div>
 
-                          {/* Milestone notice */}
-                          <div className="font-mono text-[11px] text-neutral-500 pt-2 border-t border-neutral-100 flex items-center justify-between">
+                          {/* Next Tier Unlock */}
+                          <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between font-mono text-[11px] text-neutral-500">
                             <span>Next: L15 Core Architecture Bounties</span>
-                            <span className="text-[#FF5A1F] font-semibold">₹10,000+</span>
+                            <span className="text-[#FF5A1F] font-bold">₹10,000+</span>
                           </div>
                         </motion.div>
                       )}
