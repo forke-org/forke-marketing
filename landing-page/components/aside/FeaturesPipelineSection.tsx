@@ -26,7 +26,7 @@ import {
   TrendingUp,
   Timer,
   GitMerge,
-  ShieldCheck,
+  Layers,
   Trophy,
 } from 'lucide-react'
 
@@ -79,42 +79,56 @@ const FEATURE_TABS: FeatureTab[] = [
 ]
 
 interface StatMetric {
+  id: string
   value: string
   label: string
   note: string
-  icon: React.ElementType
+  tag: string
+  icon: React.ReactNode
+  bars: number[]
 }
 
 const STAT_METRICS: StatMetric[] = [
   {
+    id: 'time',
     value: '30m–4h',
     label: 'scoped task size',
     note: 'bite-sized by design',
-    icon: Timer,
+    tag: 'Scoped Task',
+    icon: <Timer className="size-5 text-[#EA580C]" strokeWidth={2.2} />,
+    bars: [22, 38, 18, 30, 48, 26, 34, 52, 24, 40, 20, 32],
   },
   {
+    id: 'payout',
     value: '<60s',
     label: 'merge → UPI payout',
     note: 'escrow releases on merge',
-    icon: GitMerge,
+    tag: 'Instant Escrow',
+    icon: <GitMerge className="size-5 text-[#EA580C]" strokeWidth={2.2} />,
+    bars: [34, 22, 46, 30, 54, 36, 24, 42, 28, 50, 18, 38],
   },
   {
+    id: 'pipeline',
     value: '4-layer',
     label: 'review pipeline',
     note: 'build · tests · ai · human',
-    icon: ShieldCheck,
+    tag: 'Review Gates',
+    icon: <Layers className="size-5 text-[#EA580C]" strokeWidth={2.2} />,
+    bars: [18, 30, 40, 52, 36, 46, 24, 38, 50, 28, 34, 44],
   },
   {
+    id: 'levels',
     value: '25',
     label: 'levels to climb',
     note: 'newcomer → forke legend',
-    icon: Trophy,
+    tag: 'Rank Ladder',
+    icon: <Trophy className="size-5 text-[#EA580C]" strokeWidth={2.2} />,
+    bars: [26, 44, 22, 36, 50, 32, 42, 56, 28, 40, 24, 38],
   },
 ]
 
 export default function FeaturesPipelineSection() {
   const [activeTab, setActiveTab] = useState<string>('claim')
-  const [hoveredStatIdx, setHoveredStatIdx] = useState<number | null>(null)
   const [isPaused, setIsPaused] = useState<boolean>(false)
 
   // Auto-advance tabs every 5s if user hasn't paused/hovered
@@ -159,121 +173,73 @@ export default function FeaturesPipelineSection() {
             </h2>
           </div>
 
-          {/* First 4 Cards: Statistics Horizontal Four-Column Row (Calendly-Inspired Polish) */}
-          <div className="grid grid-cols-2 md:grid-cols-4 border-b border-black/[0.08] bg-neutral-50/50">
-            {STAT_METRICS.map((stat, idx) => {
-              const Icon = stat.icon
-              const isHovered = hoveredStatIdx === idx
-              return (
+          {/* First 4 Cards: Four Statistics (Calendly-inspired Card Design & Layout) */}
+          <div className="border-b border-black/[0.08] bg-[#FFF1E7]/25 px-4 sm:px-6 md:px-8 xl:px-14 py-10 sm:py-12 md:py-14">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+              {STAT_METRICS.map((stat) => (
                 <div
-                  key={stat.label}
-                  tabIndex={0}
-                  role="article"
-                  aria-label={`${stat.value}: ${stat.label}, ${stat.note}`}
-                  onMouseEnter={() => setHoveredStatIdx(idx)}
-                  onMouseLeave={() => setHoveredStatIdx(null)}
-                  onFocus={() => setHoveredStatIdx(idx)}
-                  onBlur={() => setHoveredStatIdx(null)}
-                  onClick={() => setHoveredStatIdx((prev) => (prev === idx ? null : idx))}
-                  className={`group relative p-4 sm:p-6 lg:p-8 cursor-pointer select-none outline-none transition-all duration-400 ease-out focus-visible:ring-2 focus-visible:ring-[#F97316]/50 focus-visible:ring-inset ${
-                    idx !== 0 ? 'border-t sm:border-t-0 md:border-l border-black/[0.08]' : ''
-                  } ${idx === 1 ? 'border-l border-black/[0.08] md:border-l' : ''}`}
+                  key={stat.id}
+                  className="relative overflow-hidden rounded-[26px] border border-[#FDBA74]/50 bg-gradient-to-br from-[#FFF7ED] via-[#FFF1E7] to-[#FED7AA]/35 p-3 sm:p-3.5 shadow-[0_4px_20px_-4px_rgba(234,88,12,0.06),0_1px_3px_rgba(0,0,0,0.02)] flex flex-col justify-between"
                 >
-                  {/* Smooth, subtle orange gradient surface on hover */}
+                  {/* Subtle Radial Luminous Highlights in Card Background */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-b from-[#FFF1E7] via-[#FFF7ED]/75 to-transparent transition-opacity duration-400 ease-out pointer-events-none ${
-                      isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                    }`}
-                    aria-hidden="true"
+                    className="absolute inset-0 pointer-events-none z-0"
+                    style={{
+                      backgroundImage:
+                        'radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.9) 0%, transparent 55%), radial-gradient(circle at 90% 90%, rgba(251, 146, 60, 0.15) 0%, transparent 60%)',
+                    }}
                   />
 
-                  {/* Warm ambient top-right luminous glow */}
-                  <div
-                    className={`absolute -top-10 -right-10 size-32 bg-gradient-to-br from-[#FDBA74]/35 via-[#F97316]/15 to-transparent rounded-full blur-2xl transition-opacity duration-500 ease-out pointer-events-none ${
-                      isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                    }`}
-                    aria-hidden="true"
-                  />
-
-                  {/* Refined border transition on hover */}
-                  <div
-                    className={`absolute inset-0 border transition-colors duration-400 pointer-events-none ${
-                      isHovered
-                        ? 'border-[#F97316]/30'
-                        : 'border-transparent group-hover:border-[#F97316]/30'
-                    }`}
-                    aria-hidden="true"
-                  />
-
-                  {/* Subtle Calendly-style active accent indicator at the bottom */}
-                  <div
-                    className={`absolute bottom-0 inset-x-4 sm:inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-[#F97316] to-transparent transition-all duration-400 ease-out pointer-events-none ${
-                      isHovered
-                        ? 'opacity-100 scale-x-100'
-                        : 'opacity-0 scale-x-50 group-hover:opacity-100 group-hover:scale-x-100'
-                    }`}
-                    aria-hidden="true"
-                  />
-
-                  {/* Card Content with subtle 3px-4px lift */}
-                  <div
-                    className={`relative z-10 flex flex-col justify-between h-full transition-transform duration-350 ease-out motion-reduce:transform-none ${
-                      isHovered ? '-translate-y-1' : 'group-hover:-translate-y-1'
-                    }`}
-                  >
-                    {/* Top Row: Statistic + Premium Animated Icon Badge */}
-                    <div className="flex items-start justify-between gap-3 mb-2.5 sm:mb-3">
+                  {/* Vertical Equalizer Fluted Accent Bars (Calendly Reference Signature) */}
+                  <div className="absolute inset-x-5 top-2.5 h-8 flex items-center justify-between pointer-events-none opacity-25 z-0">
+                    {stat.bars.map((h, i) => (
                       <div
-                        className={`font-mono text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight transition-all duration-300 ${
-                          isHovered
-                            ? 'text-black tracking-tight drop-shadow-[0_1px_1px_rgba(0,0,0,0.06)]'
-                            : 'text-[#0a0a0a] group-hover:text-black group-hover:tracking-tight group-hover:drop-shadow-[0_1px_1px_rgba(0,0,0,0.06)]'
-                        }`}
-                      >
+                        key={i}
+                        className="w-1 bg-[#EA580C] rounded-full"
+                        style={{ height: `${h * 0.55}px` }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Floating White Squircle Card (Calendly Foreground Card) */}
+                  <div className="relative z-10 rounded-2xl bg-white/95 backdrop-blur-sm border border-black/[0.06] p-4 sm:p-5 shadow-[0_6px_20px_-4px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] flex flex-col justify-between h-full">
+                    {/* Top Row: Premium Icon in Squircle + Kicker Tag */}
+                    <div>
+                      <div className="flex items-center justify-between gap-2.5 mb-4">
+                        {/* Premium Line Icon in Tinted Squircle Badge */}
+                        <div className="size-10 rounded-xl bg-[#FFF1E7] border border-[#FDBA74]/50 flex items-center justify-center shadow-xs shrink-0">
+                          {stat.icon}
+                        </div>
+
+                        {/* Context Pill Badge */}
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider text-[#EA580C] bg-[#FFF1E7] border border-[#FDBA74]/40 whitespace-nowrap">
+                          {stat.tag}
+                        </span>
+                      </div>
+
+                      {/* Main Metric Value */}
+                      <div className="font-mono text-3xl sm:text-[34px] xl:text-[38px] font-bold tracking-tight text-[#0a0a0a] leading-none mb-1.5">
                         {stat.value}
                       </div>
 
-                      {/* Premium Icon Badge: Smooth scale-up and fade-in to orange gradient */}
-                      <div
-                        className={`relative shrink-0 size-7.5 sm:size-8 lg:size-9 rounded-lg sm:rounded-xl flex items-center justify-center border shadow-xs transition-all duration-350 ease-out ${
-                          isHovered
-                            ? 'bg-gradient-to-br from-[#FFF1E7] to-[#FED7AA]/60 border-[#F97316]/35 text-[#EA580C] shadow-[0_4px_12px_rgba(249,115,22,0.18)] scale-105'
-                            : 'bg-white/80 border-black/[0.06] text-neutral-400 group-hover:bg-gradient-to-br group-hover:from-[#FFF1E7] group-hover:to-[#FED7AA]/60 group-hover:border-[#F97316]/35 group-hover:text-[#EA580C] group-hover:shadow-[0_4px_12px_rgba(249,115,22,0.18)] group-hover:scale-105'
-                        }`}
-                        aria-hidden="true"
-                      >
-                        <Icon
-                          className={`size-3.5 sm:size-4 lg:size-[18px] transition-all duration-300 ease-out motion-reduce:transform-none ${
-                            isHovered
-                              ? 'opacity-100 scale-110'
-                              : 'opacity-70 group-hover:opacity-100 group-hover:scale-110'
-                          }`}
-                          strokeWidth={1.8}
-                        />
+                      {/* Metric Label */}
+                      <div className="text-xs sm:text-[13.5px] font-semibold text-neutral-800 tracking-tight leading-snug">
+                        {stat.label}
                       </div>
                     </div>
 
-                    {/* Title */}
-                    <div
-                      className={`text-xs sm:text-sm font-medium transition-colors duration-300 ${
-                        isHovered ? 'text-neutral-950' : 'text-neutral-800 group-hover:text-neutral-950'
-                      }`}
-                    >
-                      {stat.label}
-                    </div>
-
-                    {/* Description */}
-                    <div
-                      className={`font-mono text-[11px] mt-0.5 transition-colors duration-300 ${
-                        isHovered ? 'text-neutral-700' : 'text-neutral-500 group-hover:text-neutral-700'
-                      }`}
-                    >
-                      {stat.note}
+                    {/* Clean Separator Line */}
+                    <div className="pt-3.5 mt-4 border-t border-black/[0.06]">
+                      {/* Supporting Note */}
+                      <div className="flex items-start gap-1.5 font-mono text-[11px] sm:text-xs text-neutral-500 leading-normal">
+                        <span className="size-1.5 rounded-full bg-[#EA580C] shrink-0 mt-1" />
+                        <span>{stat.note}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              )
-            })}
+              ))}
+            </div>
           </div>
 
           {/* Main 2-Column Showcase (Calendly Style with Gradient Orange Background) */}
