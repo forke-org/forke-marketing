@@ -9,6 +9,7 @@
  */
 
 import React, { useState, useEffect } from 'react'
+import Grainient from './Grainient'
 import {
   Timer,
   GitMerge,
@@ -145,25 +146,18 @@ export default function StatsShowcaseSection() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
               {/* Left Column: Calendly Squircle Stage with Floating Card */}
               <div className="lg:col-span-6 w-full flex items-center justify-center">
-                <div className="relative w-full min-h-[500px] sm:min-h-[540px] rounded-[32px] sm:rounded-[36px] p-6 sm:p-10 flex items-center justify-center overflow-hidden border border-[#FDBA74]/50 bg-gradient-to-br from-[#FFF7ED] via-[#FFF1E7] to-[#FED7AA]/45 shadow-[0_16px_50px_-12px_rgba(234,88,12,0.12)]">
-                  {/* Ambient Luminous Glow (Calendly Reference Aura) */}
-                  <div
-                    className="absolute inset-0 pointer-events-none z-0"
-                    style={{
-                      backgroundImage:
-                        'radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.95) 0%, transparent 60%), radial-gradient(circle at 85% 85%, rgba(251, 146, 60, 0.22) 0%, transparent 65%)',
-                    }}
-                  />
-
-                  {/* Vertical Fluted Equalizer Bars (Calendly Reference Signature) */}
-                  <div className="absolute inset-x-6 sm:inset-x-10 top-1/2 -translate-y-1/2 h-44 flex items-center justify-between pointer-events-none opacity-25 z-0">
-                    {activeItem.bars.map((h, i) => (
-                      <div
-                        key={i}
-                        className="w-1 sm:w-1.5 bg-[#EA580C] rounded-full transition-all duration-500 ease-out"
-                        style={{ height: `${h * 2.2}px` }}
-                      />
-                    ))}
+                <div className="relative w-full min-h-[500px] sm:min-h-[540px] rounded-[32px] sm:rounded-[36px] p-6 sm:p-10 flex items-center justify-center overflow-hidden border border-[#FF7A00]/20 shadow-[0_25px_60px_-15px_rgba(255,90,31,0.28)]">
+                  {/* Grainient Animated Background */}
+                  <div className="absolute inset-0 z-0 pointer-events-none">
+                    <Grainient
+                      colors={["#000000","#f97316","#fd480c","#f97316","#ff8900"]}
+                      angle={55}
+                      flow={0.8}
+                      silk={0.35}
+                      grainAmount={0.08}
+                      interactive={false}
+                      lightMode
+                    />
                   </div>
 
                   {/* Floating White Metric Card */}

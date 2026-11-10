@@ -9,6 +9,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Grainient from './Grainient'
 import {
   ArrowRight,
   ArrowUpRight,
@@ -206,26 +207,17 @@ export default function FeaturesPipelineSection() {
                 onMouseLeave={() => setIsPaused(false)}
               >
                 <div className="relative rounded-[32px] overflow-hidden p-6 sm:p-10 lg:p-12 min-h-[460px] sm:min-h-[520px] flex items-center justify-center shadow-[0_25px_60px_-15px_rgba(255,90,31,0.28)] border border-[#FF7A00]/20">
-                  {/* Multi-stop vibrant Orange Gradient Background Mesh */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#FFA756] via-[#FF5A1F] to-[#C23800] z-0" />
-
-                  {/* Soft Radial Luminous Center Glow */}
-                  <div
-                    className="absolute inset-0 pointer-events-none z-0"
-                    style={{
-                      backgroundImage:
-                        'radial-gradient(circle at 50% 35%, rgba(255, 235, 210, 0.5) 0%, transparent 65%), radial-gradient(circle at 85% 85%, rgba(140, 25, 0, 0.45) 0%, transparent 60%)',
-                    }}
-                  />
-
-                  {/* Vertical Translucent Glass Stripes (Calendly-style Fluted Columns) */}
-                  <div className="absolute inset-0 flex justify-between px-6 pointer-events-none opacity-20 z-0">
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-4 sm:w-6 h-full bg-white/40 rounded-full blur-[1px]"
-                      />
-                    ))}
+                  {/* Grainient Animated Background */}
+                  <div className="absolute inset-0 z-0 pointer-events-none">
+                    <Grainient
+                      colors={["#000000","#f97316","#fd480c","#f97316","#ff8900"]}
+                      angle={55}
+                      flow={0.8}
+                      silk={0.35}
+                      grainAmount={0.08}
+                      interactive={false}
+                      lightMode
+                    />
                   </div>
 
                   {/* Inner Dynamic Mockup Card (Framer Motion Crossfade) */}
