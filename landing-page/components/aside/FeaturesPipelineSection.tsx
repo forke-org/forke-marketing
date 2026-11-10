@@ -78,55 +78,6 @@ const FEATURE_TABS: FeatureTab[] = [
   },
 ]
 
-interface StatMetric {
-  id: string
-  value: string
-  label: string
-  note: string
-  tag: string
-  icon: React.ReactNode
-  bars: number[]
-}
-
-const STAT_METRICS: StatMetric[] = [
-  {
-    id: 'time',
-    value: '30m–4h',
-    label: 'scoped task size',
-    note: 'bite-sized by design',
-    tag: 'Scoped Task',
-    icon: <Timer className="size-5 text-[#EA580C]" strokeWidth={2.2} />,
-    bars: [22, 38, 18, 30, 48, 26, 34, 52, 24, 40, 20, 32],
-  },
-  {
-    id: 'payout',
-    value: '<60s',
-    label: 'merge → UPI payout',
-    note: 'escrow releases on merge',
-    tag: 'Instant Escrow',
-    icon: <GitMerge className="size-5 text-[#EA580C]" strokeWidth={2.2} />,
-    bars: [34, 22, 46, 30, 54, 36, 24, 42, 28, 50, 18, 38],
-  },
-  {
-    id: 'pipeline',
-    value: '4-layer',
-    label: 'review pipeline',
-    note: 'build · tests · ai · human',
-    tag: 'Review Gates',
-    icon: <Layers className="size-5 text-[#EA580C]" strokeWidth={2.2} />,
-    bars: [18, 30, 40, 52, 36, 46, 24, 38, 50, 28, 34, 44],
-  },
-  {
-    id: 'levels',
-    value: '25',
-    label: 'levels to climb',
-    note: 'newcomer → forke legend',
-    tag: 'Rank Ladder',
-    icon: <Trophy className="size-5 text-[#EA580C]" strokeWidth={2.2} />,
-    bars: [26, 44, 22, 36, 50, 32, 42, 56, 28, 40, 24, 38],
-  },
-]
-
 export default function FeaturesPipelineSection() {
   const [activeTab, setActiveTab] = useState<string>('claim')
   const [isPaused, setIsPaused] = useState<boolean>(false)
@@ -148,105 +99,33 @@ export default function FeaturesPipelineSection() {
     <section id="pipeline" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         <div className="border-x border-black/[0.08]">
-          {/* Section Header: Eyebrow Badge + Display Headline */}
-          <div className="border-b border-black/[0.08] px-6 py-10 sm:px-8 sm:py-12 md:px-14 md:py-14 xl:px-20">
-            {/* Eyebrow Badge */}
-            <div className="mb-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
-                <Sparkles className="size-3.5" />
-                <span>001 — The Pipeline</span>
-              </span>
-            </div>
-
-            {/* Main Headline */}
-            <h2
-              className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15]"
-              style={{
-                fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
-                fontWeight: 400,
-              }}
-            >
-              From claim to{' '}
-              <span className="text-[#FF7A00]">
-                cash.
-              </span>
-            </h2>
-          </div>
-
-          {/* First 4 Cards: Four Statistics (Calendly-inspired Card Design & Layout) */}
-          <div className="border-b border-black/[0.08] bg-[#FFF1E7]/25 px-4 sm:px-6 md:px-8 xl:px-14 py-10 sm:py-12 md:py-14">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-              {STAT_METRICS.map((stat) => (
-                <div
-                  key={stat.id}
-                  className="relative overflow-hidden rounded-[26px] border border-[#FDBA74]/50 bg-gradient-to-br from-[#FFF7ED] via-[#FFF1E7] to-[#FED7AA]/35 p-3 sm:p-3.5 shadow-[0_4px_20px_-4px_rgba(234,88,12,0.06),0_1px_3px_rgba(0,0,0,0.02)] flex flex-col justify-between"
-                >
-                  {/* Subtle Radial Luminous Highlights in Card Background */}
-                  <div
-                    className="absolute inset-0 pointer-events-none z-0"
-                    style={{
-                      backgroundImage:
-                        'radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.9) 0%, transparent 55%), radial-gradient(circle at 90% 90%, rgba(251, 146, 60, 0.15) 0%, transparent 60%)',
-                    }}
-                  />
-
-                  {/* Vertical Equalizer Fluted Accent Bars (Calendly Reference Signature) */}
-                  <div className="absolute inset-x-5 top-2.5 h-8 flex items-center justify-between pointer-events-none opacity-25 z-0">
-                    {stat.bars.map((h, i) => (
-                      <div
-                        key={i}
-                        className="w-1 bg-[#EA580C] rounded-full"
-                        style={{ height: `${h * 0.55}px` }}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Floating White Squircle Card (Calendly Foreground Card) */}
-                  <div className="relative z-10 rounded-2xl bg-white/95 backdrop-blur-sm border border-black/[0.06] p-4 sm:p-5 shadow-[0_6px_20px_-4px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] flex flex-col justify-between h-full">
-                    {/* Top Row: Premium Icon in Squircle + Kicker Tag */}
-                    <div>
-                      <div className="flex items-center justify-between gap-2.5 mb-4">
-                        {/* Premium Line Icon in Tinted Squircle Badge */}
-                        <div className="size-10 rounded-xl bg-[#FFF1E7] border border-[#FDBA74]/50 flex items-center justify-center shadow-xs shrink-0">
-                          {stat.icon}
-                        </div>
-
-                        {/* Context Pill Badge */}
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider text-[#EA580C] bg-[#FFF1E7] border border-[#FDBA74]/40 whitespace-nowrap">
-                          {stat.tag}
-                        </span>
-                      </div>
-
-                      {/* Main Metric Value */}
-                      <div className="font-mono text-3xl sm:text-[34px] xl:text-[38px] font-bold tracking-tight text-[#0a0a0a] leading-none mb-1.5">
-                        {stat.value}
-                      </div>
-
-                      {/* Metric Label */}
-                      <div className="text-xs sm:text-[13.5px] font-semibold text-neutral-800 tracking-tight leading-snug">
-                        {stat.label}
-                      </div>
-                    </div>
-
-                    {/* Clean Separator Line */}
-                    <div className="pt-3.5 mt-4 border-t border-black/[0.06]">
-                      {/* Supporting Note */}
-                      <div className="flex items-start gap-1.5 font-mono text-[11px] sm:text-xs text-neutral-500 leading-normal">
-                        <span className="size-1.5 rounded-full bg-[#EA580C] shrink-0 mt-1" />
-                        <span>{stat.note}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Main 2-Column Showcase (Calendly Style with Gradient Orange Background) */}
+          {/* Main 2-Column Showcase (From claim to cash pipeline) */}
           <div className="px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-24 xl:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-              {/* Left Column: Interactive Tab Accordion List (Next 4 cards: 5, 6, 7, 8) */}
+              {/* Left Column: Eyebrow + Title + Interactive Tab Accordion List */}
               <div className="lg:col-span-6 flex flex-col justify-center">
+                {/* Eyebrow Badge */}
+                <div className="mb-4">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
+                    <Sparkles className="size-3.5" />
+                    <span>001 — The Pipeline</span>
+                  </span>
+                </div>
+
+                {/* Main Headline */}
+                <h2
+                  className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15] mb-8"
+                  style={{
+                    fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                    fontWeight: 400,
+                  }}
+                >
+                  From claim to{' '}
+                  <span className="text-[#FF7A00]">
+                    cash.
+                  </span>
+                </h2>
+
                 {/* Interactive Vertical Tab Accordion */}
                 <div
                   className="space-y-0 divide-y divide-black/[0.08] border-y border-black/[0.08]"
