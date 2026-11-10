@@ -3,26 +3,31 @@
 /**
  * @fileoverview Forke Platform - Interactive Features & Pipeline Section
  * Calendly-style interactive tabbed showcase with gradient orange background,
- * displaying Forke's core pipeline ("From claim to cash.") with 8 vertically stacked features
- * (4 static statistics rows followed by 4 pipeline features) alongside the real-time workflow mockup.
+ * displaying Forke's core pipeline ("From claim to cash.") and real task workflow mockups.
  * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
  */
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
+  ArrowRight,
   ArrowUpRight,
   CheckCircle2,
   GitPullRequest,
   Lock,
   Shield,
   Sparkles,
+  Terminal,
   Zap,
   Clock,
   Award,
   Wallet,
   Check,
   TrendingUp,
+  Timer,
+  GitMerge,
+  ShieldCheck,
+  Trophy,
 } from 'lucide-react'
 
 interface FeatureTab {
@@ -32,166 +37,270 @@ interface FeatureTab {
   description: string
   icon: React.ReactNode
   tag: string
-  mockupType: 'claim' | 'payout' | 'ship' | 'reputation'
 }
 
-const ALL_FEATURES: FeatureTab[] = [
-  // FIRST 4 CARDS — Static Statistics:
-  {
-    id: 'stat-task',
-    number: '01',
-    title: '30m–4h — Scoped task size',
-    description:
-      'Bite-sized by design. Scoped engineering issues tailored to be completed in 30 minutes to 4 hours without dragged-out timelines or scope creep.',
-    icon: <Clock className="size-5" />,
-    tag: '30m - 4h',
-    mockupType: 'claim',
-  },
-  {
-    id: 'stat-payout',
-    number: '02',
-    title: '<60s — Merge → UPI payout',
-    description:
-      'Escrow releases on merge. Client funds are pre-deposited in escrow and transfer directly to your UPI ID in under 60 seconds once your PR is verified.',
-    icon: <Wallet className="size-5" />,
-    tag: '<60s payout',
-    mockupType: 'payout',
-  },
-  {
-    id: 'stat-review',
-    number: '03',
-    title: '4-layer — Review pipeline',
-    description:
-      'Build · tests · ai · human. Automated builds, unit tests, and AI scope verification validate your pull request before a human maintainer signs off.',
-    icon: <Shield className="size-5" />,
-    tag: '4-layer check',
-    mockupType: 'ship',
-  },
-  {
-    id: 'stat-levels',
-    number: '04',
-    title: '25 — Levels to climb',
-    description:
-      'Newcomer → forke legend. Climb 25 levels of meritocratic reputation, mint immutable XP with each merged contribution, and unlock higher bounty tiers.',
-    icon: <TrendingUp className="size-5" />,
-    tag: '25 levels',
-    mockupType: 'reputation',
-  },
-
-  // NEXT 4 CARDS — Existing Pipeline Features:
+const FEATURE_TABS: FeatureTab[] = [
   {
     id: 'claim',
-    number: '05',
+    number: '01',
     title: 'Claim scoped bounties',
     description:
       'Browse tasks gated to your skill tier and trust score. Claiming locks the issue exclusively for you — 20 minutes to activate, and nobody can snipe it.',
     icon: <Lock className="size-5" />,
     tag: '30m - 4h',
-    mockupType: 'claim',
   },
   {
     id: 'ship',
-    number: '06',
+    number: '02',
     title: 'Automated CI verification',
     description:
       'Work in an isolated Forke branch — never on the owner’s repository. Submit a PR; automated builds, test suites, and AI scope checks verify your code before human review.',
     icon: <GitPullRequest className="size-5" />,
     tag: '4-layer check',
-    mockupType: 'ship',
   },
   {
     id: 'payout',
-    number: '07',
+    number: '03',
     title: 'Instant UPI escrow release',
     description:
       'Client founders deposit bounty funds into escrow upfront. The second the maintainer approves and merges your PR, funds release directly to your UPI ID in under 60 seconds.',
     icon: <Zap className="size-5" />,
     tag: '<60s payout',
-    mockupType: 'payout',
   },
   {
     id: 'reputation',
-    number: '08',
+    number: '04',
     title: 'Verified XP & proof-of-work',
     description:
       'Climb from L1 bug fixer to L25 repo architect. Every merged pull request mints immutable XP, raises your trust score, and unlocks higher bounty tiers across the platform.',
     icon: <Award className="size-5" />,
     tag: '25 levels',
-    mockupType: 'reputation',
+  },
+]
+
+interface StatMetric {
+  value: string
+  label: string
+  note: string
+  icon: React.ElementType
+}
+
+const STAT_METRICS: StatMetric[] = [
+  {
+    value: '30m–4h',
+    label: 'scoped task size',
+    note: 'bite-sized by design',
+    icon: Timer,
+  },
+  {
+    value: '<60s',
+    label: 'merge → UPI payout',
+    note: 'escrow releases on merge',
+    icon: GitMerge,
+  },
+  {
+    value: '4-layer',
+    label: 'review pipeline',
+    note: 'build · tests · ai · human',
+    icon: ShieldCheck,
+  },
+  {
+    value: '25',
+    label: 'levels to climb',
+    note: 'newcomer → forke legend',
+    icon: Trophy,
   },
 ]
 
 export default function FeaturesPipelineSection() {
-  const [activeTab, setActiveTab] = useState<string>('stat-task')
+  const [activeTab, setActiveTab] = useState<string>('claim')
+  const [hoveredStatIdx, setHoveredStatIdx] = useState<number | null>(null)
   const [isPaused, setIsPaused] = useState<boolean>(false)
 
-  // Auto-advance tabs every 5.5s if user hasn't paused/hovered
+  // Auto-advance tabs every 5s if user hasn't paused/hovered
   useEffect(() => {
     if (isPaused) return
     const timer = setInterval(() => {
       setActiveTab((current) => {
-        const currentIndex = ALL_FEATURES.findIndex((t) => t.id === current)
-        const nextIndex = (currentIndex + 1) % ALL_FEATURES.length
-        return ALL_FEATURES[nextIndex].id
+        const currentIndex = FEATURE_TABS.findIndex((t) => t.id === current)
+        const nextIndex = (currentIndex + 1) % FEATURE_TABS.length
+        return FEATURE_TABS[nextIndex].id
       })
     }, 5500)
     return () => clearInterval(timer)
   }, [isPaused])
 
-  const activeItem = ALL_FEATURES.find((f) => f.id === activeTab) || ALL_FEATURES[4]
-  const currentMockup = activeItem.mockupType
-
   return (
     <section id="pipeline" className="mx-auto w-full border-b border-black/[0.08] bg-white">
       <div className="mx-auto w-full max-w-[1536px] px-4 sm:px-6 lg:px-12 xl:px-24">
         <div className="border-x border-black/[0.08]">
+          {/* Section Header: Eyebrow Badge + Display Headline */}
+          <div className="border-b border-black/[0.08] px-6 py-10 sm:px-8 sm:py-12 md:px-14 md:py-14 xl:px-20">
+            {/* Eyebrow Badge */}
+            <div className="mb-4">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
+                <Sparkles className="size-3.5" />
+                <span>001 — The Pipeline</span>
+              </span>
+            </div>
+
+            {/* Main Headline */}
+            <h2
+              className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15]"
+              style={{
+                fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
+                fontWeight: 400,
+              }}
+            >
+              From claim to{' '}
+              <span className="text-[#FF7A00]">
+                cash.
+              </span>
+            </h2>
+          </div>
+
+          {/* First 4 Cards: Statistics Horizontal Four-Column Row (Calendly-Inspired Polish) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 border-b border-black/[0.08] bg-neutral-50/50">
+            {STAT_METRICS.map((stat, idx) => {
+              const Icon = stat.icon
+              const isHovered = hoveredStatIdx === idx
+              return (
+                <div
+                  key={stat.label}
+                  tabIndex={0}
+                  role="article"
+                  aria-label={`${stat.value}: ${stat.label}, ${stat.note}`}
+                  onMouseEnter={() => setHoveredStatIdx(idx)}
+                  onMouseLeave={() => setHoveredStatIdx(null)}
+                  onFocus={() => setHoveredStatIdx(idx)}
+                  onBlur={() => setHoveredStatIdx(null)}
+                  onClick={() => setHoveredStatIdx((prev) => (prev === idx ? null : idx))}
+                  className={`group relative p-4 sm:p-6 lg:p-8 cursor-pointer select-none outline-none transition-all duration-400 ease-out focus-visible:ring-2 focus-visible:ring-[#F97316]/50 focus-visible:ring-inset ${
+                    idx !== 0 ? 'border-t sm:border-t-0 md:border-l border-black/[0.08]' : ''
+                  } ${idx === 1 ? 'border-l border-black/[0.08] md:border-l' : ''}`}
+                >
+                  {/* Smooth, subtle orange gradient surface on hover */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-b from-[#FFF1E7] via-[#FFF7ED]/75 to-transparent transition-opacity duration-400 ease-out pointer-events-none ${
+                      isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                    }`}
+                    aria-hidden="true"
+                  />
+
+                  {/* Warm ambient top-right luminous glow */}
+                  <div
+                    className={`absolute -top-10 -right-10 size-32 bg-gradient-to-br from-[#FDBA74]/35 via-[#F97316]/15 to-transparent rounded-full blur-2xl transition-opacity duration-500 ease-out pointer-events-none ${
+                      isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                    }`}
+                    aria-hidden="true"
+                  />
+
+                  {/* Refined border transition on hover */}
+                  <div
+                    className={`absolute inset-0 border transition-colors duration-400 pointer-events-none ${
+                      isHovered
+                        ? 'border-[#F97316]/30'
+                        : 'border-transparent group-hover:border-[#F97316]/30'
+                    }`}
+                    aria-hidden="true"
+                  />
+
+                  {/* Subtle Calendly-style active accent indicator at the bottom */}
+                  <div
+                    className={`absolute bottom-0 inset-x-4 sm:inset-x-8 h-[2px] bg-gradient-to-r from-transparent via-[#F97316] to-transparent transition-all duration-400 ease-out pointer-events-none ${
+                      isHovered
+                        ? 'opacity-100 scale-x-100'
+                        : 'opacity-0 scale-x-50 group-hover:opacity-100 group-hover:scale-x-100'
+                    }`}
+                    aria-hidden="true"
+                  />
+
+                  {/* Card Content with subtle 3px-4px lift */}
+                  <div
+                    className={`relative z-10 flex flex-col justify-between h-full transition-transform duration-350 ease-out motion-reduce:transform-none ${
+                      isHovered ? '-translate-y-1' : 'group-hover:-translate-y-1'
+                    }`}
+                  >
+                    {/* Top Row: Statistic + Premium Animated Icon Badge */}
+                    <div className="flex items-start justify-between gap-3 mb-2.5 sm:mb-3">
+                      <div
+                        className={`font-mono text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight transition-all duration-300 ${
+                          isHovered
+                            ? 'text-black tracking-tight drop-shadow-[0_1px_1px_rgba(0,0,0,0.06)]'
+                            : 'text-[#0a0a0a] group-hover:text-black group-hover:tracking-tight group-hover:drop-shadow-[0_1px_1px_rgba(0,0,0,0.06)]'
+                        }`}
+                      >
+                        {stat.value}
+                      </div>
+
+                      {/* Premium Icon Badge: Smooth scale-up and fade-in to orange gradient */}
+                      <div
+                        className={`relative shrink-0 size-7.5 sm:size-8 lg:size-9 rounded-lg sm:rounded-xl flex items-center justify-center border shadow-xs transition-all duration-350 ease-out ${
+                          isHovered
+                            ? 'bg-gradient-to-br from-[#FFF1E7] to-[#FED7AA]/60 border-[#F97316]/35 text-[#EA580C] shadow-[0_4px_12px_rgba(249,115,22,0.18)] scale-105'
+                            : 'bg-white/80 border-black/[0.06] text-neutral-400 group-hover:bg-gradient-to-br group-hover:from-[#FFF1E7] group-hover:to-[#FED7AA]/60 group-hover:border-[#F97316]/35 group-hover:text-[#EA580C] group-hover:shadow-[0_4px_12px_rgba(249,115,22,0.18)] group-hover:scale-105'
+                        }`}
+                        aria-hidden="true"
+                      >
+                        <Icon
+                          className={`size-3.5 sm:size-4 lg:size-[18px] transition-all duration-300 ease-out motion-reduce:transform-none ${
+                            isHovered
+                              ? 'opacity-100 scale-110'
+                              : 'opacity-70 group-hover:opacity-100 group-hover:scale-110'
+                          }`}
+                          strokeWidth={1.8}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Title */}
+                    <div
+                      className={`text-xs sm:text-sm font-medium transition-colors duration-300 ${
+                        isHovered ? 'text-neutral-950' : 'text-neutral-800 group-hover:text-neutral-950'
+                      }`}
+                    >
+                      {stat.label}
+                    </div>
+
+                    {/* Description */}
+                    <div
+                      className={`font-mono text-[11px] mt-0.5 transition-colors duration-300 ${
+                        isHovered ? 'text-neutral-700' : 'text-neutral-500 group-hover:text-neutral-700'
+                      }`}
+                    >
+                      {stat.note}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
           {/* Main 2-Column Showcase (Calendly Style with Gradient Orange Background) */}
           <div className="px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-24 xl:px-20">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-              {/* Left Column: Eyebrow + Title + 8 Vertically Stacked Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+              {/* Left Column: Interactive Tab Accordion List (Next 4 cards: 5, 6, 7, 8) */}
               <div className="lg:col-span-6 flex flex-col justify-center">
-                {/* Eyebrow Badge */}
-                <div className="mb-4">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
-                    <Sparkles className="size-3.5" />
-                    <span>001 — The Pipeline</span>
-                  </span>
-                </div>
-
-                {/* Main Headline */}
-                <h2
-                  className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15] mb-8"
-                  style={{
-                    fontFamily: 'displayFont, "displayFont Fallback", sans-serif',
-                    fontWeight: 400,
-                  }}
-                >
-                  From claim to{' '}
-                  <span className="text-[#FF7A00]">
-                    cash.
-                  </span>
-                </h2>
-
-                {/* Single Vertical List of All 8 Cards */}
+                {/* Interactive Vertical Tab Accordion */}
                 <div
                   className="space-y-0 divide-y divide-black/[0.08] border-y border-black/[0.08]"
                   onMouseEnter={() => setIsPaused(true)}
                   onMouseLeave={() => setIsPaused(false)}
                 >
-                  {ALL_FEATURES.map((tab) => {
+                  {FEATURE_TABS.map((tab) => {
                     const isActive = activeTab === tab.id
                     return (
                       <div
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`group cursor-pointer py-4 sm:py-4.5 transition-all ${
+                        className={`group cursor-pointer py-5 transition-all ${
                           isActive ? 'opacity-100' : 'opacity-65 hover:opacity-100'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-3.5 min-w-0">
+                          <div className="flex items-center gap-3.5">
                             <div
-                              className={`size-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                              className={`size-9 rounded-xl flex items-center justify-center transition-colors ${
                                 isActive
                                   ? 'bg-[#FF7A00] text-white shadow-sm'
                                   : 'bg-neutral-100 text-neutral-600 group-hover:bg-neutral-200 group-hover:text-black'
@@ -209,7 +318,7 @@ export default function FeaturesPipelineSection() {
                           </div>
 
                           <div
-                            className={`size-8 rounded-lg flex items-center justify-center border shrink-0 transition-all ${
+                            className={`size-8 rounded-lg flex items-center justify-center border transition-all ${
                               isActive
                                 ? 'bg-[#0a0a0a] text-white border-black'
                                 : 'bg-neutral-50 text-neutral-400 border-neutral-200 group-hover:border-neutral-400 group-hover:text-black'
@@ -245,9 +354,9 @@ export default function FeaturesPipelineSection() {
                 </div>
               </div>
 
-              {/* Right Column: Large Rounded Container with Orange Gradient Background (Completely Unchanged) */}
+              {/* Right Column: Large Rounded Container with Orange Gradient Background */}
               <div
-                className="lg:col-span-6 lg:sticky lg:top-28 self-start"
+                className="lg:col-span-6"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
@@ -277,7 +386,7 @@ export default function FeaturesPipelineSection() {
                   {/* Inner Dynamic Mockup Card (Framer Motion Crossfade) */}
                   <div className="relative z-10 w-full max-w-sm sm:max-w-md">
                     <AnimatePresence mode="wait">
-                      {currentMockup === 'claim' && (
+                      {activeTab === 'claim' && (
                         <motion.div
                           key="claim-card"
                           initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -339,7 +448,7 @@ export default function FeaturesPipelineSection() {
                         </motion.div>
                       )}
 
-                      {currentMockup === 'ship' && (
+                      {activeTab === 'ship' && (
                         <motion.div
                           key="ship-card"
                           initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -401,7 +510,7 @@ export default function FeaturesPipelineSection() {
                         </motion.div>
                       )}
 
-                      {currentMockup === 'payout' && (
+                      {activeTab === 'payout' && (
                         <motion.div
                           key="payout-card"
                           initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -449,7 +558,7 @@ export default function FeaturesPipelineSection() {
                         </motion.div>
                       )}
 
-                      {currentMockup === 'reputation' && (
+                      {activeTab === 'reputation' && (
                         <motion.div
                           key="reputation-card"
                           initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -468,46 +577,47 @@ export default function FeaturesPipelineSection() {
                                 Level 14 · Full-Stack Specialist
                               </div>
                             </div>
-                            <span className="px-2.5 py-1 rounded-lg bg-orange-50 border border-orange-200 text-[#FF5A1F] font-mono text-xs font-bold">
+                            <span className="px-2.5 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-bold">
                               Rank #42
                             </span>
                           </div>
 
-                          {/* Trust Score & Lifetime Earnings */}
-                          <div className="grid grid-cols-2 gap-3 mb-5 font-mono text-xs">
-                            <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-150">
-                              <span className="text-neutral-400 block mb-1 text-[10px] uppercase tracking-wider">
+                          {/* Trust Score & Lifetime Payout */}
+                          <div className="grid grid-cols-2 gap-2.5 mb-4 font-mono text-xs">
+                            <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-150">
+                              <div className="text-neutral-400 text-[10px] uppercase">
                                 Trust Score
-                              </span>
-                              <span className="text-emerald-700 font-bold text-sm">
+                              </div>
+                              <div className="text-base font-bold text-emerald-600 mt-0.5">
                                 94% Top Tier
-                              </span>
+                              </div>
                             </div>
-                            <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-150">
-                              <span className="text-neutral-400 block mb-1 text-[10px] uppercase tracking-wider">
+                            <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-150">
+                              <div className="text-neutral-400 text-[10px] uppercase">
                                 Lifetime Paid
-                              </span>
-                              <span className="text-[#0a0a0a] font-bold text-sm">
+                              </div>
+                              <div className="text-base font-bold text-[#0a0a0a] mt-0.5">
                                 ₹18,400.00
-                              </span>
+                              </div>
                             </div>
                           </div>
 
-                          {/* XP Level Progress Bar */}
-                          <div>
-                            <div className="flex justify-between font-mono text-xs text-neutral-500 mb-1.5">
-                              <span>Level 14 → 15</span>
-                              <span className="font-semibold text-neutral-800">3,450 / 4,000 XP</span>
-                            </div>
-                            <div className="h-2 rounded-full bg-neutral-100 overflow-hidden">
-                              <div className="h-full bg-gradient-to-r from-[#FF7A00] to-[#FF5A1F] rounded-full w-[86%]" />
-                            </div>
+                          {/* Level Progress Bar */}
+                          <div className="font-mono text-xs mb-1.5 flex justify-between text-neutral-600">
+                            <span>Level 14 → 15</span>
+                            <span className="font-bold text-[#FF5A1F]">3,450 / 4,000 XP</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-neutral-100 overflow-hidden mb-3">
+                            <div
+                              className="h-full bg-gradient-to-r from-[#FFA048] to-[#FF5A1F] rounded-full"
+                              style={{ width: '86%' }}
+                            />
                           </div>
 
-                          {/* Next Tier Unlock */}
-                          <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between font-mono text-[11px] text-neutral-500">
+                          {/* Milestone notice */}
+                          <div className="font-mono text-[11px] text-neutral-500 pt-2 border-t border-neutral-100 flex items-center justify-between">
                             <span>Next: L15 Core Architecture Bounties</span>
-                            <span className="text-[#FF5A1F] font-bold">₹10,000+</span>
+                            <span className="text-[#FF5A1F] font-semibold">₹10,000+</span>
                           </div>
                         </motion.div>
                       )}
