@@ -9,6 +9,7 @@
  */
 
 import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Grainient from './Grainient'
 import {
   Timer,
@@ -121,13 +122,6 @@ export default function StatsShowcaseSection() {
           <div className="px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-24 xl:px-20">
             {/* Mobile Header: Visible only on < lg screens */}
             <div className="block lg:hidden mb-10">
-              <div className="mb-4">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
-                  <Sparkles className="size-3.5" />
-                  <span>002 — Platform Velocity</span>
-                </span>
-              </div>
-
               <h2
                 className="text-[#0a0a0a] text-3xl sm:text-4xl font-normal tracking-tight leading-[1.15]"
                 style={{
@@ -135,10 +129,7 @@ export default function StatsShowcaseSection() {
                   fontWeight: 400,
                 }}
               >
-                Built for velocity,{' '}
-                <span className="text-[#FF7A00]">
-                  backed by code.
-                </span>
+                Built for velocity, backed by code.
               </h2>
             </div>
 
@@ -151,7 +142,7 @@ export default function StatsShowcaseSection() {
                   <div className="absolute inset-0 z-0 pointer-events-none">
                     <Grainient
                       colors={["#000000","#f97316","#fd480c","#f97316","#ff8900"]}
-                      angle={55}
+                      angle={305}
                       flow={0.8}
                       silk={0.35}
                       grainAmount={0.08}
@@ -160,137 +151,148 @@ export default function StatsShowcaseSection() {
                     />
                   </div>
 
-                  {/* Floating White Metric Card */}
-                  <div className="relative z-10 w-full max-w-[420px] rounded-2xl sm:rounded-[24px] bg-white/95 backdrop-blur-md border border-black/[0.06] p-6 sm:p-7 shadow-[0_20px_50px_-12px_rgba(234,88,12,0.16),0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between">
-                    {/* Top Row: Premium Line Icon Badge + Kicker Tag */}
-                    <div className="flex items-center justify-between gap-3 mb-5">
-                      <div className="size-11 rounded-xl bg-[#FFF1E7] border border-[#FDBA74]/50 flex items-center justify-center shadow-xs shrink-0">
-                        <activeItem.Icon className="size-5 text-[#EA580C]" strokeWidth={2.2} />
-                      </div>
-
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold uppercase tracking-wider text-[#EA580C] bg-[#FFF1E7] border border-[#FDBA74]/50">
-                        {activeItem.tag}
-                      </span>
-                    </div>
-
-                    {/* Big Metric Value & Label */}
-                    <div className="mb-4">
-                      <div className="font-mono text-4xl sm:text-5xl font-bold tracking-tight text-[#0a0a0a] leading-none mb-1.5">
-                        {activeItem.stat}
-                      </div>
-                      <div className="text-sm sm:text-base font-semibold text-neutral-800 tracking-tight">
-                        {activeItem.label}
-                      </div>
-                    </div>
-
-                    {/* Rich Interactive Mockup tailored to the active stat */}
-                    <div className="rounded-xl border border-black/[0.06] bg-[#FAFAFA] p-3.5 sm:p-4 mb-4">
-                      {activeItem.id === 'time' && (
-                        <div className="space-y-2.5">
-                          <div className="flex items-center justify-between">
-                            <span className="font-mono text-[11px] text-neutral-500 uppercase tracking-wider">
-                              Active Task
-                            </span>
-                            <span className="font-mono text-xs font-semibold text-[#EA580C] bg-[#FFF1E7] px-2 py-0.5 rounded border border-[#FDBA74]/40">
-                              ₹450 Payout
-                            </span>
+                  {/* Floating White Metric Card with Smooth Change Animation */}
+                  <div className="relative z-10 w-full max-w-[420px]">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={activeItem.id}
+                        initial={{ opacity: 0, scale: 0.95, y: 12 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -12 }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        className="w-full rounded-2xl sm:rounded-[24px] bg-white/95 backdrop-blur-md border border-black/[0.06] p-6 sm:p-7 shadow-[0_20px_50px_-12px_rgba(234,88,12,0.16),0_2px_8px_rgba(0,0,0,0.04)] flex flex-col justify-between"
+                      >
+                        {/* Top Row: Premium Line Icon Badge + Kicker Tag */}
+                        <div className="flex items-center justify-between gap-3 mb-5">
+                          <div className="size-11 rounded-xl bg-[#FFF1E7] border border-[#FDBA74]/50 flex items-center justify-center shadow-xs shrink-0">
+                            <activeItem.Icon className="size-5 text-[#EA580C]" strokeWidth={2.2} />
                           </div>
-                          <div className="font-mono text-xs font-semibold text-[#0a0a0a]">
-                            Fix OAuth redirect loop on mobile
+
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold uppercase tracking-wider text-[#EA580C] bg-[#FFF1E7] border border-[#FDBA74]/50">
+                            {activeItem.tag}
+                          </span>
+                        </div>
+
+                        {/* Big Metric Value & Label */}
+                        <div className="mb-4">
+                          <div className="font-mono text-4xl sm:text-5xl font-bold tracking-tight text-[#0a0a0a] leading-none mb-1.5">
+                            {activeItem.stat}
                           </div>
-                          <div className="flex items-center gap-2 pt-1 border-t border-black/[0.05] text-[11px] font-mono text-neutral-500">
-                            <Clock className="size-3 text-[#EA580C]" />
-                            <span>Avg completion: 45m</span>
-                            <span className="ml-auto text-emerald-600 font-semibold">Tier 2 · Lvl 3+</span>
+                          <div className="text-sm sm:text-base font-semibold text-neutral-800 tracking-tight">
+                            {activeItem.label}
                           </div>
                         </div>
-                      )}
 
-                      {activeItem.id === 'payout' && (
-                        <div className="space-y-2.5">
-                          <div className="flex items-center justify-between">
-                            <span className="font-mono text-[11px] text-neutral-500 uppercase tracking-wider">
-                              UPI Escrow Release
-                            </span>
-                            <span className="font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                              Verified ✓
-                            </span>
-                          </div>
-                          <div className="font-mono text-2xl font-bold text-[#EA580C]">
-                            ₹800.00
-                          </div>
-                          <div className="flex items-center justify-between pt-1 border-t border-black/[0.05] text-[11px] font-mono text-neutral-500">
-                            <span>To: ayushman@upi</span>
-                            <span className="text-[#0a0a0a] font-semibold">41s after merge</span>
+                        {/* Rich Interactive Mockup tailored to the active stat */}
+                        <div className="rounded-xl border border-black/[0.06] bg-[#FAFAFA] p-3.5 sm:p-4 mb-4">
+                          {activeItem.id === 'time' && (
+                            <div className="space-y-2.5">
+                              <div className="flex items-center justify-between">
+                                <span className="font-mono text-[11px] text-neutral-500 uppercase tracking-wider">
+                                  Active Task
+                                </span>
+                                <span className="font-mono text-xs font-semibold text-[#EA580C] bg-[#FFF1E7] px-2 py-0.5 rounded border border-[#FDBA74]/40">
+                                  ₹450 Payout
+                                </span>
+                              </div>
+                              <div className="font-mono text-xs font-semibold text-[#0a0a0a]">
+                                Fix OAuth redirect loop on mobile
+                              </div>
+                              <div className="flex items-center gap-2 pt-1 border-t border-black/[0.05] text-[11px] font-mono text-neutral-500">
+                                <Clock className="size-3 text-[#EA580C]" />
+                                <span>Avg completion: 45m</span>
+                                <span className="ml-auto text-emerald-600 font-semibold">Tier 2 · Lvl 3+</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {activeItem.id === 'payout' && (
+                            <div className="space-y-2.5">
+                              <div className="flex items-center justify-between">
+                                <span className="font-mono text-[11px] text-neutral-500 uppercase tracking-wider">
+                                  UPI Escrow Release
+                                </span>
+                                <span className="font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                  Verified ✓
+                                </span>
+                              </div>
+                              <div className="font-mono text-2xl font-bold text-[#EA580C]">
+                                ₹800.00
+                              </div>
+                              <div className="flex items-center justify-between pt-1 border-t border-black/[0.05] text-[11px] font-mono text-neutral-500">
+                                <span>To: ayushman@upi</span>
+                                <span className="text-[#0a0a0a] font-semibold">41s after merge</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {activeItem.id === 'pipeline' && (
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between pb-1.5 border-b border-black/[0.05]">
+                                <span className="font-mono text-[11px] text-neutral-500 uppercase tracking-wider">
+                                  Automated Gate Check
+                                </span>
+                                <span className="font-mono text-[11px] text-emerald-600 font-semibold">
+                                  4/4 Passed
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
+                                <div className="flex items-center gap-1.5 text-neutral-700">
+                                  <Check className="size-3 text-emerald-600 shrink-0" />
+                                  <span>1. Isolated Build</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-neutral-700">
+                                  <Check className="size-3 text-emerald-600 shrink-0" />
+                                  <span>2. 14/14 Tests</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-neutral-700">
+                                  <Check className="size-3 text-emerald-600 shrink-0" />
+                                  <span>3. AI Scope Audit</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-neutral-700">
+                                  <Check className="size-3 text-emerald-600 shrink-0" />
+                                  <span>4. Human Verdict</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {activeItem.id === 'levels' && (
+                            <div className="space-y-2.5">
+                              <div className="flex items-center justify-between">
+                                <span className="font-mono text-xs font-semibold text-[#0a0a0a]">
+                                  Ayushman Sen
+                                </span>
+                                <span className="font-mono text-[11px] font-semibold text-[#EA580C] bg-[#FFF1E7] px-2 py-0.5 rounded border border-[#FDBA74]/40">
+                                  Rank #42
+                                </span>
+                              </div>
+                              <div>
+                                <div className="flex justify-between text-[11px] font-mono text-neutral-500 mb-1">
+                                  <span>Level 14 → 15</span>
+                                  <span>3,450 / 4,000 XP</span>
+                                </div>
+                                <div className="h-1.5 w-full bg-neutral-200 rounded-full overflow-hidden">
+                                  <div className="h-full bg-gradient-to-r from-[#EA580C] to-[#F97316] w-[86%]" />
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between pt-1 border-t border-black/[0.05] text-[11px] font-mono text-neutral-500">
+                                <span>Trust Score: <strong className="text-emerald-600">94% Top Tier</strong></span>
+                                <span>Forke Legend Path</span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Clean Separator Line & Supporting Note */}
+                        <div className="pt-3 border-t border-black/[0.06]">
+                          <div className="flex items-center gap-2 font-mono text-xs text-neutral-500">
+                            <span className="size-1.5 rounded-full bg-[#EA580C] shrink-0" />
+                            <span>{activeItem.note}</span>
                           </div>
                         </div>
-                      )}
-
-                      {activeItem.id === 'pipeline' && (
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between pb-1.5 border-b border-black/[0.05]">
-                            <span className="font-mono text-[11px] text-neutral-500 uppercase tracking-wider">
-                              Automated Gate Check
-                            </span>
-                            <span className="font-mono text-[11px] text-emerald-600 font-semibold">
-                              4/4 Passed
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-2 gap-1.5 text-[11px] font-mono">
-                            <div className="flex items-center gap-1.5 text-neutral-700">
-                              <Check className="size-3 text-emerald-600 shrink-0" />
-                              <span>1. Isolated Build</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 text-neutral-700">
-                              <Check className="size-3 text-emerald-600 shrink-0" />
-                              <span>2. 14/14 Tests</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 text-neutral-700">
-                              <Check className="size-3 text-emerald-600 shrink-0" />
-                              <span>3. AI Scope Audit</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 text-neutral-700">
-                              <Check className="size-3 text-emerald-600 shrink-0" />
-                              <span>4. Human Verdict</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {activeItem.id === 'levels' && (
-                        <div className="space-y-2.5">
-                          <div className="flex items-center justify-between">
-                            <span className="font-mono text-xs font-semibold text-[#0a0a0a]">
-                              Ayushman Sen
-                            </span>
-                            <span className="font-mono text-[11px] font-semibold text-[#EA580C] bg-[#FFF1E7] px-2 py-0.5 rounded border border-[#FDBA74]/40">
-                              Rank #42
-                            </span>
-                          </div>
-                          <div>
-                            <div className="flex justify-between text-[11px] font-mono text-neutral-500 mb-1">
-                              <span>Level 14 → 15</span>
-                              <span>3,450 / 4,000 XP</span>
-                            </div>
-                            <div className="h-1.5 w-full bg-neutral-200 rounded-full overflow-hidden">
-                              <div className="h-full bg-gradient-to-r from-[#EA580C] to-[#F97316] w-[86%]" />
-                            </div>
-                          </div>
-                          <div className="flex items-center justify-between pt-1 border-t border-black/[0.05] text-[11px] font-mono text-neutral-500">
-                            <span>Trust Score: <strong className="text-emerald-600">94% Top Tier</strong></span>
-                            <span>Forke Legend Path</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Clean Separator Line & Supporting Note */}
-                    <div className="pt-3 border-t border-black/[0.06]">
-                      <div className="flex items-center gap-2 font-mono text-xs text-neutral-500">
-                        <span className="size-1.5 rounded-full bg-[#EA580C] shrink-0" />
-                        <span>{activeItem.note}</span>
-                      </div>
-                    </div>
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
@@ -299,14 +301,6 @@ export default function StatsShowcaseSection() {
               <div className="lg:col-span-6 flex flex-col justify-center">
                 {/* Desktop Header: Visible only on lg+ screens */}
                 <div className="hidden lg:block mb-8">
-                  {/* Eyebrow Badge */}
-                  <div className="mb-4">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
-                      <Sparkles className="size-3.5" />
-                      <span>002 — Platform Velocity</span>
-                    </span>
-                  </div>
-
                   {/* Main Headline (displayFont with zero secondary paragraph) */}
                   <h2
                     className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15]"
@@ -315,10 +309,7 @@ export default function StatsShowcaseSection() {
                       fontWeight: 400,
                     }}
                   >
-                    Built for velocity,{' '}
-                    <span className="text-[#FF7A00]">
-                      backed by code.
-                    </span>
+                    Built for velocity, backed by code.
                   </h2>
                 </div>
 
@@ -392,9 +383,6 @@ export default function StatsShowcaseSection() {
                             <p className="text-sm sm:text-[14.5px] leading-relaxed text-neutral-600">
                               {item.fullDescription}
                             </p>
-
-                            {/* Active orange indicator line (Calendly Signature) */}
-                            <div className="mt-4 h-0.5 w-16 bg-[#EA580C] rounded-full" />
                           </div>
                         )}
                       </div>

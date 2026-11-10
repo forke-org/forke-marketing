@@ -207,7 +207,7 @@ export default function FeaturesPipelineSection() {
                   <div className="absolute inset-0 z-0 pointer-events-none">
                     <Grainient
                       colors={["#000000","#f97316","#fd480c","#f97316","#ff8900"]}
-                      angle={55}
+                      angle={305}
                       flow={0.8}
                       silk={0.35}
                       grainAmount={0.08}
