@@ -342,14 +342,14 @@ export default function StatsShowcaseSection() {
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-3.5">
                             <div
-                              className={`size-9 rounded-lg flex items-center justify-center transition-colors duration-200 shrink-0 ${
+                              className={`size-6 flex items-center justify-center transition-colors shrink-0 ${
                                 isActive
-                                  ? 'bg-[#EA580C] text-white shadow-xs'
-                                  : 'bg-neutral-100 text-neutral-500 group-hover:bg-neutral-200 group-hover:text-neutral-800'
+                                  ? 'text-[#0a0a0a]'
+                                  : 'text-neutral-400 group-hover:text-neutral-700'
                               }`}
                             >
                               <item.Icon
-                                className={`size-4.5 ${isActive ? 'text-white' : 'text-neutral-600'}`}
+                                className="size-5"
                                 strokeWidth={2.2}
                               />
                             </div>
@@ -365,13 +365,24 @@ export default function StatsShowcaseSection() {
 
                           {/* Arrow Action Indicator */}
                           <div
-                            className={`size-8 rounded-lg flex items-center justify-center transition-colors duration-200 shrink-0 ${
+                            className={`size-8 rounded-xl flex items-center justify-center overflow-hidden transition-all duration-200 shrink-0 ${
                               isActive
-                                ? 'bg-black text-white'
-                                : 'bg-transparent text-neutral-400 group-hover:text-neutral-700'
+                                ? 'bg-[#F2F4F7] text-[#0a0a0a] border border-black/[0.04]'
+                                : 'bg-transparent text-neutral-400 group-hover:bg-[#F2F4F7] group-hover:text-[#0a0a0a]'
                             }`}
                           >
-                            <ArrowUpRight className="size-4" />
+                            <div className="relative size-4 overflow-hidden">
+                              {/* Primary diagonal arrow sliding out to top-right on hover */}
+                              <ArrowUpRight
+                                className="size-4 transition-transform duration-300 ease-out group-hover:translate-x-full group-hover:-translate-y-full"
+                                strokeWidth={2.2}
+                              />
+                              {/* Secondary clone arrow sliding in from bottom-left on hover */}
+                              <ArrowUpRight
+                                className="size-4 absolute inset-0 -translate-x-full translate-y-full transition-transform duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0"
+                                strokeWidth={2.2}
+                              />
+                            </div>
                           </div>
                         </div>
 

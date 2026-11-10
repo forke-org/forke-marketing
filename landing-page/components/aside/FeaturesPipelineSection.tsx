@@ -103,16 +103,8 @@ export default function FeaturesPipelineSection() {
           {/* Main 2-Column Showcase (From claim to cash pipeline) */}
           <div className="px-6 py-16 sm:px-8 sm:py-20 md:px-14 md:py-24 xl:px-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-              {/* Left Column: Eyebrow + Title + Interactive Tab Accordion List */}
+              {/* Left Column: Title + Interactive Tab Accordion List */}
               <div className="lg:col-span-6 flex flex-col justify-center">
-                {/* Eyebrow Badge */}
-                <div className="mb-4">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF7A00]/10 border border-[#FF7A00]/25 text-[#FF7A00] font-mono text-xs font-semibold tracking-wider uppercase">
-                    <Sparkles className="size-3.5" />
-                    <span>001 — The Pipeline</span>
-                  </span>
-                </div>
-
                 {/* Main Headline */}
                 <h2
                   className="text-[#0a0a0a] text-3xl sm:text-4xl xl:text-5xl font-normal tracking-tight leading-[1.15] mb-8"
@@ -121,10 +113,7 @@ export default function FeaturesPipelineSection() {
                     fontWeight: 400,
                   }}
                 >
-                  From claim to{' '}
-                  <span className="text-[#FF7A00]">
-                    cash.
-                  </span>
+                  From claim to cash.
                 </h2>
 
                 {/* Interactive Vertical Tab Accordion */}
@@ -146,17 +135,17 @@ export default function FeaturesPipelineSection() {
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-3.5">
                             <div
-                              className={`size-9 rounded-xl flex items-center justify-center transition-colors ${
+                              className={`size-6 flex items-center justify-center transition-colors shrink-0 ${
                                 isActive
-                                  ? 'bg-[#FF7A00] text-white shadow-sm'
-                                  : 'bg-neutral-100 text-neutral-600 group-hover:bg-neutral-200 group-hover:text-black'
+                                  ? 'text-[#0a0a0a]'
+                                  : 'text-neutral-400 group-hover:text-neutral-700'
                               }`}
                             >
                               {tab.icon}
                             </div>
                             <span
                               className={`text-base sm:text-lg font-semibold tracking-tight transition-colors ${
-                                isActive ? 'text-[#0a0a0a]' : 'text-neutral-700 group-hover:text-black'
+                                isActive ? 'text-[#0a0a0a]' : 'text-neutral-600 group-hover:text-black'
                               }`}
                             >
                               {tab.title}
@@ -164,17 +153,24 @@ export default function FeaturesPipelineSection() {
                           </div>
 
                           <div
-                            className={`size-8 rounded-lg flex items-center justify-center border transition-all ${
+                            className={`size-8 rounded-xl flex items-center justify-center overflow-hidden transition-all duration-200 shrink-0 ${
                               isActive
-                                ? 'bg-[#0a0a0a] text-white border-black'
-                                : 'bg-neutral-50 text-neutral-400 border-neutral-200 group-hover:border-neutral-400 group-hover:text-black'
+                                ? 'bg-[#F2F4F7] text-[#0a0a0a] border border-black/[0.04]'
+                                : 'bg-transparent text-neutral-400 group-hover:bg-[#F2F4F7] group-hover:text-[#0a0a0a]'
                             }`}
                           >
-                            <ArrowUpRight
-                              className={`size-4 transition-transform ${
-                                isActive ? 'translate-x-0.5 -translate-y-0.5' : ''
-                              }`}
-                            />
+                            <div className="relative size-4 overflow-hidden">
+                              {/* Primary diagonal arrow sliding out to top-right on hover */}
+                              <ArrowUpRight
+                                className="size-4 transition-transform duration-300 ease-out group-hover:translate-x-full group-hover:-translate-y-full"
+                                strokeWidth={2.2}
+                              />
+                              {/* Secondary clone arrow sliding in from bottom-left on hover */}
+                              <ArrowUpRight
+                                className="size-4 absolute inset-0 -translate-x-full translate-y-full transition-transform duration-300 ease-out group-hover:translate-x-0 group-hover:translate-y-0"
+                                strokeWidth={2.2}
+                              />
+                            </div>
                           </div>
                         </div>
 
