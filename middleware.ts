@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest, NextFetchEvent } from 'next/server'
 import { detectInAppSocial } from '@/lib/utils/in-app-social'
-import { isProbePath } from '@/lib/utils/probe-paths'
+import { isCrawlerFilePath, isProbePath } from '@/lib/utils/probe-paths'
 
 const ATTRIBUTION_COOKIE = 'forke_attribution'
 const SESSION_COOKIE = 'forke_session'
@@ -336,8 +336,9 @@ async function fetchWaitlistStatus(origin: string): Promise<boolean> {
 export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
   const pathname = req.nextUrl.pathname
 
-  // Scanner probes (/.env, /wp-admin, ...) never reach the marketing tracker below, so report them here.
-  if (isProbePath(pathname)) {
+  // Probes and crawler files (robots.txt, llms.txt, sitemaps) are skipped by the marketing tracker below.
+  // The track route only keeps these when the request is from a bot.
+  if (isProbePath(pathname) || isCrawlerFilePath(pathname)) {
     const probe = fetch(new URL('/api/track', process.env.NODE_ENV === 'production' ? 'http://127.0.0.1:3000' : req.nextUrl.origin), {
       method: 'POST',
       headers: {

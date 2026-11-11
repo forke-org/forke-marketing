@@ -26,3 +26,9 @@ const PROBE_PATH_PATTERNS = [
 export function isProbePath(pathname: string): boolean {
   return PROBE_PATH_PATTERNS.some((pattern) => pattern.test(pathname))
 }
+
+const CRAWLER_FILE_PATTERN = /^\/(robots\.txt|llms(-full)?\.txt|sitemap[^/]*\.xml|ai\.txt|\.well-known\/ai-plugin\.json)$/i
+
+export function isCrawlerFilePath(pathname: string): boolean {
+  return CRAWLER_FILE_PATTERN.test(pathname)
+}

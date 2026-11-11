@@ -92,6 +92,16 @@ const AI_AGENT_PATTERNS: Record<string, RegExp> = {
   QwenBot: /qwenbot/i,
   GrokBot: /grokbot/i,
   HuaweiCrawler: /huaweicrawler/i,
+  ClaudeUser: /claude-user|claude-searchbot/i,
+  PerplexityUser: /perplexity-user/i,
+  ElevenLabs: /elevenlabscrawler/i,
+  CommonCrawl: /ccbot/i,
+  GoogleExtended: /google-extended|google-cloudvertexbot/i,
+  MistralAI: /mistralai-user/i,
+  DeepSeek: /deepseekbot/i,
+  YouBot: /youbot/i,
+  Diffbot: /diffbot/i,
+  Timpibot: /timpibot/i,
 }
 
 const SOCIAL_PREVIEW_PATTERNS: Record<string, RegExp> = {
