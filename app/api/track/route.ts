@@ -43,7 +43,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => ({}))
 
     const ua = req.headers.get('user-agent')
-    const host = req.headers.get('host') || req.headers.get('x-forwarded-host')
+    // The middleware pings this route over 127.0.0.1, so the visitor's real host arrives in x-forke-host.
+    const host = req.headers.get('x-forke-host') || req.headers.get('x-forwarded-host') || req.headers.get('host')
     const landingPath = clean(body.landingPath, 255) || '/'
 
     const botResult = detectBot(ua, landingPath, host)

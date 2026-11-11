@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest, NextFetchEvent } from 'next/server'
 import { detectInAppSocial } from '@/lib/utils/in-app-social'
+import { isProbePath } from '@/lib/utils/probe-paths'
 
 const ATTRIBUTION_COOKIE = 'forke_attribution'
 const SESSION_COOKIE = 'forke_session'
@@ -335,6 +336,21 @@ async function fetchWaitlistStatus(origin: string): Promise<boolean> {
 export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
   const pathname = req.nextUrl.pathname
 
+  // Scanner probes (/.env, /wp-admin, ...) never reach the marketing tracker below, so report them here.
+  if (isProbePath(pathname)) {
+    const probe = fetch(new URL('/api/track', process.env.NODE_ENV === 'production' ? 'http://127.0.0.1:3000' : req.nextUrl.origin), {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'user-agent': req.headers.get('user-agent') || '',
+        'x-forke-host': req.headers.get('host') || '',
+        'cf-ipcountry': req.headers.get('cf-ipcountry') || '',
+      },
+      body: JSON.stringify({ landingPath: pathname }),
+    }).catch(() => {})
+    if (ev?.waitUntil) ev.waitUntil(probe)
+  }
+
   // Skip static files & API routes
   if (
     pathname.includes('.') ||
@@ -378,6 +394,7 @@ export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
         'x-real-ip': req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for') || '',
         'cf-ipcountry': country || '',
         'x-forke-session': sessionId,
+        'x-forke-host': req.headers.get('host') || '',
       },
       body: JSON.stringify({
         sessionId,
