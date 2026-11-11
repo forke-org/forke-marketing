@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { appUrl } from './app-links'
 import { ArrowRight } from 'lucide-react'
 import { auth } from '@/auth'
 import DocsShell from './DocsShell'
@@ -131,12 +132,13 @@ export default async function DocsHome() {
             If the documentation doesn&apos;t answer your question, our team is always ready to assist.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/support"
+            <a
+              href={appUrl('/support')}
+              rel="nofollow"
               className="rounded-lg bg-accent px-5 py-2.5 text-[13px] font-semibold tracking-tight text-[#0a0a0a] transition-colors hover:bg-accent-hover"
             >
               Contact support
-            </Link>
+            </a>
             <Link
               href="/contact"
               className="rounded-lg border border-white/[0.12] bg-white/[0.02] px-5 py-2.5 text-[13px] font-medium text-white/80 transition-colors hover:border-white/25 hover:text-white"

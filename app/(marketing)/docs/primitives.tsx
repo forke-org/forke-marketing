@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { appUrl, isAppPath } from './app-links'
 import Link from 'next/link'
 
 /**
@@ -71,6 +72,13 @@ export function DocLink({ href, children }: { href: string; children: React.Reac
   const external = href.startsWith('http') || href.startsWith('mailto:')
   const className =
     'font-medium text-white underline decoration-accent/40 underline-offset-[3px] transition-colors hover:decoration-accent'
+  if (isAppPath(href)) {
+    return (
+      <a href={appUrl(href)} rel="nofollow" className={className}>
+        {children}
+      </a>
+    )
+  }
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
