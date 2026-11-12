@@ -1,371 +1,214 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { ChevronLeft, ChevronRight, Link2 } from 'lucide-react'
 import ImageLightbox from '@/components/changelog/ImageLightbox'
 import CustomVideoPlayer from '@/components/changelog/CustomVideoPlayer'
-import { Crosses } from '@/components/landing/primitives'
+import { Section, cn } from '@/components/landing/primitives'
 import type { ChangelogItem } from '@/lib/actions/changelog-actions'
 
 const PAGE_SIZE = 10
 
-function parseDate(iso: string | Date | null | undefined): Date | null {
-  if (!iso) return null
-  if (iso instanceof Date) return isNaN(iso.getTime()) ? null : iso
+/** Tag → pill colours. Muted tints so the orange accent stays reserved for Forke itself. */
+const TAGS: Record<string, { label: string; dot: string; pill: string }> = {
+  FEATURE: { label: 'Feature', dot: 'bg-accent', pill: 'border-accent/30 bg-accent/[0.08] text-accent-text' },
+  UPDATE: { label: 'Update', dot: 'bg-sky-400', pill: 'border-sky-400/25 bg-sky-400/[0.07] text-sky-300' },
+  IMPROVEMENT: { label: 'Improvement', dot: 'bg-emerald-400', pill: 'border-emerald-400/25 bg-emerald-400/[0.07] text-emerald-300' },
+  FIX: { label: 'Fix', dot: 'bg-rose-400', pill: 'border-rose-400/25 bg-rose-400/[0.07] text-rose-300' },
+  POLISH: { label: 'Polish', dot: 'bg-violet-400', pill: 'border-violet-400/25 bg-violet-400/[0.07] text-violet-300' },
+}
+const tagOf = (t: string) => TAGS[(t || 'FEATURE').toUpperCase()] ?? { label: t, dot: 'bg-white/50', pill: 'border-white/15 bg-white/[0.05] text-white/75' }
+
+function parseDate(iso: string): Date | null {
   let str = String(iso).trim()
-  if (/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(\.\d+)?$/.test(str)) {
-    str = str.replace(' ', 'T') + 'Z'
-  }
+  if (/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(\.\d+)?$/.test(str)) str = str.replace(' ', 'T') + 'Z'
   const d = new Date(str)
   return isNaN(d.getTime()) ? null : d
 }
 
-function formatDateLong(iso: string): string {
-  try {
-    const d = parseDate(iso)
-    if (!d) return iso
-    return new Intl.DateTimeFormat('en-US', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(d)
-  } catch {
-    return iso
-  }
+const longDate = (d: Date) => new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'long', year: 'numeric' }).format(d)
+
+function TagPill({ tag }: { tag: string }) {
+  const t = tagOf(tag)
+  return (
+    <span className={cn('inline-flex h-6 items-center gap-1.5 rounded-full border px-2.5 font-mono text-[10.5px] uppercase tracking-[0.1em]', t.pill)}>
+      <span className={cn('h-1.5 w-1.5 rounded-full', t.dot)} />
+      {t.label}
+    </span>
+  )
 }
 
-function toDateKey(d: Date): string {
-  return d.toISOString().split('T')[0]
-}
-
-interface DateGroup {
-  dateKey: string
-  displayDate: string
-  items: ChangelogItem[]
-}
-
-export default function ChangelogFeed({
-  items,
-  initialPage = 1,
-}: {
-  items: ChangelogItem[]
-  initialPage?: number
-}) {
-  const [page, setPage] = useState(initialPage)
-
-  const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE))
-  const safePage = Math.min(Math.max(1, page), totalPages)
-
-  React.useEffect(() => {
-    if (initialPage && initialPage !== page) {
-      setPage(Math.min(Math.max(1, initialPage), totalPages))
-    }
-  }, [initialPage, totalPages])
-
-  // Slice exactly 10 changelogs for the current page
-  const pageItems = useMemo(() => {
-    const start = (safePage - 1) * PAGE_SIZE
-    return items.slice(start, start + PAGE_SIZE)
-  }, [items, safePage])
-
-  // Group current page items by date
-  const dateGroups = useMemo(() => {
-    const groupsMap = new Map<string, ChangelogItem[]>()
-
-    pageItems.forEach((item) => {
-      const d = parseDate(item.publishedAt)
-      if (!d) return
-      const key = toDateKey(d)
-      if (!groupsMap.has(key)) groupsMap.set(key, [])
-      groupsMap.get(key)!.push(item)
-    })
-
-    const groups: DateGroup[] = []
-    groupsMap.forEach((dayItems, key) => {
-      const firstDate = parseDate(dayItems[0].publishedAt)
-      groups.push({
-        dateKey: key,
-        displayDate: firstDate ? formatDateLong(dayItems[0].publishedAt) : key,
-        items: dayItems,
-      })
-    })
-
-    return groups
-  }, [pageItems])
-
-  const handlePageChange = (newPage: number) => {
-    const target = Math.min(Math.max(1, newPage), totalPages)
-    setPage(target)
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href)
-      if (target > 1) {
-        url.searchParams.set('page', String(target))
-      } else {
-        url.searchParams.delete('page')
-      }
-      window.history.pushState({}, '', url.pathname + (url.search ? url.search : ''))
-    }
-    const topEl = document.getElementById('changelog-feed-top')
-    if (topEl) {
-      topEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }
-
-  const renderTagPill = (tag: string) => {
-    const upper = (tag || 'FEATURE').toUpperCase()
-    if (upper === 'FEATURE') {
-      return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/20 bg-white/10 text-white font-mono text-[10px] font-medium tracking-wider uppercase select-none">
-          Feature
-        </span>
-      )
-    }
-    if (upper === 'UPDATE') {
-      return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-sky-400/25 text-sky-300/90 bg-sky-400/[0.07] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
-          Update
-        </span>
-      )
-    }
-    if (upper === 'IMPROVEMENT') {
-      return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/15 text-white/80 bg-white/[0.05] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
-          Improvement
-        </span>
-      )
-    }
-    if (upper === 'FIX') {
-      return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/15 text-white/70 bg-white/[0.04] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
-          Fix
-        </span>
-      )
-    }
-    if (upper === 'POLISH') {
-      return (
-        <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/10 text-white/60 bg-white/[0.03] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
-          Polish
-        </span>
-      )
-    }
-    return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded border border-white/15 text-white/80 bg-white/[0.05] font-mono text-[10px] font-medium tracking-wider uppercase select-none">
-        {upper}
-      </span>
-    )
-  }
+function Entry({ item }: { item: ChangelogItem }) {
+  const lists = [
+    { title: 'Improvements', items: item.improvements },
+    { title: 'Fixes', items: item.fixes },
+  ].filter((l) => l.items.length > 0)
 
   return (
-    <div id="changelog-feed-top" className="relative scroll-mt-24">
-      {/* ─────────────────────────────────────────────────────────────
-          HERO HEADER: Everything we've actually shipped.
-      ───────────────────────────────────────────────────────────── */}
-      <div className="relative px-4 sm:px-8 lg:px-14 pt-6 sm:pt-14 pb-10 sm:pb-16 border-b border-white/[0.07]">
-        <Crosses />
-        <div className="max-w-3xl">
-          <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] uppercase text-white/40 font-semibold mb-4 sm:mb-6">
-            <span>Changelog</span>
-            <span className="h-px w-10 bg-white/20" />
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl lg:text-[4.25rem] font-medium tracking-[-0.04em] leading-[1.08] text-white">
-            Everything we&apos;ve{' '}
-            <span className="relative inline-block text-white">
-              actually shipped.
-              <svg
-                aria-hidden
-                className="absolute left-0 -bottom-2 w-full text-accent h-2.5 sm:h-3 pointer-events-none"
-                viewBox="0 0 260 12"
-                fill="none"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M2 9C40 3 100 2 160 7C200 10 235 6 258 4"
-                  stroke="currentColor"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-          </h1>
-
-          <p className="mt-5 sm:mt-8 text-white/60 text-sm sm:text-lg font-light leading-relaxed max-w-2xl">
-            Hand-curated, not auto-generated from commits &mdash; an auto-derived log fills up with
-            dependency bumps and tells you nothing. One entry here is one user-visible shipping
-            moment, often spanning several repos.
-          </p>
-        </div>
+    <article id={item.slug} className="group/entry scroll-mt-24">
+      <div className="flex flex-wrap items-center gap-3">
+        <TagPill tag={item.tag} />
+        <a
+          href={`#${item.slug}`}
+          aria-label="Link to this update"
+          className="text-white/0 transition-colors group-hover/entry:text-white/35 hover:!text-white/80"
+        >
+          <Link2 className="h-3.5 w-3.5" />
+        </a>
       </div>
+      <h3 className="mt-3.5 text-[22px] font-medium leading-snug tracking-[-0.02em] text-ink">{item.title}</h3>
+      <p className="mt-3 whitespace-pre-line text-[15.5px] leading-7 text-white/55">{item.description}</p>
 
-      {/* ─────────────────────────────────────────────────────────────
-          CHANGELOG STREAM (10 per page, grouped by date)
-      ───────────────────────────────────────────────────────────── */}
-      <div className="relative px-4 sm:px-8 lg:px-14 py-8 sm:py-16">
-        <Crosses />
+      {item.mediaType === 'image' && item.mediaUrl && (
+        <div className="mt-6">
+          <ImageLightbox src={item.mediaUrl} alt={item.title} />
+        </div>
+      )}
+      {item.mediaType === 'video' && item.mediaUrl && (
+        <div className="mt-6">
+          <CustomVideoPlayer src={item.mediaUrl} />
+        </div>
+      )}
 
-        <div className="divide-y divide-white/[0.07]">
-          {dateGroups.map((group) => (
-            <div
-              key={group.dateKey}
-              id={`date-group-${group.dateKey}`}
-              className="py-10 sm:py-16 first:pt-2 sm:first:pt-4 last:pb-8"
-            >
-              {/* Mobile Date Header (Visible on small screens) */}
-              <div className="lg:hidden mb-6 flex items-center justify-between pb-3.5 border-b border-white/[0.07]">
-                <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-                  <h3 className="text-sm sm:text-base font-medium text-white tracking-tight select-text">
-                    {group.displayDate}
-                  </h3>
-                </div>
-                <span className="font-mono text-[10px] text-white/50 tracking-wider uppercase px-2 py-0.5 rounded border border-white/[0.08] bg-white/[0.02] select-none">
-                  {group.items.length} {group.items.length === 1 ? 'change' : 'changes'}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] xl:grid-cols-[260px_1fr] gap-6 lg:gap-14 items-start">
-                {/* Desktop Left Column: Sticky Date */}
-                <div className="hidden lg:block lg:sticky lg:top-28 z-10 pt-1">
-                  <h3 className="text-base sm:text-lg font-medium text-white tracking-tight select-text">
-                    {group.displayDate}
-                  </h3>
-                  <span className="font-mono text-[11px] text-white/40 tracking-wider uppercase block mt-1 select-none">
-                    {group.items.length} {group.items.length === 1 ? 'change' : 'changes'}
-                  </span>
-                </div>
-
-                {/* Right Column: Change Items with Mobile Timeline Connector */}
-                <div className="relative pl-3.5 sm:pl-5 lg:pl-0 border-l border-white/[0.07] lg:border-l-0 ml-1.5 sm:ml-2 lg:ml-0 space-y-10 sm:space-y-12 min-w-0">
-                  {group.items.map((item, itemIdx) => {
-                    const hasImprovements = Boolean(item.improvements && item.improvements.length > 0)
-                    const hasFixes = Boolean(item.fixes && item.fixes.length > 0)
-
-                    return (
-                      <article
-                        key={item.id}
-                        id={item.slug}
-                        className={`space-y-4 ${itemIdx > 0 ? 'pt-8 lg:pt-0 border-t border-white/[0.05] lg:border-t-0' : ''}`}
-                      >
-                        {/* Tag Pill + Title Row */}
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                          <div className="shrink-0">{renderTagPill(item.tag)}</div>
-                          <h4 className="text-base sm:text-lg lg:text-xl font-medium text-white tracking-[-0.02em] leading-snug select-text">
-                            {item.title}
-                          </h4>
-                        </div>
-
-                        {/* Main Narrative Description */}
-                        <div className="text-white/70 text-[14.5px] sm:text-base leading-relaxed font-light whitespace-pre-line space-y-3 select-text">
-                          {item.description}
-                        </div>
-
-                        {/* Optional Media (Image / Video) */}
-                        {item.mediaType === 'image' && item.mediaUrl && (
-                          <div className="pt-2">
-                            <ImageLightbox src={item.mediaUrl} alt={item.title} />
-                          </div>
-                        )}
-
-                        {item.mediaType === 'video' && item.mediaUrl && (
-                          <div className="pt-2">
-                            <CustomVideoPlayer src={item.mediaUrl} />
-                          </div>
-                        )}
-
-                        {/* Architectural Sub-Panel for Improvements & Fixes */}
-                        {(hasImprovements || hasFixes) && (
-                          <div className="pt-2">
-                            <div className="rounded-xl border border-white/[0.07] bg-white/[0.015] p-4 sm:p-5">
-                              <div
-                                className={`grid grid-cols-1 ${
-                                  hasImprovements && hasFixes
-                                    ? 'sm:grid-cols-2 gap-6 sm:gap-8'
-                                    : 'gap-5'
-                                }`}
-                              >
-                                {hasImprovements && (
-                                  <div className="space-y-2.5">
-                                    <h5 className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50 select-none">
-                                      Improvements
-                                    </h5>
-                                    <ul className="space-y-2">
-                                      {item.improvements.map((imp, i) => (
-                                        <li
-                                          key={i}
-                                          className="text-[13.5px] sm:text-[14px] text-white/75 leading-relaxed font-light flex items-start select-text"
-                                        >
-                                          <span className="text-white/30 mr-2.5 font-mono text-xs select-none mt-0.5 leading-none shrink-0">
-                                            –
-                                          </span>
-                                          <span>{imp}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-
-                                {hasFixes && (
-                                  <div className="space-y-2.5">
-                                    <h5 className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50 select-none">
-                                      Fixes
-                                    </h5>
-                                    <ul className="space-y-2">
-                                      {item.fixes.map((fix, i) => (
-                                        <li
-                                          key={i}
-                                          className="text-[13.5px] sm:text-[14px] text-white/75 leading-relaxed font-light flex items-start select-text"
-                                        >
-                                          <span className="text-white/30 mr-2.5 font-mono text-xs select-none mt-0.5 leading-none shrink-0">
-                                            –
-                                          </span>
-                                          <span>{fix}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </article>
-                    )
-                  })}
-                </div>
-              </div>
+      {lists.length > 0 && (
+        <div className={cn('mt-6 grid gap-6 rounded-[14px] border border-line bg-white/[0.015] p-5', lists.length === 2 && 'sm:grid-cols-2 sm:gap-8')}>
+          {lists.map((l) => (
+            <div key={l.title}>
+              <p className="text-sm text-white/40">{l.title}</p>
+              <ul className="mt-3 space-y-2">
+                {l.items.map((x, i) => (
+                  <li key={i} className="flex gap-3 text-[14px] leading-6 text-white/65">
+                    <span className="mt-[10px] h-1 w-1 shrink-0 rounded-full bg-white/30" />
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
+      )}
+    </article>
+  )
+}
 
-        {/* ── Blog-Style Pagination ─────────────────────────────────── */}
-        {totalPages > 1 && (
-          <div className="mt-16 flex items-center justify-center gap-4 border-t border-white/[0.07] pt-12">
+export default function ChangelogFeed({ items, initialPage = 1 }: { items: ChangelogItem[]; initialPage?: number }) {
+  const [tag, setTag] = useState<string>('ALL')
+  const [page, setPage] = useState(initialPage)
+
+  const tags = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const i of items) counts.set(i.tag.toUpperCase(), (counts.get(i.tag.toUpperCase()) ?? 0) + 1)
+    return Object.keys(TAGS).filter((t) => counts.has(t)).map((t) => ({ t, n: counts.get(t)! }))
+  }, [items])
+
+  const filtered = useMemo(() => (tag === 'ALL' ? items : items.filter((i) => i.tag.toUpperCase() === tag)), [items, tag])
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const safePage = Math.min(Math.max(1, page), totalPages)
+
+  // back/forward between ?page= states
+  useEffect(() => {
+    const onPop = () => setPage(Math.max(1, parseInt(new URL(window.location.href).searchParams.get('page') || '1', 10) || 1))
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
+
+  const groups = useMemo(() => {
+    const map = new Map<string, { date: Date; items: ChangelogItem[] }>()
+    for (const item of filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)) {
+      const d = parseDate(item.publishedAt)
+      if (!d) continue
+      const key = d.toISOString().slice(0, 10)
+      if (!map.has(key)) map.set(key, { date: d, items: [] })
+      map.get(key)!.items.push(item)
+    }
+    return [...map.entries()].map(([key, g]) => ({ key, ...g }))
+  }, [filtered, safePage])
+
+  const go = (n: number) => {
+    const target = Math.min(Math.max(1, n), totalPages)
+    setPage(target)
+    const url = new URL(window.location.href)
+    if (target > 1) url.searchParams.set('page', String(target))
+    else url.searchParams.delete('page')
+    window.history.pushState({}, '', url.pathname + url.search)
+    document.getElementById('feed')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const pickTag = (t: string) => {
+    setTag(t)
+    setPage(1)
+  }
+
+  return (
+    <>
+      {/* filter bar */}
+      <Section>
+        <div id="feed" className="flex scroll-mt-14 gap-2 overflow-x-auto px-6 py-4 no-scrollbar sm:px-12">
+          {[{ t: 'ALL', n: items.length }, ...tags].map(({ t, n }) => (
             <button
-              onClick={() => handlePageChange(Math.max(1, safePage - 1))}
+              key={t}
+              type="button"
+              onClick={() => pickTag(t)}
+              className={cn(
+                'inline-flex h-8 shrink-0 items-center gap-2 rounded-full border px-3.5 text-[13px] transition-colors',
+                tag === t ? 'border-white/20 bg-white/[0.08] text-white' : 'border-white/[0.08] text-white/50 hover:border-white/15 hover:text-white/80',
+              )}
+            >
+              {t !== 'ALL' && <span className={cn('h-1.5 w-1.5 rounded-full', tagOf(t).dot)} />}
+              {t === 'ALL' ? 'All updates' : tagOf(t).label}
+              <span className="font-mono text-[11px] text-white/35">{n}</span>
+            </button>
+          ))}
+        </div>
+      </Section>
+
+      {groups.map((g) => (
+        <Section key={g.key}>
+          <div className="grid gap-6 px-6 py-14 sm:px-12 sm:py-16 lg:grid-cols-[220px_1fr] lg:gap-16">
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              <p className="text-[15px] font-medium text-ink">{longDate(g.date)}</p>
+              <p className="mt-1 font-mono text-[11.5px] text-white/35">
+                {g.items.length} {g.items.length === 1 ? 'change' : 'changes'}
+              </p>
+            </div>
+            <div className="min-w-0 max-w-[760px] space-y-14">
+              {g.items.map((item, i) => (
+                <div key={item.id} className={cn(i > 0 && 'border-t border-dashed border-line pt-14')}>
+                  <Entry item={item} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </Section>
+      ))}
+
+      {totalPages > 1 && (
+        <Section divider={false}>
+          <div className="flex items-center justify-center gap-4 px-6 py-12">
+            <button
+              type="button"
+              onClick={() => go(safePage - 1)}
               disabled={safePage === 1}
-              aria-label="Previous page"
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.08] text-white/40 transition-colors hover:border-white/20 hover:text-white disabled:opacity-25 disabled:cursor-not-allowed"
+              aria-label="Newer updates"
+              className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-white/10 text-white/50 transition-colors hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <span className="font-mono text-xs text-white/70 select-none">
-              {String(safePage).padStart(2, '0')}{' '}
-              <span className="text-white/25">/ {String(totalPages).padStart(2, '0')}</span>
+            <span className="font-mono text-[12.5px] text-white/70">
+              {String(safePage).padStart(2, '0')} <span className="text-white/30">/ {String(totalPages).padStart(2, '0')}</span>
             </span>
             <button
-              onClick={() => handlePageChange(Math.min(totalPages, safePage + 1))}
+              type="button"
+              onClick={() => go(safePage + 1)}
               disabled={safePage === totalPages}
-              aria-label="Next page"
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.08] text-white/40 transition-colors hover:border-white/20 hover:text-white disabled:opacity-25 disabled:cursor-not-allowed"
+              aria-label="Older updates"
+              className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-white/10 text-white/50 transition-colors hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
-        )}
-      </div>
-    </div>
+        </Section>
+      )}
+    </>
   )
 }
-
-
-

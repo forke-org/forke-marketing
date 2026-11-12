@@ -26,15 +26,15 @@
   --color-accent-hover: #E66E00;
   --color-accent-muted: rgba(255, 122, 0, 0.1);
   --color-accent-light: rgba(255, 122, 0, 0.05);
-  --color-accent-text: #FF7A00;
-  --color-bg: #050505;
+  --color-accent-text: #FFA347;
+  --color-bg: #151414;
   --color-bg-surface: #050505;
   --color-text-primary: #FFFFFF;
   --color-text-muted: #888888;
   --color-border: #222222;
-  --color-surface: #121212;
-  --color-surface-hover: #1A1A1A;
-  --color-muted: #888888;
+  --color-surface: #1C1B1A;
+  --color-surface-hover: #22201F;
+  --color-muted: #8E8E93;
   --lanyard-scale: 1;
   --term-scale: calc((min(1920px, 100vw) - 80px) * 0.5526 / 672px);
 }
@@ -509,13 +509,13 @@ img {
 }
 
 /* Ensure scrollbar does not double up by avoiding forcing overflow-y on both elements */
+/* clip, not hidden: hidden turns body into its own scroll container */
 html {
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Firefox scrollbar style matching the macOS layout with brand colors */
@@ -563,180 +563,6 @@ body {
 }
 .docs-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent-hover);
-}
-
-/* ──────────────────────────────────────────────────────────────────────────
-   Blog editor prose (Medium-style writing surface)
-   Applied to the Tiptap editor body via the .blog-prose class. Kept here rather
-   than inline so the same styles can later be reused by the public reader.
-   ────────────────────────────────────────────────────────────────────────── */
-.blog-prose {
-  font-size: 1.125rem;
-  line-height: 1.8;
-  color: #e6e6e6;
-}
-.blog-prose > * + * {
-  margin-top: 1.25rem;
-}
-.blog-prose p {
-  min-height: 1.8em;
-}
-.blog-prose h1,
-.blog-prose h2,
-.blog-prose h3 {
-  font-family: var(--font-serif);
-  color: #fff;
-  line-height: 1.25;
-  margin-top: 2rem;
-}
-.blog-prose h1 { font-size: 2rem; }
-.blog-prose h2 { font-size: 1.6rem; }
-.blog-prose h3 { font-size: 1.3rem; }
-.blog-prose blockquote {
-  border-left: 3px solid var(--color-accent);
-  padding-left: 1.1rem;
-  margin-left: 0;
-  color: #b8b8b8;
-  font-style: italic;
-}
-.blog-prose ul,
-.blog-prose ol {
-  padding-left: 1.5rem;
-}
-.blog-prose ul { list-style: disc; }
-.blog-prose ol { list-style: decimal; }
-.blog-prose li > * + * { margin-top: 0.4rem; }
-.blog-prose li::marker { color: var(--color-text-muted); }
-.blog-prose code {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.875em;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  padding: 0.1em 0.35em;
-}
-.blog-prose pre.blog-code-block,
-.blog-prose pre {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.875rem;
-  background: #0e0e12;
-  border: 1px solid var(--color-border);
-  border-radius: 0.6rem;
-  padding: 1rem 1.1rem;
-  overflow-x: auto;
-}
-.blog-prose pre code {
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: inherit;
-}
-.blog-prose a.blog-link {
-  color: var(--color-accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.blog-prose hr {
-  border: none;
-  border-top: 1px solid var(--color-border);
-  margin: 2rem 0;
-}
-/* Tiptap placeholder for the first empty block */
-.blog-prose p.is-editor-empty:first-child::before,
-.blog-prose .is-empty::before {
-  content: attr(data-placeholder);
-  color: rgba(255, 255, 255, 0.22);
-  float: left;
-  height: 0;
-  pointer-events: none;
-}
-
-/* Images rendered in the public reader (from serialized content HTML).
-   The editor NodeView (ResizableImage) renders rounding + alignment via React
-   wrappers that are NOT part of the serialized <img>, so the public page only
-   gets `<img style="width:Npx" data-align="...">`. These rules reproduce the
-   editor's look: rounded corners, proportional scaling, and alignment. */
-.blog-prose img {
-  display: block;
-  /* Fill the text column by default; an inline `style="width:Npx"` from a
-     resized image overrides this and still scales proportionally via the
-     max-width/height pair below. */
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.375rem;
-  /* Default (center) alignment. */
-  margin: 1.5rem auto;
-}
-.blog-prose img[data-align='left'] {
-  margin-left: 0;
-  margin-right: auto;
-}
-.blog-prose img[data-align='right'] {
-  margin-left: auto;
-  margin-right: 0;
-}
-.blog-prose img[data-align='center'] {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Embeds rendered in the public reader (from serialized content HTML) */
-.blog-prose .blog-embed {
-  margin: 1.5rem 0;
-}
-.blog-prose .blog-embed-frame {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-border);
-  background: #000;
-}
-.blog-prose .blog-embed-frame iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-.blog-prose .blog-embed-card {
-  display: flex;
-  overflow: hidden;
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.018);
-  text-decoration: none;
-  transition: border-color 0.15s;
-}
-.blog-prose .blog-embed-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-.blog-prose .blog-embed-card img {
-  width: 10rem;
-  flex-shrink: 0;
-  object-fit: cover;
-}
-.blog-prose .blog-embed-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 1rem;
-  min-width: 0;
-}
-.blog-prose .blog-embed-card-site {
-  font-size: 0.6875rem;
-  color: var(--color-text-muted);
-}
-.blog-prose .blog-embed-card-title {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #fff;
-}
-.blog-prose .blog-embed-card-desc {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
 }
 
 /* Custom themed checkboxes to prevent native OS and white background overrides */
@@ -787,5 +613,339 @@ input[type="checkbox"]:not(.appearance-none):focus {
   }
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   forke.space redesign (from forke-new): tokens, landing utilities, reader
+   prose, Forky loader and status-page styles. Later rules win over the above.
+   ══════════════════════════════════════════════════════════════════════════ */
 
 
+@theme {
+  --color-accent: #FF7A00;
+  --color-accent-hover: #E66E00;
+  --color-accent-text: #FFA347;
+  --color-bg: #151414;
+  --color-bg-raised: #1A1919;
+  --color-surface: #1C1B1A;
+  --color-surface-hover: #22201F;
+  --color-line: #f0e3de20;
+  --color-ink: #F4F4F5;
+  --color-muted: #8E8E93;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-cloud-a: cloud-drift 60s ease-in-out infinite alternate;
+  --animate-cloud-b: cloud-drift 80s ease-in-out infinite alternate-reverse;
+  --animate-marquee: marquee 60s linear infinite;
+  --animate-marquee-rev: marquee 60s linear infinite reverse;
+  --animate-shimmer: shimmer 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  --animate-orbit: orbit 40s linear infinite;
+  --animate-orbit-rev: orbit 40s linear infinite reverse;
+  --animate-spin-slow: spin 1.2s linear infinite;
+  --animate-breathe: breathe 24s ease-in-out infinite alternate;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 2s ease-out infinite;
+  --animate-drift: drift 11s ease-in-out infinite alternate;
+  --animate-feed-in: feed-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes breathe {
+    from { transform: scale(1.04) translate3d(-0.6%, 0, 0); }
+    to { transform: scale(1.12) translate3d(0.6%, -0.8%, 0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -12px, 0); }
+  }
+  @keyframes pulse-dot {
+    0% { box-shadow: 0 0 0 0 rgba(255, 122, 0, 0.55); }
+    100% { box-shadow: 0 0 0 10px rgba(255, 122, 0, 0); }
+  }
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0) rotate(-2deg); }
+    to { transform: translate3d(-10px, -16px, 0) rotate(2deg); }
+  }
+  @keyframes feed-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); filter: blur(4px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+  @keyframes cloud-drift {
+    from { transform: translate3d(-4%, 0, 0) scale(1); }
+    to { transform: translate3d(4%, -2%, 0) scale(1.06); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes shimmer {
+    0% { background-position: 120% 0; }
+    100% { background-position: -20% 0; }
+  }
+  @keyframes orbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: clip;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(255, 122, 0, 0.3);
+  color: #fff;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+@layer utilities {
+  /* White word with an orange highlight sweeping across it */
+  .text-shimmer {
+    background-image: linear-gradient(
+      100deg,
+      #fff 0%,
+      #fff 38%,
+      #FFB25C 46%,
+      #FF7A00 50%,
+      #FFB25C 54%,
+      #fff 62%,
+      #fff 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+
+  /* UI window inside a Painting: leans toward the cursor, opposite the painting */
+  .float-layer {
+    transform: translate3d(calc(var(--px, 0) * 8px), calc(var(--py, 0) * 6px), 0);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Cloudflare rail: 1px line, 16px dash / 16px gap */
+  .rail-dash {
+    width: 1px;
+    background-image: linear-gradient(#f0e3de20 50%, transparent 50%);
+    background-size: 1px 32px;
+    background-repeat: repeat-y;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #FF7A00 transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #FF7A00;
+    border: 2px solid transparent;
+    border-radius: 9999px;
+    background-clip: padding-box;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Blog reader prose. Post bodies are stored Tiptap HTML; these rules style
+   that markup in the forke-new look (Geist, warm greys, orange accents).
+   ────────────────────────────────────────────────────────────────────────── */
+@layer components {
+  .blog-prose {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    color: rgb(255 255 255 / 0.68);
+  }
+  .blog-prose > * + * { margin-top: 1.35rem; }
+  .blog-prose p:empty { min-height: 1em; }
+  .blog-prose strong { color: #fff; font-weight: 600; }
+  .blog-prose h1,
+  .blog-prose h2,
+  .blog-prose h3 {
+    color: var(--color-ink);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin-top: 2.75rem;
+    scroll-margin-top: 6rem;
+  }
+  .blog-prose h1 { font-size: 1.85rem; }
+  .blog-prose h2 { font-size: 1.5rem; }
+  .blog-prose h3 { font-size: 1.2rem; }
+  .blog-prose blockquote {
+    border-left: 2px solid var(--color-accent);
+    padding: 0.15rem 0 0.15rem 1.25rem;
+    color: rgb(255 255 255 / 0.8);
+    font-size: 1.15rem;
+  }
+  .blog-prose ul,
+  .blog-prose ol { padding-left: 1.4rem; }
+  .blog-prose ul { list-style: disc; }
+  .blog-prose ol { list-style: decimal; }
+  .blog-prose li + li { margin-top: 0.45rem; }
+  .blog-prose li::marker { color: var(--color-accent); }
+  .blog-prose code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--color-accent-text);
+    background: rgb(255 255 255 / 0.05);
+    border: 1px solid var(--color-line);
+    border-radius: 5px;
+    padding: 0.1em 0.35em;
+  }
+  .blog-prose pre {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    background: #0f0e0e;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    padding: 1rem 1.15rem;
+    overflow-x: auto;
+  }
+  .blog-prose pre code { background: none; border: 0; padding: 0; color: rgb(255 255 255 / 0.8); font-size: inherit; }
+  .blog-prose a { color: var(--color-accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgb(255 163 71 / 0.4); }
+  .blog-prose a:hover { text-decoration-color: currentColor; }
+  .blog-prose hr { border: 0; border-top: 1px dashed var(--color-line); margin: 2.75rem 0; }
+  .blog-prose img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 14px;
+    border: 1px solid rgb(255 255 255 / 0.06);
+    margin: 2rem auto;
+  }
+  /* Images and embeds always span the text column. The editor saves a fixed
+     inline width (e.g. style="width: 768px") when something is resized; ignore it
+     so media lines up with the paragraphs at every screen size. */
+  .blog-prose img:not(.blog-embed-card img),
+  .blog-prose .blog-embed {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .blog-prose .blog-embed { margin-top: 2rem; margin-bottom: 2rem; }
+  .blog-prose .blog-embed-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid var(--color-line);
+    background: #000;
+  }
+  .blog-prose .blog-embed-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .blog-prose .blog-embed-card {
+    display: flex;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.02);
+    text-decoration: none;
+    transition: border-color 0.15s;
+  }
+  .blog-prose .blog-embed-card:hover { border-color: rgb(255 255 255 / 0.2); }
+  .blog-prose .blog-embed-card img { width: 10rem; flex-shrink: 0; object-fit: cover; margin: 0; border: 0; border-radius: 0; }
+  .blog-prose .blog-embed-card-body { display: flex; flex-direction: column; gap: 0.25rem; padding: 1rem; min-width: 0; }
+  .blog-prose .blog-embed-card-site { font-size: 0.6875rem; color: var(--color-muted); }
+  .blog-prose .blog-embed-card-title { font-size: 0.9rem; font-weight: 500; color: #fff; }
+  .blog-prose .blog-embed-card-desc { font-size: 0.8rem; color: var(--color-muted); }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Forky loader (see components/loader).
+   .boot-loader covers every full page load from the first paint (admin-style).
+   .route-loader only fades in when an in-site navigation is actually slow.
+   ────────────────────────────────────────────────────────────────────────── */
+@keyframes loader-in {
+  from { opacity: 0; visibility: hidden; }
+  to { opacity: 1; visibility: visible; }
+}
+@keyframes loader-out {
+  from { opacity: 1; visibility: visible; }
+  to { opacity: 0; visibility: hidden; }
+}
+.boot-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  /* if JavaScript never arrives, give up after 12s so the page is reachable */
+  animation: loader-out 400ms ease-in 12s forwards;
+}
+.route-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  animation: loader-in 220ms ease-out 250ms both;
+}
+
+/* Status pages: the big drafted code traces itself in like a pen on a drawing. */
+@keyframes draft-in {
+  from { stroke-dashoffset: 4200; fill: rgba(255, 122, 0, 0); }
+  80% { stroke-dashoffset: 0; fill: rgba(255, 122, 0, 0); }
+  to { stroke-dashoffset: 0; fill: rgba(255, 122, 0, 0.06); }
+}
+.drafted-code {
+  stroke-dasharray: 4200;
+  stroke-dashoffset: 4200;
+}
+.drafted-code.drawing {
+  animation: draft-in 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .drafted-code, .drafted-code.drawing { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; fill: rgba(255, 122, 0, 0.06); }
+}

@@ -10,10 +10,14 @@
 
 import type { Metadata, Viewport } from 'next'
 import { geistSans, instrumentSerif, jetbrainsMono } from '@/app/fonts'
+import { GeistMono } from 'geist/font/mono'
+import { WindowScrollbar } from '@/components/WindowScrollbar'
+import BootLoader from '@/components/loader/BootLoader'
+import RouteLoader from '@/components/loader/RouteLoader'
 import './globals.css'
 
 export const viewport: Viewport = {
-  themeColor: '#FF7A00',
+  themeColor: '#151414',
   width: 'device-width',
   initialScale: 1,
 }
@@ -129,7 +133,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+      className={`${geistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -139,7 +143,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
       </head>
-      <body className="antialiased bg-[#0A0A0A]">
+      <body className="bg-bg antialiased">
+        {/* Forky loader: covers every full load (min 1.2s); RouteLoader covers slow in-site navigations */}
+        <BootLoader />
+        <RouteLoader />
+        <noscript>
+          <style>{'.boot-loader,.route-loader{display:none!important}'}</style>
+        </noscript>
         <ScrollToTopOnLoad />
         <CookieConsentProvider>
           <ClientAttributionTracker />
@@ -149,6 +159,7 @@ export default function RootLayout({
           <CookieConsentBanner />
           <GoogleAnalyticsWrapper gaId={GA_ID} />
         </CookieConsentProvider>
+        <WindowScrollbar />
       </body>
     </html>
   )
