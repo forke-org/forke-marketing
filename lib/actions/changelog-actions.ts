@@ -18,6 +18,22 @@ export interface ChangelogItem {
   updatedAt: string
 }
 
+/**
+ * Older changelog rows stored improvements/fixes as a JSON *string* inside the jsonb
+ * column ('["a","b"]') instead of a real array. Accept both so no entry loses its lists.
+ */
+function toList(value: unknown): string[] {
+  let v = value
+  if (typeof value === 'string') {
+    try {
+      v = JSON.parse(value)
+    } catch {
+      return value.trim() ? [value.trim()] : []
+    }
+  }
+  return Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && x.trim() !== '').map((x) => x.trim()) : []
+}
+
 export async function getPublishedChangelogs(): Promise<ChangelogItem[]> {
   try {
     const rows = await db
@@ -28,8 +44,8 @@ export async function getPublishedChangelogs(): Promise<ChangelogItem[]> {
 
     return rows.map((r) => ({
       ...r,
-      improvements: (Array.isArray(r.improvements) ? r.improvements : []) as string[],
-      fixes: (Array.isArray(r.fixes) ? r.fixes : []) as string[],
+      improvements: toList(r.improvements),
+      fixes: toList(r.fixes),
       mediaType: (r.mediaType as 'none' | 'image' | 'video') || 'none',
       publishedAt: r.publishedAt.toISOString(),
       createdAt: r.createdAt.toISOString(),
@@ -51,8 +67,8 @@ export async function getChangelogBySlug(slug: string): Promise<ChangelogItem | 
 
     return {
       ...row,
-      improvements: (Array.isArray(row.improvements) ? row.improvements : []) as string[],
-      fixes: (Array.isArray(row.fixes) ? row.fixes : []) as string[],
+      improvements: toList(row.improvements),
+      fixes: toList(row.fixes),
       mediaType: (row.mediaType as 'none' | 'image' | 'video') || 'none',
       publishedAt: row.publishedAt.toISOString(),
       createdAt: row.createdAt.toISOString(),
