@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, LoaderCircle } from 'lucide-react'
+import { ArrowLeft, Check, LoaderCircle } from 'lucide-react'
 import GradientASCII from '@/components/landing/GradientASCII'
 import WaitlistForm from '@/components/landing/WaitlistForm'
 import { BlurWords, Logo } from '@/components/landing/primitives'
@@ -67,6 +67,13 @@ export default function WaitlistPage({ monoFont }: { monoFont: string }) {
               <LoaderCircle className="h-4 w-4 animate-spin text-accent" />
               Verifying your early access email…
             </div>
+          ) : joined ? (
+            <div className="mx-auto flex h-[56px] max-w-[460px] items-center justify-center gap-3 rounded-full border border-accent/30 bg-accent/[0.1] px-5 text-[15px] text-ink backdrop-blur-md">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-black">
+                <Check className="h-4 w-4" strokeWidth={3} />
+              </span>
+              You&rsquo;ve joined the waitlist
+            </div>
           ) : (
             <WaitlistForm source={source} initialEmail={emailParam} onSuccess={onJoined} align="center" note="No spam. Just your invite and the occasional update." />
           )}
@@ -74,7 +81,7 @@ export default function WaitlistPage({ monoFont }: { monoFont: string }) {
 
         <p className="animate-fade-up mt-3 text-[13.5px] text-white/55" style={{ animationDelay: '560ms' }}>
           {joined ? (
-            <span className="text-accent-text">You&rsquo;re in. Welcome to the batch.</span>
+            <span className="text-accent-text">We&rsquo;ll email your invite the moment your batch opens.</span>
           ) : count && count > 0 ? (
             <>
               <span className="font-medium text-white">{count.toLocaleString('en-IN')}</span> developers already waiting

@@ -429,22 +429,7 @@ export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
   }
 
   const siteAccess = req.cookies.get('site_access')?.value
-  const waitlistJoined = req.cookies.get('waitlist_joined')?.value
   const waitlistEnabled = await fetchWaitlistStatus(req.nextUrl.origin)
-
-  // Redirect /waitlist back to / if visitor already joined or has site access
-  if (pathname === '/waitlist' && waitlistEnabled && (siteAccess || waitlistJoined)) {
-    const redirectUrl = new URL('/', req.nextUrl.origin)
-    redirectUrl.search = req.nextUrl.search
-    const res = NextResponse.redirect(redirectUrl)
-    res.cookies.set('waitlist_active', waitlistEnabled ? 'true' : 'false', { path: '/', ...domainOption })
-    setDeviceCookie(res, deviceId)
-    setSessionCookie(res, sessionId)
-    if (attribution.source !== 'direct' || attribution.medium || attribution.campaign) {
-      setAttributionCookie(res, attribution)
-    }
-    return res
-  }
 
   const res = NextResponse.next()
   res.cookies.set('waitlist_active', waitlistEnabled ? 'true' : 'false', { path: '/', ...domainOption })

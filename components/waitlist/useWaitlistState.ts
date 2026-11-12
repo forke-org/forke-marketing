@@ -20,6 +20,11 @@ export function useWaitlistState() {
   const [verifying, setVerifying] = useState(Boolean(emailParam))
   const [joined, setJoined] = useState(false)
 
+  // returning visitors who already joined see the joined state instead of the form
+  useEffect(() => {
+    if (/(?:^|;\s*)waitlist_joined=true/.test(document.cookie)) setJoined(true)
+  }, [])
+
   useEffect(() => {
     fetch('/api/waitlist/count')
       .then((r) => r.json())
@@ -34,8 +39,7 @@ export function useWaitlistState() {
       .then((d) => {
         if (d?.joined) {
           setJoinedCookie()
-          window.location.href = '/'
-          return
+          setJoined(true)
         }
         setVerifying(false)
       })
