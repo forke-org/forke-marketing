@@ -25,8 +25,8 @@ import ProfileView from '@/components/profile/b/ProfileView'
 import { parsePr, type Achievement, type DevProfile, type ShippedWork } from '@/components/profile/b/types'
 import { DEFAULT_CARD_STYLE, resolveCardLine, type CardStyle } from '@/components/idcard/style'
 import { resolveAvatar } from '@/lib/avatar/resolve'
-import Navbar from '@/components/shared/Navbar'
-import Footer from '@/components/shared/Footer'
+import PageShell from '@/components/shared/PageShell'
+import { Section } from '@/components/landing/primitives'
 
 const RESERVED_KEYWORDS = [
   'admin', 'api', 'checkout', 'privacy', 'register', 'signin', 'terms', 'waitlist',
@@ -350,25 +350,23 @@ export default async function PublicProfilePage({
       : { primaryHref: `${dashboard}/post-task?invite=${encodeURIComponent(data.username)}`, primaryLabel: 'Invite to a task', own: false }
 
     return (
-      <div className="flex min-h-screen flex-col bg-[#060608] font-sans text-white antialiased">
-        <Navbar />
-        <main className="mx-auto w-full max-w-[1200px] flex-grow px-4 pb-16 pt-28 sm:px-6 lg:px-8">
-          <ProfileView p={profile} card={card} cardStyle={cardStyle} actions={actions} />
-        </main>
-        <Footer />
-      </div>
+      <PageShell>
+        <Section divider={false}>
+          <div className="px-5 pb-16 pt-10 sm:px-10 sm:pt-14">
+            <ProfileView p={profile} card={card} cardStyle={cardStyle} actions={actions} />
+          </div>
+        </Section>
+      </PageShell>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#060608] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-neutral-900 via-[#060608] to-[#060608] text-white font-sans flex flex-col antialiased">
-      <Navbar />
-
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 min-[1920px]:max-w-[1920px]">
-        <PublicProfileView data={data} isOwnProfile={isOwnProfile} contained={false} />
-      </main>
-
-      <Footer />
-    </div>
+    <PageShell>
+      <Section divider={false}>
+        <div className="px-5 pb-16 pt-10 sm:px-10 sm:pt-14">
+          <PublicProfileView data={data} isOwnProfile={isOwnProfile} contained={false} />
+        </div>
+      </Section>
+    </PageShell>
   )
 }

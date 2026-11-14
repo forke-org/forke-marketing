@@ -1877,7 +1877,7 @@ function PipelineVisual() {
   return (
     <div className="grid gap-px overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.07] sm:grid-cols-2">
       {layers.map((l) => (
-        <div key={l.n} className="bg-[#0a0a0c] p-4">
+        <div key={l.n} className="bg-[#191817] p-4">
           <div className="flex items-center gap-2">
             <span className="rounded-md bg-accent/[0.12] px-1.5 py-0.5 font-mono text-[10px] font-bold text-accent">
               {l.n}
@@ -1893,7 +1893,7 @@ function PipelineVisual() {
 
 function VerdictVisual() {
   return (
-    <div className="mx-auto max-w-sm rounded-xl border border-white/[0.08] bg-[#0a0a0c] p-5 text-left shadow-2xl">
+    <div className="mx-auto max-w-sm rounded-xl border border-white/[0.08] bg-[#191817] p-5 text-left shadow-2xl">
       <div className="flex items-center justify-between">
         <span className="font-mono text-[11px] uppercase tracking-widest text-white/35">Verdict</span>
         <span className="rounded-full border border-emerald-500/30 bg-emerald-500/[0.1] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-400">

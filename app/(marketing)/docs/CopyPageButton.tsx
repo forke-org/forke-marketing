@@ -98,7 +98,7 @@ export default function CopyPageButton({
       {open && (
         <div
           role="menu"
-          className="absolute right-0 z-50 mt-2 w-72 overflow-hidden rounded-xl border border-white/[0.1] bg-[#0c0c0f] p-1.5 shadow-2xl shadow-black/40"
+          className="absolute right-0 z-50 mt-2 w-72 overflow-hidden rounded-xl border border-white/[0.1] bg-[#191817] p-1.5 shadow-2xl shadow-black/40"
         >
           <button
             onClick={copy}

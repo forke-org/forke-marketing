@@ -100,7 +100,7 @@ const ACH_ICON = {
   loot: Trophy, untouchable: Award, sprint: Zap, night: Sparkles,
 } as const
 
-const tile = 'rounded-2xl border border-white/[0.06] bg-[#0c0c0f]/60 backdrop-blur-xl'
+const tile = 'rounded-2xl border border-white/[0.06] bg-[#191817]/60 backdrop-blur-xl'
 
 export default function PublicProfileView({
   data,
@@ -135,7 +135,7 @@ export default function PublicProfileView({
   const joined = new Date(data.joinedAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })
 
   const cardCol = (
-    <div className="relative h-[470px] lg:h-full rounded-2xl overflow-hidden border border-white/[0.08] shadow-[0_24px_50px_rgba(0,0,0,0.5)] bg-[#08070a]">
+    <div className="relative h-[470px] lg:h-full rounded-2xl overflow-hidden border border-white/[0.08] shadow-[0_24px_50px_rgba(0,0,0,0.5)] bg-[#121111]">
       {/* Subtle client-side randomized dot pattern background overlay */}
       <div 
         className="absolute inset-0 pointer-events-none mix-blend-screen bg-repeat bg-center transition-opacity duration-700"
@@ -594,20 +594,20 @@ function Heatmap({ data, username, joinedAt }: { data: { date: string; count: nu
                                 isTopRow ? (
                                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2.5 hidden group-hover:flex flex-col items-center pointer-events-none z-[120]">
                                     {/* Up arrow */}
-                                    <div className="w-1.5 h-1.5 bg-[#0b0a0d] border-l border-t border-white/10 transform rotate-45 -mb-[4px] z-[121]" />
-                                    <div className="bg-[#0b0a0d] border border-white/10 text-white text-[10px] font-medium py-1.5 px-2.5 rounded-lg whitespace-nowrap shadow-[0_4px_20px_rgba(0,0,0,0.8)] flex flex-col items-center gap-0.5">
+                                    <div className="w-1.5 h-1.5 bg-[#191817] border-l border-t border-white/10 transform rotate-45 -mb-[4px] z-[121]" />
+                                    <div className="bg-[#191817] border border-white/10 text-white text-[10px] font-medium py-1.5 px-2.5 rounded-lg whitespace-nowrap shadow-[0_4px_20px_rgba(0,0,0,0.8)] flex flex-col items-center gap-0.5">
                                       <span className="font-medium text-white/90">{getTooltipTextOnly(d.count)}</span>
                                       <span className="text-[9px] text-white/40 font-mono">{d.date}</span>
                                     </div>
                                   </div>
                                 ) : (
                                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2.5 hidden group-hover:flex flex-col items-center pointer-events-none z-[120]">
-                                    <div className="bg-[#0b0a0d] border border-white/10 text-white text-[10px] font-medium py-1.5 px-2.5 rounded-lg whitespace-nowrap shadow-[0_4px_20px_rgba(0,0,0,0.8)] flex flex-col items-center gap-0.5">
+                                    <div className="bg-[#191817] border border-white/10 text-white text-[10px] font-medium py-1.5 px-2.5 rounded-lg whitespace-nowrap shadow-[0_4px_20px_rgba(0,0,0,0.8)] flex flex-col items-center gap-0.5">
                                       <span className="font-medium text-white/90">{getTooltipTextOnly(d.count)}</span>
                                       <span className="text-[9px] text-white/40 font-mono">{d.date}</span>
                                     </div>
                                     {/* Down arrow */}
-                                    <div className="w-1.5 h-1.5 bg-[#0b0a0d] border-r border-b border-white/10 transform rotate-45 -mt-[4px]" />
+                                    <div className="w-1.5 h-1.5 bg-[#191817] border-r border-b border-white/10 transform rotate-45 -mt-[4px]" />
                                   </div>
                                 )
                               )}
@@ -758,7 +758,7 @@ function ShareModal({ shareUrl, onClose }: ShareModalProps) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-fade-in" onClick={onClose}>
       <div 
-        className="w-full max-w-md rounded-2xl bg-[#0c0c0f]/95 border border-[#ff8a00]/15 p-6 shadow-[0_32px_64px_rgba(0,0,0,0.9),_0_0_50px_rgba(255,138,0,0.05)] relative text-left flex flex-col gap-6 animate-scale-in"
+        className="w-full max-w-md rounded-2xl bg-[#191817]/95 border border-[#ff8a00]/15 p-6 shadow-[0_32px_64px_rgba(0,0,0,0.9),_0_0_50px_rgba(255,138,0,0.05)] relative text-left flex flex-col gap-6 animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">

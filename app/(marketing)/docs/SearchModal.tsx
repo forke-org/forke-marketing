@@ -121,7 +121,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       />
 
       {/* Dialog container */}
-      <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-white/[0.12] bg-[#09090b] shadow-2xl shadow-black/80 animate-in zoom-in-95 duration-150">
+      <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-white/[0.12] bg-[#191817] shadow-2xl shadow-black/80 animate-in zoom-in-95 duration-150">
         {/* Input Bar */}
         <div className="relative flex items-center border-b border-white/[0.08] px-4 py-3.5">
           <Search className="h-5 w-5 shrink-0 text-white/40" strokeWidth={1.8} />
@@ -277,7 +277,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         </div>
 
         {/* Footer shortcuts info */}
-        <div className="flex items-center justify-between border-t border-white/[0.08] bg-[#070709] px-4 py-2.5 text-[12px] text-white/40 font-mono">
+        <div className="flex items-center justify-between border-t border-white/[0.08] bg-[#121111] px-4 py-2.5 text-[12px] text-white/40 font-mono">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
               <kbd className="rounded border border-white/[0.1] bg-white/[0.04] px-1.5 py-0.5 text-[10px]">

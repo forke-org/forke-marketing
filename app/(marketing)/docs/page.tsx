@@ -16,7 +16,7 @@ function ArticleCard({ article }: { article: Article }) {
   return (
     <Link
       href={`/docs/${article.slug}`}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-white/[0.08] bg-[#070709] p-4 text-left transition-all duration-200 hover:border-accent/30 hover:bg-[#0a0a0e]"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-white/[0.08] bg-[#121111] p-4 text-left transition-all duration-200 hover:border-accent/30 hover:bg-[#191817]"
     >
       {/* Solid background watermark logo/icon */}
       <div
@@ -91,7 +91,7 @@ export default async function DocsHome() {
           {SECTIONS.map((section) => {
             return (
               <section key={section.id} id={section.id} className="scroll-mt-20">
-                <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#09090b]/90 p-5 md:p-6 shadow-xl backdrop-blur-sm">
+                <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#191817]/90 p-5 md:p-6 shadow-xl backdrop-blur-sm">
                   {/* Soft top-left section glow */}
                   <div
                     aria-hidden
@@ -126,7 +126,7 @@ export default async function DocsHome() {
         </div>
 
         {/* Help footer */}
-        <section className="mt-14 rounded-2xl border border-white/[0.08] bg-[#09090b] p-8 text-center shadow-xl">
+        <section className="mt-14 rounded-2xl border border-white/[0.08] bg-[#191817] p-8 text-center shadow-xl">
           <h2 className="text-xl font-medium tracking-tight text-white">Still stuck?</h2>
           <p className="mx-auto mt-2 max-w-md text-[14px] leading-relaxed text-white/50">
             If the documentation doesn&apos;t answer your question, our team is always ready to assist.

@@ -258,9 +258,9 @@ export default function DocsShell({
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-accent selection:text-white">
+    <div className="min-h-screen bg-[#151414] text-white font-sans selection:bg-accent selection:text-white">
       {/* Desktop Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-white/[0.06] bg-[#070708] lg:block">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-white/[0.06] bg-[#121111] lg:block">
         <Sidebar onOpenSearch={() => setSearchOpen(true)} />
       </aside>
 
@@ -280,7 +280,7 @@ export default function DocsShell({
         />
         <div
           className={cn(
-            'absolute inset-y-0 left-0 w-72 border-r border-white/[0.08] bg-[#070708] transition-transform duration-300 ease-out',
+            'absolute inset-y-0 left-0 w-72 border-r border-white/[0.08] bg-[#121111] transition-transform duration-300 ease-out',
             mobileOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
@@ -303,7 +303,7 @@ export default function DocsShell({
 
       <div className="lg:pl-72">
         {/* Top Header */}
-        <header className="fixed inset-x-0 top-0 z-20 border-b border-white/[0.06] bg-[#050505]/85 backdrop-blur-xl lg:left-72">
+        <header className="fixed inset-x-0 top-0 z-20 border-b border-white/[0.06] bg-[#151414]/85 backdrop-blur-xl lg:left-72">
           <div className="flex h-14 items-center justify-between gap-3 px-4 md:px-8">
             {/* Left: Mobile trigger & Breadcrumb */}
             <div className="flex items-center gap-3 min-w-0">

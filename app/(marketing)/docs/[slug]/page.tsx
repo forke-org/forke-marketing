@@ -120,7 +120,7 @@ export default async function DocArticlePage({
             {prev ? (
               <Link
                 href={`/docs/${prev.slug}`}
-                className="group flex flex-col rounded-xl border border-white/[0.08] bg-[#070709] p-4 transition-all duration-150 hover:border-accent/40 hover:bg-white/[0.02]"
+                className="group flex flex-col rounded-xl border border-white/[0.08] bg-[#121111] p-4 transition-all duration-150 hover:border-accent/40 hover:bg-white/[0.02]"
               >
                 <div className="flex items-center justify-between">
                   <span className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-widest text-white/35 group-hover:text-accent">
@@ -140,7 +140,7 @@ export default async function DocArticlePage({
             {next ? (
               <Link
                 href={`/docs/${next.slug}`}
-                className="group flex flex-col items-end rounded-xl border border-white/[0.08] bg-[#070709] p-4 text-right transition-all duration-150 hover:border-accent/40 hover:bg-white/[0.02]"
+                className="group flex flex-col items-end rounded-xl border border-white/[0.08] bg-[#121111] p-4 text-right transition-all duration-150 hover:border-accent/40 hover:bg-white/[0.02]"
               >
                 <div className="flex w-full items-center justify-between">
                   <kbd className="rounded border border-white/10 bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px] text-white/35">

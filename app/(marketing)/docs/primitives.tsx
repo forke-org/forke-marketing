@@ -133,7 +133,7 @@ export function Step({
 export function CodeBlock({ code, language = 'bash' }: { code: string; language?: string }) {
   const [copied, setCopied] = useState(false)
   return (
-    <div className="group relative my-4 overflow-hidden rounded-xl border border-white/[0.08] bg-[#070709]">
+    <div className="group relative my-4 overflow-hidden rounded-xl border border-white/[0.08] bg-[#121111]">
       <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-4 py-2 font-mono text-[11px] text-white/40">
         <span>{language}</span>
         <button
@@ -211,7 +211,7 @@ export function Visual({
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(120% 90% at 50% 0%, rgba(255,122,0,0.10), transparent 55%), linear-gradient(180deg, #0c0c0f 0%, #050506 100%)',
+              'radial-gradient(120% 90% at 50% 0%, rgba(255,122,0,0.10), transparent 55%), linear-gradient(180deg, #1c1b1a 0%, #151414 100%)',
           }}
         />
         <div
