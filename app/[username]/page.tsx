@@ -23,7 +23,7 @@ import { ensureProfileColumns } from '@/lib/actions/profile-actions'
 import PublicProfileView, { ProfileData, ShippedItem, AchievementItem } from '@/components/profile/PublicProfileView'
 import ProfileView from '@/components/profile/b/ProfileView'
 import { parsePr, type Achievement, type DevProfile, type ShippedWork } from '@/components/profile/b/types'
-import { DEFAULT_CARD_STYLE, type CardStyle } from '@/components/idcard/style'
+import { DEFAULT_CARD_STYLE, resolveCardLine, type CardStyle } from '@/components/idcard/style'
 import { resolveAvatar } from '@/lib/avatar/resolve'
 import Navbar from '@/components/shared/Navbar'
 import Footer from '@/components/shared/Footer'
@@ -330,7 +330,7 @@ export default async function PublicProfilePage({
     const cardStyle: CardStyle = {
       color: (['black', 'white', 'orange'].includes(saved?.color ?? '') ? saved?.color : DEFAULT_CARD_STYLE.color) as CardStyle['color'],
       filter: (['orange', 'bw', 'normal'].includes(saved?.filter ?? '') ? saved?.filter : DEFAULT_CARD_STYLE.filter) as CardStyle['filter'],
-      line: saved?.line ?? DEFAULT_CARD_STYLE.line,
+      line: resolveCardLine(saved?.line, data.username),
     }
     const card = {
       first: dbUser.name.split(/\s+/)[0],
