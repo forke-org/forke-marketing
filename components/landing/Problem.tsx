@@ -66,7 +66,7 @@ export default function Problem() {
       <div className="grid gap-4 px-4 pb-20 pt-14 sm:px-6 sm:pb-28 md:grid-cols-3">
         <Card
           delay={0}
-          painting="/paintings/ember-field.jpg"
+          painting="/paintings/ember-field.webp"
           title="Every gig is a proposal."
           body="A two-hour fix means a cover letter, a bid war and a week of silence."
         >
@@ -88,7 +88,7 @@ export default function Problem() {
 
         <Card
           delay={100}
-          painting="/paintings/dusk-sky.jpg"
+          painting="/paintings/dusk-sky.webp"
           title="“Did anyone even review this?”"
           body="Your pull request sits in a queue while the issue goes stale."
         >
@@ -114,7 +114,7 @@ export default function Problem() {
 
         <Card
           delay={200}
-          painting="/paintings/golden-path.jpg"
+          painting="/paintings/golden-path.webp"
           title="Payouts take weeks."
           body="Net-30, then a reminder, then a currency fee nobody mentioned."
         >

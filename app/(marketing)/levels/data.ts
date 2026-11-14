@@ -8,7 +8,7 @@ export const TIERS = [
     label: 'Early game',
     range: 'LVL 1–5',
     icon: Flame,
-    painting: '/paintings/meadow.jpg',
+    painting: '/paintings/meadow.webp',
     levels: [
       { lvl: 1, title: 'Newcomer', xp: '0 XP', unlock: 'Basic bounties' },
       { lvl: 2, title: 'Script Kiddie', xp: '200 XP', unlock: 'Base developer access' },
@@ -22,7 +22,7 @@ export const TIERS = [
     label: 'Mid game',
     range: 'LVL 6–10',
     icon: Zap,
-    painting: '/paintings/dusk-hill.jpg',
+    painting: '/paintings/dusk-hill.webp',
     levels: [
       { lvl: 6, title: 'Code Runner', xp: '2,800 XP', unlock: 'Advanced search & filters' },
       { lvl: 7, title: 'Patch Hunter', xp: '4,000 XP', unlock: 'Intermediate payout tiers' },
@@ -36,7 +36,7 @@ export const TIERS = [
     label: 'Skilled tier',
     range: 'LVL 11–15',
     icon: Award,
-    painting: '/paintings/lantern-orchard.jpg',
+    painting: '/paintings/lantern-orchard.webp',
     levels: [
       { lvl: 11, title: 'Merge Specialist', xp: '11,500 XP', unlock: 'Auto-claim standby queue' },
       { lvl: 12, title: 'System Crafter', xp: '14,200 XP', unlock: 'Priority task reservation queue' },
@@ -50,7 +50,7 @@ export const TIERS = [
     label: 'Elite tier',
     range: 'LVL 16–20',
     icon: Sparkles,
-    painting: '/paintings/ember-shore.jpg',
+    painting: '/paintings/ember-shore.webp',
     levels: [
       { lvl: 16, title: 'Runtime Knight', xp: '31,500 XP', unlock: 'Evolved profile card frames' },
       { lvl: 17, title: 'Deployment Ninja', xp: '38,000 XP', unlock: 'Custom XP sound FX' },
@@ -64,7 +64,7 @@ export const TIERS = [
     label: 'Legend tier',
     range: 'LVL 21–25',
     icon: Trophy,
-    painting: '/paintings/night-haze.jpg',
+    painting: '/paintings/night-haze.webp',
     levels: [
       { lvl: 21, title: 'Silicon Phantom', xp: '74,000 XP', unlock: 'Exclusive dev merchandise store' },
       { lvl: 22, title: 'Commit Warlord', xp: '86,000 XP', unlock: 'Sneak-peek beta access' },

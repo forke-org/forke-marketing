@@ -58,7 +58,7 @@ export default function ContactPage() {
         <div className="grid gap-4 px-3 py-3 sm:px-4 sm:py-4 md:grid-cols-3">
           <Reveal className="h-full">
             <a href="mailto:support@forke.space" className={card}>
-              <Painting src="/paintings/ember-field.jpg" className="h-[150px] rounded-[14px]">
+              <Painting src="/paintings/ember-field.webp" className="h-[150px] rounded-[14px]">
                 <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-[12px] border border-white/20 bg-black/35 text-white backdrop-blur-md">
                   <Mail className="h-5 w-5" strokeWidth={1.5} />
                 </span>
@@ -76,7 +76,7 @@ export default function ContactPage() {
 
           <Reveal delay={100} className="h-full">
             <a href="https://github.com/forke-org" target="_blank" rel="noopener noreferrer" className={card}>
-              <Painting src="/paintings/dusk-hill.jpg" className="h-[150px] rounded-[14px]">
+              <Painting src="/paintings/dusk-hill.webp" className="h-[150px] rounded-[14px]">
                 <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-[12px] border border-white/20 bg-black/35 text-white backdrop-blur-md">
                   <RiGithubFill className="h-5 w-5" />
                 </span>
@@ -94,7 +94,7 @@ export default function ContactPage() {
 
           <Reveal delay={200} className="h-full">
             <div className={card}>
-              <Painting src="/paintings/cloud-sea.jpg" className="h-[150px] rounded-[14px]">
+              <Painting src="/paintings/cloud-sea.webp" className="h-[150px] rounded-[14px]">
                 <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-[12px] border border-white/20 bg-black/35 text-white backdrop-blur-md">
                   <RiTwitterXFill className="h-5 w-5" />
                 </span>

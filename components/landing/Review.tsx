@@ -13,7 +13,7 @@ function Card({ src, children }: { src: string; children: ReactNode }) {
 
 function IsolationVisual() {
   return (
-    <Card src="/paintings/ember-shore.jpg">
+    <Card src="/paintings/ember-shore.webp">
       <div className="float-layer absolute left-[-8%] top-[22%] flex w-[96%] items-center justify-between rounded-2xl border border-white/10 bg-[#141417]/90 py-3 pl-[14%] pr-3 shadow-[0_10px_40px_rgba(0,0,0,0.5)] backdrop-blur">
         <span className="font-mono text-[30px] leading-none tracking-[0.25em] text-white/30">******</span>
         <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white/80">
@@ -39,7 +39,7 @@ function IsolationVisual() {
 
 function ApprovalVisual() {
   return (
-    <Card src="/paintings/cloud-sea.jpg">
+    <Card src="/paintings/cloud-sea.webp">
       <div className="float-layer absolute left-[10%] -right-[6%] top-[10%] rounded-xl border border-white/10 bg-[#121215] p-3 pr-[calc(6%+12px)] text-[11px]">
         <p className="flex items-center gap-1.5 text-white/40">
           <RiGithubFill className="h-3.5 w-3.5" /> Pull request · acme/api
@@ -78,7 +78,7 @@ function AuditVisual() {
     ['security', '26-10-11 09:01', true],
   ]
   return (
-    <Card src="/paintings/ember-field.jpg">
+    <Card src="/paintings/ember-field.webp">
       <div className="float-layer absolute -bottom-6 left-[8%] -right-[12%] top-[9%] overflow-hidden rounded-xl border border-white/10 bg-[#101012]/95 pr-[12%] font-mono text-[11.5px]">
         <div className="grid grid-cols-[1fr_1fr_20px] gap-2 bg-white/[0.04] px-3 py-2 text-[10px] text-white/40">
           <span className="pl-7">Check</span>

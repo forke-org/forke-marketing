@@ -59,13 +59,13 @@ const PURPOSE = [
     icon: Target,
     title: 'Our mission',
     copy: 'To make real-world experience accessible to every developer through meaningful work and fair opportunities.',
-    painting: '/paintings/golden-path.jpg',
+    painting: '/paintings/golden-path.webp',
   },
   {
     icon: Eye,
     title: 'Our vision',
     copy: 'A world where developers grow by building, not just by learning, and where contribution is recognized and rewarded.',
-    painting: '/paintings/cloud-sea.jpg',
+    painting: '/paintings/cloud-sea.webp',
   },
 ]
 
@@ -144,7 +144,7 @@ export default function WhatsForkePage() {
             <p className="mt-6 font-mono text-[12px] text-white/30">{'//'} prove skill by shipping</p>
           </div>
 
-          <Painting src="/paintings/dusk-sky.jpg" className="min-h-[380px] rounded-[20px] border border-white/[0.06] pl-[8%] pt-12 sm:pt-16">
+          <Painting src="/paintings/dusk-sky.webp" className="min-h-[380px] rounded-[20px] border border-white/[0.06] pl-[8%] pt-12 sm:pt-16">
             <div className="float-layer -mb-8 -mr-8 h-full overflow-hidden rounded-xl border border-white/15 bg-[#0c0c0e]/92 shadow-[0_24px_60px_rgba(0,0,0,0.6)] backdrop-blur-md">
               <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-2.5">
                 <span className="flex gap-1">

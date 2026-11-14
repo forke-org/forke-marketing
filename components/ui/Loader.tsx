@@ -33,7 +33,7 @@ export function Loader({ text = 'LOADING...', fullScreen = false }: LoaderProps)
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-2 bg-black/50 blur-sm rounded-full animate-[pulse_3s_ease-in-out_infinite]" />
           
           <Image
-            src="/forke-assets/forky-reactions/loading_forky.png"
+            src="/forke-assets/forky-reactions/loading_forky.webp"
             alt="Loading Forky"
             fill
             className="object-contain drop-shadow-[0_0_15px_rgba(255,122,0,0.3)]"

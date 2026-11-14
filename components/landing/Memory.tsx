@@ -158,7 +158,7 @@ export default function Memory() {
       </div>
 
       <div className="px-4 pb-16 pt-12 sm:px-6 sm:pb-24">
-        <Painting src="/paintings/golden-path.jpg" position="center 70%" className="rounded-[22px] border border-white/[0.06] pl-4 pt-10 sm:pl-8 sm:pt-14 lg:pl-[5%]">
+        <Painting src="/paintings/golden-path.webp" position="center 70%" className="rounded-[22px] border border-white/[0.06] pl-4 pt-10 sm:pl-8 sm:pt-14 lg:pl-[5%]">
           {/* the window bleeds off the right and bottom edges, like a cropped screenshot; on phones
               and tablets it keeps its desktop layout at a fixed width and runs off the right edge */}
           <div

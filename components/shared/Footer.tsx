@@ -102,7 +102,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <a href="/" className="inline-flex items-center transition-opacity hover:opacity-80">
               <img
-                src="/forke-assets/forke_logo.png"
+                src="/forke-assets/forke_logo.webp"
                 alt="Forke Logo"
                 className="h-14 w-14 object-contain"
               />

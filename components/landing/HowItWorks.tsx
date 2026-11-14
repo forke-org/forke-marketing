@@ -181,7 +181,7 @@ const STEPS: { icon: ReactNode; title: string; body: string; painting: string; u
     icon: <ForkeMark className="h-full w-full rounded-[9px]" />,
     title: 'Claim it.',
     body: 'Pick a scoped task that matches your level. The bounty is already escrowed, and you get a 20-minute window to start.',
-    painting: '/paintings/meadow.jpg',
+    painting: '/paintings/meadow.webp',
     ui: <ClaimUI />,
   },
   {
@@ -192,14 +192,14 @@ const STEPS: { icon: ReactNode; title: string; body: string; painting: string; u
     ),
     title: 'Ship it.',
     body: 'Work in an isolated Forke branch. Build, tests, scope and an AI review score your diff before the owner ever looks.',
-    painting: '/paintings/dusk-hill.jpg',
+    painting: '/paintings/dusk-hill.webp',
     ui: <ShipUI />,
   },
   {
     icon: <PayoutIcon />,
     title: 'Get paid.',
     body: 'The owner approves a plain-English verdict. The escrow releases straight to your UPI, and your level moves up.',
-    painting: '/paintings/lantern-orchard.jpg',
+    painting: '/paintings/lantern-orchard.webp',
     ui: <PaidUI />,
   },
 ]
