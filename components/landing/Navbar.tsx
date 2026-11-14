@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { ChevronDown, LayoutDashboard, LogIn, UserPlus } from 'lucide-react'
 import { Logo, WaitlistButton, cn } from './primitives'
+import { dashboardUrl, useSiteOpen } from './useWaitlisterView'
 
 export const NAV_LINKS = [
   { label: "What's Forke", href: '/whats-forke' },
@@ -29,16 +30,6 @@ function NavLinks() {
   )
 }
 
-function readCookie(name: string) {
-  const hit = document.cookie.split('; ').find((c) => c.startsWith(`${name}=`))
-  return hit ? hit.slice(name.length + 1) : null
-}
-
-function dashboardUrl() {
-  const prod = window.location.hostname.endsWith('forke.space')
-  return process.env.NEXT_PUBLIC_DASHBOARD_URL || (prod ? 'https://dashboard.forke.space' : 'http://localhost:3001')
-}
-
 /**
  * The navbar's call to action:
  * signed in → Dashboard; site open (waitlist off, or unlocked at /checkout) → Get started menu
@@ -46,13 +37,9 @@ function dashboardUrl() {
  */
 function NavCta() {
   const { data: session } = useSession()
-  const [open, setOpen] = useState<boolean | null>(null) // null until cookies are read
+  const open = useSiteOpen()
   const [menu, setMenu] = useState(false)
   const box = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    setOpen(readCookie('site_access_public') === 'true' || readCookie('waitlist_active') === 'false')
-  }, [])
 
   useEffect(() => {
     if (!menu) return

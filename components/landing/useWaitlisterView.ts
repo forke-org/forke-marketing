@@ -36,3 +36,23 @@ export function useWaitlisterView(): boolean {
 
   return waitlistActive && !hasSiteAccess
 }
+
+/**
+ * Whether sign up is open for this visitor: the waitlist is off, or they unlocked
+ * the site with an access key at /checkout. null until the cookies have been read,
+ * so callers can keep the waitlist wording for the first paint (most visitors).
+ */
+export function useSiteOpen(): boolean | null {
+  const [open, setOpen] = useState<boolean | null>(null)
+  useEffect(() => {
+    const read = (name: string) => document.cookie.split('; ').find((c) => c.startsWith(`${name}=`))?.slice(name.length + 1) ?? null
+    setOpen(read('site_access_public') === 'true' || read('waitlist_active') === 'false')
+  }, [])
+  return open
+}
+
+/** Dashboard origin for signed-in visitors. */
+export function dashboardUrl(): string {
+  const prod = typeof window !== 'undefined' && window.location.hostname.endsWith('forke.space')
+  return process.env.NEXT_PUBLIC_DASHBOARD_URL || (prod ? 'https://dashboard.forke.space' : 'http://localhost:3001')
+}

@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { GeistMono } from 'geist/font/mono'
 import GradientASCII from './GradientASCII'
-import { BlurWords, GhostButton, WaitlistButton } from './primitives'
+import { AccessText, BlurWords, GhostButton, WaitlistButton } from './primitives'
 
 export default function FinalCTA() {
   return (
@@ -32,7 +32,10 @@ export default function FinalCTA() {
             <BlurWords text="Day two, you're paid." className="block text-white/50" delay={220} />
           </h2>
           <p className="mt-5 max-w-[440px] text-[16px] leading-7 text-white/60">
-            Forke opens to developers in batches. Get on the list and we&rsquo;ll email you the moment your spot opens.
+            <AccessText
+              locked={<>Forke opens to developers in batches. Get on the list and we&rsquo;ll email you the moment your spot opens.</>}
+              unlocked="Your access is unlocked. Create your account and claim your first task."
+            />
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <WaitlistButton />

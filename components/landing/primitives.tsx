@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { ChevronRight } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { dashboardUrl, useSiteOpen } from './useWaitlisterView'
 import GutterField from './GutterField'
 
 export const cn = clsx
@@ -333,8 +335,9 @@ export function ForkeMark({ className }: { className?: string }) {
 }
 
 /**
- * Forke is waitlist-only for now, so the main button everywhere is "Join the
- * waitlist", which opens the /waitlist page.
+ * The main button everywhere. Waitlist on: "Join the waitlist" → /waitlist.
+ * Unlocked with an access key (or waitlist off): "Get started" → /register.
+ * Signed in: "Go to dashboard". Passing an explicit href keeps it a plain link.
  */
 export function WaitlistButton({
   label = 'Join the waitlist',
@@ -346,6 +349,17 @@ export function WaitlistButton({
   href?: string
 }) {
   const sm = size === 'sm'
+  const open = useSiteOpen()
+  const { data: session } = useSession()
+  if (href === '/waitlist') {
+    if (session?.user) {
+      label = 'Go to dashboard'
+      href = `${dashboardUrl()}/dashboard`
+    } else if (open) {
+      label = 'Get started'
+      href = '/register'
+    }
+  }
   return (
     <Link
       href={href}
@@ -358,6 +372,11 @@ export function WaitlistButton({
       <ChevronRight className={cn('transition-transform group-hover:translate-x-0.5', sm ? 'h-3.5 w-3.5' : 'h-4 w-4')} />
     </Link>
   )
+}
+
+/** Shows `unlocked` once this visitor can sign up, `locked` (waitlist wording) otherwise. */
+export function AccessText({ locked, unlocked }: { locked: ReactNode; unlocked: ReactNode }) {
+  return <>{useSiteOpen() ? unlocked : locked}</>
 }
 
 /**
