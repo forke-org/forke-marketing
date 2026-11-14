@@ -10,6 +10,15 @@
 
 import type { NextConfig } from "next";
 
+// R2 public bucket host, so uploaded avatars can go through next/image (the ID card paints them on a canvas).
+const r2Host = (() => {
+  try {
+    return process.env.CLOUDFLARE_R2_PUBLIC_URL ? new URL(process.env.CLOUDFLARE_R2_PUBLIC_URL).hostname : null
+  } catch {
+    return null
+  }
+})()
+
 const nextConfig: NextConfig = {
   output: "standalone",
   eslint: {
@@ -48,7 +57,8 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'flagcdn.com',
         pathname: '**',
-      },
+      },      { protocol: 'https', hostname: '*.r2.dev', pathname: '**' },
+      ...(r2Host ? [{ protocol: 'https' as const, hostname: r2Host, pathname: '**' }] : []),
     ],
   },
   async redirects() {
