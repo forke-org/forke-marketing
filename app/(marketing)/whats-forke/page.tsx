@@ -1,380 +1,279 @@
-'use client'
-
-import React, { useRef } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import Navbar from '@/components/shared/Navbar'
-import Footer from '@/components/shared/Footer'
-import { Button } from '@/components/ui/Button'
-import DotField from '@/components/shared/DotField'
-import { 
-  Code,
-  Shield,
-  IndianRupee,
-  Target,
+import type { Metadata } from 'next'
+import {
+  Check,
   Eye,
-  Zap,
-  Users,
+  GitBranch,
+  GitPullRequest,
+  Minus,
+  MousePointerClick,
   Rocket,
   ShieldCheck,
-  ArrowRight
+  Target,
+  Users,
+  Wallet,
+  Zap,
 } from 'lucide-react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
+import PageShell, { PageHeader, SectionHeading } from '@/components/shared/PageShell'
+import CellGrid from '@/components/shared/CellGrid'
+import { Painting, Reveal, Section } from '@/components/landing/primitives'
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
+export const metadata: Metadata = {
+  title: "What's Forke — Real tasks, real code, real payouts",
+  description:
+    'Forke is a micro-task marketplace for developers. Claim scoped coding tasks from real codebases, ship a reviewed pull request, level up and get paid by UPI the moment it merges.',
+  alternates: { canonical: '/whats-forke' },
 }
 
-const VALUES = [
-  {
-    title: 'Impact First',
-    desc: 'We focus on meaningful contributions that create real impact.',
-    icon: Zap
-  },
-  {
-    title: 'Trust & Transparency',
-    desc: 'Clear processes, open communication, and fair rewards.',
-    icon: ShieldCheck
-  },
-  {
-    title: 'Community',
-    desc: 'We grow together. Builders, maintainers, and learners — all in one place.',
-    icon: Users
-  },
-  {
-    title: 'Keep Building',
-    desc: "We're always iterating, improving, and pushing things forward.",
-    icon: Rocket
-  }
+const STORY_POINTS = [
+  ['No resumes', 'your merged PRs speak'],
+  ['No interviews', 'levels are earned, not claimed'],
+  ['No proposals', 'claim a task and start'],
+  ['No waiting', 'UPI payout the moment it merges'],
 ]
 
-export default function WhatsForkePage() {
-  const router = useRouter()
-  const pageContainerRef = useRef<HTMLDivElement>(null)
+const HOW_IT_WORKS = [
+  {
+    title: 'Claim a task',
+    desc: 'Browse a feed gated to your level, skill tier and trust score. Claim one that fits and the reservation is yours.',
+    icon: MousePointerClick,
+  },
+  {
+    title: 'Build in a branch',
+    desc: "Work in an isolated, Forke-managed GitHub branch, never directly on the owner's repo. Just code.",
+    icon: GitBranch,
+  },
+  {
+    title: 'Ship a pull request',
+    desc: 'Open a PR with a structured submission. Automated checks and an AI review run before the owner ever sees it.',
+    icon: GitPullRequest,
+  },
+  {
+    title: 'Get paid instantly',
+    desc: 'The owner approves the verdict, Forke merges upstream, and your UPI payout releases the moment it lands.',
+    icon: Wallet,
+  },
+]
 
-  useGSAP(() => {
-    // 1. Entrance timeline
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-    
-    tl.fromTo('.gsap-wf-hero-badge', 
-      { y: -20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8 }
-    )
-    .fromTo('.gsap-wf-hero-title', 
-      { y: 40, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 1 },
-      '-=0.6'
-    )
-    .fromTo('.gsap-wf-hero-desc',
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8 },
-      '-=0.6'
-    )
-    .fromTo('.gsap-wf-hero-row',
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 },
-      '-=0.5'
-    )
-    .fromTo('.gsap-wf-hero-image-wrap',
-      { scale: 0.95, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 1.2 },
-      '-=1'
-    )
+const PURPOSE = [
+  {
+    icon: Target,
+    title: 'Our mission',
+    copy: 'To make real-world experience accessible to every developer through meaningful work and fair opportunities.',
+    painting: '/paintings/golden-path.webp',
+  },
+  {
+    icon: Eye,
+    title: 'Our vision',
+    copy: 'A world where developers grow by building, not just by learning, and where contribution is recognized and rewarded.',
+    painting: '/paintings/cloud-sea.webp',
+  },
+]
 
+const VALUES = [
+  { title: 'Impact first', desc: 'We focus on meaningful contributions that create real impact.', icon: Zap },
+  { title: 'Trust & transparency', desc: 'Clear processes, open communication and fair rewards.', icon: ShieldCheck },
+  { title: 'Community', desc: 'We grow together. Builders, maintainers and learners, all in one place.', icon: Users },
+  { title: 'Keep building', desc: "We're always iterating, improving and pushing things forward.", icon: Rocket },
+]
 
-    // 3. Scroll reveals for elements
-    const sections = gsap.utils.toArray<HTMLElement>('.gsap-wf-section')
-    sections.forEach((section) => {
-      gsap.fromTo(section.querySelectorAll('.gsap-wf-element'),
-        { y: 45, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 78%',
-            toggleActions: 'play none none none',
-          }
-        }
-      )
-    })
-  }, { scope: pageContainerRef })
+type Mark = 'yes' | 'no' | 'partial'
+const COMPARISON: { feature: string; forke: Mark; fiverr: Mark; upwork: Mark }[] = [
+  { feature: 'Bite-sized micro-tasks (30 min to 4 hr)', forke: 'yes', fiverr: 'partial', upwork: 'no' },
+  { feature: 'Developer-only marketplace', forke: 'yes', fiverr: 'no', upwork: 'no' },
+  { feature: 'Skill-gated task access', forke: 'yes', fiverr: 'no', upwork: 'no' },
+  { feature: 'Instant UPI payouts on approval', forke: 'yes', fiverr: 'no', upwork: 'no' },
+  { feature: 'Auto-built, verified GitHub portfolio', forke: 'yes', fiverr: 'no', upwork: 'no' },
+  { feature: 'Git-native PR submission workflow', forke: 'yes', fiverr: 'no', upwork: 'no' },
+  { feature: 'AI-assisted code review pipeline', forke: 'yes', fiverr: 'no', upwork: 'no' },
+  { feature: 'Escrow held before work begins', forke: 'yes', fiverr: 'partial', upwork: 'partial' },
+  { feature: 'No proposals or bidding wars', forke: 'yes', fiverr: 'partial', upwork: 'no' },
+  { feature: 'India-first ₹ pricing & startups', forke: 'yes', fiverr: 'no', upwork: 'no' },
+]
 
+function MarkCell({ status, forke = false }: { status: Mark; forke?: boolean }) {
+  if (status === 'yes') {
+    return (
+      <span
+        className={`flex h-6 w-6 items-center justify-center rounded-full ${forke ? 'bg-accent text-black' : 'bg-white/[0.07] text-white/55'}`}
+        aria-label="Yes"
+      >
+        <Check className="h-3.5 w-3.5" strokeWidth={3} />
+      </span>
+    )
+  }
+  if (status === 'partial') {
+    return (
+      <span className="rounded-full border border-amber-400/25 bg-amber-400/[0.07] px-2 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.08em] text-amber-300/90">
+        Partly
+      </span>
+    )
+  }
   return (
-    <div ref={pageContainerRef} className="min-h-screen bg-[#050505] text-white overflow-hidden font-sans relative selection:bg-accent selection:text-white">
-      <Navbar />
+    <span className="flex h-6 w-6 items-center justify-center" aria-label="No">
+      <Minus className="h-3.5 w-3.5 text-white/20" strokeWidth={2.5} />
+    </span>
+  )
+}
 
-      {/* --- HERO WRAPPER (Confines dotted background to top section & fits viewport) --- */}
-      <div className="relative w-full min-h-screen flex items-center overflow-hidden">
-        {/* Ambient background Dot Grid */}
-        <div 
-          className="absolute inset-0 z-[1] pointer-events-none opacity-50"
-          style={{
-            maskImage: 'radial-gradient(circle at 80% 50%, transparent 15%, black 45%)',
-            WebkitMaskImage: 'radial-gradient(circle at 80% 50%, transparent 15%, black 45%)',
-          }}
-        >
-          <DotField
-            dotRadius={1.2}
-            dotSpacing={22}
-            bulgeStrength={45}
-            glowRadius={150}
-            sparkle={false}
-            waveAmplitude={0}
-            cursorRadius={350}
-            cursorForce={0.1}
-            bulgeOnly
-            gradientFrom="#FF7A00"
-            gradientTo="#E66E00"
-            glowColor="#050505"
-          />
-        </div>
+export default function WhatsForkePage() {
+  return (
+    <PageShell cta>
+      <PageHeader eyebrow="About us" title="What is" muted="Forke?">
+        Forke is a gamified open-source contribution space. Claim verified coding tasks, level up your engineering
+        tier, and cash out rewards instantly.
+      </PageHeader>
 
-        {/* --- HERO SECTION (Homepage Hero Layout & Sizing Match) --- */}
-        <section className="relative z-10 w-full pt-32 pb-16 px-6 max-w-7xl mx-auto">
-          <div className="max-w-7xl mx-auto w-full relative">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              
-              {/* Hero Left Content */}
-              <div className="space-y-10 text-left relative z-30">
-                
-                {/* Small badge */}
-                <div className="gsap-wf-hero-badge flex items-center gap-2 opacity-0">
-                  <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                  <span className="text-[11px] font-black uppercase tracking-[0.25em] text-accent">About Us</span>
-                </div>
+      {/* the concept */}
+      <Section>
+        <div className="grid gap-12 px-6 py-20 sm:px-12 sm:py-28 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+          <div>
+            <SectionHeading title="Fake projects don't" muted="teach you to ship." />
+            <Reveal className="mt-6 space-y-5 text-[16.5px] leading-7 text-white/50">
+              <p>
+                Forke was born from a simple realization: the traditional path for software engineers is broken.
+                Building fake portfolio projects teaches you syntax, but it doesn&rsquo;t teach you how to ship.
+                Bidding for freelance contracts is an endless waiting game, and early internships are heavily
+                gatekept.
+              </p>
+              <p>
+                We built Forke to change this. Startups post scoped, bite-sized coding tasks with fixed budgets. You
+                claim a task, write code in an isolated GitHub branch, submit a pull request, and get paid instantly
+                via UPI upon approval. Just code, growth and cash.
+              </p>
+            </Reveal>
+            <p className="mt-6 font-mono text-[12px] text-white/30">{'//'} prove skill by shipping</p>
+          </div>
 
-                {/* Headline (Upscaled to text-6xl md:text-8xl to match homepage title exactly) */}
-                <h1 className="gsap-wf-hero-title font-serif text-5xl sm:text-6xl md:text-8xl text-white leading-[1.05] tracking-tight opacity-0">
-                  What is <span className="text-accent italic font-normal text-glow">Forke?</span>
-                </h1>
-
-                {/* Description (Upscaled to text-lg md:text-xl to match homepage description) */}
-                <p className="gsap-wf-hero-desc text-muted text-lg md:text-xl font-light leading-relaxed max-w-xl opacity-0">
-                  Forke is a gamified open-source contribution space. Claim verified coding tasks, level up your engineering tier, and cash out rewards instantly.
-                </p>
-
-                {/* Row of Three Features */}
-                <div className="gsap-wf-hero-row grid grid-cols-3 gap-2.5 sm:gap-4 md:gap-5 opacity-0 max-w-2xl">
-                  {[
-                    { title: 'Real tasks', desc: 'from real projects', icon: Code },
-                    { title: 'Verified work', desc: 'you can be proud of', icon: Shield },
-                    { title: 'Get paid', desc: 'for your impact', icon: IndianRupee },
-                  ].map((item, idx) => {
-                    const Icon = item.icon
-                    return (
-                      <div key={idx} className="p-3 sm:p-5 rounded-2xl bg-white/[0.01] border border-white/[0.04] backdrop-blur-md flex flex-col gap-3 sm:gap-4 hover:border-white/10 transition-colors">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
-                          <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                        </div>
-                        <div>
-                          <h4 className="text-white font-bold text-sm md:text-base tracking-tight">{item.title}</h4>
-                          <p className="text-xs text-white/40 font-light mt-1 leading-tight">{item.desc}</p>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-
+          <Painting src="/paintings/dusk-sky.webp" className="min-h-[380px] rounded-[20px] border border-white/[0.06] pl-[8%] pt-12 sm:pt-16">
+            <div className="float-layer -mb-8 -mr-8 h-full overflow-hidden rounded-xl border border-white/15 bg-[#0c0c0e]/92 shadow-[0_24px_60px_rgba(0,0,0,0.6)] backdrop-blur-md">
+              <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-2.5">
+                <span className="flex gap-1">
+                  <i className="h-2 w-2 rounded-full bg-white/15" />
+                  <i className="h-2 w-2 rounded-full bg-white/15" />
+                  <i className="h-2 w-2 rounded-full bg-white/15" />
+                </span>
+                <span className="font-mono text-[11px] text-white/40">the forke way</span>
               </div>
+              <ul className="space-y-1.5 p-4 pb-12 pr-12">
+                {STORY_POINTS.map(([lead, rest]) => (
+                  <li key={lead} className="flex items-start gap-3 rounded-lg bg-white/[0.03] px-3 py-3">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+                      <Check className="h-3 w-3" strokeWidth={3} />
+                    </span>
+                    <span className="text-[14px] leading-5 text-white/50">
+                      <span className="font-medium text-white/90">{lead}.</span> {rest[0].toUpperCase() + rest.slice(1)}.
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Painting>
+        </div>
+      </Section>
 
-              {/* Hero Right Image Render (Absolutely positioned, static, edge-faded mascot visual) */}
-              <div className="hidden lg:block absolute right-[-10%] top-1/2 -translate-y-1/2 w-[55vw] h-[55vw] max-w-[850px] max-h-[850px] pointer-events-none z-0">
-                <div 
-                  className="gsap-wf-hero-image-wrap relative w-full h-full"
-                  style={{
-                    maskImage: 'radial-gradient(circle at center, black 30%, transparent 80%)',
-                    WebkitMaskImage: 'radial-gradient(circle at center, black 30%, transparent 80%)',
-                  }}
+      {/* how it works */}
+      <Section>
+        <div className="px-6 py-20 sm:px-12 sm:py-28">
+          <SectionHeading title="Claim. Build." muted="Ship. Get paid.">
+            From browsing the feed to money in your account, the whole loop is Git-native and built for speed.
+          </SectionHeading>
+          <Reveal className="mt-12">
+            <CellGrid>
+              {HOW_IT_WORKS.map((item, i) => (
+                <div key={item.title} className="p-6 sm:p-7">
+                  <div className="flex items-center justify-between">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-accent/25 bg-accent/[0.07] text-accent">
+                      <item.icon className="h-[18px] w-[18px]" strokeWidth={1.6} />
+                    </span>
+                    <span className="font-mono text-[12px] text-white/25">0{i + 1}</span>
+                  </div>
+                  <h3 className="mt-5 text-[17px] font-medium text-ink">{item.title}</h3>
+                  <p className="mt-2 text-[14.5px] leading-6 text-white/45">{item.desc}</p>
+                </div>
+              ))}
+            </CellGrid>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* mission & vision */}
+      <Section>
+        <div className="grid gap-4 px-3 py-3 sm:grid-cols-2 sm:px-4 sm:py-4">
+          {PURPOSE.map((item, i) => (
+            <Reveal key={item.title} delay={i * 120} className="h-full">
+              <div className="flex h-full flex-col overflow-hidden rounded-[20px] border border-white/[0.07] bg-surface p-2">
+                <Painting src={item.painting} className="h-[220px] rounded-[14px] sm:h-[260px]">
+                  <span className="absolute left-5 top-5 flex h-11 w-11 items-center justify-center rounded-[12px] border border-white/20 bg-black/35 text-white backdrop-blur-md">
+                    <item.icon className="h-5 w-5" strokeWidth={1.5} />
+                  </span>
+                </Painting>
+                <div className="px-4 pb-6 pt-5 sm:px-5">
+                  <h3 className="text-[22px] font-medium tracking-[-0.02em] text-ink">{item.title}</h3>
+                  <p className="mt-2 max-w-[440px] text-[15.5px] leading-7 text-white/50">{item.copy}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
+      {/* values */}
+      <Section>
+        <div className="px-6 py-20 sm:px-12 sm:py-28">
+          <SectionHeading title="What" muted="drives us." />
+          <Reveal className="mt-12">
+            <CellGrid>
+              {VALUES.map((v) => (
+                <div key={v.title} className="p-6 sm:p-7">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/10 bg-white/[0.04] text-white/80">
+                    <v.icon className="h-[18px] w-[18px]" strokeWidth={1.6} />
+                  </span>
+                  <h3 className="mt-5 text-[17px] font-medium text-ink">{v.title}</h3>
+                  <p className="mt-2 text-[14.5px] leading-6 text-white/45">{v.desc}</p>
+                </div>
+              ))}
+            </CellGrid>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* comparison */}
+      <Section divider={false}>
+        <div className="px-6 py-20 sm:px-12 sm:py-28">
+          <SectionHeading title="Built different," muted="on purpose.">
+            Generic freelance platforms weren&rsquo;t made for developers. Every choice here is.
+          </SectionHeading>
+          <Reveal className="mt-12">
+            <div className="overflow-hidden rounded-[18px] border border-line">
+              <div className="grid grid-cols-[minmax(0,1.5fr)_repeat(3,minmax(0,0.6fr))] border-b border-line text-center sm:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))]">
+                <div className="px-4 py-4 text-left text-sm text-white/40 sm:px-6">Feature</div>
+                <div className="bg-accent/[0.06] px-1 py-4 text-[15px] font-semibold tracking-[-0.04em] text-white sm:text-[17px]">
+                  forke<span className="text-accent">*</span>
+                </div>
+                <div className="px-1 py-4 text-[13px] text-white/45 sm:text-[15px]">Fiverr</div>
+                <div className="px-1 py-4 text-[13px] text-white/45 sm:text-[15px]">Upwork</div>
+              </div>
+              {COMPARISON.map((row, i) => (
+                <div
+                  key={row.feature}
+                  className={`grid grid-cols-[minmax(0,1.5fr)_repeat(3,minmax(0,0.6fr))] items-stretch sm:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))] ${i ? 'border-t border-line' : ''}`}
                 >
-                  <Image 
-                    src="/forke-assets/about-assets/hero-bg.png" 
-                    alt="Chibi Rabbit Coding at Night Rooftop" 
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+                  <div className="px-4 py-3.5 text-[13.5px] leading-5 text-white/75 sm:px-6 sm:py-4 sm:text-[15px]">{row.feature}</div>
+                  <div className="flex items-center justify-center bg-accent/[0.06]">
+                    <MarkCell status={row.forke} forke />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <MarkCell status={row.fiverr} />
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <MarkCell status={row.upwork} />
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          </div>
-        </section>
-      </div>
-
-      {/* --- CONTEXT STORY SECTION --- */}
-      <section className="gsap-wf-section relative z-10 py-20 px-6 max-w-7xl mx-auto border-t border-white/[0.03]">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="gsap-wf-element inline-flex items-center gap-2 text-accent font-black tracking-widest text-xs uppercase opacity-0">
-            The Concept
-          </div>
-          <h2 className="gsap-wf-element font-serif text-4xl md:text-6xl text-white tracking-tight leading-tight opacity-0">
-            A developer playground built to <span className="text-accent italic font-normal">prove capability</span>
-          </h2>
-          <p className="gsap-wf-element text-white/50 text-base md:text-lg font-light leading-relaxed opacity-0">
-            Forke was born from a simple realization: the traditional path for software engineers is broken. Building fake portfolio projects teaches you syntax, but it doesn't teach you how to ship. Bidding for freelance contracts is an endless waiting game, and early internships are heavily gatekept.
-          </p>
-          <p className="gsap-wf-element text-white/50 text-base md:text-lg font-light leading-relaxed opacity-0">
-            We built Forke to change this. We've turned real-world software contributions into a gamified, reward-driven experience. Startups post scoped, bite-sized coding tasks with fixed budgets. You claim a task, write code in an isolated GitHub branch, submit a pull request, and get paid instantly via UPI upon approval. No resumes, no interviews, no noise — just code, growth, and cash.
-          </p>
+          </Reveal>
         </div>
-      </section>
-
-      {/* --- MISSION & VISION SECTION --- */}
-      <section className="gsap-wf-section relative z-10 py-16 px-6 max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          
-          {/* Mission Card */}
-          <div className="gsap-wf-element relative rounded-3xl border border-white/[0.04] bg-[#0A0A0A] p-8 md:p-12 hover:border-[#FF7A00]/30 hover:scale-[1.02] active:scale-[0.98] group flex flex-col sm:flex-row gap-6 opacity-0 overflow-hidden text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-            
-            {/* Ambient Card Radial Spotlight */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(255,122,0,0.02)_0%,_transparent_65%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-            
-            {/* Left double-ringed premium Icon Circle */}
-            <div className="w-16 h-16 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex items-center justify-center text-[#FF7A00] group-hover:bg-[#FF7A00] group-hover:text-black group-hover:shadow-[0_0_20px_rgba(255,122,0,0.3)] transition-all duration-500 shrink-0 relative z-10">
-              <Target className="w-7 h-7" strokeWidth={1.2} />
-            </div>
-            
-            <div className="space-y-4 relative z-10 text-left mt-1">
-              <h3 className="text-white font-bold text-xl md:text-2xl tracking-tight group-hover:text-[#FF7A00] transition-colors duration-300">Our Mission</h3>
-              <p className="text-sm md:text-base text-white/40 leading-relaxed font-light group-hover:text-white/60 transition-colors duration-300">
-                To make real-world experience accessible to every developer through meaningful work and fair opportunities.
-              </p>
-            </div>
-          </div>
-
-          {/* Vision Card */}
-          <div className="gsap-wf-element relative rounded-3xl border border-white/[0.04] bg-[#0A0A0A] p-8 md:p-12 hover:border-[#FF7A00]/30 hover:scale-[1.02] active:scale-[0.98] group flex flex-col sm:flex-row gap-6 opacity-0 overflow-hidden text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-            
-            {/* Ambient Card Radial Spotlight */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(255,122,0,0.02)_0%,_transparent_65%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-            
-            {/* Left double-ringed premium Icon Circle */}
-            <div className="w-16 h-16 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex items-center justify-center text-[#FF7A00] group-hover:bg-[#FF7A00] group-hover:text-black group-hover:shadow-[0_0_20px_rgba(255,122,0,0.3)] transition-all duration-500 shrink-0 relative z-10">
-              <Eye className="w-7 h-7" strokeWidth={1.2} />
-            </div>
-            
-            <div className="space-y-4 relative z-10 text-left mt-1">
-              <h3 className="text-white font-bold text-xl md:text-2xl tracking-tight group-hover:text-[#FF7A00] transition-colors duration-300">Our Vision</h3>
-              <p className="text-sm md:text-base text-white/40 leading-relaxed font-light group-hover:text-white/60 transition-colors duration-300">
-                A world where developers grow by building, not just by learning — and where contribution is recognized and rewarded.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* --- VALUES SECTION --- */}
-      <section className="gsap-wf-section relative z-10 py-20 px-6 max-w-7xl mx-auto">
-        
-        {/* Header */}
-        <div className="text-left mb-16 max-w-xl">
-          <div className="gsap-wf-element inline-flex items-center gap-2 text-accent font-black tracking-widest text-xs uppercase opacity-0 mb-4">
-            Our Values
-          </div>
-          <h2 className="gsap-wf-element font-serif text-4xl md:text-6xl text-white tracking-tight leading-none opacity-0">
-            What drives <span className="text-accent italic font-normal">us</span>
-          </h2>
-        </div>
-
-        {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {VALUES.map((val, idx) => {
-            const Icon = val.icon
-            return (
-              <div 
-                key={idx} 
-                className="gsap-wf-element relative p-8 rounded-[2rem] bg-gradient-to-b from-[#141414] to-[#090909] border border-white/[0.05] hover:border-accent/30 hover:shadow-[0_15px_30px_-10px_rgba(255,122,0,0.12)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between min-h-[260px] group opacity-0 overflow-hidden"
-              >
-                {/* Spotlight Background Effect */}
-                <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                <div className="absolute top-0 right-0 w-32 h-32 bg-accent/[0.02] rounded-full blur-3xl pointer-events-none" />
-                
-                {/* Premium Icon Badge */}
-                <div className="w-12 h-12 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-bg group-hover:border-accent group-hover:shadow-[0_0_20px_rgba(255,122,0,0.35)] transition-all duration-500 shrink-0 mb-8 relative z-10">
-                  <Icon className="w-5 h-5" />
-                </div>
-                
-                <div className="space-y-2.5 relative z-10 text-left">
-                  <h3 className="text-white font-bold text-lg md:text-xl tracking-tight group-hover:text-accent transition-colors duration-300">
-                    {val.title}
-                  </h3>
-                  <p className="text-xs text-white/40 leading-relaxed font-light group-hover:text-white/60 transition-colors duration-300">
-                    {val.desc}
-                  </p>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-
-      </section>
-
-
-
-      {/* --- BOTTOM CTA VISUAL SECTION --- */}
-      <section className="gsap-wf-section relative z-10 py-20 px-6 max-w-7xl mx-auto mb-16">
-        <div className="p-8 md:p-14 rounded-[3.5rem] bg-[#0a0a0a] border border-white/[0.04] shadow-2xl relative overflow-x-clip overflow-y-visible flex flex-col lg:flex-row items-center gap-12 group">
-          
-          {/* Ambient card highlight background */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,_rgba(255,122,0,0.05)_0%,_transparent_60%)] pointer-events-none" />
-
-          {/* Left Text / CTAs */}
-          <div className="lg:w-7/12 space-y-8 relative z-10 text-left">
-            <div className="space-y-4">
-              <h2 className="gsap-wf-element font-serif text-4xl md:text-6xl text-white leading-tight tracking-tight opacity-0 max-w-xl">
-                This is just the beginning.
-              </h2>
-              <p className="gsap-wf-element text-white/50 text-base md:text-lg leading-relaxed font-light opacity-0 max-w-xl">
-                Join the movement and help us build the future of developer work.
-              </p>
-            </div>
-            <div className="gsap-wf-element flex flex-col sm:flex-row gap-4 opacity-0">
-              <Button 
-                size="lg" 
-                className="rounded-xl px-8 py-3.5 h-auto text-xs font-bold uppercase tracking-wider bg-gradient-to-b from-accent to-[#d97706] border-b-2 border-black/30 shadow-[0_4px_0_rgb(180,83,9)] hover:translate-y-[1px] hover:shadow-[0_3px_0_rgb(180,83,9)] active:translate-y-[4px] active:shadow-none transition-all duration-75 text-bg flex items-center justify-center gap-2"
-                onClick={() => router.push('/register')}
-              >
-                Join the movement <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="rounded-xl px-8 py-3.5 h-auto text-xs font-bold uppercase tracking-wider border border-white/10 text-white hover:bg-white/5 transition-all flex items-center justify-center bg-transparent"
-                onClick={() => router.push('/bounties')}
-              >
-                Browse Bounties
-              </Button>
-            </div>
-          </div>
-
-          {/* Right Peeking Mascot Illustration (Absolute breakout on desktop, flow on mobile) */}
-          <div className="gsap-wf-element lg:absolute lg:right-6 lg:-top-85 lg:w-[700px] lg:h-[700px] w-full flex justify-center relative z-10 opacity-0 select-none pointer-events-none">
-            <div 
-              className="relative w-full max-w-[380px] lg:max-w-none lg:w-full lg:h-full aspect-[4/3] lg:aspect-auto"
-              style={{
-                maskImage: 'radial-gradient(circle at center, black 45%, transparent 85%)',
-                WebkitMaskImage: 'radial-gradient(circle at center, black 45%, transparent 85%)',
-              }}
-            >
-              <Image 
-                src="/forke-assets/about-assets/bottom-hero.png" 
-                alt="Focused Rabbit Mascot Over Screen" 
-                fill
-                className="object-contain lg:object-bottom"
-              />
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+      </Section>
+    </PageShell>
   )
 }
