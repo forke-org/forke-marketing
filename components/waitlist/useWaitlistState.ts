@@ -14,7 +14,9 @@ function setJoinedCookie() {
 export function useWaitlistState() {
   const params = useSearchParams()
   const emailParam = params.get('email') || ''
-  const source = params.get('source') || params.get('utm_source') || 'waitlist'
+  // only a real channel from the link (?source= / ?utm_source=); no placeholder, so a visit with no
+  // referrer or tag is saved as 'direct' instead of looking like it came from somewhere called "waitlist"
+  const source = params.get('source') || params.get('utm_source') || undefined
 
   const [count, setCount] = useState<number | null>(null)
   const [verifying, setVerifying] = useState(Boolean(emailParam))

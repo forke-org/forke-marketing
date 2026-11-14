@@ -9,7 +9,7 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 /**
  * Early-access sign-up. Forke is still waitlist-only, so every primary CTA on the
  * page is this form: email pill with "Join the waitlist" tucked inside.
- * `source` tags where the sign-up came from (hero, pricing, cta…).
+ * `source` is the channel from the page link, if any; with none the server records the first-touch channel or "direct".
  */
 export default function WaitlistForm({
   source,
@@ -19,7 +19,8 @@ export default function WaitlistForm({
   initialEmail = '',
   onSuccess,
 }: {
-  source: string
+  /** channel from the page link (?source= / ?utm_source=), if any. The first-touch cookie wins on the server. */
+  source?: string
   className?: string
   note?: string
   align?: 'left' | 'center'
