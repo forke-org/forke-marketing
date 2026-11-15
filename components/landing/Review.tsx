@@ -1,3 +1,4 @@
+import FitScale from './FitScale'
 import { Check, GitBranch, KeyRound, X } from 'lucide-react'
 import { RiGithubFill } from '@remixicon/react'
 import { Caption, Eyebrow, Painting, Reveal, ScrambleText, Section } from './primitives'
@@ -5,9 +6,13 @@ import type { ReactNode } from 'react'
 
 function Card({ src, children }: { src: string; children: ReactNode }) {
   return (
-    <Painting src={src} shade={0.25} className="aspect-[33/32] rounded-2xl border border-white/[0.06]">
-      {children}
-    </Painting>
+    // the same card on every screen: laid out at its desktop width and scaled to fit
+    <FitScale width={373} grow>
+      <Painting src={src} shade={0.25} className="aspect-[33/32] rounded-2xl border border-white/[0.06]">
+        {/* mock UI: not clickable or selectable (display: contents keeps the layout as is) */}
+        <div className="contents pointer-events-none select-none">{children}</div>
+      </Painting>
+    </FitScale>
   )
 }
 

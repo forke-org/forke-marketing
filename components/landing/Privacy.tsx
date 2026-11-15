@@ -14,7 +14,7 @@ import { Caption, Eyebrow, ForkeMark, Reveal, ScrambleText, Section } from './pr
 
 function Tile({ children }: { children: ReactNode }) {
   return (
-    <div className="relative aspect-[24/21] overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0d0d0f]">{children}</div>
+    <div className="relative aspect-[24/21] overflow-hidden rounded-2xl border border-white/[0.07] bg-[#0d0d0f] pointer-events-none select-none">{children}</div>
   )
 }
 

@@ -1,5 +1,6 @@
 'use client'
 
+import FitScale from './FitScale'
 import { useEffect, useState, type ReactNode } from 'react'
 import {
   Check,
@@ -27,6 +28,7 @@ function Panel({
   children,
   className,
   visual = 'h-[260px]',
+  wide = false,
 }: {
   icon: ReactNode
   title: string
@@ -34,6 +36,8 @@ function Panel({
   children?: ReactNode
   className?: string
   visual?: string
+  /** spans two columns on desktop (742px visual instead of 366px) */
+  wide?: boolean
 }) {
   return (
     <div
@@ -48,7 +52,11 @@ function Panel({
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
         style={{ background: 'radial-gradient(60% 50% at 50% 0%, rgba(255,122,0,0.08), transparent 70%)' }}
       />
-      <div className={cn('relative', visual)}>{children}</div>
+      {/* mock UI at its desktop size, scaled to fit on every screen; not clickable or selectable (the panel's hover
+          glow still works around it) */}
+      <FitScale width={wide ? 742 : 366} grow>
+        <div className={cn('relative pointer-events-none select-none', visual)}>{children}</div>
+      </FitScale>
       <div className="relative mt-auto px-8 pb-8 pt-4">
         <span className="mb-4 flex h-6 w-6 items-center justify-center text-white/70">{icon}</span>
         <p className="text-[18px] tracking-[-0.01em] text-ink">{title}</p>
@@ -156,7 +164,7 @@ function ReviewConsole() {
   }, [inView])
   const ready = step >= 8
   return (
-    <div ref={ref} className="absolute inset-y-6 right-0 w-[min(440px,58%)] max-md:left-6 max-md:w-auto">
+    <div ref={ref} className="absolute inset-y-6 right-0 w-[min(440px,58%)]">
       <div className="rounded-l-[4px] border border-r-0 border-line bg-[#191817] p-5 text-[12px]">
         <p className="flex items-center gap-2 text-[13px] text-ink">
           <GitPullRequestArrow className="h-4 w-4 text-accent" /> PR #1194 · cursor pagination for invoices
@@ -292,6 +300,7 @@ export default function Bento() {
         <div className="grid gap-2 lg:grid-cols-3">
           <Panel
             className="lg:col-span-2"
+            wide
             icon={<Wallet className="h-5 w-5" />}
             title="A live ledger for every rupee"
             body="Escrow, approvals and UPI settlements stream in as they happen. Export any month in one click."
@@ -317,6 +326,7 @@ export default function Bento() {
 
           <Panel
             className="lg:col-span-2"
+            wide
             visual="h-[290px]"
             icon={<Workflow className="h-5 w-5" />}
             title="Review that never sleeps"

@@ -1,3 +1,4 @@
+import FitScale from './FitScale'
 import type { ReactNode } from 'react'
 import { Clock, MessageSquare, Paperclip } from 'lucide-react'
 import { RiGithubFill } from '@remixicon/react'
@@ -25,12 +26,14 @@ function Card({
           <p className="text-[17px] font-medium text-ink">{title}</p>
           <p className="mt-1 text-[15px] leading-6 text-white/45">{body}</p>
         </div>
-        <Painting src={painting} position={position} className="mt-auto h-[250px] rounded-[14px]">
-          <div className="float-layer absolute -bottom-6 -right-10 left-7 top-9 overflow-hidden rounded-xl border border-white/15 bg-[#0d0d0f]/95 shadow-[0_24px_60px_rgba(0,0,0,0.6)] backdrop-blur">
+        <FitScale width={355} grow className="mt-auto">
+        <Painting src={painting} position={position} className="h-[250px] rounded-[14px]">
+          <div className="float-layer absolute -bottom-6 -right-10 left-7 top-9 overflow-hidden rounded-xl pointer-events-none select-none border border-white/15 bg-[#0d0d0f]/95 shadow-[0_24px_60px_rgba(0,0,0,0.6)] backdrop-blur">
             {/* pad by the 40px bleed so right-aligned content ends at the visible edge */}
             <div className="pr-10">{children}</div>
           </div>
         </Painting>
+        </FitScale>
       </div>
     </Reveal>
   )

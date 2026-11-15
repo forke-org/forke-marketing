@@ -273,10 +273,10 @@ export default function HowItWorks() {
                     <span className="font-medium text-ink">{s.title}</span> {s.body}
                   </p>
                   {/* on phones the card keeps its desktop proportions and is scaled down, never re-wrapped */}
-                  <FitScale width={560} className="mt-6">
+                  <FitScale width={560} grow className="mt-6">
                     <Painting src={s.painting} className="rounded-[18px] border border-white/[0.06] pl-[8%] pt-12">
                       {/* window bleeds off the right and bottom edges, like a cropped screenshot */}
-                      <div className="float-layer -mb-8 -mr-8 overflow-hidden rounded-xl border border-white/15 bg-[#0c0c0e]/92 shadow-[0_24px_60px_rgba(0,0,0,0.6)] backdrop-blur-md">
+                      <div className="float-layer -mb-8 -mr-8 overflow-hidden rounded-xl pointer-events-none select-none border border-white/15 bg-[#0c0c0e]/92 shadow-[0_24px_60px_rgba(0,0,0,0.6)] backdrop-blur-md">
                         <div className="pb-8 pr-8">{s.ui}</div>
                       </div>
                     </Painting>
