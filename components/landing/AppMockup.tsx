@@ -1262,9 +1262,9 @@ export default function AppMockup() {
   // bleed off the right edge.
   const [cam, setCam] = useState({ x: 0, y: 0, z: 1 })
   const [frameSize, setFrameSize] = useState({ w: W, h: H })
-  // desktop: the window keeps its proportions and shrinks to fit narrower laptops (the frame's 1px side borders
-  // count toward the width, so a full-width frame is exactly 1)
-  const deskScale = Math.min(1, (frameSize.w + 2) / W)
+  // desktop: the window keeps its proportions and scales up to match the 1200px inner rails band,
+  // shrinking to fit narrower laptops (the frame's 1px side borders count toward the width)
+  const deskScale = Math.min(1200 / W, (frameSize.w + 2) / W)
   useLayoutEffect(() => {
     const el = frameRef.current
     if (!el) return
@@ -1321,7 +1321,7 @@ export default function AppMockup() {
       className={cn(
         'relative overflow-hidden border border-white/10 bg-[#151414]',
         glow,
-        mode === 'desktop' ? 'w-full max-w-[1068px] rounded-t-2xl border-b-0 lg:mx-auto' : 'w-full rounded-l-2xl border-r-0',
+        mode === 'desktop' ? 'w-full max-w-[1200px] rounded-t-2xl border-b-0 lg:mx-auto' : 'w-full rounded-l-2xl border-r-0',
       )}
       style={{ height: mode === 'desktop' ? Math.round(H * deskScale) : mode === 'tablet' ? 480 : 420 }}
     >

@@ -80,7 +80,7 @@ export default function Hero() {
         <div
           aria-hidden
           inert
-          className="animate-fade-up pointer-events-none relative mx-auto h-[420px] max-w-[1180px] select-none pl-4 [clip-path:inset(-200px_-200px_0_-200px)] sm:h-[480px] sm:pl-10 lg:h-auto lg:px-14"
+          className="animate-fade-up pointer-events-none relative mx-auto h-[420px] max-w-[1180px] select-none pl-4 [clip-path:inset(-200px_-200px_0_-200px)] sm:h-[480px] sm:pl-10 lg:h-auto lg:max-w-[1200px] lg:px-0"
           style={{ animationDelay: '700ms' }}
         >
           <AppMockup />

@@ -54,7 +54,7 @@ function WindowBar({ label }: { label: string }) {
 
 export default function Problem() {
   return (
-    <Section id="problem" corners={false}>
+    <Section id="problem">
       <div className="px-6 pt-20 sm:px-12 sm:pt-28">
         <h2 className="max-w-[640px] text-[34px] font-medium leading-[1.08] tracking-[-0.03em] sm:text-[44px]">
           <BlurWords text="Easy to start freelancing." className="block text-ink" />

@@ -35,7 +35,7 @@ const QA = [
 export default function FAQ() {
   const [open, setOpen] = useState<number | null>(0)
   return (
-    <Section id="faq" divider={false}>
+    <Section id="faq">
       <div className="grid gap-10 px-6 pb-12 pt-20 sm:px-12 sm:pb-16 sm:pt-28 lg:grid-cols-[1fr_1.4fr]">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <h2 className="text-[34px] font-medium leading-[1.08] tracking-[-0.03em] sm:text-[44px]">

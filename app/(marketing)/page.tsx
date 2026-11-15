@@ -23,15 +23,15 @@ export default function Home() {
         <div className="relative isolate pb-10 pt-4 sm:pb-14 sm:pt-6">
           <RailsDecor />
           <Rails>
-          <SupportedBy />
-          <Problem />
-          <HowItWorks />
-          <Capability />
-          <Benchmark />
-          <Memory />
-          <Review />
-          <Bento />
-          <FAQ />
+            <Problem />
+            <HowItWorks />
+            <Capability />
+            <Benchmark />
+            <Memory />
+            <Review />
+            <Bento />
+            <FAQ />
+            <SupportedBy />
           </Rails>
         </div>
         <FinalCTA />

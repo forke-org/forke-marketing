@@ -12,7 +12,7 @@ const SUPPORTERS = [
  */
 export default function SupportedBy() {
   return (
-    <Section>
+    <Section divider={false}>
       <div className="flex flex-col items-center gap-4 px-6 py-7 sm:py-8">
         <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/35">Supported by</p>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
