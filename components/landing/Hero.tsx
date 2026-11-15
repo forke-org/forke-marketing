@@ -75,12 +75,12 @@ export default function Hero() {
           </p>
         </header>
 
-        {/* the preview sits inside the frame and is cropped by its bottom edge; on phones and
-            tablets it keeps its desktop layout and runs off the right edge (like a cropped screenshot) */}
+        {/* the preview rises out of the frame's bottom edge: on desktop the whole window shows, sitting on that edge;
+            on phones and tablets it is cropped by it and runs off the right edge (like a cropped screenshot) */}
         <div
           aria-hidden
           inert
-          className="animate-fade-up pointer-events-none relative mx-auto h-[420px] max-w-[1180px] select-none pl-4 [clip-path:inset(-200px_-200px_0_-200px)] sm:h-[480px] sm:pl-10 lg:h-[500px] lg:px-14"
+          className="animate-fade-up pointer-events-none relative mx-auto h-[420px] max-w-[1180px] select-none pl-4 [clip-path:inset(-200px_-200px_0_-200px)] sm:h-[480px] sm:pl-10 lg:h-auto lg:px-14"
           style={{ animationDelay: '700ms' }}
         >
           <AppMockup />
