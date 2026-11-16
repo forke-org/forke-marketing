@@ -121,11 +121,11 @@ export default function ProfileView({
 
   return (
     <div className="@container">
-    <div className="grid gap-8 px-1 py-2 @min-[960px]:grid-cols-[300px_minmax(0,1fr)] @min-[960px]:gap-12">
+    <div className="grid gap-8 px-1 py-2 @min-[960px]:grid-cols-[330px_minmax(0,1fr)] @min-[960px]:gap-12">
       {/* sidebar */}
       <aside className={cn("min-w-0 @min-[960px]:sticky @min-[960px]:self-start", actions ? "@min-[960px]:top-20" : "@min-[960px]:top-0")}>
         <div className="relative" data-tour="card">
-          {cardSlot ?? <CardLive data={card} style={cardStyle} height={400} />}
+          {cardSlot ?? <CardLive data={card} style={cardStyle} height={460} />}
           <p className="text-center font-mono text-[11px] text-white/30">drag it · tap to flip</p>
         </div>
         <div className="text-center @min-[960px]:text-left" data-tour="identity">
@@ -441,14 +441,17 @@ function ReviewsTab({ work }: { work: ShippedWork[] }) {
         <div className="space-y-1.5">
           {bands.map((b) => (
             <button key={b.s} type="button" onClick={() => setMin(min === b.s ? 0 : b.s)} className="flex w-full items-center gap-3 text-left text-[12.5px] text-white/55 hover:text-white">
-              <span className={`${mono} w-8`}>{b.s}★</span>
+              <span className={`${mono} flex w-9 items-center gap-1 text-[13px]`}>
+                {b.s}
+                <Star className="h-3.5 w-3.5 fill-current" />
+              </span>
               <span className="h-2 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
                 <span className="block h-full rounded-full bg-accent" style={{ width: `${(b.n / work.length) * 100}%` }} />
               </span>
               <span className={`${mono} w-6 text-right`}>{b.n}</span>
             </button>
           ))}
-          {min > 0 && <p className="pt-1 text-[12px] text-accent-text">Showing {min}★ and up · tap again to clear</p>}
+          {min > 0 && <p className="pt-1 text-[12px] text-accent-text">Showing {min}<Star className="mx-0.5 inline h-3 w-3 -translate-y-px fill-current" /> and up · tap again to clear</p>}
         </div>
       </div>
       <div className="mt-6 grid gap-3 @min-[600px]:grid-cols-2">

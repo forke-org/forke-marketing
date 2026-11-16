@@ -12,7 +12,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { BadgeCheck, MousePointer2 } from 'lucide-react'
+import { ChevronDown, ChevronRight, MousePointer2 } from 'lucide-react'
 import ProfileView, { type ProfileTab } from '@/components/profile/b/ProfileView'
 import type { Achievement, DevProfile, ShippedWork } from '@/components/profile/b/types'
 import type { CardData } from '@/components/idcard/paint'
@@ -26,8 +26,8 @@ const VIS_X = 1 // the window's full width is laid out in view; only its overhan
 const VIS_Y = 0.86 // share of its height left visible (the rest bleeds off the bottom)
 const VIS_W = STAGE_W * VIS_X
 const VIS_H = STAGE_H * VIS_Y
-const CHROME_H = 38
-const NAV_H = 52
+const CHROME_H = 0 // no browser bar: the page opens on the site's own navbar
+const NAV_H = 80 // the current glass navbar, with its top gap
 const VIEW_H = STAGE_H - CHROME_H - NAV_H
 const EASE = 'cubic-bezier(0.65, 0, 0.35, 1)'
 const MOVE_MS = 1000 // camera glide
@@ -331,28 +331,27 @@ export default function ProfileTour() {
           >
             {/* camera */}
             <div className="absolute inset-0 origin-top-left" style={{ transform: `translate(${shot.tx}px, ${shot.ty}px) scale(${shot.s})`, transition: `transform ${move}` }}>
-              {/* browser chrome */}
-              <div className="flex items-center gap-3 border-b border-white/[0.07] bg-[#1a1918] px-4" style={{ height: CHROME_H }}>
-                <span className="flex gap-1.5">
-                  <i className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                  <i className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                  <i className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                </span>
-                <span className="ml-[280px] flex w-[300px] items-center justify-center gap-1.5 rounded-md bg-white/[0.05] py-1 font-mono text-[11.5px] text-white/55">
-                  <BadgeCheck className="h-3 w-3 text-accent" /> forke.space/{PROFILE.username}
-                </span>
-              </div>
-              {/* site nav */}
-              <div className="flex items-center gap-10 border-b border-white/[0.06] px-8" style={{ height: NAV_H }}>
-                <span className="text-[19px] font-semibold tracking-[-0.03em] text-white">
-                  forke<span className="text-accent">*</span>
-                </span>
-                <span className="flex gap-7 text-[13px] text-white/55">
-                  <span>What&rsquo;s Forke</span>
-                  <span>Levels</span>
-                  <span>Blogs</span>
-                  <span>Contact us</span>
-                </span>
+              {/* the site's current navbar, as a still: logo, the four menus, the waitlist button */}
+              <div className="px-6 pt-3" style={{ height: NAV_H }}>
+                <div className="relative flex h-14 items-center justify-between rounded-2xl border border-white/10 bg-[#1b1a19] px-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_50px_-20px_rgba(0,0,0,0.8)]">
+                  <span className="flex items-center gap-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/forke-assets/favicon.png" alt="" className="h-7 w-7 rounded-[7px]" />
+                    <span className="text-[22px] font-semibold tracking-[-0.04em] text-white">
+                      forke<span className="text-accent">*</span>
+                    </span>
+                  </span>
+                  <span className="absolute left-1/2 flex -translate-x-1/2 items-center gap-0.5">
+                    {['Company', 'Built for', 'Resources', 'Contact'].map((m) => (
+                      <span key={m} className="flex h-8 items-center gap-1 rounded-lg px-3 text-sm text-white/70">
+                        {m} <ChevronDown className="h-3.5 w-3.5 text-white/45" />
+                      </span>
+                    ))}
+                  </span>
+                  <span className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-accent px-3 text-[13px] font-medium text-[#1a0a00] shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_8px_24px_-8px_rgba(255,122,0,0.55)]">
+                    Join the waitlist <ChevronRight className="h-3.5 w-3.5" />
+                  </span>
+                </div>
               </div>
               {/* page viewport */}
               <div className="relative overflow-hidden" style={{ height: VIEW_H }}>

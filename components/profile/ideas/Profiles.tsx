@@ -524,14 +524,17 @@ function ReviewsTab() {
         <div className="space-y-1.5">
           {bands.map((b) => (
             <button key={b.s} type="button" onClick={() => setMin(min === b.s ? 0 : b.s)} className="flex w-full items-center gap-3 text-left text-[12.5px] text-white/55 hover:text-white">
-              <span className={`${mono} w-8`}>{b.s}★</span>
+              <span className={`${mono} flex w-9 items-center gap-1 text-[13px]`}>
+                {b.s}
+                <Star className="h-3.5 w-3.5 fill-current" />
+              </span>
               <span className="h-2 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
                 <span className="block h-full rounded-full bg-accent" style={{ width: `${(b.n / REVIEWS.length) * 100}%` }} />
               </span>
               <span className={`${mono} w-6 text-right`}>{b.n}</span>
             </button>
           ))}
-          {min > 0 && <p className="pt-1 text-[12px] text-accent-text">Showing {min}★ and up · tap again to clear</p>}
+          {min > 0 && <p className="pt-1 text-[12px] text-accent-text">Showing {min}<Star className="mx-0.5 inline h-3 w-3 -translate-y-px fill-current" /> and up · tap again to clear</p>}
         </div>
       </div>
       <div className="mt-6 grid gap-3 sm:grid-cols-2">

@@ -219,7 +219,7 @@ const NAV: { label: string | null; items: [string, LucideIcon][] }[] = [
 
 function Sidebar({ active }: { active: string }) {
   return (
-    <aside className="absolute bottom-0 left-0 top-[28px] w-[200px] border-r" style={{ background: C.bg, borderColor: C.line }}>
+    <aside className="absolute bottom-0 left-0 top-0 w-[200px] border-r" style={{ background: C.bg, borderColor: C.line }}>
       <div className="flex h-11 items-center border-b px-4" style={{ borderColor: C.line }}>
         <span className="flex items-baseline gap-1 text-[15px] tracking-[-0.04em]">
           <span className="font-semibold text-[#f4f4f5]">
@@ -572,27 +572,17 @@ export default function MailVideo({ active }: { active: boolean }) {
         className="absolute left-0 top-0 origin-top-left overflow-hidden font-sans text-[#f4f4f5]"
         style={{ width: W, height: H, background: C.bg, transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.z})`, transition: `transform ${CAMERA_MS}ms ${EASE}` }}
       >
-        {/* browser chrome, like the hero loop */}
-        <div className="absolute inset-x-0 top-0 flex h-[28px] items-center gap-1.5 border-b px-3" style={{ background: '#1a1918', borderColor: C.line }}>
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-          <span className="mx-auto rounded-md px-10 py-0.5 font-mono text-[10.5px]" style={{ background: 'rgba(255,255,255,0.05)', color: C.muted }}>
-            Forke Mail
-          </span>
-        </div>
-
         <Sidebar active={active_nav} />
 
         {/* top bar: breadcrumb */}
-        <div className="absolute left-[200px] right-0 top-[28px] flex h-11 items-center gap-2 border-b px-6 text-[12px]" style={{ borderColor: C.line }}>
+        <div className="absolute left-[200px] right-0 top-0 flex h-11 items-center gap-2 border-b px-6 text-[12px]" style={{ borderColor: C.line }}>
           <span style={{ color: C.muted }}>{s.screen === 'domains' ? 'Configuration' : 'Sending'}</span>
           <span style={{ color: C.faint }}>/</span>
           <span className="font-medium text-[#f4f4f5]">{s.screen === 'domains' ? 'Domains' : 'Transactional'}</span>
         </div>
 
         {/* page */}
-        <main className="absolute bottom-0 left-[200px] right-0 top-[72px] px-6 py-5">
+        <main className="absolute bottom-0 left-[200px] right-0 top-11 px-6 py-5">
           <div key={s.screen} className="animate-[menu-in_300ms_ease_both]">
             {s.screen === 'list' && <ListScreen />}
             {s.screen === 'message' && <MessageScreen events={s.events} />}
