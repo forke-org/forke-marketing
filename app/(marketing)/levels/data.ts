@@ -1,4 +1,4 @@
-import { Award, Flame, Sparkles, Trophy, Zap } from 'lucide-react'
+import { Award, Flame, Gem, Trophy, Zap } from 'lucide-react'
 
 /** The 25 levels in 5 tiers, XP rules and prestige ranks (same numbers as the live /levels page). */
 
@@ -49,7 +49,7 @@ export const TIERS = [
     id: 'elite',
     label: 'Elite tier',
     range: 'LVL 16–20',
-    icon: Sparkles,
+    icon: Gem,
     painting: '/paintings/ember-shore.webp',
     levels: [
       { lvl: 16, title: 'Runtime Knight', xp: '31,500 XP', unlock: 'Evolved profile card frames' },

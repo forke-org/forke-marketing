@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, X, ArrowRight, CornerDownLeft, Sparkles } from 'lucide-react'
+import { Search, X, ArrowRight, CornerDownLeft } from 'lucide-react'
 import { SECTIONS, ALL_ARTICLES, POPULAR_ARTICLES, type Article } from './content'
 import { cn } from '@/lib/utils/cn'
 
@@ -226,7 +226,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <div>
               <div className="flex items-center justify-between px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider text-white/40">
                 <span className="flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-accent" /> Popular documentation
+                  Popular documentation
                 </span>
                 <span>Quick links</span>
               </div>

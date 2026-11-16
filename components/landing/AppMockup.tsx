@@ -3,7 +3,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import {
   ArrowLeft,
-  ArrowRight,
   ArrowUp,
   BadgeCheck,
   Blocks,
@@ -22,7 +21,6 @@ import {
   GitBranch,
   GitMerge,
   GitPullRequest,
-  Globe,
   ImageIcon,
   LayoutDashboard,
   Loader2,
@@ -30,17 +28,13 @@ import {
   Mail,
   Paperclip,
   Play,
-  Plus,
-  RotateCw,
   Search,
   Settings,
   ShieldCheck,
-  Sparkles,
-  Star,
+  Bot,
   TerminalSquare,
   User,
   Wallet,
-  X,
 } from 'lucide-react'
 import { RiGithubFill } from '@remixicon/react'
 import { cn } from './primitives'
@@ -348,7 +342,7 @@ function TopBar({ crumb, bell }: { crumb: string; bell: State['bell'] }) {
         </span>
       </span>
       <span data-hero="find" className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-accent bg-accent px-3 text-[12px] font-medium text-[#1a0a00] shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_8px_24px_-8px_rgba(255,122,0,0.5)]">
-        <Sparkles className="h-3.5 w-3.5" /> Find a task
+        Find a task
       </span>
     </div>
   )
@@ -1019,7 +1013,7 @@ function Notifications({ open }: { open: boolean }) {
               n.icon === 'pay' ? 'bg-emerald-500/15 text-emerald-400' : n.icon === 'merge' ? 'bg-violet-500/15 text-violet-300' : 'bg-accent/15 text-accent',
             )}
           >
-            {n.icon === 'pay' ? <Wallet className="h-3.5 w-3.5" /> : n.icon === 'merge' ? <GitMerge className="h-3.5 w-3.5" /> : <Sparkles className="h-3.5 w-3.5" />}
+            {n.icon === 'pay' ? <Wallet className="h-3.5 w-3.5" /> : n.icon === 'merge' ? <GitMerge className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-[12px] font-medium text-white">{n.title}</p>
@@ -1063,121 +1057,6 @@ function Cursor({ c }: { c: State['cursor'] }) {
       <svg width="20" height="20" viewBox="0 0 24 24" className="-translate-x-[3px] -translate-y-[2px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]" style={{ transform: c.press ? 'scale(0.85)' : 'scale(1)', transition: 'transform 120ms' }}>
         <path d="M4 3l16 7.5-6.8 1.9L10.6 19z" fill="white" stroke="#151414" strokeWidth="1.4" strokeLinejoin="round" />
       </svg>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------- the browser window around the dashboard
-
-function YouTubeIcon({ className = 'h-3.5 w-3.5' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden>
-      <rect x="1" y="4.5" width="22" height="15" rx="4.5" fill="#FF0000" />
-      <path d="M10 8.8v6.4l5.6-3.2z" fill="#fff" />
-    </svg>
-  )
-}
-function StackOverflowIcon({ className = 'h-3.5 w-3.5' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden>
-      <path d="M17.4 21.6V15.2h2.1v8.5H3.4v-8.5h2.1v6.4z" fill="#BCBBBB" />
-      <path d="M7.3 14.6l9.9 2.1.4-2-9.9-2.1-.4 2zm1.3-4.9l9.2 4.3.9-1.9-9.2-4.3-.9 1.9zm2.6-4.5l7.8 6.5 1.3-1.6-7.8-6.5-1.3 1.6zM16.2.4l-1.7 1.2 6 8.1 1.7-1.2-6-8.1zM7.1 19.5h10.1v-2.1H7.1v2.1z" fill="#F48024" />
-    </svg>
-  )
-}
-function ForkeFavicon({ className = 'h-3.5 w-3.5' }: { className?: string }) {
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src="/forke-assets/favicon.png" alt="" className={cn('rounded-[3px] object-cover', className)} />
-}
-
-
-const PAGES: Record<View, { path: string; title: string }> = {
-  tasks: { path: '/tasks', title: 'Browse tasks · Forke' },
-  detail: { path: '/tasks/speed-up-search-trgm', title: 'Speed up the search endpoint…' },
-  review: { path: '/submissions', title: 'Submissions · Forke' },
-  earnings: { path: '/earnings', title: 'My earnings · Forke' },
-}
-
-const BOOKMARKS: { icon: ReactNode; label: string }[] = [
-  { icon: '🦆', label: 'Rubber duck' },
-  { icon: '☕', label: 'Chai fund' },
-  { icon: '🐛', label: "Bugs (don't open)" },
-  { icon: '📚', label: "Docs I'll read someday" },
-  { icon: <YouTubeIcon className="h-3 w-3" />, label: 'Lo-fi for focus' },
-  { icon: <StackOverflowIcon className="h-3 w-3" />, label: 'Stack Overflow (again)' },
-  { icon: <RiGithubFill className="h-3 w-3 text-white/80" />, label: 'My GitHub streak' },
-]
-
-function Tab({ title, icon, active, children }: { title: string; icon: ReactNode; active?: boolean; children?: ReactNode }) {
-  return (
-    <div
-      className={cn(
-        'relative flex h-[28px] min-w-0 items-center gap-2 rounded-t-[9px] px-3 text-[11.5px]',
-        active ? 'w-[230px] bg-[#232120] text-white/90' : 'w-[170px] text-white/45',
-      )}
-    >
-      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center">{icon}</span>
-      <span className="truncate">{title}</span>
-      {children}
-      <X className="ml-auto h-3 w-3 shrink-0 text-white/30" />
-      {!active && <span className="absolute -right-px top-2 h-3.5 w-px bg-white/10" />}
-    </div>
-  )
-}
-
-function BrowserChrome({ view }: { view: View }) {
-  const page = PAGES[view]
-  return (
-    <div className="shrink-0 bg-[#1a1918]">
-      {/* tab strip */}
-      <div className="flex h-[34px] items-end gap-0.5 px-3">
-        <span className="mb-[9px] mr-3 flex gap-2">
-          <i className="h-3 w-3 rounded-full bg-[#ff5f57]" />
-          <i className="h-3 w-3 rounded-full bg-[#febc2e]" />
-          <i className="h-3 w-3 rounded-full bg-[#28c840]" />
-        </span>
-        <Tab title={page.title} icon={<ForkeFavicon />} active />
-        <Tab title="postgres trigram index slow? - Stack Overflow" icon={<StackOverflowIcon />} />
-        <Tab title="localhost:3000" icon={<Globe className="h-3.5 w-3.5 text-white/45" />} />
-        <Tab title="lo-fi beats to ship to - YouTube" icon={<YouTubeIcon />}>
-          <span className="flex h-3 items-end gap-[1.5px]">
-            {[0, 1, 2].map((i) => (
-              <i key={i} className="w-[2px] origin-bottom rounded-full bg-accent animate-[eq_900ms_ease-in-out_infinite]" style={{ height: 10, animationDelay: `${i * 150}ms` }} />
-            ))}
-          </span>
-        </Tab>
-        <span className="mb-[5px] ml-1 flex h-5 w-5 items-center justify-center rounded-md text-white/40">
-          <Plus className="h-3.5 w-3.5" />
-        </span>
-      </div>
-      {/* toolbar */}
-      <div className="relative flex h-[32px] items-center gap-2.5 bg-[#232120] px-3">
-        <ArrowLeft className="h-3.5 w-3.5 text-white/55" />
-        <ArrowRight className="h-3.5 w-3.5 text-white/25" />
-        <RotateCw className="h-3.5 w-3.5 text-white/55" />
-        <div className="flex h-[24px] flex-1 items-center gap-2 rounded-full bg-[#151414] px-3 text-[12px]">
-          <Lock className="h-3 w-3 text-white/40" />
-          <span key={view} className="truncate animate-[url-in_350ms_ease_both]">
-            <span className="text-white/85">dashboard.forke.space</span>
-            <span className="text-white/45">{page.path}</span>
-          </span>
-          <Star className="ml-auto h-3.5 w-3.5 text-white/35" />
-        </div>
-        <span className="flex h-5 w-5 items-center justify-center rounded bg-[#4285f4]/20 text-[10px]">🧩</span>
-        <span className="flex h-5 w-5 items-center justify-center rounded bg-emerald-500/20 text-[10px]">🛡️</span>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={PHOTO} alt="" className="h-5 w-5 rounded-full object-cover" />
-        {/* page load bar, replays on every navigation */}
-        <span key={`load-${view}`} className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-accent to-[#FFB25C] animate-[page-load_700ms_ease-out_forwards]" />
-      </div>
-      {/* bookmarks */}
-      <div className="flex h-[24px] items-center gap-1 border-b border-white/[0.07] bg-[#232120] px-3 text-[11px] text-white/60">
-        {BOOKMARKS.map((b) => (
-          <span key={b.label} className="flex shrink-0 items-center gap-1.5 rounded-md px-2 py-0.5">
-            <span className="flex h-3 w-3 items-center justify-center text-[10.5px]">{b.icon}</span> {b.label}
-          </span>
-        ))}
-      </div>
     </div>
   )
 }
@@ -1329,9 +1208,6 @@ export default function AppMockup() {
         @keyframes hero-ping { from { transform: translate(-50%,-50%) scale(0.4); opacity: .7 } to { transform: translate(-50%,-50%) scale(1.9); opacity: 0 } }
         @keyframes bell-ring { 0%,50%,100% { transform: rotate(0) } 8% { transform: rotate(16deg) } 16% { transform: rotate(-14deg) } 24% { transform: rotate(10deg) } 32% { transform: rotate(-8deg) } 40% { transform: rotate(4deg) } }
         @keyframes vs-progress { from { transform: translateX(-100%) } to { transform: translateX(300%) } }
-        @keyframes eq { 0%,100% { transform: scaleY(0.3) } 50% { transform: scaleY(1) } }
-        @keyframes url-in { from { opacity: 0; transform: translateY(3px) } to { opacity: 1; transform: none } }
-        @keyframes page-load { 0% { transform: scaleX(0); opacity: 1 } 80% { transform: scaleX(1); opacity: 1 } 100% { transform: scaleX(1); opacity: 0 } }
       `}</style>
 
       <div
@@ -1339,12 +1215,11 @@ export default function AppMockup() {
         className="absolute left-0 top-0 origin-top-left overflow-hidden"
         style={{ width: W, height: cfg.winH, transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.z})`, transition: `transform 1400ms ${EASE}` }}
       >
-        {/* the browser with the Forke dashboard; switching apps slides it aside like a macOS app switch */}
+        {/* the Forke dashboard; switching apps slides it aside like a macOS app switch */}
         <div
           className="absolute inset-0 flex flex-col"
           style={{ opacity: code ? 0 : 1, transform: code ? 'translateX(-4%) scale(0.94)' : 'none', transition: `opacity 500ms, transform 700ms ${EASE}` }}
         >
-          <BrowserChrome view={s.view} />
           <div className="relative flex min-h-0 flex-1">
           <Sidebar view={s.view} xp={s.paid ? 64 : 41} />
           <div className="relative flex min-w-0 flex-1 flex-col">

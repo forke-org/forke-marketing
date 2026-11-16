@@ -9,7 +9,8 @@ import {
   LoaderCircle,
   RotateCcw,
   ShieldCheck,
-  Sparkles,
+  IdCard,
+  Plug,
   Trophy,
   Wallet,
   Workflow,
@@ -311,7 +312,7 @@ export default function Bento() {
           {/* the one loud card */}
           <div className="relative flex min-h-[300px] flex-col overflow-hidden rounded-[4px] bg-accent p-8 text-white shadow-[0_1px_0_rgba(255,255,255,0.18)_inset,0_10px_30px_-12px_rgba(255,122,0,0.5)]">
             <div aria-hidden className="dot-grid absolute inset-0 opacity-25 [mask-image:linear-gradient(200deg,transparent_30%,#000)]" />
-            <Sparkles aria-hidden className="absolute -bottom-10 -right-10 h-56 w-56 text-white/10" strokeWidth={1} />
+            <IdCard aria-hidden className="absolute -bottom-10 -right-10 h-56 w-56 text-white/10" strokeWidth={1} />
             <Layers className="relative h-6 w-6" />
             <p className="relative mt-4 text-[20px] font-medium tracking-[-0.01em]">One profile for all your work</p>
             <p className="relative mt-2 text-[15.5px] leading-6 text-white/90">
@@ -335,7 +336,7 @@ export default function Bento() {
             <ReviewConsole />
           </Panel>
 
-          <Panel icon={<Sparkles className="h-5 w-5" />} title="Bring your own stack" body="GitHub or GitLab, your editor, your AI tools. Forke fits around them.">
+          <Panel icon={<Plug className="h-5 w-5" />} title="Bring your own stack" body="GitHub or GitLab, your editor, your AI tools. Forke fits around them.">
             <div className={cn('absolute inset-0', fill)}>
               <OrbitVisual />
             </div>

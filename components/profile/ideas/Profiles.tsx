@@ -4,7 +4,7 @@
 import { useId, useState, type ComponentType, type ReactNode } from 'react'
 import Link from 'next/link'
 import { RiGithubFill, RiLinkedinFill } from '@remixicon/react'
-import { BadgeCheck, Calendar, Flame, GitMerge, GraduationCap, Lock, MapPin, Pin, Search, Share2, Sparkles, Star, Trophy } from 'lucide-react'
+import { BadgeCheck, Calendar, Flame, GitMerge, GraduationCap, Lock, MapPin, Pin, Search, Share2, Star, Trophy } from 'lucide-react'
 import { Painting, Section, cn } from '@/components/landing/primitives'
 import { ACHIEVEMENTS, ACHIEVEMENT_TRACK, DEMO, REVIEWS, WORK, inr, type Work } from './demo'
 import Heatmap from './Heatmap'
@@ -48,7 +48,7 @@ function Buttons({ className = '' }: { className?: string }) {
   return (
     <div className={cn('flex flex-wrap gap-2.5', className)}>
       <button className="inline-flex h-10 items-center gap-2 rounded-full border border-accent bg-accent px-4 text-[14px] font-medium text-[#1a0a00]">
-        <Sparkles className="h-4 w-4" /> Invite to a task
+        Invite to a task
       </button>
       <button className="inline-flex h-10 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 text-[14px] text-white/85">
         <Share2 className="h-4 w-4" /> Share
@@ -297,7 +297,7 @@ export function ProfileReadme({ tab = 'overview', base = '' }: { tab?: ProfileTa
           {/* phone: two equal buttons, then icon row. laptop: the usual row */}
           <div className="mt-5 grid grid-cols-2 gap-2.5 lg:hidden">
             <button className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-accent bg-accent px-4 text-[14px] font-medium text-[#1a0a00]">
-              <Sparkles className="h-4 w-4" /> Invite to a task
+              Invite to a task
             </button>
             <button className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 text-[14px] text-white/85">
               <Share2 className="h-4 w-4" /> Share

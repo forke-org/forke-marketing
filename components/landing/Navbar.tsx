@@ -158,7 +158,7 @@ function MenuLinks({ menu, onPick, onHover }: { menu: SiteMenu; onPick: () => vo
 
 /**
  * The sticky bar, a touch narrower than the inner rails (1200px): on the landing page it fades in once the hero has
- * scrolled completely away.
+ * scrolled completely away, and fades out again when the "Supported by" strip comes into view.
  *
  * Its menus (Company, Built for, Resources, Contact) open by growing the bar downward into one sheet of glass: links
  * with one-line hints on the left, a bento on the right (Resources shows the newest posts). One element carries the
@@ -174,7 +174,11 @@ export function StickyNav({ always = false }: { always?: boolean }) {
     if (always) return
     const onScroll = () => {
       const hero = document.querySelector('[data-hero-frame]')
-      setShow(hero ? hero.getBoundingClientRect().bottom <= 0 : window.scrollY > window.innerHeight)
+      const past = hero ? hero.getBoundingClientRect().bottom <= 0 : window.scrollY > window.innerHeight
+      // and it steps aside again once the "Supported by" strip comes into view, for the rest of the page
+      const end = document.querySelector('[data-supported-by]')
+      const ending = !!end && end.getBoundingClientRect().top < window.innerHeight * 0.9
+      setShow(past && !ending)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
