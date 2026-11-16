@@ -518,10 +518,13 @@ body {
   overflow-x: clip;
 }
 
-/* Firefox scrollbar style matching the macOS layout with brand colors */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-accent) transparent;
+/* Firefox scrollbar style matching the macOS layout with brand colors.
+   In the base layer, so a [scrollbar-width:none] utility can still hide a scrollbar (unlayered CSS beats every layer). */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent) transparent;
+  }
 }
 
 /* Hide scrollbar but keep scroll behaviour */
@@ -960,3 +963,4 @@ img {
 @keyframes menu-from-left { from { opacity: 0; transform: translateX(-12px) } to { opacity: 1; transform: none } }
 @keyframes badge-shine { 0% { transform: translateX(-100%) } 55%, 100% { transform: translateX(300%) } }
 @keyframes caret { 50% { opacity: 0 } }
+@keyframes slide-fill { from { width: 0 } to { width: 100% } }

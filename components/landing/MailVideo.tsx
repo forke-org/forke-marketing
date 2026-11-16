@@ -578,7 +578,7 @@ export default function MailVideo({ active }: { active: boolean }) {
           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
           <span className="mx-auto rounded-md px-10 py-0.5 font-mono text-[10.5px]" style={{ background: 'rgba(255,255,255,0.05)', color: C.muted }}>
-            mail.forke.space
+            Forke Mail
           </span>
         </div>
 

@@ -1,4 +1,5 @@
 import { SITE_MENUS, isExternal } from './siteMenus'
+import { SoonBadge } from './NavBentos'
 import Link from 'next/link'
 import { ArrowUp, ArrowUpRight } from 'lucide-react'
 import {
@@ -28,10 +29,18 @@ const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
 ]
 
 // the same four menus as the navbar
-const COLUMNS: { title: string; links: FooterLink[] }[] = SITE_MENUS
+const COLUMNS: { title: string; links: (FooterLink & { soon?: boolean })[] }[] = SITE_MENUS
 
 
-function FooterAnchor({ link }: { link: FooterLink }) {
+function FooterAnchor({ link }: { link: FooterLink & { soon?: boolean } }) {
+  if (link.soon) {
+    return (
+      <span className="inline-flex items-center gap-2 text-sm text-ink/85">
+        {link.label}
+        <SoonBadge />
+      </span>
+    )
+  }
   const cls = 'group inline-flex items-center gap-2 text-sm text-ink/85 transition-colors hover:text-white'
   const body = (
     <>

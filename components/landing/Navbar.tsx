@@ -7,7 +7,8 @@ import { ArrowUpRight, ChevronDown, LayoutDashboard, LogIn, UserPlus } from 'luc
 import { Logo, WaitlistButton, cn } from './primitives'
 import { dashboardUrl, useSiteOpen } from './useWaitlisterView'
 import { NAV_MENUS, isExternal, type SiteMenu } from './siteMenus'
-import { BlogBento, BuiltForBento, ContactBento, ForkeMailPromo, NewBadge, type RecentPost } from './NavBentos'
+import { BlogBento, BuiltForBento, ForkeMailPromo, SoonBadge, type RecentPost } from './NavBentos'
+import { ContactBento } from './ContactBento'
 
 /**
  * The navbar's call to action:
@@ -122,20 +123,32 @@ function MenuLinks({ menu, onPick, onHover }: { menu: SiteMenu; onPick: () => vo
       <ul className="mt-2.5 space-y-0.5">
         {menu.links.map((l, i) => (
           <li key={l.label} onPointerEnter={() => onHover(i)} onPointerLeave={() => onHover(null)}>
-            <MenuHref
-              href={l.href}
-              onPick={onPick}
-              className={cn('group flex items-start justify-between gap-3 rounded-lg px-2.5 py-[7px] transition-colors duration-150 hover:bg-white/[0.06]', FOCUS)}
-            >
-              <span className="min-w-0">
-                <span className="flex items-center gap-2 text-[14.5px] leading-5 text-white/85 transition-colors group-hover:text-white">
-                  {l.label}
-                  {l.badge === 'new' && <NewBadge />}
+            {l.soon ? (
+              <div className="flex items-start justify-between gap-3 rounded-lg px-2.5 py-[7px]">
+                <span className="min-w-0">
+                  <span className="flex items-center gap-2 text-[14.5px] leading-5 text-white/85">
+                    {l.label}
+                    <SoonBadge />
+                  </span>
+                  {l.desc && <span className="mt-0.5 block truncate text-[12.5px] leading-4 text-white/40">{l.desc}</span>}
                 </span>
-                {l.desc && <span className="mt-0.5 block truncate text-[12.5px] leading-4 text-white/40 transition-colors group-hover:text-white/55">{l.desc}</span>}
-              </span>
-              <Slant className="mt-0.5" />
-            </MenuHref>
+              </div>
+            ) : (
+              <MenuHref
+                href={l.href}
+                onPick={onPick}
+                className={cn('group flex items-start justify-between gap-3 rounded-lg px-2.5 py-[7px] transition-colors duration-150 hover:bg-white/[0.06]', FOCUS)}
+              >
+                <span className="min-w-0">
+                  <span className="flex items-center gap-2 text-[14.5px] leading-5 text-white/85 transition-colors group-hover:text-white">
+                    {l.label}
+                    {l.soon && <SoonBadge />}
+                  </span>
+                  {l.desc && <span className="mt-0.5 block truncate text-[12.5px] leading-4 text-white/40 transition-colors group-hover:text-white/55">{l.desc}</span>}
+                </span>
+                <Slant className="mt-0.5" />
+              </MenuHref>
+            )}
           </li>
         ))}
       </ul>
@@ -358,7 +371,7 @@ export function StickyNav({ always = false }: { always?: boolean }) {
                 <div key={shown} className={cn('grid h-[312px] grid-cols-[300px_minmax(0,1fr)] gap-3 px-2', slide)}>
                   <MenuLinks menu={menu} onPick={close} onHover={setHoverLink} />
                   <div className="min-w-0 py-3 pr-1">
-                    {menu.bento === 'mail' && <ForkeMailPromo active={open === shown} href={menu.links.find((l) => l.badge === 'new')?.href ?? 'https://mail.forke.space'} />}
+                    {menu.bento === 'mail' && <ForkeMailPromo active={open === shown} />}
                     {menu.bento === 'builtFor' && <BuiltForBento links={menu.links} focus={hoverLink} />}
                     {menu.bento === 'blogs' && <BlogBento posts={posts} onPick={close} />}
                     {menu.bento === 'contact' && <ContactBento onPick={close} />}

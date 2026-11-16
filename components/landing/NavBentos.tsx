@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { ArrowUpRight, Check, Copy } from 'lucide-react'
-import { RiGithubFill, RiInstagramLine, RiLinkedinBoxFill, RiTwitterXFill } from '@remixicon/react'
 import MailVideo from './MailVideo'
+import { dither } from './dither'
 import { cn } from './primitives'
 import { formatBlogDate } from '@/components/blog/BlogCard'
 import type { SiteLink } from './siteMenus'
@@ -18,11 +18,11 @@ const tile = 'relative overflow-hidden rounded-xl border border-white/[0.07] bg-
 const eyebrow = 'font-mono text-[10.5px] uppercase tracking-[0.14em] text-white/45'
 const FOCUS = 'outline-none focus-visible:ring-2 focus-visible:ring-accent/60'
 
-/** The shiny "New" tag: a soft orange pill with a light sweep passing over it every few seconds. */
-export function NewBadge() {
+/** The shiny "Soon" tag: a soft orange pill with a light sweep passing over it every few seconds. */
+export function SoonBadge() {
   return (
     <span className="relative inline-flex h-[18px] shrink-0 items-center overflow-hidden rounded-full border border-accent/40 bg-accent/[0.12] px-1.5 text-[9.5px] font-semibold uppercase tracking-[0.1em] text-accent-text">
-      New
+      Soon
       <span
         aria-hidden
         className="pointer-events-none absolute inset-y-0 left-0 w-1/2 -translate-x-full animate-[badge-shine_3.2s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/55 to-transparent"
@@ -34,10 +34,10 @@ export function NewBadge() {
 // ---------------------------------------------------------------- Company: Forke Mail
 
 /** The Forke Mail promo: the pitch on the left, a short directed loop of the real dashboard on the right. */
-export function ForkeMailPromo({ active, href }: { active: boolean; href: string }) {
+export function ForkeMailPromo({ active }: { active: boolean }) {
   return (
     <div className="grid h-full grid-cols-12 gap-2">
-      <a href={href} target="_blank" rel="noopener noreferrer" className={cn(tile, 'group col-span-4 flex flex-col p-4', FOCUS)}>
+      <div className={cn(tile, 'col-span-4 flex flex-col p-4')}>
         <div
           aria-hidden
           className="pointer-events-none absolute -left-16 -top-20 h-56 w-56 rounded-full"
@@ -50,24 +50,23 @@ export function ForkeMailPromo({ active, href }: { active: boolean; href: string
             </span>
             <span className="text-white/50">mail</span>
           </span>
-          <NewBadge />
+          <SoonBadge />
         </div>
         <p className="mt-3 text-[16px] font-medium leading-snug tracking-[-0.02em] text-white">
           Email for developers.
           <span className="block text-white/45">Transactional and broadcasts, one API.</span>
         </p>
-        <ul className="mt-3.5 space-y-1.5 text-[12px] text-white/60">
-          {['Sign-in codes and receipts skip the queue', 'Broadcasts with one-click unsubscribe', 'DKIM, SPF and DMARC records shown for you', 'Bounces and complaints suppressed'].map((f) => (
+        <ul className="mb-4 mt-3 space-y-1.5 text-[12px] text-white/60">
+          {['Codes and receipts skip the queue', 'One-click unsubscribe on broadcasts', 'DKIM, SPF and DMARC, guided', 'Bounces suppressed for you'].map((f) => (
             <li key={f} className="flex items-center gap-2">
               <Check className="h-3 w-3 shrink-0 text-accent-text" /> {f}
             </li>
           ))}
         </ul>
-        <span className="mt-auto inline-flex items-center gap-1.5 self-start rounded-lg bg-white/[0.08] px-3 py-1.5 text-[12.5px] text-white/90 transition-colors group-hover:bg-white/[0.12]">
-          Try Forke Mail
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        <span className="mt-auto inline-flex h-8 items-center gap-2 self-start rounded-lg border border-white/[0.08] bg-white/[0.04] px-3 text-[12px] text-white/60">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" /> Launching soon
         </span>
-      </a>
+      </div>
       <div className={cn(tile, 'col-span-8')}>
         <MailVideo active={active} />
       </div>
@@ -83,22 +82,6 @@ export function ForkeMailPromo({ active, href }: { active: boolean; href: string
  * same chunky ember look. Each slide reads /public/built-for/<name>.webp; while that file is missing it draws its own
  * scene and dithers that instead.
  */
-const DITHER_PALETTE: [number, number, number][] = [
-  [21, 20, 20], // #151414
-  [74, 32, 10], // ember
-  [255, 122, 0], // #ff7a00
-  [240, 227, 222], // cream
-]
-const BAYER = [
-  [0, 32, 8, 40, 2, 34, 10, 42],
-  [48, 16, 56, 24, 50, 18, 58, 26],
-  [12, 44, 4, 36, 14, 46, 6, 38],
-  [60, 28, 52, 20, 62, 30, 54, 22],
-  [3, 35, 11, 43, 1, 33, 9, 41],
-  [51, 19, 59, 27, 49, 17, 57, 25],
-  [15, 47, 7, 39, 13, 45, 5, 37],
-  [63, 31, 55, 23, 61, 29, 53, 21],
-]
 const CELL = 3 // css px per dither dot
 const SLIDE_MS = 2200 // time on each slide
 
@@ -194,46 +177,6 @@ const SLIDES: Slide[] = [
   },
 ]
 
-/**
- * Ordered-dither whatever is drawn into `src` (w × h) onto `out`, in the site's palette. Levels are stretched per
- * image first (its own 2nd–99th percentile of brightness), so dark paintings still use the whole palette.
- */
-function dither(src: CanvasRenderingContext2D, out: HTMLCanvasElement, w: number, h: number) {
-  const data = src.getImageData(0, 0, w, h)
-  const px = data.data
-  const n = DITHER_PALETTE.length - 1
-  const lum = new Float32Array(w * h)
-  const hist = new Uint32Array(256)
-  for (let k = 0; k < w * h; k++) {
-    const l = (0.2126 * px[k * 4] + 0.7152 * px[k * 4 + 1] + 0.0722 * px[k * 4 + 2]) / 255
-    lum[k] = l
-    hist[Math.min(255, Math.round(l * 255))]++
-  }
-  const pct = (q: number) => {
-    let acc = 0
-    for (let v = 0; v < 256; v++) if ((acc += hist[v]) >= q * w * h) return v / 255
-    return 1
-  }
-  const lo = pct(0.02)
-  const hi = Math.max(lo + 0.05, pct(0.99))
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      const k = y * w + x
-      const v = Math.pow(Math.min(1, Math.max(0, (lum[k] - lo) / (hi - lo))), 0.8) * n
-      const base = Math.floor(v)
-      const level = Math.min(n, base + (v - base > (BAYER[y % 8][x % 8] + 0.5) / 64 ? 1 : 0))
-      const [r, g, b] = DITHER_PALETTE[level]
-      px[k * 4] = r
-      px[k * 4 + 1] = g
-      px[k * 4 + 2] = b
-      px[k * 4 + 3] = 255
-    }
-  }
-  out.width = w
-  out.height = h
-  out.getContext('2d')?.putImageData(data, 0, 0)
-}
-
 function DitheredSlide({ slide, w, h, shown }: { slide: Slide; w: number; h: number; shown: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
@@ -318,107 +261,19 @@ export function BuiltForBento({ links, focus }: { links: SiteLink[]; focus: numb
         <div className="mt-4 flex gap-1.5">
           {SLIDES.map((s, k) => (
             <span key={s.title} className="h-[3px] w-8 overflow-hidden rounded-full bg-white/15">
-              <span
-                className="block h-full rounded-full bg-accent"
-                style={{ width: k === cur ? '100%' : '0%', transition: k === cur && !held ? `width ${SLIDE_MS}ms linear` : 'none' }}
-              />
+              {/* mounts fresh on each slide, so every bar (the first one too) fills from empty; full while held */}
+              {k === cur && (
+                <span
+                  className="block h-full rounded-full bg-accent"
+                  style={held ? { width: '100%' } : { animation: `slide-fill ${SLIDE_MS}ms linear both` }}
+                />
+              )}
             </span>
           ))}
         </div>
       </div>
       <ArrowUpRight className="absolute right-3.5 top-3.5 h-4 w-4 text-white/40 transition-[color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
     </Link>
-  )
-}
-
-// ---------------------------------------------------------------- Contact
-
-const SOCIALS = [
-  { label: 'X', handle: '@forkespace', href: 'https://x.com/forkespace', icon: RiTwitterXFill },
-  { label: 'LinkedIn', handle: 'Forke', href: 'https://www.linkedin.com/company/forke/', icon: RiLinkedinBoxFill },
-  { label: 'GitHub', handle: 'forke-org', href: 'https://github.com/forke-org', icon: RiGithubFill },
-  { label: 'Instagram', handle: '@forke.space', href: 'https://www.instagram.com/forke.space/', icon: RiInstagramLine },
-]
-const SUPPORT = 'support@forke.space'
-
-/** A compose window that opens the contact page, a copyable support address, and the socials as icon tiles. */
-export function ContactBento({ onPick }: { onPick: () => void }) {
-  const [copied, setCopied] = useState(false)
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(SUPPORT)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1600)
-    } catch {
-      /* clipboard blocked: the address stays visible to copy by hand */
-    }
-  }
-
-  return (
-    <div className="grid h-full grid-cols-12 grid-rows-2 gap-2">
-      <Link href="/contact" onClick={onPick} className={cn(tile, 'group col-span-7 row-span-2 flex flex-col p-4 transition-colors duration-200 hover:border-white/[0.14]', FOCUS)}>
-        <div className="flex items-center justify-between">
-          <p className={eyebrow}>Write to us</p>
-          <ArrowUpRight className="h-4 w-4 text-white/30 transition-[color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white/80" />
-        </div>
-        <div className="mt-3 flex-1 rounded-lg border border-white/[0.07] bg-black/25 text-[12px]">
-          <div className="flex items-center gap-1.5 border-b border-white/[0.06] px-3 py-2">
-            <span className="h-2 w-2 rounded-full bg-white/15" />
-            <span className="h-2 w-2 rounded-full bg-white/15" />
-            <span className="h-2 w-2 rounded-full bg-white/15" />
-            <span className="ml-2 text-[11px] text-white/35">New message</span>
-          </div>
-          <div className="space-y-1.5 px-3 py-2.5">
-            <p className="text-white/40">
-              To <span className="ml-1.5 rounded bg-white/[0.06] px-1.5 py-px text-white/80">The Forke team</span>
-            </p>
-            <p className="border-b border-white/[0.06] pb-1.5 text-white/40">
-              Subject <span className="ml-1.5 text-white/80">Hi Forke</span>
-            </p>
-            <p className="pt-0.5 leading-5 text-white/55">
-              We&rsquo;d love to hear what you&rsquo;re building
-              <span className="ml-0.5 inline-block h-3.5 w-px translate-y-0.5 animate-[caret_1s_steps(1)_infinite] bg-white/70" />
-            </p>
-          </div>
-        </div>
-        <span className="mt-3 inline-flex items-center gap-1.5 self-start rounded-lg bg-white/[0.08] px-3 py-1.5 text-[12.5px] text-white/90 transition-colors group-hover:bg-white/[0.12]">
-          Open the contact form
-        </span>
-      </Link>
-
-      <div className={cn(tile, 'col-span-5 flex flex-col justify-between p-3.5')}>
-        <p className={eyebrow}>Email</p>
-        <div className="flex items-center justify-between gap-2">
-          <a href={`mailto:${SUPPORT}`} className={cn('truncate text-[13.5px] text-white/90 hover:text-white', FOCUS)}>
-            {SUPPORT}
-          </a>
-          <button
-            type="button"
-            onClick={copy}
-            aria-label="Copy email address"
-            className={cn('flex h-7 shrink-0 items-center gap-1 rounded-md border border-white/10 bg-white/[0.05] px-2 text-[11px] text-white/70 transition-colors hover:text-white', FOCUS)}
-          >
-            {copied ? <Check className="h-3 w-3 text-emerald-300" /> : <Copy className="h-3 w-3" />}
-            {copied ? 'Copied' : 'Copy'}
-          </button>
-        </div>
-      </div>
-
-      <div className="col-span-5 grid grid-cols-4 gap-2">
-        {SOCIALS.map(({ label, href, icon: Icon }) => (
-          <a
-            key={label}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={label}
-            className={cn(tile, 'group flex items-center justify-center transition-colors duration-200 hover:border-white/[0.16] hover:bg-white/[0.07]', FOCUS)}
-          >
-            <Icon className="h-5 w-5 text-white/55 transition-colors group-hover:text-white" />
-          </a>
-        ))}
-      </div>
-    </div>
   )
 }
 

@@ -220,7 +220,7 @@ export default function ProfileView({
 
       {/* main */}
       <div className="min-w-0">
-        <nav data-tour="tabs" className={cn('flex gap-6 overflow-x-auto border-b text-[14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden', line)}>
+        <nav data-tour="tabs" className={cn('flex gap-6 overflow-x-auto overflow-y-hidden border-b text-[14px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden', line)}>
           {tabs.map((t) => (
             <button
               key={t.key}
