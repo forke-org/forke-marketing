@@ -332,16 +332,18 @@ export function BlogBento({ posts, onPick }: { posts: RecentPost[] | null; onPic
               ) : (
                 <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_100%_0%,rgba(255,122,0,0.16),transparent_60%)]" />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+              {/* a vignette that deepens toward the bottom, so the date and title read over any cover */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(10,9,9,0.96)_0%,rgba(10,9,9,0.82)_28%,rgba(10,9,9,0.35)_58%,transparent_80%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_0%,transparent_55%,rgba(10,9,9,0.45)_100%)]" />
               <span className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full border border-white/15 bg-black/30 backdrop-blur-md">
                 <ArrowUpRight className="h-3.5 w-3.5 text-white/75 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </span>
               <div className="absolute inset-x-0 bottom-0 p-3.5">
-                <p className="font-mono text-[10.5px] text-white/55">
+                <p className="font-mono text-[10.5px] text-white/70 [text-shadow:0_1px_8px_rgba(0,0,0,0.8)]">
                   {date && <>{date} · </>}
                   {post.readingMinutes} min read
                 </p>
-                <p className={cn('mt-1 font-medium leading-snug tracking-[-0.01em] text-white', i === 0 ? 'line-clamp-3 text-[18px]' : 'line-clamp-2 text-[14px]')}>{post.title}</p>
+                <p className={cn('mt-1 font-medium leading-snug tracking-[-0.01em] text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.8)]', i === 0 ? 'line-clamp-3 text-[18px]' : 'line-clamp-2 text-[14px]')}>{post.title}</p>
               </div>
             </Link>
           )
