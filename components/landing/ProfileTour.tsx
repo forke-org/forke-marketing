@@ -30,7 +30,8 @@ const CHROME_H = 38
 const NAV_H = 52
 const VIEW_H = STAGE_H - CHROME_H - NAV_H
 const EASE = 'cubic-bezier(0.65, 0, 0.35, 1)'
-const MOVE_MS = 800
+const MOVE_MS = 1000 // camera glide
+const CURSOR_MS = 550 // cursor move
 const OVERHANG_X = 48 // px the window runs past the painting's right edge: more than the parallax drift, so it never shows the painting
 const OVERHANG_Y = 80 // and past its bottom edge: generous, so the painting's scroll parallax never shows a strip below it
 const FRAME_W = 1152 // the section's width on a laptop; smaller screens get this whole card scaled down
@@ -102,8 +103,8 @@ const ACHIEVEMENTS: Achievement[] = [
 const PHOTO = 'https://i.pravatar.cc/400?img=12'
 
 const PROFILE: DevProfile = {
-  username: 'kiran',
-  name: 'Kiran Rao',
+  username: 'johndoe',
+  name: 'John Doe',
   headline: 'Backend engineer. Go, Postgres and payments.',
   bio: 'I build the boring parts that keep products up: rate limiters, payout jobs, sync engines and the queries behind them.\nMost of my Forke work is in Go and Postgres, with some React when a feature needs a face.',
   location: 'Bengaluru, India',
@@ -113,9 +114,9 @@ const PROFILE: DevProfile = {
   levelTitle: 'Architect',
   currentStreak: 26,
   joinedAt: '2026-03-02T00:00:00.000Z',
-  githubUrl: 'https://github.com/kiranrao',
-  linkedinUrl: 'https://linkedin.com/in/kiranrao',
-  websiteUrl: 'https://kiran.dev',
+  githubUrl: 'https://github.com/johndoe',
+  linkedinUrl: 'https://linkedin.com/in/johndoe',
+  websiteUrl: 'https://johndoe.dev',
   shipped: 38,
   avgRating: 4.7,
   stack: ['Go', 'Postgres', 'TypeScript', 'React', 'Redis', 'Next.js', 'Tailwind', 'React Native'],
@@ -125,9 +126,9 @@ const PROFILE: DevProfile = {
 }
 
 const CARD: Omit<CardData, 'quote'> = {
-  first: 'Kiran',
-  full: 'Kiran Rao',
-  username: 'kiran',
+  first: 'John',
+  full: 'John Doe',
+  username: 'johndoe',
   level: 9,
   title: 'Architect',
   shipped: 38,
@@ -159,21 +160,21 @@ type Focus = string[] | null // data-tour anchors to frame; null = wide shot of 
 type Scene = { tab: ProfileTab; focus: Focus; zoom?: number; hold: number; click?: ProfileTab; flip?: boolean }
 
 const SCENES: Scene[] = [
-  { tab: 'overview', focus: null, hold: 1900 },
-  { tab: 'overview', focus: ['card-face'], zoom: 1.8, hold: 1100 },
-  { tab: 'overview', focus: ['card-face'], zoom: 1.8, hold: 1500, flip: true },
-  { tab: 'overview', focus: ['readme'], zoom: 1.5, hold: 1900 },
-  { tab: 'overview', focus: ['pinned'], zoom: 1.5, hold: 2000 },
-  { tab: 'overview', focus: ['heatmap'], zoom: 1.45, hold: 1800 },
-  { tab: 'overview', focus: ['tabs'], zoom: 1.6, hold: 900, click: 'shipped' },
-  { tab: 'shipped', focus: ['shipped'], zoom: 1.4, hold: 1900 },
-  { tab: 'shipped', focus: ['tabs'], zoom: 1.6, hold: 900, click: 'reviews' },
-  { tab: 'reviews', focus: ['reviews'], zoom: 1.55, hold: 1900 },
-  { tab: 'reviews', focus: ['tabs'], zoom: 1.6, hold: 900, click: 'achievements' },
-  { tab: 'achievements', focus: ['achievements'], zoom: 1.4, hold: 2000 },
-  { tab: 'achievements', focus: ['tabs'], zoom: 1.6, hold: 900, click: 'overview' },
+  { tab: 'overview', focus: null, hold: 1400 },
+  { tab: 'overview', focus: ['card-face'], zoom: 1.8, hold: 800 },
+  { tab: 'overview', focus: ['card-face'], zoom: 1.8, hold: 1100, flip: true },
+  { tab: 'overview', focus: ['readme'], zoom: 1.5, hold: 1400 },
+  { tab: 'overview', focus: ['pinned'], zoom: 1.5, hold: 1500 },
+  { tab: 'overview', focus: ['heatmap'], zoom: 1.45, hold: 1350 },
+  { tab: 'overview', focus: ['tabs'], zoom: 1.6, hold: 700, click: 'shipped' },
+  { tab: 'shipped', focus: ['shipped'], zoom: 1.4, hold: 1400 },
+  { tab: 'shipped', focus: ['tabs'], zoom: 1.6, hold: 700, click: 'reviews' },
+  { tab: 'reviews', focus: ['reviews'], zoom: 1.55, hold: 1400 },
+  { tab: 'reviews', focus: ['tabs'], zoom: 1.6, hold: 700, click: 'achievements' },
+  { tab: 'achievements', focus: ['achievements'], zoom: 1.4, hold: 1500 },
+  { tab: 'achievements', focus: ['tabs'], zoom: 1.6, hold: 700, click: 'overview' },
 ]
-const CLICK_EXTRA = 350
+const CLICK_EXTRA = CURSOR_MS + 330 // time for the cursor to land and click before the hold counts down
 const sceneMs = (s: Scene) => MOVE_MS + s.hold + (s.click ? CLICK_EXTRA : 0)
 
 type Rect = { x: number; y: number; w: number; h: number }
@@ -291,8 +292,9 @@ export default function ProfileTour() {
         const pt = tabPoint(target)
         if (pt) setCursor((c) => ({ ...c, x: pt.x, y: pt.y }))
       })
-      later(MOVE_MS + 520, () => setCursor((c) => ({ ...c, press: true })))
-      later(MOVE_MS + 680, () => {
+      // the cursor lands, rests a beat, then presses for 150ms
+      later(MOVE_MS - 50 + CURSOR_MS + 180, () => setCursor((c) => ({ ...c, press: true })))
+      later(MOVE_MS - 50 + CURSOR_MS + 330, () => {
         setCursor((c) => ({ ...c, press: false }))
         setTab(target)
       })
@@ -361,7 +363,7 @@ export default function ProfileTour() {
               {/* cursor */}
               <div
                 className="pointer-events-none absolute left-0 top-0 z-10"
-                style={{ transform: `translate(${cursor.x}px, ${cursor.y}px)`, opacity: cursor.show ? 1 : 0, transition: `transform 650ms ${EASE}, opacity 250ms ease` }}
+                style={{ transform: `translate(${cursor.x}px, ${cursor.y}px)`, opacity: cursor.show ? 1 : 0, transition: `transform ${CURSOR_MS}ms ${EASE}, opacity 250ms ease` }}
               >
                 {cursor.press && <span className="absolute left-0 top-0 h-9 w-9 rounded-full bg-accent/45 animate-[tour-ping_450ms_ease-out_forwards]" />}
                 <MousePointer2

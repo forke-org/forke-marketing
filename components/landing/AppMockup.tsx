@@ -117,7 +117,7 @@ const COMMIT_MSG = 'Add trigram index for product search'
 const CHECKS = ['Build', 'Lint', 'Tests · 24 passed', 'Scope · only allowed files', 'AI review']
 
 const NOTIFS = [
-  { key: 'notif-pay', icon: 'pay', title: 'Payout released · ₹6,800', sub: 'Sent to kiran@okaxis via UPI', ago: 'now' },
+  { key: 'notif-pay', icon: 'pay', title: 'Payout released · ₹6,800', sub: 'Sent to johndoe@okaxis via UPI', ago: 'now' },
   { key: 'notif-merge', icon: 'merge', title: 'Rohan Mehta approved your PR', sub: 'acme/search-api#412 merged into main', ago: 'now' },
   { key: 'notif-ai', icon: 'ai', title: 'AI review passed · 94 / 100', sub: 'Merge-ready, no blocking issues', ago: '1m' },
 ] as const
@@ -228,7 +228,7 @@ const SCRIPT: Beat[] = [
   // 6 · get paid
   [32750, (s) => ({ ...release(s), bell: 0, view: 'earnings', shot: ['total'] })],
   [33200, { paid: true }],
-  [33900, { toast: { icon: 'paid', title: '₹6,800 paid to kiran@okaxis', sub: '+360 XP · Level 9 Architect' } }],
+  [33900, { toast: { icon: 'paid', title: '₹6,800 paid to johndoe@okaxis', sub: '+360 XP · Level 9 Architect' } }],
   [34600, { shot: ['toast'] }],
   // 7 · back to the board for the next one (this frame is the first frame)
   [36200, (s, at) => ({ ...go('find')(s, at), shot: ['find', 'bell'] })],
@@ -295,9 +295,9 @@ function Sidebar({ view, xp }: { view: View; xp: number }) {
             <img src={PHOTO} alt="" className="h-8 w-8 rounded-full border border-accent/25 object-cover" />
             <div className="min-w-0">
               <p className="flex items-center gap-1 text-[12.5px] text-white">
-                Kiran Rao <BadgeCheck className="h-3 w-3 text-accent" />
+                John Doe <BadgeCheck className="h-3 w-3 text-accent" />
               </p>
-              <p className="font-mono text-[10px] text-white/40">@kiran</p>
+              <p className="font-mono text-[10px] text-white/40">@johndoe</p>
             </div>
           </div>
           <div className="mt-2.5 flex justify-between font-mono text-[9.5px] text-white/40">
@@ -811,7 +811,7 @@ function VsCode({ s }: { s: State }) {
             </div>
             <div data-cam="vs-term-lines" className="w-fit px-4">
               <p>
-                <span className="text-[#73c991]">kiran@mbp</span> <span className="text-[#3b8eea]">search-api</span>{' '}
+                <span className="text-[#73c991]">john@mbp</span> <span className="text-[#3b8eea]">search-api</span>{' '}
                 <span className="text-[#c586c0]">(forke/trgm-search)</span> $ {s.tests > 0 ? 'npm test' : ''}
                 {s.tests === 0 && <span className="ml-0.5 inline-block h-3 w-1.5 animate-pulse bg-[#cccccc] align-middle" />}
               </p>
