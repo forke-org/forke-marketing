@@ -1,3 +1,4 @@
+import { SITE_MENUS, isExternal } from './siteMenus'
 import Link from 'next/link'
 import { ArrowUp, ArrowUpRight } from 'lucide-react'
 import {
@@ -26,44 +27,9 @@ const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
   { label: 'Email support@forke.space', href: 'mailto:support@forke.space', icon: <RiMailLine className={ic} /> },
 ]
 
-const COLUMNS: { title: string; links: FooterLink[] }[] = [
-  {
-    title: 'Company',
-    links: [
-      { label: "What's Forke", href: '/whats-forke' },
-      { label: 'Levels', href: '/levels' },
-      { label: 'Contact', href: '/contact' },
-      { label: 'Forke Mail', href: 'https://mail.forke.space' },
-    ],
-  },
-  {
-    title: 'Built for',
-    links: [
-      { label: 'Contributors', href: '/#how' },
-      { label: 'Repo owners', href: '/#faq' },
-      { label: 'Students', href: '/#how' },
-      { label: 'Open source', href: '/#use-cases' },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      { label: 'Blogs', href: '/blogs' },
-      { label: 'Changelog', href: '/changelog' },
-      { label: 'Docs', href: '/docs' },
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms of Service', href: '/terms' },
-      { label: 'Refund Policy', href: '/refund' },
-    ],
-  },
-]
+// the same four menus as the navbar
+const COLUMNS: { title: string; links: FooterLink[] }[] = SITE_MENUS
 
-const isExternal = (href: string) => href.startsWith('http') || href.startsWith('mailto:')
 
 function FooterAnchor({ link }: { link: FooterLink }) {
   const cls = 'group inline-flex items-center gap-2 text-sm text-ink/85 transition-colors hover:text-white'

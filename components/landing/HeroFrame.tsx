@@ -46,7 +46,8 @@ export default function HeroFrame({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <div className="relative">
+    // data-hero-frame: the sticky navbar fades in once this has scrolled completely out of view
+    <div data-hero-frame className="relative">
       <div ref={panel} className="relative isolate min-h-[100svh] overflow-hidden bg-[#0b0604] will-change-[clip-path]">
         {children}
       </div>

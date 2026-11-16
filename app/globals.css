@@ -949,3 +949,14 @@ img {
 @media (prefers-reduced-motion: reduce) {
   .drafted-code, .drafted-code.drawing { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; fill: rgba(255, 122, 0, 0.06); }
 }
+
+/* navbar dropdown: content crossfade when moving between menus */
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes menu-from-right { from { opacity: 0; transform: translateX(12px) } to { opacity: 1; transform: none } }
+@keyframes menu-from-left { from { opacity: 0; transform: translateX(-12px) } to { opacity: 1; transform: none } }
+@keyframes badge-shine { 0% { transform: translateX(-100%) } 55%, 100% { transform: translateX(300%) } }
+@keyframes caret { 50% { opacity: 0 } }

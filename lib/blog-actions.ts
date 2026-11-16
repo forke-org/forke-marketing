@@ -34,6 +34,22 @@ export async function getPublishedBlogs() {
     .orderBy(desc(blogs.createdAt))
 }
 
+/** The newest few published posts, for the navbar's Resources menu. */
+export async function getRecentBlogs(limit = 3) {
+  return db
+    .select({
+      slug: blogs.slug,
+      title: blogs.title,
+      coverImage: blogs.coverImage,
+      readingMinutes: blogs.readingMinutes,
+      publishedAt: blogs.publishedAt,
+    })
+    .from(blogs)
+    .where(eq(blogs.status, 'published'))
+    .orderBy(desc(blogs.createdAt))
+    .limit(limit)
+}
+
 /** A single published post by slug — for /blog/[slug]. Drafts return null. */
 export async function getPublishedBlogBySlug(slug: string) {
   const row = await db
