@@ -18,7 +18,6 @@ import {
   Users,
   type LucideIcon,
 } from 'lucide-react'
-import FitScale from './FitScale'
 import { Painting, ScrambleText, Section, cn } from './primitives'
 import { Badge, C, Primary, Secondary, TONE, type Tone } from './dashUi'
 
@@ -93,7 +92,7 @@ function Sidebar() {
           <span className="font-semibold text-[#f4f4f5]">
             forke<span className="text-[#ff7a00]">*</span>
           </span>
-          <span style={{ color: C.muted }}>owner</span>
+          <span style={{ color: C.muted }}>company</span>
         </span>
       </div>
       <div className="px-2.5 pt-2.5">
@@ -622,17 +621,16 @@ export default function ReviewSystem() {
         </ol>
 
         {/* the film: the same card as the "How it works" steps, the window bleeding off the painting's right and bottom edges */}
-        {/* on phones the film comes first, so the step being played sits right under it */}
-        <div className="order-first border-b border-white/[0.08] p-5 sm:p-8 lg:order-none lg:border-b-0">
-          <FitScale width={560} grow>
-            <Painting src="/paintings/ember-shore.webp" position="center 40%" className="rounded-[18px] border border-white/[0.06] pl-[8%] pt-12">
-              <div className="float-layer -mb-8 -mr-8 overflow-hidden rounded-xl pointer-events-none select-none border border-white/15 bg-[#0c0c0e]/92 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
-                <div className="relative h-[300px]">
-                  <Film step={step} t={shownT} />
-                </div>
+        {/* the film fills the box's right half: the painting is the cell itself, the window bleeding off its right and
+            bottom edges. On phones it comes first, so the step being played sits right under it. */}
+        <div className="relative order-first aspect-[560/380] border-b border-white/[0.08] lg:order-none lg:aspect-auto lg:min-h-[420px] lg:border-b-0">
+          <div className="absolute inset-0">
+            <Painting src="/paintings/ember-shore.webp" position="center 40%" className="h-full w-full">
+              <div className="float-layer pointer-events-none absolute -bottom-8 -right-8 left-8 top-8 sm:left-12 sm:top-12 select-none overflow-hidden rounded-tl-xl border-l border-t border-white/15 bg-[#151414] shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+                <Film step={step} t={shownT} />
               </div>
             </Painting>
-          </FitScale>
+          </div>
         </div>
       </div>
     </Section>

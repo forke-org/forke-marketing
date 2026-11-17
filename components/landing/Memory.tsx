@@ -4,7 +4,7 @@ import { BlurWords, Reveal, Section } from './primitives'
 import ProfileTour from './ProfileTour'
 
 /*
- * DEV ID: every merge lands on a public, verified Forke profile. Shown as a looping tour of the real profile page,
+ * Your Forke profile: every merge lands on a public, verified profile. Shown as a looping tour of the real profile page,
  * resting on a painting like the rest of the page. The tour keeps the desktop frame at every screen size.
  */
 
@@ -17,7 +17,7 @@ export default function Memory() {
           <BlurWords text="what you've shipped." className="block text-white/40" delay={200} />
         </h2>
         <Reveal className="mt-6 max-w-[560px] text-[17px] leading-7 text-white/50">
-          Every merge lands on your DEV ID: a public, verified record of your level, ID card, stack, ratings and paid work.
+          Every merge lands on your Forke profile: a public, verified record of your level, ID card, stack, ratings and paid work.
           It&rsquo;s the portfolio that gets you bigger bounties, so no more cover letters.
         </Reveal>
       </div>

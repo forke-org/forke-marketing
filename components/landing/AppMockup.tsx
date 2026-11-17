@@ -38,6 +38,7 @@ import {
 } from 'lucide-react'
 import { RiGithubFill } from '@remixicon/react'
 import { cn } from './primitives'
+import { Badge, C, Eyebrow, Primary, Secondary, StatStrip, TONE } from './dashUi'
 
 /*
  * Hero preview: a looping, code-driven "screen recording" of the developer side of Forke, built from the real
@@ -259,15 +260,40 @@ function useProgress(on: boolean, ms: number, ease: (k: number) => number = line
 }
 const easeOut = (k: number) => 1 - Math.pow(1 - k, 3)
 
-// ---------------------------------------------------------------- shell (sidebar + top bar), as in the dashboard
+// ---------------------------------------------------------------- shell (sidebar + top bar), in the Forke Mail style
+
+const ring = { background: C.surface, boxShadow: `0 0 0 1px ${C.line}` }
 
 function NavItem({ icon, label, active, badge, hero }: { icon: ReactNode; label: string; active?: boolean; badge?: string; hero?: string }) {
   return (
-    <div data-hero={hero} className={cn('relative flex h-8 items-center gap-2.5 rounded-lg px-2.5 text-[12.5px]', active ? 'bg-white/[0.06] text-white' : 'text-white/55')}>
-      {active && <span className="absolute -left-3 top-1.5 h-5 w-[3px] rounded-r bg-accent" />}
-      <span className={cn('flex h-4 w-4 items-center justify-center', active ? 'text-accent' : 'text-white/40')}>{icon}</span>
+    <div
+      data-hero={hero}
+      className="relative flex h-[26px] items-center gap-2 rounded-[6px] px-2 text-[12px]"
+      style={{ background: active ? C.surface3 : undefined, color: active ? C.ink : C.ink2, fontWeight: active ? 500 : 400 }}
+    >
+      {active && <span className="absolute -left-2.5 bottom-1.5 top-1.5 w-[2px] rounded-r-[2px] bg-[#ff7a00]" />}
+      <span className="flex h-3.5 w-3.5 items-center justify-center" style={{ color: active ? '#ff7a00' : C.muted }}>
+        {icon}
+      </span>
       {label}
-      {badge && <span className="ml-auto rounded-full bg-accent/15 px-1.5 font-mono text-[10px] text-accent-text">{badge}</span>}
+      {badge && (
+        <span className="ml-auto rounded-[3px] px-1 font-mono text-[9.5px]" style={{ background: C.surface, color: C.ink2 }}>
+          {badge}
+        </span>
+      )}
+    </div>
+  )
+}
+
+function NavGroup({ label, children }: { label?: string; children: ReactNode }) {
+  return (
+    <div className="mb-3">
+      {label && (
+        <p className="px-2 pb-1 font-mono text-[9.5px] uppercase tracking-[0.08em]" style={{ color: C.faint }}>
+          {label}
+        </p>
+      )}
+      {children}
     </div>
   )
 }
@@ -275,51 +301,58 @@ function NavItem({ icon, label, active, badge, hero }: { icon: ReactNode; label:
 function Sidebar({ view, xp }: { view: View; xp: number }) {
   const at = (v: View) => view === v || (v === 'tasks' && view === 'detail')
   return (
-    <aside data-cam="sidebar" className="flex shrink-0 flex-col border-r border-[rgba(240,227,222,0.09)] bg-[#151414]" style={{ width: SIDEBAR }}>
-      <div className="flex h-11 items-center justify-between px-4">
-        <span className="text-[17px] font-semibold tracking-[-0.04em] text-white">
-          forke<span className="text-accent">*</span>
+    <aside data-cam="sidebar" className="relative flex shrink-0 flex-col border-r" style={{ width: SIDEBAR, background: C.bg, borderColor: C.line }}>
+      <div className="flex h-11 items-center border-b px-4" style={{ borderColor: C.line }}>
+        <span className="flex items-baseline gap-1 text-[15px] tracking-[-0.04em]">
+          <span className="font-semibold text-[#f4f4f5]">
+            forke<span className="text-[#ff7a00]">*</span>
+          </span>
+          <span style={{ color: C.muted }}>developer</span>
         </span>
-        <span className="rounded-full border border-[rgba(240,227,222,0.09)] px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-white/40">dev</span>
       </div>
-      <div className="px-3">
-        <div className="rounded-xl border border-[rgba(240,227,222,0.09)] bg-white/[0.02] p-2.5">
-          <div className="flex items-center gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={PHOTO} alt="" className="h-8 w-8 rounded-full border border-accent/25 object-cover" />
-            <div className="min-w-0">
-              <p className="flex items-center gap-1 text-[12.5px] text-white">
-                John Doe <BadgeCheck className="h-3 w-3 text-accent" />
-              </p>
-              <p className="font-mono text-[10px] text-white/40">@johndoe</p>
-            </div>
-          </div>
-          <div className="mt-2.5 flex justify-between font-mono text-[9.5px] text-white/40">
-            <span>Lvl 9 · Architect</span>
-            <span>{xp}%</span>
-          </div>
-          <div className="mt-1 h-1 overflow-hidden rounded-full bg-white/[0.08]">
-            <div className="h-full rounded-full bg-[linear-gradient(90deg,#a03a02,#FF7A00,#FFA347)]" style={{ width: `${xp}%`, transition: `width 1.2s ${EASE}` }} />
-          </div>
+      <div className="px-2.5 pt-2.5">
+        <div className="flex h-7 items-center gap-2 rounded-[6px] px-2 text-[11.5px]" style={{ background: C.surface, boxShadow: `inset 0 0 0 1px ${C.line}`, color: C.muted }}>
+          <Search className="h-3 w-3" />
+          <span className="flex-1">Search</span>
+          <span className="rounded-[3px] px-1 font-mono text-[9.5px]" style={{ background: C.surface3 }}>
+            ⌘K
+          </span>
         </div>
       </div>
-      <div className="mt-3 space-y-3 px-3">
-        <div>
-          <p className="px-2.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-white/30">Work</p>
-          <div className="mt-1 space-y-0.5">
-            <NavItem icon={<LayoutDashboard className="h-3.5 w-3.5" />} label="Overview" />
-            <NavItem icon={<ClipboardList className="h-3.5 w-3.5" />} label="Tasks" active={at('tasks')} />
-            <NavItem icon={<FileCheck className="h-3.5 w-3.5" />} label="Submissions" active={at('review')} />
-            <NavItem icon={<Mail className="h-3.5 w-3.5" />} label="Messages" badge="2" />
+      <nav className="px-2.5 py-2.5">
+        <NavGroup>
+          <NavItem icon={<LayoutDashboard className="h-3.5 w-3.5" />} label="Overview" />
+        </NavGroup>
+        <NavGroup label="Work">
+          <NavItem icon={<ClipboardList className="h-3.5 w-3.5" />} label="Tasks" active={at('tasks')} />
+          <NavItem icon={<FileCheck className="h-3.5 w-3.5" />} label="Submissions" active={at('review')} />
+          <NavItem icon={<Mail className="h-3.5 w-3.5" />} label="Messages" badge="2" />
+        </NavGroup>
+        <NavGroup label="You">
+          <NavItem icon={<User className="h-3.5 w-3.5" />} label="Profile" />
+          <NavItem icon={<Wallet className="h-3.5 w-3.5" />} label="Earnings" active={at('earnings')} hero="nav-earnings" />
+          <NavItem icon={<Settings className="h-3.5 w-3.5" />} label="Settings" />
+        </NavGroup>
+      </nav>
+      {/* who, and the level bar */}
+      <div className="mt-auto border-t p-3" style={{ borderColor: C.line }}>
+        <div className="flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={PHOTO} alt="" className="h-7 w-7 rounded-full object-cover" />
+          <div className="min-w-0 flex-1">
+            <p className="flex items-center gap-1 text-[12px] font-medium text-[#f4f4f5]">
+              John Doe <BadgeCheck className="h-3 w-3 text-[#ff7a00]" />
+            </p>
+            <p className="font-mono text-[10px]" style={{ color: C.muted }}>
+              Lvl 9 · Architect
+            </p>
           </div>
+          <span className="font-mono text-[10px] tabular-nums" style={{ color: C.ink2 }}>
+            {xp}%
+          </span>
         </div>
-        <div>
-          <p className="px-2.5 font-mono text-[9.5px] uppercase tracking-[0.14em] text-white/30">You</p>
-          <div className="mt-1 space-y-0.5">
-            <NavItem icon={<User className="h-3.5 w-3.5" />} label="Profile" />
-            <NavItem icon={<Wallet className="h-3.5 w-3.5" />} label="Earnings" active={at('earnings')} hero="nav-earnings" />
-            <NavItem icon={<Settings className="h-3.5 w-3.5" />} label="Settings" />
-          </div>
+        <div className="mt-2 h-1 overflow-hidden rounded-full" style={{ background: C.surface3 }}>
+          <div className="h-full rounded-full bg-[#ff7a00]" style={{ width: `${xp}%`, transition: `width 1.2s ${EASE}` }} />
         </div>
       </div>
     </aside>
@@ -327,23 +360,68 @@ function Sidebar({ view, xp }: { view: View; xp: number }) {
 }
 
 function TopBar({ crumb, bell }: { crumb: string; bell: State['bell'] }) {
+  const [group, page] = crumb === 'earnings' ? ['You', 'Earnings'] : crumb === 'submissions' ? ['Work', 'Submissions'] : crumb === 'tasks' ? ['Work', 'Tasks'] : ['Tasks', 'Trigram search index']
   return (
-    <div className="flex shrink-0 items-center gap-3 border-b border-[rgba(240,227,222,0.09)] bg-[#151414]/85 px-5" style={{ height: TOP }}>
-      <p className="font-mono text-[11px] text-white/40">
-        dashboard <span className="text-white/20">/</span> <span className="text-white/80">{crumb}</span>
-      </p>
-      <span data-hero="bell" className={cn('relative ml-auto flex h-8 w-8 items-center justify-center rounded-lg transition-colors', bell === 2 ? 'bg-white/[0.08] text-white' : 'text-white/55')}>
+    <div className="flex shrink-0 items-center gap-2 border-b px-5 text-[12px]" style={{ height: TOP, borderColor: C.line, background: C.bg }}>
+      <span style={{ color: C.muted }}>{group}</span>
+      <span style={{ color: C.faint }}>/</span>
+      <span className="truncate font-medium text-[#f4f4f5]">{page}</span>
+      <span
+        data-hero="bell"
+        className="relative ml-auto flex h-8 w-8 items-center justify-center rounded-[6px] transition-colors"
+        style={{ background: bell === 2 ? C.surface3 : undefined, color: bell === 2 ? C.ink : C.ink2 }}
+      >
         <Bell className={cn('h-4 w-4 origin-top', bell === 1 && 'animate-[bell-ring_1.1s_ease-in-out_infinite]')} />
         <span
-          className="absolute right-1 top-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-accent px-[3px] font-mono text-[8.5px] font-semibold text-[#1a0a00]"
+          className="absolute right-1 top-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-[4px] bg-[#ff7a00] px-[3px] font-mono text-[8.5px] font-semibold text-[#1a0a00]"
           style={{ opacity: bell === 1 ? 1 : 0, transform: bell === 1 ? 'scale(1)' : 'scale(0.4)', transition: `opacity 250ms, transform 350ms ${EASE}` }}
         >
           3
         </span>
       </span>
-      <span data-hero="find" className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-accent bg-accent px-3 text-[12px] font-medium text-[#1a0a00] shadow-[0_1px_0_rgba(255,255,255,0.25)_inset,0_8px_24px_-8px_rgba(255,122,0,0.5)]">
-        Find a task
+      <span data-hero="find">
+        <Primary icon={Search}>Find a task</Primary>
       </span>
+    </div>
+  )
+}
+
+/** The page title block, as on every Forke Mail page. */
+function PageHead({ group, title, description, back }: { group?: string; title: string; description?: string; back?: string }) {
+  return (
+    <header className="mb-4">
+      {back ? (
+        <p className="mb-2 flex items-center gap-1.5 text-[11.5px]" style={{ color: C.muted }}>
+          <ArrowLeft className="h-3 w-3" /> {back}
+        </p>
+      ) : (
+        <div className="mb-2">
+          <Eyebrow>{group}</Eyebrow>
+        </div>
+      )}
+      <h1 className="text-[22px] font-medium leading-tight tracking-[-0.03em] text-[#f4f4f5]">{title}</h1>
+      {description && (
+        <p className="mt-1 text-[12px]" style={{ color: C.muted }}>
+          {description}
+        </p>
+      )}
+    </header>
+  )
+}
+
+function Tag({ children }: { children: ReactNode }) {
+  return (
+    <span className="inline-flex h-[18px] items-center rounded-[4px] px-1.5 text-[10.5px]" style={{ background: C.surface3, color: C.muted }}>
+      {children}
+    </span>
+  )
+}
+
+function CardHead({ title, actions }: { title: ReactNode; actions?: ReactNode }) {
+  return (
+    <div className="flex h-9 items-center justify-between border-b px-3.5" style={{ background: C.surface2, borderColor: C.line }}>
+      <h2 className="flex items-center gap-1.5 text-[12px] font-semibold text-[#f4f4f5]">{title}</h2>
+      {actions}
     </div>
   )
 }
@@ -352,42 +430,42 @@ function TopBar({ crumb, bell }: { crumb: string; bell: State['bell'] }) {
 
 function TasksPage() {
   return (
-    <div className="p-5">
-      <p className="text-[22px] font-medium tracking-[-0.02em] text-white">Browse tasks</p>
-      <p className="mt-0.5 text-[12px] text-white/45">Find work that matches your skills, claim it, ship it, and get paid.</p>
-      <div className="mt-3 flex h-9 items-center gap-2 rounded-lg border border-[rgba(240,227,222,0.09)] bg-white/[0.02] px-3 text-[12px] text-white/35">
-        <Search className="h-3.5 w-3.5" /> Search missions by title, description...
+    <div className="px-6 py-5">
+      <PageHead group="Work" title="Browse tasks" description="Scoped work with the bounty already in escrow. Claim one, ship it, get paid on merge." />
+      <div className="mb-3 flex items-center gap-2">
+        <div className="flex h-8 flex-1 items-center gap-2 rounded-[6px] px-2.5 text-[12px]" style={{ background: C.surface, boxShadow: `inset 0 0 0 1px ${C.lineStrong}`, color: C.muted }}>
+          <Search className="h-3.5 w-3.5" /> Search tasks
+        </div>
+        <div className="flex h-8 items-center rounded-[6px] p-0.5 text-[11.5px]" style={{ background: C.surface, boxShadow: `inset 0 0 0 1px ${C.line}` }}>
+          {['All', 'Unclaimed', 'Claimed'].map((f, i) => (
+            <span key={f} className="flex h-full items-center rounded-[4px] px-2.5" style={{ background: i === 0 ? C.surface3 : undefined, color: i === 0 ? C.ink : C.muted }}>
+              {f}
+            </span>
+          ))}
+        </div>
       </div>
-      <div className="mt-3 flex items-center gap-1.5 text-[11px]">
-        <span className="rounded-md border border-accent/40 bg-accent/10 px-2.5 py-1 text-accent-text">All tasks</span>
-        <span className="rounded-md px-2.5 py-1 text-white/45">Unclaimed</span>
-        <span className="rounded-md px-2.5 py-1 text-white/45">Claimed</span>
-        <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.12em] text-white/30">Showing 6 tasks</span>
-      </div>
-      <div className="mt-3 grid grid-cols-3 gap-2.5">
+      <div className="grid grid-cols-3 gap-3">
         {TASKS.map((t, i) => (
-          <div key={t.title} data-cam={`card${i}`} className="flex flex-col rounded-xl border border-[rgba(240,227,222,0.09)] bg-white/[0.018] p-3.5">
+          <div key={t.title} data-cam={`card${i}`} className="flex flex-col overflow-hidden rounded-[8px] p-3.5" style={ring}>
             <div className="flex items-start justify-between gap-2">
-              <p className="line-clamp-2 min-h-[34px] text-[12.5px] font-medium leading-[17px] text-white">{t.title}</p>
-              <span className="shrink-0 rounded border border-accent/20 bg-accent/10 px-1.5 py-0.5 text-[11.5px] font-medium tabular-nums text-accent">₹{t.amount}</span>
+              <p className="line-clamp-2 min-h-[34px] text-[12.5px] font-medium leading-[17px] text-[#f4f4f5]">{t.title}</p>
+              <Badge tone="accent">₹{t.amount}</Badge>
             </div>
             <div className="mt-2 flex flex-wrap gap-1">
               {t.tags.map((g) => (
-                <span key={g} className="rounded border border-[rgba(240,227,222,0.09)] bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-[#8E8E93]">
-                  {g}
-                </span>
+                <Tag key={g}>{g}</Tag>
               ))}
             </div>
-            <div className="mt-3 flex items-center justify-between border-t border-[rgba(240,227,222,0.09)] pt-2.5 text-[10.5px] text-[#8E8E93]">
-              <span className="flex items-center gap-1">
-                <User className="h-3 w-3" /> by <span className="text-white/70">{t.by}</span>
+            <div className="mt-3 flex items-center justify-between border-t pt-2.5 text-[10.5px]" style={{ borderColor: C.line, color: C.muted }}>
+              <span>
+                by <span style={{ color: C.ink2 }}>{t.by}</span>
               </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" /> {t.ago}
-              </span>
+              <span>{t.ago}</span>
             </div>
-            <span data-hero={`card-${i}`} className="mt-2.5 flex h-8 items-center justify-center gap-1 rounded-lg bg-accent text-[12px] font-medium text-[#1a0a00]">
-              View details <ChevronRight className="h-3.5 w-3.5" />
+            <span data-hero={`card-${i}`} className="mt-2.5 flex">
+              <Secondary className="w-full">
+                View details <ChevronRight className="h-3.5 w-3.5" />
+              </Secondary>
             </span>
           </div>
         ))}
@@ -452,146 +530,133 @@ const SHOTS = [
 function DetailPage({ s }: { s: State }) {
   return (
     <div className="relative h-full overflow-hidden">
-      <div data-scroll={s.scroll} className="grid grid-cols-[minmax(0,1fr)_268px] gap-4 p-5" style={{ transform: `translateY(${-s.scroll}px)`, transition: `transform 700ms ${EASE}` }}>
+      <div data-scroll={s.scroll} className="grid grid-cols-[minmax(0,1fr)_260px] gap-4 px-6 py-5" style={{ transform: `translateY(${-s.scroll}px)`, transition: `transform 700ms ${EASE}` }}>
         {/* the brief */}
         <div className="min-w-0">
-          <p className="flex items-center gap-1.5 text-[11.5px] text-white/45">
-            <ArrowLeft className="h-3 w-3" /> Back to tasks
-          </p>
-          <div data-cam="brief" className="mt-3 rounded-xl border border-[rgba(240,227,222,0.09)] bg-[#1A1919] p-4">
-            <span className="rounded border border-accent/30 bg-accent/10 px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.12em] text-accent-text">Mission briefing</span>
-            <p className="mt-2.5 text-[21px] font-medium leading-[1.15] tracking-[-0.02em] text-white">Speed up the search endpoint with a trigram index</p>
-            <p className="mt-3 border-t border-[rgba(240,227,222,0.09)] pt-3 font-mono text-[9.5px] uppercase tracking-[0.12em] text-white/40">Objective &amp; description</p>
-            <p className="mt-1.5 text-[12px] leading-[18px] text-white/65">
+          <PageHead back="Tasks" title="Speed up the search endpoint with a trigram index" />
+          <section data-cam="brief" className="overflow-hidden rounded-[8px]" style={ring}>
+            <CardHead
+              title="Brief"
+              actions={
+                <span className="flex gap-1">
+                  <Tag>Postgres</Tag>
+                  <Tag>Node.js</Tag>
+                </span>
+              }
+            />
+            <p className="px-3.5 py-3 text-[12px] leading-[18px]" style={{ color: C.ink2 }}>
               Search on /api/products takes 2s at p95. Add a pg_trgm index and rewrite the query to use it. Include a migration and before/after timings.
             </p>
-            <div className="mt-3 flex gap-1.5">
-              {['Postgres', 'Node.js'].map((g) => (
-                <span key={g} className="rounded border border-[rgba(240,227,222,0.09)] bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-[#8E8E93]">
-                  {g}
-                </span>
-              ))}
-            </div>
-          </div>
+          </section>
 
           {/* file rules set by the owner */}
           <div data-cam="rules" className="mt-3 grid grid-cols-2 gap-3">
-            <div className="rounded-xl border border-[rgba(240,227,222,0.09)] bg-[#1A1919] p-3.5">
-              <p className="flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.12em] text-emerald-300/80">
-                <FileCode2 className="h-3 w-3" /> Files you can edit
-              </p>
-              <div className="mt-2 space-y-1 font-mono text-[11px] text-white/75">
-                {['src/search/*', 'migrations/*', 'test/search.spec.ts'].map((f) => (
-                  <p key={f} className="flex items-center gap-1.5">
-                    <Check className="h-3 w-3 text-emerald-400" /> {f}
+            {(
+              [
+                ['Files you can edit', ['src/search/*', 'migrations/*', 'test/search.spec.ts'], 'green'],
+                ['Off-limits', ['src/auth/*', '.env*', 'infra/*'], 'neutral'],
+              ] as const
+            ).map(([title, files, tone]) => (
+              <section key={title} className="overflow-hidden rounded-[8px]" style={ring}>
+                <CardHead title={title} actions={<Badge tone={tone}>{tone === 'green' ? 'allowed' : 'locked'}</Badge>} />
+                {files.map((f) => (
+                  <p key={f} className="flex h-[28px] items-center gap-2 border-b px-3.5 font-mono text-[11px] last:border-0" style={{ borderColor: C.line, color: tone === 'green' ? C.ink2 : C.muted }}>
+                    {tone === 'green' ? <Check className="h-3 w-3 text-[#4ade80]" /> : <Lock className="h-3 w-3" />} {f}
                   </p>
                 ))}
-              </div>
-            </div>
-            <div className="rounded-xl border border-[rgba(240,227,222,0.09)] bg-[#1A1919] p-3.5">
-              <p className="flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.12em] text-red-300/80">
-                <Lock className="h-3 w-3" /> Off-limits
-              </p>
-              <div className="mt-2 space-y-1 font-mono text-[11px] text-white/45">
-                {['src/auth/*', '.env*', 'infra/*'].map((f) => (
-                  <p key={f} className="flex items-center gap-1.5">
-                    <Lock className="h-3 w-3 text-white/30" /> {f}
-                  </p>
-                ))}
-              </div>
-            </div>
+              </section>
+            ))}
           </div>
 
           {/* attachments from the owner */}
-          <div data-cam="attach" className="mt-3 rounded-xl border border-[rgba(240,227,222,0.09)] bg-[#1A1919] p-3.5">
-            <p className="flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.12em] text-white/40">
-              <Paperclip className="h-3 w-3" /> Attachments from Rohan
-            </p>
-            <div className="mt-2.5 grid grid-cols-3 gap-2.5">
+          <section data-cam="attach" className="mt-3 overflow-hidden rounded-[8px]" style={ring}>
+            <CardHead
+              title={
+                <>
+                  <Paperclip className="h-3.5 w-3.5" style={{ color: C.muted }} /> Attachments from Rohan
+                </>
+              }
+              actions={<span className="font-mono text-[10.5px]" style={{ color: C.muted }}>3 files</span>}
+            />
+            <div className="grid grid-cols-3 gap-2.5 p-3.5">
               {SHOTS.map(({ name, Shot }, i) => (
                 <div key={name} data-hero={`shot-${i}`}>
-                  <div className="aspect-[16/10] overflow-hidden rounded-lg border border-white/10">
+                  <div className="aspect-[16/10] overflow-hidden rounded-[6px]" style={{ boxShadow: `0 0 0 1px ${C.lineStrong}` }}>
                     <Shot />
                   </div>
-                  <p className="mt-1 flex items-center gap-1 truncate font-mono text-[9.5px] text-white/45">
+                  <p className="mt-1 flex items-center gap-1 truncate font-mono text-[9.5px]" style={{ color: C.muted }}>
                     <ImageIcon className="h-2.5 w-2.5 shrink-0" /> {name}
                   </p>
                 </div>
               ))}
             </div>
-            <p className="mt-2.5 rounded-lg bg-white/[0.03] px-2.5 py-2 text-[11px] leading-4 text-white/55">
-              <span className="text-white/80">Rohan:</span> the slow plan and the spinner are attached. Keep the response shape the same, the mobile app reads it.
+            <p className="border-t px-3.5 py-2.5 text-[11px] leading-4" style={{ borderColor: C.line, color: C.muted }}>
+              <span style={{ color: C.ink }}>Rohan:</span> the slow plan and the spinner are attached. Keep the response shape the same, the mobile app reads it.
             </p>
-          </div>
+          </section>
         </div>
 
         {/* budget + claim */}
-        <div className="pt-[30px]">
-          <div data-cam="budget" className="rounded-xl border border-[rgba(240,227,222,0.09)] bg-[#1A1919] p-4">
-            <p className="text-[11px] text-[#8E8E93]">Budget</p>
-            <p className="mt-0.5 text-[26px] font-medium tracking-[-0.03em] text-accent">₹6,800</p>
-            <p className="flex items-center gap-1 text-[10.5px] text-emerald-300/80">
-              <ShieldCheck className="h-3 w-3" /> held in escrow
-            </p>
-            <div className="mt-3 space-y-1.5">
-              <div className="flex items-center gap-2 rounded-lg border border-[rgba(240,227,222,0.09)] bg-white/[0.02] px-2.5 py-2">
-                <User className="h-3.5 w-3.5 text-accent" />
-                <div>
-                  <p className="font-mono text-[8.5px] uppercase tracking-[0.12em] text-white/35">Client</p>
-                  <p className="text-[11.5px] text-white">Rohan Mehta</p>
-                </div>
+        <div className="pt-[52px]">
+          <section data-cam="budget" className="overflow-hidden rounded-[8px]" style={ring}>
+            <CardHead title="Bounty" actions={<Badge tone="green">in escrow</Badge>} />
+            <div className="px-3.5 pb-3.5 pt-3">
+              <p className="text-[26px] font-medium tabular-nums tracking-[-0.03em] text-[#f4f4f5]">₹6,800</p>
+              <div className="mt-2.5 overflow-hidden rounded-[6px]" style={{ boxShadow: `0 0 0 1px ${C.line}` }}>
+                {[
+                  ['Owner', 'Rohan Mehta'],
+                  ['Posted', '7 hours ago'],
+                  ['Level', '6+'],
+                ].map(([k, v]) => (
+                  <p key={k} className="flex h-[28px] items-center justify-between border-b px-2.5 text-[11.5px] last:border-0" style={{ borderColor: C.line }}>
+                    <span style={{ color: C.muted }}>{k}</span>
+                    <span style={{ color: C.ink }}>{v}</span>
+                  </p>
+                ))}
               </div>
-              <div className="flex items-center gap-2 rounded-lg border border-[rgba(240,227,222,0.09)] bg-white/[0.02] px-2.5 py-2">
-                <Clock className="h-3.5 w-3.5 text-accent" />
-                <div>
-                  <p className="text-[9.5px] text-white/40">Posted</p>
-                  <p className="text-[11.5px] text-white">7 hours ago</p>
-                </div>
-              </div>
-            </div>
-            <div data-hero="claim" className="relative mt-3 h-9">
-              <span
-                className="absolute inset-0 flex items-center justify-center gap-1.5 rounded-lg bg-accent text-[12px] font-medium text-[#1a0a00]"
-                style={{ opacity: s.claimed ? 0 : 1, transition: 'opacity 250ms' }}
-              >
-                <RiGithubFill className="h-3.5 w-3.5" /> Claim task
-              </span>
-              <span
-                className="absolute inset-0 flex items-center justify-between rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 text-[11.5px] text-emerald-300"
-                style={{ opacity: s.claimed ? 1 : 0, transition: 'opacity 250ms' }}
-              >
-                <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> Claimed by you
+              <div data-hero="claim" className="relative mt-3 h-8">
+                <span className="absolute inset-0 flex" style={{ opacity: s.claimed ? 0 : 1, transition: 'opacity 250ms' }}>
+                  <Primary className="w-full">
+                    <RiGithubFill className="h-3.5 w-3.5" /> Claim task
+                  </Primary>
                 </span>
-                <span className="font-mono tabular-nums">{s.claimed ? <Countdown /> : '20:00'}</span>
+                <span
+                  className={cn('absolute inset-0 flex items-center justify-between rounded-[6px] px-2.5 text-[11.5px] font-medium', TONE.green)}
+                  style={{ opacity: s.claimed ? 1 : 0, transition: 'opacity 250ms' }}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-[1.5px] bg-current" /> Claimed by you
+                  </span>
+                  <span className="font-mono tabular-nums">{s.claimed ? <Countdown /> : '20:00'}</span>
+                </span>
+              </div>
+              <span data-hero="open-ide" className="mt-2 flex" style={{ opacity: s.claimed ? 1 : 0.35, transition: 'opacity 300ms' }}>
+                <Secondary icon={Code2} className="w-full">
+                  Open in VS Code
+                </Secondary>
               </span>
             </div>
-            <span
-              data-hero="open-ide"
-              className="mt-2 flex h-9 items-center justify-center gap-1.5 rounded-lg border border-white/15 bg-white/[0.04] text-[12px] text-white/85"
-              style={{ opacity: s.claimed ? 1 : 0.35, transition: 'opacity 300ms' }}
-            >
-              <Code2 className="h-3.5 w-3.5" /> Open in VS Code
-            </span>
-          </div>
+          </section>
         </div>
       </div>
 
       {/* attachment preview */}
-      <div
-        className="absolute inset-0 flex items-center justify-center bg-black/55 backdrop-blur-[2px]"
-        style={{ opacity: s.zoomShot ? 1 : 0, transition: 'opacity 300ms' }}
-      >
+      <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.55)', opacity: s.zoomShot ? 1 : 0, transition: 'opacity 300ms' }}>
         <div
           data-cam="modal"
-          className="w-[440px] overflow-hidden rounded-xl border border-white/15 bg-[#1A1919] shadow-[0_30px_80px_-10px_rgba(0,0,0,0.9)]"
-          style={{ transform: s.zoomShot ? 'scale(1)' : 'scale(0.6)', transition: `transform 450ms ${EASE}` }}
+          className="w-[440px] overflow-hidden rounded-[10px]"
+          style={{
+            background: C.surface,
+            boxShadow: `0 24px 64px -16px rgba(0,0,0,0.7), 0 0 0 1px ${C.lineStrong}`,
+            transform: s.zoomShot ? 'scale(1)' : 'scale(0.6)',
+            transition: `transform 450ms ${EASE}`,
+          }}
         >
           <div className="aspect-[16/10]">
             <ShotExplain big />
           </div>
-          <p className="flex items-center justify-between border-t border-white/10 px-3 py-2 font-mono text-[10.5px] text-white/50">
-            explain-analyze.png <span className="text-white/30">from Rohan</span>
+          <p className="flex items-center justify-between border-t px-3 py-2 font-mono text-[10.5px]" style={{ borderColor: C.line, color: C.ink2 }}>
+            explain-analyze.png <span style={{ color: C.muted }}>from Rohan</span>
           </p>
         </div>
       </div>
@@ -852,80 +917,67 @@ function VsCode({ s }: { s: State }) {
 
 function ReviewPage({ s }: { s: State }) {
   const score = Math.round(useProgress(s.scoring, 1000, easeOut) * 94)
-  const C = 2 * Math.PI * 30
+  const CIRC = 2 * Math.PI * 30
   return (
-    <div className="p-4">
-      <p className="text-[22px] font-medium tracking-[-0.02em] text-white">Submission history</p>
-      <p className="mt-0.5 text-[12px] text-white/45">Track status, review cycles and completed payouts for all your claimed tasks.</p>
-      <div className="mt-3 flex items-center gap-2">
-        <span className={cn('flex h-7 w-7 items-center justify-center rounded-lg border', s.approved ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400' : 'border-amber-500/30 bg-amber-500/10 text-amber-400')}>
-          {s.approved ? <Check className="h-3.5 w-3.5" /> : <Clock className="h-3.5 w-3.5" />}
-        </span>
-        <p className="text-[13px] text-white">{s.approved ? 'Completed work' : 'Active reviews'}</p>
-        <span className={cn('ml-auto rounded-full px-2 py-0.5 font-mono text-[10px]', s.approved ? 'bg-emerald-500/10 text-emerald-300' : 'bg-amber-500/10 text-amber-300')}>1 entry</span>
-      </div>
-      <div className="mt-2 rounded-xl border border-[rgba(240,227,222,0.09)] bg-[#1A1919] p-3.5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[14px] font-medium text-white">Speed up the search endpoint with a trigram index</p>
-            <p className="mt-1 flex items-center gap-3 text-[11px] text-white/45">
-              <span className="text-accent">₹6,800</span>
+    <div className="px-6 py-5">
+      <PageHead group="Work" title="Submissions" description="Status, review cycles and payouts for every task you have claimed." />
+      <section className="overflow-hidden rounded-[8px]" style={ring}>
+        <div className="flex items-center justify-between gap-4 border-b px-4 py-3" style={{ background: C.surface2, borderColor: C.line }}>
+          <div className="min-w-0">
+            <p className="truncate text-[13px] font-semibold text-[#f4f4f5]">Speed up the search endpoint with a trigram index</p>
+            <p className="mt-0.5 flex items-center gap-3 text-[11px]" style={{ color: C.muted }}>
               <span className="flex items-center gap-1">
                 <GitPullRequest className="h-3 w-3" /> acme/search-api#412
               </span>
-              <span>+42 −9 · 2 files</span>
+              <span className="font-mono">+42 −9 · 2 files</span>
+              <span>₹6,800</span>
             </p>
           </div>
-          <span
-            data-cam="status"
-            className={cn(
-              'flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium',
-              s.approved ? 'bg-emerald-500/15 text-emerald-300' : 'bg-amber-500/10 text-amber-300',
-            )}
-          >
-            {s.approved ? (
-              <>
-                <GitMerge className="h-3 w-3" /> Merged
-              </>
-            ) : (
-              <>
-                <CircleDashed className="h-3 w-3" /> In review
-              </>
-            )}
+          <span data-cam="status" className="shrink-0">
+            <Badge tone={s.approved ? 'green' : 'amber'}>{s.approved ? 'merged' : 'in review'}</Badge>
           </span>
         </div>
-        <div className="mt-3 grid grid-cols-[minmax(0,1fr)_200px] gap-4 border-t border-[rgba(240,227,222,0.09)] pt-3">
-          <div data-cam="checks" className="space-y-1.5">
+        <div className="grid grid-cols-[minmax(0,1fr)_200px]">
+          <div data-cam="checks" className="border-r" style={{ borderColor: C.line }}>
             {CHECKS.map((c, i) => {
               const done = s.checks > i
               const running = s.checks === i
               return (
-                <div key={c} className="flex items-center gap-2.5 text-[12px]">
-                  <span
-                    className={cn(
-                      'flex h-5 w-5 items-center justify-center rounded-full border transition-colors duration-300',
-                      done ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-400' : 'border-white/10 text-white/30',
-                    )}
-                  >
-                    {done ? <Check className="h-3 w-3" /> : running ? <Loader2 className="h-3 w-3 animate-spin" /> : <CircleDashed className="h-3 w-3" />}
+                <div key={c} className="flex h-[34px] items-center gap-3 border-b px-4 last:border-0" style={{ borderColor: C.line }}>
+                  <span className="flex-1 text-[12px]" style={{ color: done || running ? C.ink : C.muted }}>
+                    {c}
                   </span>
-                  <span className={done ? 'text-white/85' : 'text-white/45'}>{c}</span>
-                  <span className="ml-auto font-mono text-[10px] text-white/30">{done ? `${[18, 6, 41, 3, 52][i]}s` : running ? 'running' : 'queued'}</span>
+                  <span className="font-mono text-[10.5px] tabular-nums" style={{ color: C.muted }}>
+                    {done ? `${[18, 6, 41, 3, 52][i]}s` : ''}
+                  </span>
+                  <span className="w-[78px] text-right">
+                    {done ? (
+                      <Badge tone="green">passed</Badge>
+                    ) : running ? (
+                      <span className={cn('inline-flex h-[20px] items-center gap-1.5 rounded-[4px] px-1.5 text-[11px] font-medium', TONE.blue)}>
+                        <Loader2 className="h-3 w-3 animate-spin" /> running
+                      </span>
+                    ) : (
+                      <Badge tone="neutral">queued</Badge>
+                    )}
+                  </span>
                 </div>
               )
             })}
           </div>
-          <div data-cam="score" className="flex flex-col items-center justify-center rounded-xl border border-[rgba(240,227,222,0.09)] bg-white/[0.02] p-3">
+          <div data-cam="score" className="flex flex-col items-center justify-center p-3">
             <svg viewBox="0 0 72 72" className="h-[84px] w-[84px] -rotate-90">
-              <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
-              <circle cx="36" cy="36" r="30" fill="none" stroke="#FF7A00" strokeWidth="6" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * (1 - score / 100)} />
+              <circle cx="36" cy="36" r="30" fill="none" stroke={C.surface3} strokeWidth="5" />
+              <circle cx="36" cy="36" r="30" fill="none" stroke="#ff7a00" strokeWidth="5" strokeLinecap="round" strokeDasharray={CIRC} strokeDashoffset={CIRC * (1 - score / 100)} />
             </svg>
-            <p className="-mt-[58px] mb-[30px] font-mono text-[20px] font-semibold tabular-nums text-white">{score}</p>
-            <p className="font-mono text-[9.5px] uppercase tracking-[0.12em] text-white/40">AI review score</p>
-            <p className={cn('mt-1 text-[11px]', score >= 94 ? 'text-emerald-300' : 'text-white/35')}>{score >= 94 ? 'Merge-ready' : 'Reviewing…'}</p>
+            <p className="-mt-[58px] mb-[30px] text-[20px] font-medium tabular-nums tracking-[-0.03em] text-[#f4f4f5]">{score}</p>
+            <p className="font-mono text-[9.5px] uppercase tracking-[0.08em]" style={{ color: C.muted }}>
+              AI review
+            </p>
+            <span className="mt-1.5">{score >= 94 ? <Badge tone="green">merge-ready</Badge> : <Badge tone="neutral">reviewing</Badge>}</span>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   )
 }
@@ -937,54 +989,60 @@ function EarningsPage({ s }: { s: State }) {
     { t: 'Add idempotency keys to checkout', d: '24 Oct 2026', a: '9,000' },
     { t: 'Index audit_log by tenant and created_at', d: '5 Oct 2026', a: '3,500' },
   ]
+  const cols = 'grid grid-cols-[minmax(0,1fr)_120px_90px]'
   return (
-    <div className="p-5">
-      <p className="text-[22px] font-medium tracking-[-0.02em] text-white">My earnings</p>
-      <p className="mt-0.5 text-[12px] text-white/45">Track payouts from completed tasks and pending earnings awaiting client sign-off.</p>
-      <div className="mt-4 grid grid-cols-3 gap-2.5">
+    <div className="px-6 py-5">
+      <PageHead group="You" title="Earnings" description="Payouts from merged tasks, straight to your UPI." />
+      <StatStrip cols={3} className="mb-4">
         {[
-          { k: 'Total earned', v: `₹${total.toLocaleString('en-IN')}`, sub: 'Lifetime payouts', hot: s.paid },
-          { k: 'Pending payout', v: s.paid ? '₹0' : '₹6,800', sub: 'Awaiting client approval' },
-          { k: 'Tasks settled', v: s.paid ? '5' : '4', sub: 'Verified completions' },
+          { k: 'Total earned', v: `₹${total.toLocaleString('en-IN')}`, sub: 'Lifetime payouts' },
+          { k: 'Pending payout', v: s.paid ? '₹0' : '₹6,800', sub: 'Waiting on the owner' },
+          { k: 'Tasks settled', v: s.paid ? '5' : '4', sub: 'Merged and paid' },
         ].map((c) => (
-          <div key={c.k} data-cam={c.k === 'Total earned' ? 'total' : undefined} className={cn('rounded-xl border bg-[#1A1919] p-3.5 transition-colors duration-500', c.hot ? 'border-emerald-500/30' : 'border-[rgba(240,227,222,0.09)]')}>
-            <p className="text-[11px] text-white/45">{c.k}</p>
-            <p className="mt-1 text-[24px] font-medium tabular-nums tracking-[-0.03em] text-white">{c.v}</p>
-            <p className="text-[10.5px] text-white/35">{c.sub}</p>
+          <div key={c.k} data-cam={c.k === 'Total earned' ? 'total' : undefined} className="relative flex flex-col gap-0.5 p-3.5" style={{ background: C.surface }}>
+            <span className="text-[11.5px]" style={{ color: C.muted }}>
+              {c.k}
+            </span>
+            <span className="mt-0.5 text-[22px] font-medium tabular-nums tracking-[-0.03em] text-[#f4f4f5]">{c.v}</span>
+            <span className="text-[10.5px]" style={{ color: C.muted }}>
+              {c.sub}
+            </span>
+            {c.k === 'Total earned' && (
+              <span className="pointer-events-none absolute inset-0 transition-opacity duration-500" style={{ boxShadow: 'inset 0 0 0 1px rgba(74,222,128,0.35)', opacity: s.paid ? 1 : 0 }} />
+            )}
           </div>
         ))}
-      </div>
-      <p className="mt-4 flex items-center gap-2 text-[13px] text-white">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
-          <Wallet className="h-3.5 w-3.5" />
-        </span>
-        Settled payouts
-      </p>
-      <div className="mt-2.5 overflow-hidden rounded-xl border border-[rgba(240,227,222,0.09)]">
-        <div className="grid grid-cols-[minmax(0,1fr)_120px_90px] bg-white/[0.02] px-4 py-2 text-[10.5px] text-white/40">
+      </StatStrip>
+      <section className="overflow-hidden rounded-[8px]" style={ring}>
+        <CardHead title="Settled payouts" />
+        <div className={cn(cols, 'border-b px-4 py-2 font-mono text-[9.5px] uppercase tracking-[0.08em]')} style={{ borderColor: C.line, color: C.faint }}>
           <span>Task</span>
-          <span>Settled date</span>
-          <span className="text-right">Amount (₹)</span>
+          <span>Settled</span>
+          <span className="text-right">Amount</span>
         </div>
         <div
           data-cam="payout"
-          className="grid grid-cols-[minmax(0,1fr)_120px_90px] items-center overflow-hidden border-t border-[rgba(240,227,222,0.09)] bg-emerald-500/[0.06] px-4 text-[12px]"
-          style={{ height: s.paid ? 38 : 0, opacity: s.paid ? 1 : 0, transition: `height 500ms ${EASE}, opacity 400ms` }}
+          className={cn(cols, 'items-center overflow-hidden border-b px-4 text-[12px]')}
+          style={{ borderColor: C.line, background: 'rgba(74,222,128,0.05)', height: s.paid ? 38 : 0, opacity: s.paid ? 1 : 0, transition: `height 500ms ${EASE}, opacity 400ms` }}
         >
-          <span className="flex items-center gap-1.5 truncate text-white">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Speed up the search endpoint with a trigram index
+          <span className="flex items-center gap-2 truncate font-medium text-[#f4f4f5]">Speed up the search endpoint with a trigram index</span>
+          <span>
+            <Badge tone="green">today · UPI</Badge>
           </span>
-          <span className="text-white/50">Today · UPI</span>
-          <span className="text-right font-medium text-emerald-300">₹6,800</span>
+          <span className="text-right font-mono tabular-nums text-[#4ade80]">₹6,800</span>
         </div>
         {rows.map((r) => (
-          <div key={r.t} className="grid h-[38px] grid-cols-[minmax(0,1fr)_120px_90px] items-center border-t border-[rgba(240,227,222,0.09)] px-4 text-[12px]">
-            <span className="truncate text-white/80">{r.t}</span>
-            <span className="text-white/45">{r.d}</span>
-            <span className="text-right font-medium text-emerald-300/90">₹{r.a}</span>
+          <div key={r.t} className={cn(cols, 'h-[38px] items-center border-b px-4 text-[12px] last:border-0')} style={{ borderColor: C.line }}>
+            <span className="truncate" style={{ color: C.ink2 }}>
+              {r.t}
+            </span>
+            <span style={{ color: C.muted }}>{r.d}</span>
+            <span className="text-right font-mono tabular-nums" style={{ color: C.ink2 }}>
+              ₹{r.a}
+            </span>
           </div>
         ))}
-      </div>
+      </section>
     </div>
   )
 }
@@ -993,34 +1051,41 @@ function Notifications({ open }: { open: boolean }) {
   return (
     <div
       data-cam="notifs"
-      className="absolute right-[118px] top-[52px] z-20 w-[330px] overflow-hidden rounded-xl border border-white/10 bg-[#1f1d1c]/97 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.9)] backdrop-blur"
-      style={{ opacity: open ? 1 : 0, transform: open ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(0.98)', transformOrigin: 'top right', transition: `opacity 250ms, transform 350ms ${EASE}` }}
+      className="absolute right-[118px] top-[52px] z-20 w-[330px] overflow-hidden rounded-[10px]"
+      style={{
+        background: C.surface,
+        boxShadow: `0 24px 64px -16px rgba(0,0,0,0.7), 0 0 0 1px ${C.lineStrong}`,
+        opacity: open ? 1 : 0,
+        transform: open ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(0.98)',
+        transformOrigin: 'top right',
+        transition: `opacity 250ms, transform 350ms ${EASE}`,
+      }}
     >
-      <div className="flex items-center justify-between border-b border-white/[0.07] px-3.5 py-2.5">
-        <p className="text-[12.5px] font-medium text-white">Notifications</p>
-        <p className="font-mono text-[10px] text-accent-text">3 new</p>
-      </div>
+      <CardHead title="Notifications" actions={<Badge tone="accent">3 new</Badge>} />
       {NOTIFS.map((n, i) => (
         <div
           key={n.key}
           data-hero={n.key}
-          className={cn('flex items-start gap-2.5 px-3.5 py-2.5', i > 0 && 'border-t border-white/[0.05]', i === 0 && 'bg-white/[0.03]')}
-          style={{ opacity: open ? 1 : 0, transform: open ? 'none' : 'translateY(-4px)', transition: `opacity 300ms ${120 + i * 90}ms, transform 400ms ${EASE} ${120 + i * 90}ms` }}
+          className="flex items-start gap-2.5 border-b px-3.5 py-2.5 last:border-0"
+          style={{
+            borderColor: C.line,
+            background: i === 0 ? C.surface2 : undefined,
+            opacity: open ? 1 : 0,
+            transform: open ? 'none' : 'translateY(-4px)',
+            transition: `opacity 300ms ${120 + i * 90}ms, transform 400ms ${EASE} ${120 + i * 90}ms`,
+          }}
         >
-          <span
-            className={cn(
-              'mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg',
-              n.icon === 'pay' ? 'bg-emerald-500/15 text-emerald-400' : n.icon === 'merge' ? 'bg-violet-500/15 text-violet-300' : 'bg-accent/15 text-accent',
-            )}
-          >
-            {n.icon === 'pay' ? <Wallet className="h-3.5 w-3.5" /> : n.icon === 'merge' ? <GitMerge className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
+          <span className={cn('mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-[5px]', n.icon === 'pay' ? TONE.green : n.icon === 'merge' ? TONE.blue : TONE.accent)}>
+            {n.icon === 'pay' ? <Wallet className="h-3 w-3" /> : n.icon === 'merge' ? <GitMerge className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-[12px] font-medium text-white">{n.title}</p>
-            <p className="truncate text-[10.5px] text-white/45">{n.sub}</p>
+            <p className="truncate text-[12px] font-medium text-[#f4f4f5]">{n.title}</p>
+            <p className="truncate text-[10.5px]" style={{ color: C.muted }}>
+              {n.sub}
+            </p>
           </div>
-          <span className="flex shrink-0 items-center gap-1 font-mono text-[9.5px] text-white/35">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" /> {n.ago}
+          <span className="shrink-0 font-mono text-[9.5px]" style={{ color: C.muted }}>
+            {n.ago}
           </span>
         </div>
       ))}
@@ -1034,17 +1099,25 @@ function Toast({ toast }: { toast: State['toast'] }) {
     if (toast) setLast(toast)
   }, [toast])
   const t = toast ?? last
-  const icon = t?.icon === 'paid' ? <Wallet className="h-4 w-4" /> : <Check className="h-4 w-4" />
+  const icon = t?.icon === 'paid' ? <Wallet className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />
   return (
     <div
       data-cam="toast"
-      className="absolute right-4 top-[60px] z-20 flex w-[300px] items-center gap-3 rounded-xl border border-white/10 bg-[#1f1d1c]/95 p-3 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.85)] backdrop-blur"
-      style={{ opacity: toast ? 1 : 0, transform: toast ? 'translateY(0)' : 'translateY(-10px)', transition: `opacity 300ms, transform 400ms ${EASE}` }}
+      className="absolute right-4 top-[60px] z-20 flex w-[300px] items-center gap-2.5 rounded-[8px] px-3 py-2.5"
+      style={{
+        background: C.surface,
+        boxShadow: `0 24px 64px -16px rgba(0,0,0,0.7), 0 0 0 1px ${C.lineStrong}`,
+        opacity: toast ? 1 : 0,
+        transform: toast ? 'translateY(0)' : 'translateY(-10px)',
+        transition: `opacity 300ms, transform 400ms ${EASE}`,
+      }}
     >
-      <span className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', t?.icon === 'claim' ? 'bg-accent/15 text-accent' : 'bg-emerald-500/15 text-emerald-400')}>{icon}</span>
+      <span className={cn('grid h-7 w-7 shrink-0 place-items-center rounded-[6px]', t?.icon === 'claim' ? TONE.accent : TONE.green)}>{icon}</span>
       <div className="min-w-0">
-        <p className="truncate text-[12.5px] font-medium text-white">{t?.title}</p>
-        <p className="truncate text-[11px] text-white/50">{t?.sub}</p>
+        <p className="truncate text-[12.5px] font-medium text-[#f4f4f5]">{t?.title}</p>
+        <p className="truncate text-[11px]" style={{ color: C.muted }}>
+          {t?.sub}
+        </p>
       </div>
     </div>
   )
