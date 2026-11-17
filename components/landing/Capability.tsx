@@ -18,7 +18,7 @@ import {
   RiVercelFill,
   RiVuejsFill,
 } from '@remixicon/react'
-import { Eyebrow, Reveal, Section } from './primitives'
+import { Reveal, Section } from './primitives'
 import { SIMPLE_ICONS } from './simple-icons'
 
 /* ── the stack: only things you'd actually ship a bounty in ──────────────── */
@@ -119,8 +119,7 @@ export default function Capability() {
   return (
     <Section className="bg-[linear-gradient(180deg,rgba(255,255,255,0.025),transparent_55%)]">
       <div id="use-cases" className="pt-16 text-center sm:pt-24">
-        <Eyebrow>Unlimited capability</Eyebrow>
-        <h2 className="mx-auto mt-5 max-w-[800px] px-6 text-[32px] font-[450] leading-[1.1] tracking-[-0.01em] text-ink sm:text-[44px] sm:leading-[48px]">
+        <h2 className="mx-auto max-w-[800px] px-6 text-[32px] font-[450] leading-[1.1] tracking-[-0.01em] text-ink sm:text-[44px] sm:leading-[48px]">
           Anything you can build in a repo,
           <br className="max-sm:hidden" /> Forke can pay you for.
         </h2>

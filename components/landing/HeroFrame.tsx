@@ -4,8 +4,8 @@ import { useEffect, useRef, type ReactNode } from 'react'
 
 /**
  * Full-bleed hero that tucks into a rounded card as you scroll.
- * Animates clip-path (not padding) so the panel — and the WebGL canvas
- * inside it — never changes size mid-scroll.
+ * Animates clip-path (not padding) so the panel, and the WebGL canvas
+ * inside it: never changes size mid-scroll.
  */
 export default function HeroFrame({ children }: { children: ReactNode }) {
   const panel = useRef<HTMLDivElement>(null)

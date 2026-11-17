@@ -6,7 +6,7 @@ import Accordion from '@/components/shared/Accordion'
 import { Painting, Reveal, Section } from '@/components/landing/primitives'
 
 export const metadata: Metadata = {
-  title: 'Contact — Get in touch with Forke',
+  title: 'Contact: Get in touch with Forke',
   description:
     'Questions about your account, payouts or contributing to Forke? Email support@forke.space, find us on GitHub, or follow along on social. We reply within 24–48 hours.',
   alternates: { canonical: '/contact' },

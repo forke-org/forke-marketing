@@ -141,7 +141,7 @@ const welcome: Article = {
     <Prose>
       <Lead>
         Forke is the micro-task marketplace where developers earn real money by shipping real
-        code — no fake projects, no bidding wars, just bite-sized work with instant UPI payouts.
+        code: no fake projects, no bidding wars, just bite-sized work with instant UPI payouts.
       </Lead>
 
       <H3 id="overview">Overview</H3>
@@ -158,7 +158,7 @@ const welcome: Article = {
       <P>
         Building fake CRUD apps impresses no one, and traditional freelancing means proposal-bidding
         wars and week-long timelines for a ₹300 bug fix. Forke removes both frictions: developers get
-        a structured, low-friction way to say <em>&ldquo;I have two hours — give me a real task, pay
+        a structured, low-friction way to say <em>&ldquo;I have two hours: give me a real task, pay
         me&rdquo;</em>, and founders get a trusted, fast, scoped micro-task economy instead of a full
         freelance platform. Read the longer story on{' '}
         <DocLink href="/whats-forke">What is Forke</DocLink>.
@@ -168,11 +168,11 @@ const welcome: Article = {
       <P>These docs are written for both audiences. Jump to the side that fits you:</P>
       <UL>
         <li>
-          <DocLink href="/docs/for-developers">For developers</DocLink> — claim tasks, ship code,
+          <DocLink href="/docs/for-developers">For developers</DocLink>: claim tasks, ship code,
           level up, cash out.
         </li>
         <li>
-          <DocLink href="/docs/for-founders">For founders</DocLink> — post scoped tasks, fund
+          <DocLink href="/docs/for-founders">For founders</DocLink>: post scoped tasks, fund
           escrow, review a plain-English verdict.
         </li>
       </UL>
@@ -193,7 +193,7 @@ const welcome: Article = {
           exceptions.
         </li>
         <li>
-          <strong>Forke is the middle layer.</strong> Developers never touch owner repos directly —
+          <strong>Forke is the middle layer.</strong> Developers never touch owner repos directly,
           Forke mirrors, branches, and merges.
         </li>
         <li>
@@ -223,7 +223,7 @@ const welcome: Article = {
   ),
   markdown: `# Welcome to Forke
 
-Forke is the micro-task marketplace where developers earn real money by shipping real code — no fake projects, no bidding wars, just bite-sized work with instant UPI payouts.
+Forke is the micro-task marketplace where developers earn real money by shipping real code: no fake projects, no bidding wars, just bite-sized work with instant UPI payouts.
 
 ## Overview
 
@@ -231,12 +231,12 @@ Think of it as Fiverr x GitHub x an RPG. Founders post small, scoped tasks with 
 
 ## Why Forke exists
 
-Building fake CRUD apps impresses no one, and traditional freelancing means proposal-bidding wars and week-long timelines for a Rs 300 bug fix. Forke removes both frictions: developers get a structured, low-friction way to say "I have two hours — give me a real task, pay me", and founders get a trusted, fast, scoped micro-task economy instead of a full freelance platform.
+Building fake CRUD apps impresses no one, and traditional freelancing means proposal-bidding wars and week-long timelines for a Rs 300 bug fix. Forke removes both frictions: developers get a structured, low-friction way to say "I have two hours: give me a real task, pay me", and founders get a trusted, fast, scoped micro-task economy instead of a full freelance platform.
 
 ## Two sides of the marketplace
 
-- For developers (/docs/for-developers) — claim tasks, ship code, level up, cash out.
-- For founders (/docs/for-founders) — post scoped tasks, fund escrow, review a plain-English verdict.
+- For developers (/docs/for-developers): claim tasks, ship code, level up, cash out.
+- For founders (/docs/for-founders): post scoped tasks, fund escrow, review a plain-English verdict.
 
 ## The core loop
 
@@ -245,7 +245,7 @@ Browse -> Claim -> Build in a branch -> Submit a PR -> Reviewed -> Paid.
 ## Three principles
 
 1. Never ZIP uploads. Every submission lives in a pull request. No exceptions.
-2. Forke is the middle layer. Developers never touch owner repos directly — Forke mirrors, branches, and merges.
+2. Forke is the middle layer. Developers never touch owner repos directly: Forke mirrors, branches, and merges.
 3. AI assists, humans decide. AI generates the verdict card; founders make the final call.
 
 ## Where to go next
@@ -260,7 +260,7 @@ Browse -> Claim -> Build in a branch -> Submit a PR -> Reviewed -> Paid.
 const coreConcepts: Article = {
   slug: 'core-concepts',
   title: 'Core concepts',
-  description: 'The vocabulary that shows up everywhere on Forke — bounties, escrow, levels, trust.',
+  description: 'The vocabulary that shows up everywhere on Forke: bounties, escrow, levels, trust.',
   icon: RiInformationFill,
   readTime: '3 min read',
   popular: true,
@@ -277,14 +277,14 @@ const coreConcepts: Article = {
 
       <H3 id="bounty">Bounty</H3>
       <P>
-        A single, scoped unit of work (30 minutes to ~4 hours) posted by a founder — a bug fix, a
+        A single, scoped unit of work (30 minutes to ~4 hours) posted by a founder, a bug fix, a
         landing-page section, a Figma-to-React conversion. It carries a fixed budget in ₹, a time
         estimate, a tech stack, an XP reward, and a file scope.
       </P>
 
       <H3 id="submission">PR submission</H3>
       <P>
-        Work is <strong>always</strong> delivered as a pull request — never a ZIP or a link dump.
+        Work is <strong>always</strong> delivered as a pull request, never a ZIP or a link dump.
         You work in a Forke-managed branch and fill out a structured <Tag>FORKE_SUBMISSION.md</Tag>{' '}
         before opening the PR.
       </P>
@@ -292,7 +292,7 @@ const coreConcepts: Article = {
       <H3 id="escrow">Escrow</H3>
       <P>
         The founder deposits the budget up front via Razorpay. Funds are held by Forke and released
-        to your UPI automatically the moment the work is approved — so the money is provably there
+        to your UPI automatically the moment the work is approved, so the money is provably there
         before you start.
       </P>
 
@@ -307,14 +307,14 @@ const coreConcepts: Article = {
         ]}
       />
       <Note>
-        <Tag>Eligibility = Level ∩ Skill&nbsp;Tier ∩ Trust&nbsp;Score</Tag> — credentials you
+        <Tag>Eligibility = Level ∩ Skill&nbsp;Tier ∩ Trust&nbsp;Score</Tag>: credentials you
         can&apos;t fake by editing a resume.
       </Note>
       <P>
         To make that concrete: a production payment-integration task might require Level&nbsp;12+, a
         Fullstack tier of 3+, and a trust score above 85%. A developer who meets two of the three
-        won&apos;t even see the task in their feed. This is what gives a founder structural confidence
-        — when a React task reaches a developer, that developer has <em>proven</em> they can do React,
+        won&apos;t even see the task in their feed. This is what gives a founder structural confidence,
+        when a React task reaches a developer, that developer has <em>proven</em> they can do React,
         not just ticked a box. See <DocLink href="/docs/skill-tracks">skill tracks</DocLink> and{' '}
         <DocLink href="/docs/trust-score">trust score</DocLink> for how each gate is computed.
       </P>
@@ -324,7 +324,7 @@ const coreConcepts: Article = {
         Every approved task appears on your public profile, timestamped and linked to the merged
         GitHub PR. Both you and Forke show up as contributors on the owner&apos;s upstream repo. The
         guiding philosophy: <em>&ldquo;Prove skill by shipping. Your profile is your
-        reputation.&rdquo;</em> — see <DocLink href="/docs/profile">Profile &amp; proof of work</DocLink>.
+        reputation.&rdquo;</em>: see <DocLink href="/docs/profile">Profile &amp; proof of work</DocLink>.
       </P>
     </Prose>
   ),
@@ -334,27 +334,27 @@ A short glossary. Everything else in these docs builds on these terms.
 
 ## Bounty
 
-A single, scoped unit of work (30 minutes to ~4 hours) posted by a founder — a bug fix, a landing-page section, a Figma-to-React conversion. It carries a fixed budget in Rs, a time estimate, a tech stack, an XP reward, and a file scope.
+A single, scoped unit of work (30 minutes to ~4 hours) posted by a founder: a bug fix, a landing-page section, a Figma-to-React conversion. It carries a fixed budget in Rs, a time estimate, a tech stack, an XP reward, and a file scope.
 
 ## PR submission
 
-Work is always delivered as a pull request — never a ZIP or a link dump. You work in a Forke-managed branch and fill out a structured FORKE_SUBMISSION.md before opening the PR.
+Work is always delivered as a pull request, never a ZIP or a link dump. You work in a Forke-managed branch and fill out a structured FORKE_SUBMISSION.md before opening the PR.
 
 ## Escrow
 
-The founder deposits the budget up front via Razorpay. Funds are held by Forke and released to your UPI automatically the moment the work is approved — so the money is provably there before you start.
+The founder deposits the budget up front via Razorpay. Funds are held by Forke and released to your UPI automatically the moment the work is approved, so the money is provably there before you start.
 
 ## 3D access
 
 Every bounty has three gates, and all three must pass before you can claim it:
 
-- Level — platform experience and consistency (LVL 1-25)
-- Skill tier — technical depth in a track (Frontend, Backend, ...)
-- Trust score — professional reliability (completion, deadlines, ratings)
+- Level: platform experience and consistency (LVL 1-25)
+- Skill tier: technical depth in a track (Frontend, Backend, ...)
+- Trust score: professional reliability (completion, deadlines, ratings)
 
-Eligibility = Level (intersect) Skill Tier (intersect) Trust Score — credentials you can't fake by editing a resume.
+Eligibility = Level (intersect) Skill Tier (intersect) Trust Score: credentials you can't fake by editing a resume.
 
-To make that concrete: a production payment-integration task might require Level 12+, a Fullstack tier of 3+, and a trust score above 85%. A developer who meets two of the three won't even see the task in their feed. This is what gives a founder structural confidence — when a React task reaches a developer, that developer has proven they can do React, not just ticked a box.
+To make that concrete: a production payment-integration task might require Level 12+, a Fullstack tier of 3+, and a trust score above 85%. A developer who meets two of the three won't even see the task in their feed. This is what gives a founder structural confidence: when a React task reaches a developer, that developer has proven they can do React, not just ticked a box.
 
 ## Proof of work
 
@@ -377,11 +377,11 @@ const forDevelopers: Article = {
   ],
   body: (
     <Prose>
-      <Lead>Forke is developer-only. Your code does the talking — no proposals, no interviews.</Lead>
+      <Lead>Forke is developer-only. Your code does the talking, no proposals, no interviews.</Lead>
 
       <H3 id="signup">Sign up &amp; connect GitHub</H3>
       <P>
-        Sign up via the <strong>&ldquo;Do Tasks?&rdquo;</strong> path with Google or GitHub — the
+        Sign up via the <strong>&ldquo;Do Tasks?&rdquo;</strong> path with Google or GitHub, the
         developer path is open access, no application required. Connecting GitHub once via OAuth runs
         a one-time automated analysis of your public activity that seeds your starting level
         (LVL&nbsp;1–3); a 60-second skill self-assessment then personalises your feed. You have a
@@ -389,24 +389,24 @@ const forDevelopers: Article = {
       </P>
       <Note>
         Before your first submission, add your UPI ID in{' '}
-        <DocLink href="/settings">Settings</DocLink> — that&apos;s where escrow releases land on
+        <DocLink href="/settings">Settings</DocLink>: that&apos;s where escrow releases land on
         approval. See <DocLink href="/docs/settings">Settings &amp; payouts setup</DocLink>.
       </Note>
 
       <H3 id="journey">Your journey</H3>
       <Steps>
         <Step n="1" title="Browse the feed">
-          See bounties gated to your level, skill tier, and trust score — you only ever see what
+          See bounties gated to your level, skill tier, and trust score: you only ever see what
           you&apos;re eligible to claim.
         </Step>
         <Step n="2" title="Claim a task">
           Claiming opens a 20-minute soft reservation. Activate it by creating a branch, your first
-          commit, or pressing &ldquo;I&apos;m Working&rdquo; — the task then locks to you and the
+          commit, or pressing &ldquo;I&apos;m Working&rdquo;: the task then locks to you and the
           deadline clock starts.
         </Step>
         <Step n="3" title="Build in a branch">
           Work in a Forke-managed branch (<Tag>dev-&#123;username&#125;/task-&#123;id&#125;</Tag>) inside
-          the Forke mirror — never directly on the owner&apos;s repo. Stay inside the file scope; edits
+          the Forke mirror: never directly on the owner&apos;s repo. Stay inside the file scope; edits
           outside it are auto-rejected.
         </Step>
         <Step n="4" title="Submit a PR">
@@ -414,17 +414,17 @@ const forDevelopers: Article = {
           review run before the owner sees anything.
         </Step>
         <Step n="5" title="Get paid">
-          On approval, Forke merges upstream, releases escrow to your UPI instantly, and awards XP —
+          On approval, Forke merges upstream, releases escrow to your UPI instantly, and awards XP,
           and the task lands on your public profile.
         </Step>
       </Steps>
 
       <H3 id="tips">Tips for your first task</H3>
       <UL>
-        <li>Pick something inside your skill tier — a clean first submission boosts trust score.</li>
+        <li>Pick something inside your skill tier, a clean first submission boosts trust score.</li>
         <li>Read the acceptance criteria before claiming; scope creep gets auto-flagged.</li>
-        <li>Submit early — beating 50% of the deadline earns a <Tag>+25 XP</Tag> speed bonus.</li>
-        <li>Don&apos;t claim what you can&apos;t start — abandoning after activation is a strong trust-score negative.</li>
+        <li>Submit early: beating 50% of the deadline earns a <Tag>+25 XP</Tag> speed bonus.</li>
+        <li>Don&apos;t claim what you can&apos;t start: abandoning after activation is a strong trust-score negative.</li>
       </UL>
 
       <H3 id="next">Keep reading</H3>
@@ -438,28 +438,28 @@ const forDevelopers: Article = {
   ),
   markdown: `# For developers
 
-Forke is developer-only. Your code does the talking — no proposals, no interviews.
+Forke is developer-only. Your code does the talking, no proposals, no interviews.
 
 ## Sign up & connect GitHub
 
-Sign up via the "Do Tasks?" path with Google or GitHub — the developer path is open access, no application required. Connecting GitHub once via OAuth runs a one-time automated analysis of your public activity that seeds your starting level (LVL 1-3); a 60-second skill self-assessment then personalises your feed. You have a 7-day nudge window to connect GitHub if you signed up with Google.
+Sign up via the "Do Tasks?" path with Google or GitHub, the developer path is open access, no application required. Connecting GitHub once via OAuth runs a one-time automated analysis of your public activity that seeds your starting level (LVL 1-3); a 60-second skill self-assessment then personalises your feed. You have a 7-day nudge window to connect GitHub if you signed up with Google.
 
-Note: Before your first submission, add your UPI ID in Settings (/settings) — that's where escrow releases land on approval.
+Note: Before your first submission, add your UPI ID in Settings (/settings): that's where escrow releases land on approval.
 
 ## Your journey
 
-1. Browse the feed — see bounties gated to your level, skill tier, and trust score.
-2. Claim a task — claiming opens a 20-minute soft reservation. Activate it by creating a branch, your first commit, or pressing "I'm Working" — the task then locks to you and the deadline clock starts.
-3. Build in a branch — work in a Forke-managed branch (dev-{username}/task-{id}) inside the Forke mirror, never directly on the owner's repo. Stay inside the file scope.
-4. Submit a PR — open a PR and fill the FORKE_SUBMISSION.md template. Automated checks and an AI review run before the owner sees anything.
-5. Get paid — on approval, Forke merges upstream, releases escrow to your UPI instantly, and awards XP. The task lands on your public profile.
+1. Browse the feed: see bounties gated to your level, skill tier, and trust score.
+2. Claim a task, claiming opens a 20-minute soft reservation. Activate it by creating a branch, your first commit, or pressing "I'm Working", the task then locks to you and the deadline clock starts.
+3. Build in a branch: work in a Forke-managed branch (dev-{username}/task-{id}) inside the Forke mirror, never directly on the owner's repo. Stay inside the file scope.
+4. Submit a PR: open a PR and fill the FORKE_SUBMISSION.md template. Automated checks and an AI review run before the owner sees anything.
+5. Get paid: on approval, Forke merges upstream, releases escrow to your UPI instantly, and awards XP. The task lands on your public profile.
 
 ## Tips for your first task
 
-- Pick something inside your skill tier — a clean first submission boosts trust score.
+- Pick something inside your skill tier, a clean first submission boosts trust score.
 - Read the acceptance criteria before claiming; scope creep gets auto-flagged.
-- Submit early — beating 50% of the deadline earns a +25 XP speed bonus.
-- Don't claim what you can't start — abandoning after activation is a strong trust-score negative.
+- Submit early: beating 50% of the deadline earns a +25 XP speed bonus.
+- Don't claim what you can't start: abandoning after activation is a strong trust-score negative.
 
 ## Keep reading
 
@@ -492,8 +492,8 @@ const forFounders: Article = {
       <H3 id="apply">Apply &amp; get approved</H3>
       <P>
         Apply via the <strong>&ldquo;Post Tasks?&rdquo;</strong> path and fill the company
-        application (name, company, LinkedIn, designation, message). Client access is manually gated
-        — a founder personally reviews and approves your application to keep the marketplace trusted
+        application (name, company, LinkedIn, designation, message). Client access is manually gated,
+        a founder personally reviews and approves your application to keep the marketplace trusted
         on both sides. This is deliberate: it&apos;s the difference between Forke and an open job
         board.
       </P>
@@ -502,37 +502,37 @@ const forFounders: Article = {
       <Steps>
         <Step n="1" title="Scope it tightly">
           Title, description, tech stack, budget, time estimate, and the file scope. The tighter
-          the scope, the faster and cleaner the result — and the better the AI review works.
+          the scope, the faster and cleaner the result, and the better the AI review works.
         </Step>
         <Step n="2" title="Connect your repo">
           Forke creates a mirror in the <Tag>forke-workspaces</Tag> org and prepares a task branch.
-          Your repo is never touched directly — Forke only reads it and merges back a single clean
+          Your repo is never touched directly, Forke only reads it and merges back a single clean
           PR at the end.
         </Step>
         <Step n="3" title="Fund escrow">
-          Deposit the budget via Razorpay. Funds are held in escrow until you approve — so developers
+          Deposit the budget via Razorpay. Funds are held in escrow until you approve, so developers
           know the money is provably there before they start.
         </Step>
       </Steps>
       <Note>
         You don&apos;t browse developer profiles to assign work. You post the task; eligible
-        developers claim it. Developers become discoverable <em>after</em> they ship — this keeps
+        developers claim it. Developers become discoverable <em>after</em> they ship: this keeps
         Forke task-first, not a directory.
       </Note>
 
       <H3 id="review">Review &amp; approve</H3>
       <P>
-        When a submission passes automated + AI checks, you get a <strong>verdict card</strong> — a
+        When a submission passes automated + AI checks, you get a <strong>verdict card</strong>: a
         plain-English summary of what changed, with scores and flags, not a wall of diff. Click{' '}
         <strong>Approve</strong> and funds auto-release to the developer&apos;s UPI while Forke merges
         a clean upstream PR; click <strong>Request changes</strong> to send it back with your notes.
-        You make a business decision — &ldquo;does this solve my problem?&rdquo; — not a code review.
+        You make a business decision, &ldquo;does this solve my problem?&rdquo;, not a code review.
       </P>
 
       <H3 id="commission">Pricing &amp; commission</H3>
       <P>
         Forke charges a flat <strong>10% platform commission</strong>. You pay ₹550 for a ₹500 task:
-        the developer receives the full ₹500, and Forke keeps ₹50. Simple and transparent — see the
+        the developer receives the full ₹500, and Forke keeps ₹50. Simple and transparent: see the
         live <DocLink href="/escrow">Escrow</DocLink> view in your dashboard.
       </P>
       <Note>
@@ -548,19 +548,19 @@ Need a quick feature or a bug squashed without hiring a freelancer for a week? P
 
 ## Apply & get approved
 
-Apply via the "Post Tasks?" path and fill the company application (name, company, LinkedIn, designation, message). Client access is manually gated — a founder personally reviews and approves your application to keep the marketplace trusted on both sides.
+Apply via the "Post Tasks?" path and fill the company application (name, company, LinkedIn, designation, message). Client access is manually gated, a founder personally reviews and approves your application to keep the marketplace trusted on both sides.
 
 ## Post a task
 
-1. Scope it tightly — title, description, tech stack, budget, time estimate, and the file scope. The tighter the scope, the faster and cleaner the result.
-2. Connect your repo — Forke creates a mirror in the forke-workspaces org and prepares a task branch. Your repo is never touched directly.
-3. Fund escrow — deposit the budget via Razorpay. Funds are held in escrow until you approve.
+1. Scope it tightly: title, description, tech stack, budget, time estimate, and the file scope. The tighter the scope, the faster and cleaner the result.
+2. Connect your repo: Forke creates a mirror in the forke-workspaces org and prepares a task branch. Your repo is never touched directly.
+3. Fund escrow: deposit the budget via Razorpay. Funds are held in escrow until you approve.
 
 Note: You don't browse developer profiles to assign work. You post the task; eligible developers claim it. Developers become discoverable after they ship.
 
 ## Review & approve
 
-When a submission passes automated + AI checks, you get a verdict card — a plain-English summary of what changed, with scores and flags, not a wall of diff. Click Approve and funds auto-release to the developer's UPI while Forke merges a clean upstream PR; click Request changes to send it back with your notes.
+When a submission passes automated + AI checks, you get a verdict card: a plain-English summary of what changed, with scores and flags, not a wall of diff. Click Approve and funds auto-release to the developer's UPI while Forke merges a clean upstream PR; click Request changes to send it back with your notes.
 
 ## Pricing & commission
 
@@ -584,11 +584,11 @@ const profile: Article = {
   ],
   body: (
     <Prose>
-      <Lead>Forke must never become &ldquo;LinkedIn 2.0&rdquo;. No fake resumes — only shipped, reviewed, paid work.</Lead>
+      <Lead>Forke must never become &ldquo;LinkedIn 2.0&rdquo;. No fake resumes: only shipped, reviewed, paid work.</Lead>
       <H3 id="public">Your public profile</H3>
       <P>
         Once you reach LVL&nbsp;3 you unlock a custom profile URL (<Tag>forke.space/&#123;username&#125;</Tag>).
-        Every approved task appears automatically — you never hand-write an entry. Both you and Forke
+        Every approved task appears automatically, you never hand-write an entry. Both you and Forke
         show up as contributors on the owner&apos;s upstream PR, so your work is verifiable on GitHub
         too.
       </P>
@@ -600,17 +600,17 @@ const profile: Article = {
       </UL>
       <Note>
         The north star: <em>&ldquo;Prove skill by shipping. Your profile is your reputation.&rdquo;</em>{' '}
-        Recruiter-readable, tamper-proof, and indexable — that&apos;s the long-term vision.
+        Recruiter-readable, tamper-proof, and indexable: that&apos;s the long-term vision.
       </Note>
     </Prose>
   ),
   markdown: `# Profile & proof of work
 
-Forke must never become "LinkedIn 2.0". No fake resumes — only shipped, reviewed, paid work.
+Forke must never become "LinkedIn 2.0". No fake resumes: only shipped, reviewed, paid work.
 
 ## Your public profile
 
-Once you reach LVL 3 you unlock a custom profile URL (forke.space/{username}). Every approved task appears automatically — you never hand-write an entry. Both you and Forke show up as contributors on the owner's upstream PR, so your work is verifiable on GitHub too.
+Once you reach LVL 3 you unlock a custom profile URL (forke.space/{username}). Every approved task appears automatically, you never hand-write an entry. Both you and Forke show up as contributors on the owner's upstream PR, so your work is verifiable on GitHub too.
 
 ## What's on it
 
@@ -640,7 +640,7 @@ const githubConnection: Article = {
       <P>
         Your account is connected once via OAuth. A one-time analysis of your public activity helps
         seed your starting level (LVL&nbsp;1–3), and from then on every submission flows through
-        GitHub. Forke integrates via a <strong>GitHub App</strong> — not broad OAuth tokens — that
+        GitHub. Forke integrates via a <strong>GitHub App</strong>, not broad OAuth tokens, that
         owners install on specific repos. It requests only the minimum permissions:{' '}
         <Tag>contents</Tag> (read/write), <Tag>pull_requests</Tag>, <Tag>checks</Tag>, and{' '}
         <Tag>metadata</Tag>.
@@ -658,7 +658,7 @@ const githubConnection: Article = {
       <UL>
         <li>Secret scanning blocks commits that add <Tag>.env</Tag> files or hardcoded tokens.</li>
         <li>File-scope validation auto-rejects any diff that touches files outside the task scope.</li>
-        <li>Only the Forke system merges — no developer can merge their own work, ever.</li>
+        <li>Only the Forke system merges, no developer can merge their own work, ever.</li>
       </UL>
     </Prose>
   ),
@@ -668,7 +668,7 @@ Forke is Git-native to the core. Connecting GitHub is what sets your starting le
 
 ## Why GitHub
 
-Your account is connected once via OAuth. A one-time analysis of your public activity helps seed your starting level (LVL 1-3), and from then on every submission flows through GitHub. Forke integrates via a GitHub App — not broad OAuth tokens — that owners install on specific repos. It requests only the minimum permissions: contents (read/write), pull_requests, checks, and metadata.
+Your account is connected once via OAuth. A one-time analysis of your public activity helps seed your starting level (LVL 1-3), and from then on every submission flows through GitHub. Forke integrates via a GitHub App, not broad OAuth tokens, that owners install on specific repos. It requests only the minimum permissions: contents (read/write), pull_requests, checks, and metadata.
 
 ## Mirror & branch model
 
@@ -680,7 +680,7 @@ Owner repo -> Forke mirror (forke-workspaces) -> dev-{username}/task-{id} -> Pul
 
 - Secret scanning blocks commits that add .env files or hardcoded tokens.
 - File-scope validation auto-rejects any diff that touches files outside the task scope.
-- Only the Forke system merges — no developer can merge their own work, ever.
+- Only the Forke system merges, no developer can merge their own work, ever.
 `,
 }
 
@@ -700,7 +700,7 @@ const settings: Article = {
       <H3 id="upi">UPI payout ID</H3>
       <P>
         Add your UPI ID in <DocLink href="/settings">Settings</DocLink> before you submit your first
-        task — it&apos;s where escrow releases land on approval. Payouts are instant; there&apos;s
+        task: it&apos;s where escrow releases land on approval. Payouts are instant; there&apos;s
         nothing to withdraw. Higher levels unlock additional payout tiers (intermediate from
         LVL&nbsp;7+).
       </P>
@@ -718,7 +718,7 @@ A few things to set up once so payouts and alerts just work.
 
 ## UPI payout ID
 
-Add your UPI ID in Settings (/settings) before you submit your first task — it's where escrow releases land on approval. Payouts are instant; there's nothing to withdraw. Higher levels unlock additional payout tiers (intermediate from LVL 7+).
+Add your UPI ID in Settings (/settings) before you submit your first task, it's where escrow releases land on approval. Payouts are instant; there's nothing to withdraw. Higher levels unlock additional payout tiers (intermediate from LVL 7+).
 
 ## Notifications
 
@@ -741,10 +741,10 @@ const browsingTheFeed: Article = {
   ],
   body: (
     <Prose>
-      <Lead>You only see what you&apos;re eligible to claim — no scrolling past locked work.</Lead>
+      <Lead>You only see what you&apos;re eligible to claim: no scrolling past locked work.</Lead>
       <H3 id="feed">How the feed is built</H3>
       <P>
-        The <DocLink href="/tasks">feed</DocLink> filters by the three access dimensions — level,
+        The <DocLink href="/tasks">feed</DocLink> filters by the three access dimensions, level,
         skill tier, and trust score. The minimum level to claim a bounty is the highest skill tier
         among its tags, so a task tagged <Tag>Next.js</Tag> + <Tag>Database</Tag> gates higher than
         one tagged <Tag>HTML/CSS</Tag>. You can additionally filter by skill tag and budget; filter
@@ -765,7 +765,7 @@ const browsingTheFeed: Article = {
         ]}
       />
       <Note>
-        Criticality drives how strictly a submission is reviewed — a Production task on auth or
+        Criticality drives how strictly a submission is reviewed, a Production task on auth or
         payments routes to stricter risk scoring than a Personal one. See{' '}
         <DocLink href="/docs/review-pipeline">the review pipeline</DocLink>.
       </Note>
@@ -773,11 +773,11 @@ const browsingTheFeed: Article = {
   ),
   markdown: `# Browsing the bounty feed
 
-You only see what you're eligible to claim — no scrolling past locked work.
+You only see what you're eligible to claim: no scrolling past locked work.
 
 ## How the feed is built
 
-The feed (/tasks) filters by the three access dimensions — level, skill tier, and trust score. The minimum level to claim a bounty is the highest skill tier among its tags, so a task tagged Next.js + Database gates higher than one tagged HTML/CSS. You can additionally filter by skill tag and budget; filter state lives in the URL so feeds are shareable.
+The feed (/tasks) filters by the three access dimensions: level, skill tier, and trust score. The minimum level to claim a bounty is the highest skill tier among its tags, so a task tagged Next.js + Database gates higher than one tagged HTML/CSS. You can additionally filter by skill tag and budget; filter state lives in the URL so feeds are shareable.
 
 ## Reading a bounty card
 
@@ -791,7 +791,7 @@ Every card surfaces the task difficulty matrix at a glance:
 - XP reward: 150 XP
 - Budget: Rs 800
 
-Note: Criticality drives how strictly a submission is reviewed — a Production task on auth or payments routes to stricter risk scoring than a Personal one.
+Note: Criticality drives how strictly a submission is reviewed, a Production task on auth or payments routes to stricter risk scoring than a Personal one.
 `,
 }
 
@@ -809,24 +809,24 @@ const claiming: Article = {
   ],
   body: (
     <Prose>
-      <Lead>Claiming is designed for velocity — tasks don&apos;t sit reserved by someone who isn&apos;t working.</Lead>
+      <Lead>Claiming is designed for velocity, tasks don&apos;t sit reserved by someone who isn&apos;t working.</Lead>
       <P>
         The mental shift: posting a task on Forke shouldn&apos;t feel like &ldquo;I assigned this and
-        now I wait.&rdquo; It should feel like &ldquo;I posted this to a managed engineering system
-        — it will get done.&rdquo; The claim engine is what makes that true.
+        now I wait.&rdquo; It should feel like &ldquo;I posted this to a managed engineering system,
+        it will get done.&rdquo; The claim engine is what makes that true.
       </P>
       <H3 id="soft">Soft reservation</H3>
       <P>
         Claiming a bounty gives you a <strong>20-minute soft reservation</strong>, not instant
-        ownership. It&apos;s yours to start, but it isn&apos;t locked yet — other developers see
-        &ldquo;Reserved — 19:43 remaining.&rdquo; Twenty minutes is long enough to actually begin, but
+        ownership. It&apos;s yours to start, but it isn&apos;t locked yet: other developers see
+        &ldquo;Reserved: 19:43 remaining.&rdquo; Twenty minutes is long enough to actually begin, but
         short enough that an impulse claim that goes nowhere returns to the marketplace fast.
       </P>
       <H3 id="activate">Activating a claim</H3>
       <P>
         Activate within the window by creating a branch, making your first commit, opening a draft
         PR, or pressing <strong>&ldquo;I&apos;m Working&rdquo;</strong>. The task then locks to you,
-        you earn <Tag>+5 XP</Tag>, and — critically — <strong>the deadline clock only starts at
+        you earn <Tag>+5 XP</Tag>, and, critically, <strong>the deadline clock only starts at
         activation, not at claim</strong>. That&apos;s fair to developers who think before starting,
         and ruthless to claim-and-forget.
       </P>
@@ -836,28 +836,28 @@ const claiming: Article = {
       <H3 id="queue">Queue &amp; fast-fail</H3>
       <P>
         If you don&apos;t activate in time, the soft reservation expires and the next developer in
-        the <strong>warm queue</strong> gets their turn — they&apos;ve already been previewing the
+        the <strong>warm queue</strong> gets their turn: they&apos;ve already been previewing the
         task, so they can often start within minutes. While a task is in progress, Forke silently
         watches for failing signals (no commits, repeated failed builds, scope creep) and steps in
         early. Abandoning a task <em>after</em> activating is a strong negative on your{' '}
         <DocLink href="/docs/trust-score">trust score</DocLink>.
       </P>
-      <Note>Don&apos;t claim what you can&apos;t start — claim, then immediately activate.</Note>
+      <Note>Don&apos;t claim what you can&apos;t start: claim, then immediately activate.</Note>
     </Prose>
   ),
   markdown: `# Claiming & soft reservation
 
-Claiming is designed for velocity — tasks don't sit reserved by someone who isn't working.
+Claiming is designed for velocity, tasks don't sit reserved by someone who isn't working.
 
-The mental shift: posting a task on Forke shouldn't feel like "I assigned this and now I wait." It should feel like "I posted this to a managed engineering system — it will get done."
+The mental shift: posting a task on Forke shouldn't feel like "I assigned this and now I wait." It should feel like "I posted this to a managed engineering system, it will get done."
 
 ## Soft reservation
 
-Claiming a bounty gives you a 20-minute soft reservation, not instant ownership. It's yours to start, but it isn't locked yet — other developers see "Reserved — 19:43 remaining." Twenty minutes is long enough to actually begin, but short enough that an impulse claim that goes nowhere returns to the marketplace fast.
+Claiming a bounty gives you a 20-minute soft reservation, not instant ownership. It's yours to start, but it isn't locked yet, other developers see "Reserved, 19:43 remaining." Twenty minutes is long enough to actually begin, but short enough that an impulse claim that goes nowhere returns to the marketplace fast.
 
 ## Activating a claim
 
-Activate within the window by creating a branch, making your first commit, opening a draft PR, or pressing "I'm Working". The task then locks to you, you earn +5 XP, and — critically — the deadline clock only starts at activation, not at claim.
+Activate within the window by creating a branch, making your first commit, opening a draft PR, or pressing "I'm Working". The task then locks to you, you earn +5 XP, and, critically, the deadline clock only starts at activation, not at claim.
 
 ## Task lifecycle
 
@@ -874,9 +874,9 @@ Every task moves through a clear state machine:
 
 ## Queue & fast-fail
 
-If you don't activate in time, the soft reservation expires and the next developer in the warm queue gets their turn — they've already been previewing the task, so they can often start within minutes. While a task is in progress, Forke silently watches for failing signals (no commits, repeated failed builds, scope creep) and steps in early. Abandoning a task after activating is a strong negative on your trust score.
+If you don't activate in time, the soft reservation expires and the next developer in the warm queue gets their turn, they've already been previewing the task, so they can often start within minutes. While a task is in progress, Forke silently watches for failing signals (no commits, repeated failed builds, scope creep) and steps in early. Abandoning a task after activating is a strong negative on your trust score.
 
-Note: Don't claim what you can't start — claim, then immediately activate.
+Note: Don't claim what you can't start: claim, then immediately activate.
 `,
 }
 
@@ -898,7 +898,7 @@ const branchWorkflow: Article = {
       <P>
         After activating, work in <Tag>dev-&#123;username&#125;/task-&#123;id&#125;</Tag> inside the
         Forke mirror (the <Tag>forke-workspaces</Tag> org). Your branch is created off the task base
-        branch (<Tag>task/&#123;id&#125;-&#123;slug&#125;</Tag>) — when you&apos;re done, your PR targets
+        branch (<Tag>task/&#123;id&#125;-&#123;slug&#125;</Tag>): when you&apos;re done, your PR targets
         the task branch, never <Tag>main</Tag>. PRs aimed at the wrong branch are rejected
         automatically.
       </P>
@@ -907,7 +907,7 @@ const branchWorkflow: Article = {
         Each task defines an allowed file scope. Forke validates every PR diff against it and{' '}
         <strong>auto-rejects</strong> anything that touches files outside the allowed paths or inside
         excluded ones (like <Tag>.env</Tag>, auth, or secrets). This is the single most important
-        security feature in the submission pipeline — and it protects you too, by keeping your
+        security feature in the submission pipeline, and it protects you too, by keeping your
         changes focused.
       </P>
       <H3 id="principles">Three principles</H3>
@@ -917,7 +917,7 @@ const branchWorkflow: Article = {
         <li><strong>AI assists, humans decide.</strong> AI generates the verdict; owners make the call.</li>
       </OL>
       <Note>
-        Task branches are ephemeral — Forke deletes them within 24 hours of resolution and archives
+        Task branches are ephemeral: Forke deletes them within 24 hours of resolution and archives
         the logs for your portfolio.
       </Note>
     </Prose>
@@ -928,11 +928,11 @@ You get an isolated, Forke-managed branch. Just code.
 
 ## Where you work
 
-After activating, work in dev-{username}/task-{id} inside the Forke mirror (the forke-workspaces org). Your branch is created off the task base branch (task/{id}-{slug}) — when you're done, your PR targets the task branch, never main. PRs aimed at the wrong branch are rejected automatically.
+After activating, work in dev-{username}/task-{id} inside the Forke mirror (the forke-workspaces org). Your branch is created off the task base branch (task/{id}-{slug}): when you're done, your PR targets the task branch, never main. PRs aimed at the wrong branch are rejected automatically.
 
 ## Stay in scope
 
-Each task defines an allowed file scope. Forke validates every PR diff against it and auto-rejects anything that touches files outside the allowed paths or inside excluded ones (like .env, auth, or secrets). This is the single most important security feature in the submission pipeline — and it protects you too, by keeping your changes focused.
+Each task defines an allowed file scope. Forke validates every PR diff against it and auto-rejects anything that touches files outside the allowed paths or inside excluded ones (like .env, auth, or secrets). This is the single most important security feature in the submission pipeline, and it protects you too, by keeping your changes focused.
 
 ## Three principles
 
@@ -940,7 +940,7 @@ Each task defines an allowed file scope. Forke validates every PR diff against i
 2. Forke is the middle layer. Developers never touch owner repos directly.
 3. AI assists, humans decide. AI generates the verdict; owners make the call.
 
-Note: Task branches are ephemeral — Forke deletes them within 24 hours of resolution and archives the logs for your portfolio.
+Note: Task branches are ephemeral: Forke deletes them within 24 hours of resolution and archives the logs for your portfolio.
 `,
 }
 
@@ -957,18 +957,18 @@ const submittingPr: Article = {
   ],
   body: (
     <Prose>
-      <Lead>A submission isn&apos;t just code — it&apos;s a structured PR the review pipeline can reason about.</Lead>
+      <Lead>A submission isn&apos;t just code: it&apos;s a structured PR the review pipeline can reason about.</Lead>
       <H3 id="template">FORKE_SUBMISSION.md</H3>
       <P>
-        Forke auto-generates this template in your branch. Fill it in before opening the PR — it has
+        Forke auto-generates this template in your branch. Fill it in before opening the PR, it has
         five sections:
       </P>
       <UL>
-        <li><Tag>What I Changed</Tag> — required, minimum two bullet points</li>
-        <li><Tag>Why I Made These Choices</Tag> — required, explain key decisions</li>
-        <li><Tag>Testing Performed</Tag> — required</li>
-        <li><Tag>Known Limitations</Tag> — optional but encouraged</li>
-        <li><Tag>Screenshots / Demo</Tag> — optional, strongly encouraged for UI tasks</li>
+        <li><Tag>What I Changed</Tag>: required, minimum two bullet points</li>
+        <li><Tag>Why I Made These Choices</Tag>: required, explain key decisions</li>
+        <li><Tag>Testing Performed</Tag>: required</li>
+        <li><Tag>Known Limitations</Tag>: optional but encouraged</li>
+        <li><Tag>Screenshots / Demo</Tag>: optional, strongly encouraged for UI tasks</li>
       </UL>
       <P>
         This file does three jobs: it forces you to think about what you built, it gives the AI
@@ -994,17 +994,17 @@ const submittingPr: Article = {
   ),
   markdown: `# Submitting a pull request
 
-A submission isn't just code — it's a structured PR the review pipeline can reason about.
+A submission isn't just code: it's a structured PR the review pipeline can reason about.
 
 ## FORKE_SUBMISSION.md
 
-Forke auto-generates this template in your branch. Fill it in before opening the PR — it has five sections:
+Forke auto-generates this template in your branch. Fill it in before opening the PR, it has five sections:
 
-- What I Changed — required, minimum two bullet points
-- Why I Made These Choices — required, explain key decisions
-- Testing Performed — required
-- Known Limitations — optional but encouraged
-- Screenshots / Demo — optional, strongly encouraged for UI tasks
+- What I Changed: required, minimum two bullet points
+- Why I Made These Choices, required, explain key decisions
+- Testing Performed: required
+- Known Limitations: optional but encouraged
+- Screenshots / Demo: optional, strongly encouraged for UI tasks
 
 This file does three jobs: it forces you to think about what you built, it gives the AI reviewer structured context, and it becomes part of your portfolio entry. A missing or empty required section fails the automated layer before any AI is called.
 
@@ -1030,46 +1030,46 @@ const reviewPipeline: Article = {
   popular: true,
   toc: [
     { id: 'layers', label: 'The four layers' },
-    { id: 'l1', label: 'Layer 1 — Automated' },
-    { id: 'l2', label: 'Layer 2 — Context' },
-    { id: 'l3', label: 'Layer 3 — AI review' },
-    { id: 'l4', label: 'Layer 4 — Risk routing' },
+    { id: 'l1', label: 'Layer 1: Automated' },
+    { id: 'l2', label: 'Layer 2: Context' },
+    { id: 'l3', label: 'Layer 3: AI review' },
+    { id: 'l4', label: 'Layer 4: Risk routing' },
   ],
   body: (
     <Prose>
       <Lead>Every PR runs the same gauntlet before a founder ever sees it.</Lead>
       <P>
         The framing matters: AI is an <strong>intelligent context generator</strong>, not a judge.
-        It summarises, flags concerns with evidence, and scores against structured criteria — but in
+        It summarises, flags concerns with evidence, and scores against structured criteria, but in
         V1 it never autonomously approves or rejects. The owner makes the final call.
       </P>
       <H3 id="layers">The four layers</H3>
       <Visual label="Review pipeline" caption="Each layer can stop a submission before it reaches the owner.">
         <PipelineVisual />
       </Visual>
-      <H3 id="l1">Layer 1 — Automated validation</H3>
+      <H3 id="l1">Layer 1: Automated validation</H3>
       <P>
         Build, tests, lint, type-check, security scan (Semgrep), file-scope validation, and the{' '}
-        <Tag>FORKE_SUBMISSION.md</Tag> completeness check — all run in a sandboxed container in ~30
+        <Tag>FORKE_SUBMISSION.md</Tag> completeness check: all run in a sandboxed container in ~30
         seconds. Any failure is an auto-reject with the specific reason shown to you.{' '}
         <strong>No AI is called</strong>, so a failing build costs nothing. This is the biggest cost
         saving and the fastest quality gate.
       </P>
-      <H3 id="l2">Layer 2 — Context assembly</H3>
+      <H3 id="l2">Layer 2: Context assembly</H3>
       <P>
         Forke builds the AI prompt from exactly what matters: the task description and acceptance
-        criteria, the git diff (changed files only — never the whole repo), repo patterns detected
+        criteria, the git diff (changed files only: never the whole repo), repo patterns detected
         when the mirror was created, the automated results, and your trust score and history. Good
         context is what makes the verdict meaningful.
       </P>
-      <H3 id="l3">Layer 3 — AI review</H3>
+      <H3 id="l3">Layer 3: AI review</H3>
       <P>
         Claude reads the assembled context and returns a strict JSON verdict: task-completion score
         (0–10), code-quality score (0–10), architecture fit (0–10), security status, up to five
         concrete issues, up to three positives, a plain-English summary, a recommendation, and a
         confidence score. Low confidence escalates to a human regardless of the other scores.
       </P>
-      <H3 id="l4">Layer 4 — Risk scoring</H3>
+      <H3 id="l4">Layer 4: Risk scoring</H3>
       <P>
         A composite 0–100 score from the AI verdict, task criticality, and your history decides
         routing:
@@ -1078,12 +1078,12 @@ const reviewPipeline: Article = {
         head={['Risk score', 'Routing']}
         rows={[
           ['0–30', 'Auto-approve eligible (low-risk, simple tasks)'],
-          ['31–70', 'Owner review — verdict card shown, owner decides'],
+          ['31–70', 'Owner review: verdict card shown, owner decides'],
           ['71–100', 'Trusted reviewer queue first, then owner'],
         ]}
       />
       <Note>
-        Auto-approval is <strong>off by default in V1</strong> — it&apos;s enabled only after the
+        Auto-approval is <strong>off by default in V1</strong>: it&apos;s enabled only after the
         scoring is validated on 500+ tasks. Until then, every submission reaches a human.
       </Note>
     </Prose>
@@ -1092,33 +1092,33 @@ const reviewPipeline: Article = {
 
 Every PR runs the same gauntlet before a founder ever sees it.
 
-The framing matters: AI is an intelligent context generator, not a judge. It summarises, flags concerns with evidence, and scores against structured criteria — but in V1 it never autonomously approves or rejects. The owner makes the final call.
+The framing matters: AI is an intelligent context generator, not a judge. It summarises, flags concerns with evidence, and scores against structured criteria, but in V1 it never autonomously approves or rejects. The owner makes the final call.
 
 ## The four layers
 
 L1 Automated validation -> L2 Context assembly -> L3 AI review -> L4 Risk scoring.
 
-## Layer 1 — Automated validation
+## Layer 1: Automated validation
 
-Build, tests, lint, type-check, security scan (Semgrep), file-scope validation, and the FORKE_SUBMISSION.md completeness check — all run in a sandboxed container in ~30 seconds. Any failure is an auto-reject with the specific reason shown to you. No AI is called, so a failing build costs nothing.
+Build, tests, lint, type-check, security scan (Semgrep), file-scope validation, and the FORKE_SUBMISSION.md completeness check: all run in a sandboxed container in ~30 seconds. Any failure is an auto-reject with the specific reason shown to you. No AI is called, so a failing build costs nothing.
 
-## Layer 2 — Context assembly
+## Layer 2: Context assembly
 
-Forke builds the AI prompt from exactly what matters: the task description and acceptance criteria, the git diff (changed files only — never the whole repo), repo patterns detected when the mirror was created, the automated results, and your trust score and history.
+Forke builds the AI prompt from exactly what matters: the task description and acceptance criteria, the git diff (changed files only: never the whole repo), repo patterns detected when the mirror was created, the automated results, and your trust score and history.
 
-## Layer 3 — AI review
+## Layer 3: AI review
 
 Claude reads the assembled context and returns a strict JSON verdict: task-completion score (0-10), code-quality score (0-10), architecture fit (0-10), security status, up to five concrete issues, up to three positives, a plain-English summary, a recommendation, and a confidence score. Low confidence escalates to a human regardless of the other scores.
 
-## Layer 4 — Risk scoring
+## Layer 4: Risk scoring
 
 A composite 0-100 score from the AI verdict, task criticality, and your history decides routing:
 
 - 0-30: Auto-approve eligible (low-risk, simple tasks)
-- 31-70: Owner review — verdict card shown, owner decides
+- 31-70: Owner review: verdict card shown, owner decides
 - 71-100: Trusted reviewer queue first, then owner
 
-Note: Auto-approval is off by default in V1 — it's enabled only after the scoring is validated on 500+ tasks.
+Note: Auto-approval is off by default in V1, it's enabled only after the scoring is validated on 500+ tasks.
 `,
 }
 
@@ -1134,14 +1134,14 @@ const verdictCard: Article = {
   ],
   body: (
     <Prose>
-      <Lead>The verdict card is the founder&apos;s review surface — designed to be read in under a minute.</Lead>
+      <Lead>The verdict card is the founder&apos;s review surface: designed to be read in under a minute.</Lead>
       <H3 id="what">What&apos;s on the card</H3>
-      <Visual label="Verdict card" caption="Scores, flags, and a plain-English summary — not a wall of diff.">
+      <Visual label="Verdict card" caption="Scores, flags, and a plain-English summary, not a wall of diff.">
         <VerdictVisual />
       </Visual>
       <H3 id="decision">Approve or request changes</H3>
       <P>
-        You&apos;re making a business decision — &ldquo;does this solve my problem?&rdquo; — not a
+        You&apos;re making a business decision, &ldquo;does this solve my problem?&rdquo;, not a
         line-by-line code review. Approving auto-releases escrow to the developer&apos;s UPI and
         triggers a clean, squash-merged upstream PR on your repo (you never see the messy
         intermediate commits). Requesting changes sends the PR back with your notes; a revision
@@ -1151,7 +1151,7 @@ const verdictCard: Article = {
   ),
   markdown: `# The verdict card
 
-The verdict card is the founder's review surface — designed to be read in under a minute.
+The verdict card is the founder's review surface: designed to be read in under a minute.
 
 ## What's on the card
 
@@ -1159,7 +1159,7 @@ A clean, non-technical summary: pass/fail badges for build, tests, and scope; th
 
 ## Approve or request changes
 
-You're making a business decision — "does this solve my problem?" — not a line-by-line code review. Approving auto-releases escrow to the developer's UPI and triggers a clean, squash-merged upstream PR on your repo (you never see the messy intermediate commits). Requesting changes sends the PR back with your notes; a revision before approval costs the developer -20 XP.
+You're making a business decision, "does this solve my problem?", not a line-by-line code review. Approving auto-releases escrow to the developer's UPI and triggers a clean, squash-merged upstream PR on your repo (you never see the messy intermediate commits). Requesting changes sends the PR back with your notes; a revision before approval costs the developer -20 XP.
 `,
 }
 
@@ -1175,7 +1175,7 @@ const acceptanceCriteria: Article = {
   ],
   body: (
     <Prose>
-      <Lead>Acceptance criteria are part of the context the AI reviews against — vague criteria mean vague verdicts.</Lead>
+      <Lead>Acceptance criteria are part of the context the AI reviews against, vague criteria mean vague verdicts.</Lead>
       <H3 id="why">Why it matters</H3>
       <P>
         Layer 2 assembles the task description, acceptance criteria, and diff for the AI. Concrete,
@@ -1189,14 +1189,14 @@ const acceptanceCriteria: Article = {
         <li>Call out what must <em>not</em> change (&ldquo;no changes to authentication logic&rdquo;).</li>
       </UL>
       <Note>
-        Pair tight criteria with a tight file scope — together they make scope creep impossible and
+        Pair tight criteria with a tight file scope, together they make scope creep impossible and
         revisions rare. See <DocLink href="/docs/branch-workflow">the branch workflow</DocLink>.
       </Note>
     </Prose>
   ),
   markdown: `# Writing acceptance criteria
 
-Acceptance criteria are part of the context the AI reviews against — vague criteria mean vague verdicts.
+Acceptance criteria are part of the context the AI reviews against, vague criteria mean vague verdicts.
 
 ## Why it matters
 
@@ -1209,7 +1209,7 @@ Layer 2 assembles the task description, acceptance criteria, and diff for the AI
 - Keep each criterion independently verifiable.
 - Call out what must not change ("no changes to authentication logic").
 
-Note: Pair tight criteria with a tight file scope — together they make scope creep impossible and revisions rare.
+Note: Pair tight criteria with a tight file scope, together they make scope creep impossible and revisions rare.
 `,
 }
 
@@ -1227,7 +1227,7 @@ const xpSystem: Article = {
   ],
   body: (
     <Prose>
-      <Lead>XP measures platform experience and consistency — not raw skill.</Lead>
+      <Lead>XP measures platform experience and consistency, not raw skill.</Lead>
       <H3 id="earn">Earning XP</H3>
       <UL>
         <li>Approved tasks (base XP by budget tier)</li>
@@ -1252,14 +1252,14 @@ const xpSystem: Article = {
       />
       <P>
         A worked example: you ship a ₹600 task (100 base XP), beat the halfway mark on the deadline
-        (+25), and the founder leaves 5★ (+30) — plus the +5 you earned activating the claim. That
+        (+25), and the founder leaves 5★ (+30), plus the +5 you earned activating the claim. That
         single task nets <strong>160 XP</strong>. Had a revision been requested first, you&apos;d lose
         20 of it.
       </P>
       <H3 id="streaks">Streaks &amp; bonuses</H3>
       <P>
         A daily login streak adds <Tag>+5–100 XP</Tag> at milestones, and from LVL&nbsp;10 you unlock
-        XP streak multipliers. Cumulative XP thresholds climb steadily — LVL&nbsp;2 needs 200 XP total,
+        XP streak multipliers. Cumulative XP thresholds climb steadily, LVL&nbsp;2 needs 200 XP total,
         LVL&nbsp;5 needs 1,800, LVL&nbsp;10 needs 9,200, and LVL&nbsp;15 needs 26,000. See{' '}
         <DocLink href="/docs/levels-and-unlocks">levels &amp; unlocks</DocLink> and the full{' '}
         <DocLink href="/levels">Levels page</DocLink>.
@@ -1268,7 +1268,7 @@ const xpSystem: Article = {
   ),
   markdown: `# How XP works
 
-XP measures platform experience and consistency — not raw skill.
+XP measures platform experience and consistency, not raw skill.
 
 ## Earning XP
 
@@ -1287,11 +1287,11 @@ Bigger, higher-stakes tasks award more base XP, so your level rises in step with
 - Rs 900-2,499: 200 XP
 - Rs 2,500+: 350 XP
 
-A worked example: you ship a Rs 600 task (100 base XP), beat the halfway mark on the deadline (+25), and the founder leaves 5 stars (+30) — plus the +5 you earned activating the claim. That single task nets 160 XP. Had a revision been requested first, you'd lose 20 of it.
+A worked example: you ship a Rs 600 task (100 base XP), beat the halfway mark on the deadline (+25), and the founder leaves 5 stars (+30), plus the +5 you earned activating the claim. That single task nets 160 XP. Had a revision been requested first, you'd lose 20 of it.
 
 ## Streaks & bonuses
 
-A daily login streak adds +5-100 XP at milestones, and from LVL 10 you unlock XP streak multipliers. Cumulative XP thresholds climb steadily — LVL 2 needs 200 XP total, LVL 5 needs 1,800, LVL 10 needs 9,200, and LVL 15 needs 26,000.
+A daily login streak adds +5-100 XP at milestones, and from LVL 10 you unlock XP streak multipliers. Cumulative XP thresholds climb steadily: LVL 2 needs 200 XP total, LVL 5 needs 1,800, LVL 10 needs 9,200, and LVL 15 needs 26,000.
 
 See also: Levels & unlocks (/docs/levels-and-unlocks) and the Levels page (/levels).
 `,
@@ -1312,10 +1312,10 @@ const levelsAndUnlocks: Article = {
   ],
   body: (
     <Prose>
-      <Lead>Levels unlock platform privileges. Technical access is separate — that&apos;s skill tracks.</Lead>
+      <Lead>Levels unlock platform privileges. Technical access is separate: that&apos;s skill tracks.</Lead>
       <H3 id="tiers">The five tiers</H3>
       <P>
-        25 levels span 5 tiers, each with its own identity titles — from <em>Newcomer</em> at
+        25 levels span 5 tiers, each with its own identity titles, from <em>Newcomer</em> at
         LVL&nbsp;1 to <em>Forke Legend</em> at LVL&nbsp;25.
       </P>
       <Table head={['Tier', 'Levels', 'Titles', 'Sample unlocks']} rows={TIER_ROWS} />
@@ -1343,7 +1343,7 @@ const levelsAndUnlocks: Article = {
       <Table head={['Achievement', 'Requirement']} rows={ACHIEVEMENT_ROWS} />
       <H3 id="prestige">Prestige</H3>
       <P>
-        After LVL&nbsp;25, prestige resets XP while granting permanent status — from{' '}
+        After LVL&nbsp;25, prestige resets XP while granting permanent status, from{' '}
         <em>Ascended Developer</em> (animated border) through <em>Ghost in Production</em>,{' '}
         <em>Legendary Shipper</em>, and <em>Kernel Lord</em>, up to <em>Architect of Chaos</em>
         {' '}(elite leaderboard + custom badge).
@@ -1352,11 +1352,11 @@ const levelsAndUnlocks: Article = {
   ),
   markdown: `# Levels & unlocks
 
-Levels unlock platform privileges. Technical access is separate — that's skill tracks.
+Levels unlock platform privileges. Technical access is separate: that's skill tracks.
 
 ## The five tiers
 
-25 levels span 5 tiers, each with its own identity titles — from Newcomer at LVL 1 to Forke Legend at LVL 25.
+25 levels span 5 tiers, each with its own identity titles, from Newcomer at LVL 1 to Forke Legend at LVL 25.
 
 - Early Game (LVL 1-5): Newcomer -> Stack Explorer
 - Mid Game (LVL 6-10): Code Runner -> Sprint Soldier
@@ -1382,7 +1382,7 @@ Collectible, public badges that show up on your profile: First Blood, Bug Hunter
 
 ## Prestige
 
-After LVL 25, prestige resets XP while granting permanent status — from Ascended Developer (animated border) through Ghost in Production, Legendary Shipper, and Kernel Lord, up to Architect of Chaos (elite leaderboard + custom badge).
+After LVL 25, prestige resets XP while granting permanent status: from Ascended Developer (animated border) through Ghost in Production, Legendary Shipper, and Kernel Lord, up to Architect of Chaos (elite leaderboard + custom badge).
 `,
 }
 
@@ -1415,7 +1415,7 @@ const skillTracks: Article = {
       <Note>
         Skill tier is one of the three access gates, alongside{' '}
         <DocLink href="/docs/levels-and-unlocks">level</DocLink> and{' '}
-        <DocLink href="/docs/trust-score">trust score</DocLink> — all three must pass.
+        <DocLink href="/docs/trust-score">trust score</DocLink>: all three must pass.
       </Note>
     </Prose>
   ),
@@ -1435,7 +1435,7 @@ Launch tracks: Frontend, Backend, Fullstack, Mobile, AI/ML. Three tiers each:
 
 Each skill tag maps to a tier (e.g. HTML/CSS = 1, UI/UX = 2, React = 3, Next.js = 4, Database = 5). The minimum level to claim a task is the highest tier among its tags. Founders can add up to 5 tags; custom tags (like Stripe or Prisma) default to tier 1.
 
-Note: Skill tier is one of the three access gates, alongside level and trust score — all three must pass.
+Note: Skill tier is one of the three access gates, alongside level and trust score, all three must pass.
 `,
 }
 
@@ -1451,11 +1451,11 @@ const trustScore: Article = {
   ],
   body: (
     <Prose>
-      <Lead>Trust score measures reliability, not coding skill — and it&apos;s one of the three access gates.</Lead>
+      <Lead>Trust score measures reliability, not coding skill, and it&apos;s one of the three access gates.</Lead>
       <H3 id="what">What it measures</H3>
       <P>
         It captures how dependable you are to work with: do you finish, do you hit deadlines, do
-        clients rate you well. It can&apos;t be self-reported — it&apos;s computed from your actual
+        clients rate you well. It can&apos;t be self-reported: it&apos;s computed from your actual
         history.
       </P>
       <H3 id="factors">Factors</H3>
@@ -1472,7 +1472,7 @@ const trustScore: Article = {
         ]}
       />
       <Note>
-        A high trust score unlocks more than access — at LVL&nbsp;15 with Trust&nbsp;≥&nbsp;90% you
+        A high trust score unlocks more than access, at LVL&nbsp;15 with Trust&nbsp;≥&nbsp;90% you
         become eligible for the reviewer pathway, and high-level developers get fast-tracked dispute
         resolution. See <DocLink href="/docs/refunds-and-disputes">refunds &amp; disputes</DocLink>.
       </Note>
@@ -1480,11 +1480,11 @@ const trustScore: Article = {
   ),
   markdown: `# Trust score
 
-Trust score measures reliability, not coding skill — and it's one of the three access gates.
+Trust score measures reliability, not coding skill, and it's one of the three access gates.
 
 ## What it measures
 
-It captures how dependable you are to work with: do you finish, do you hit deadlines, do clients rate you well. It can't be self-reported — it's computed from your actual history.
+It captures how dependable you are to work with: do you finish, do you hit deadlines, do clients rate you well. It can't be self-reported: it's computed from your actual history.
 
 ## Factors
 
@@ -1496,7 +1496,7 @@ It captures how dependable you are to work with: do you finish, do you hit deadl
 - Abandoning after activation: Strong negative
 - Repeated revision requests: Negative
 
-Note: A high trust score unlocks more than access — at LVL 15 with Trust >= 90% you become eligible for the reviewer pathway, and high-level developers get fast-tracked dispute resolution.
+Note: A high trust score unlocks more than access, at LVL 15 with Trust >= 90% you become eligible for the reviewer pathway, and high-level developers get fast-tracked dispute resolution.
 `,
 }
 
@@ -1525,14 +1525,14 @@ const escrow: Article = {
       <Steps>
         <Step n="1" title="Founder funds escrow">
           The task budget is deposited via Razorpay and held by Forke before any developer claims the
-          task — so the money is visible and locked from the start.
+          task, so the money is visible and locked from the start.
         </Step>
         <Step n="2" title="You ship & it's approved">
           On approval, Forke merges a clean PR upstream and the escrow release is triggered. If the
           submission is rejected at the automated stage, no money moves at all.
         </Step>
         <Step n="3" title="Instant payout">
-          Funds land in your UPI automatically — there&apos;s no withdrawal step, no waiting period,
+          Funds land in your UPI automatically: there&apos;s no withdrawal step, no waiting period,
           and no bank-wire delay.
         </Step>
       </Steps>
@@ -1540,7 +1540,7 @@ const escrow: Article = {
       <P>
         Payouts go to the UPI ID set in your <DocLink href="/settings">Settings</DocLink> (see{' '}
         <DocLink href="/docs/settings">Settings &amp; payouts setup</DocLink>). Higher levels unlock
-        intermediate payout tiers (LVL&nbsp;7+). Forke takes a flat 10% commission from the founder — the
+        intermediate payout tiers (LVL&nbsp;7+). Forke takes a flat 10% commission from the founder, the
         developer always receives the full task budget. Track live balances in the{' '}
         <DocLink href="/escrow">Escrow</DocLink> and <DocLink href="/earnings">Earnings</DocLink>{' '}
         views.
@@ -1555,13 +1555,13 @@ Escrow exists to remove the oldest fear on both sides of freelance work. The dev
 
 ## Escrow lifecycle
 
-1. Founder funds escrow — the task budget is deposited via Razorpay and held by Forke before any developer claims the task, so the money is visible and locked from the start.
-2. You ship & it's approved — on approval, Forke merges a clean PR upstream and the escrow release is triggered. If the submission is rejected at the automated stage, no money moves at all.
-3. Instant payout — funds land in your UPI automatically; there's no withdrawal step, no waiting period, and no bank-wire delay.
+1. Founder funds escrow: the task budget is deposited via Razorpay and held by Forke before any developer claims the task, so the money is visible and locked from the start.
+2. You ship & it's approved: on approval, Forke merges a clean PR upstream and the escrow release is triggered. If the submission is rejected at the automated stage, no money moves at all.
+3. Instant payout: funds land in your UPI automatically; there's no withdrawal step, no waiting period, and no bank-wire delay.
 
 ## UPI payout
 
-Payouts go to the UPI ID set in your Settings (/settings). Higher levels unlock intermediate payout tiers (LVL 7+). Forke takes a flat 10% commission from the founder — the developer always receives the full task budget. Track live balances in the Escrow (/escrow) and Earnings (/earnings) views.
+Payouts go to the UPI ID set in your Settings (/settings). Higher levels unlock intermediate payout tiers (LVL 7+). Forke takes a flat 10% commission from the founder, the developer always receives the full task budget. Track live balances in the Escrow (/escrow) and Earnings (/earnings) views.
 `,
 }
 
@@ -1577,18 +1577,18 @@ const refundsDisputes: Article = {
   ],
   body: (
     <Prose>
-      <Lead>Because escrow holds the budget, refunds and disputes are about releasing the right way — not chasing money.</Lead>
+      <Lead>Because escrow holds the budget, refunds and disputes are about releasing the right way, not chasing money.</Lead>
       <H3 id="rejected">When work is rejected</H3>
       <P>
         If a submission fails automated checks it&apos;s auto-rejected and no escrow moves. If a
-        founder requests changes, the developer revises and resubmits — escrow stays held until a
+        founder requests changes, the developer revises and resubmits, escrow stays held until a
         clean approval.
       </P>
       <H3 id="disputes">Disputes</H3>
       <P>
         Genuine disagreements route through Forke&apos;s dispute process; high-level developers
         (LVL&nbsp;19+) get fast-tracked resolution. Because Forke is the merge intermediary, code is
-        never delivered before approval — there&apos;s no &ldquo;chase the money&rdquo; scenario. See
+        never delivered before approval: there&apos;s no &ldquo;chase the money&rdquo; scenario. See
         the full <DocLink href="/refund">refund policy</DocLink> for the formal terms, or reach the
         team via <DocLink href="/support">Support</DocLink>.
       </P>
@@ -1596,15 +1596,15 @@ const refundsDisputes: Article = {
   ),
   markdown: `# Refunds & disputes
 
-Because escrow holds the budget, refunds and disputes are about releasing the right way — not chasing money.
+Because escrow holds the budget, refunds and disputes are about releasing the right way, not chasing money.
 
 ## When work is rejected
 
-If a submission fails automated checks it's auto-rejected and no escrow moves. If a founder requests changes, the developer revises and resubmits — escrow stays held until a clean approval.
+If a submission fails automated checks it's auto-rejected and no escrow moves. If a founder requests changes, the developer revises and resubmits, escrow stays held until a clean approval.
 
 ## Disputes
 
-Genuine disagreements route through Forke's dispute process; high-level developers (LVL 19+) get fast-tracked resolution. Because Forke is the merge intermediary, code is never delivered before approval — there's no "chase the money" scenario.
+Genuine disagreements route through Forke's dispute process; high-level developers (LVL 19+) get fast-tracked resolution. Because Forke is the merge intermediary, code is never delivered before approval, there's no "chase the money" scenario.
 
 See also: Refund policy (/refund) and Support (/support).
 `,
@@ -1626,7 +1626,7 @@ const policies: Article = {
       <H3 id="conduct">Code of conduct</H3>
       <UL>
         <li>Ship only your own work; plagiarised or AI-dumped submissions are removed.</li>
-        <li>Don&apos;t claim tasks you can&apos;t start — abandonment hurts everyone&apos;s velocity.</li>
+        <li>Don&apos;t claim tasks you can&apos;t start: abandonment hurts everyone&apos;s velocity.</li>
         <li>Keep communication professional; harassment results in account action.</li>
       </UL>
       <H3 id="legal">Legal documents</H3>
@@ -1644,7 +1644,7 @@ Forke is a trusted, gated marketplace on both sides. A few rules keep it that wa
 ## Code of conduct
 
 - Ship only your own work; plagiarised or AI-dumped submissions are removed.
-- Don't claim tasks you can't start — abandonment hurts everyone's velocity.
+- Don't claim tasks you can't start: abandonment hurts everyone's velocity.
 - Keep communication professional; harassment results in account action.
 
 ## Legal documents
@@ -1786,19 +1786,19 @@ Source: ${url}
 `
 }
 
-/** Markdown index of the whole docs site — used for the /docs home page export. */
+/** Markdown index of the whole docs site, used for the /docs home page export. */
 export function getDocsIndexMarkdown(): string {
   const lines: string[] = [
     `<!-- Source: ${SITE_URL}/docs -->`,
     '# Forke Docs',
     '',
-    'Everything about shipping bounties, getting paid, and the systems that keep the marketplace fair — for developers and founders alike.',
+    'Everything about shipping bounties, getting paid, and the systems that keep the marketplace fair, for developers and founders alike.',
     '',
   ]
   for (const section of SECTIONS) {
     lines.push(`## ${section.label}`, '')
     for (const a of section.articles) {
-      lines.push(`- [${a.title}](${SITE_URL}/docs/${a.slug}) — ${a.description}`)
+      lines.push(`- [${a.title}](${SITE_URL}/docs/${a.slug}): ${a.description}`)
     }
     lines.push('')
   }
@@ -1807,7 +1807,7 @@ export function getDocsIndexMarkdown(): string {
 }
 
 /* ================================================================== */
-/*  PRODUCT VISUALS — mock UI on the gradient backdrop                 */
+/*  PRODUCT VISUALS: mock UI on the gradient backdrop                 */
 /* ================================================================== */
 
 function LoopVisual() {

@@ -397,7 +397,7 @@ function MessageScreen({ events }: { events: number }) {
         description="To john@acme.dev · From Acme <no-reply@acme.dev> · just now"
       />
       <div className="mb-4 grid grid-cols-4 gap-px overflow-hidden rounded-[8px]" style={{ background: C.line, boxShadow: `0 0 0 1px ${C.line}` }}>
-        <Stat label="Dispatch latency" value={sent ? '162 ms' : '—'} hint="Accepted → handed off for delivery" />
+        <Stat label="Dispatch latency" value={sent ? '162 ms' : '-'} hint="Accepted → handed off for delivery" />
         <Stat label="Attempts" value={sent ? '1' : '0'} />
         <Stat label="Opens" value="Off" hint="Tracking disabled" />
         <Stat label="Clicks" value="Off" hint="Tracking disabled" />

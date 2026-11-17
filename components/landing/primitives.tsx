@@ -121,7 +121,7 @@ export function Section({
 }
 
 /**
- * Heading that resolves word by word from a soft blur — the daytwo reveal.
+ * Heading that resolves word by word from a soft blur, the daytwo reveal.
  * `muted` renders as the quieter second line.
  */
 export function BlurWords({
@@ -381,7 +381,7 @@ export function AccessText({ locked, unlocked }: { locked: ReactNode; unlocked: 
 
 /**
  * Secondary button. Shares the exact box of WaitlistButton (height, border, radius,
- * padding, line-height) so a pair of them always lines up — keep the two in step.
+ * padding, line-height) so a pair of them always lines up, keep the two in step.
  */
 export function GhostButton({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
   return (
@@ -401,7 +401,7 @@ const GLYPHS = '*'
 
 /**
  * Starts as asterisks and resolves into the real word left-to-right once
- * scrolled into view — the "masked secret" reveal.
+ * scrolled into view: the "masked secret" reveal.
  */
 export function ScrambleText({ text, className }: { text: string; className?: string }) {
   const [ref, inView] = useInView<HTMLSpanElement>(0.6)

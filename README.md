@@ -5,7 +5,7 @@
 # 🌐 Forke Marketing & Public Web
 
 <p align="center">
-  <i>The public face of Forke — high-performance landing experience, developer showcase, blogs, and public portfolios.</i>
+  <i>The public face of Forke: high-performance landing experience, developer showcase, blogs, and public portfolios.</i>
 </p>
 
 <p align="center">
@@ -136,6 +136,6 @@ forke-marketing/
 ## 📄 License
 
 This repository is **source-available, not open-source**. The code is public for
-transparency and reference, but **all rights are reserved** — you may read and fork
+transparency and reference, but **all rights are reserved**: you may read and fork
 it on GitHub, but you may **not** use, deploy, copy, or commercialize it without
 prior written permission. See [LICENSE](./LICENSE) for the full terms.

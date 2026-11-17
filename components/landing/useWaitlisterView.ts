@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 
 /**
  * Mirrors the middleware's waitlist gate on the client: true when the waitlist
- * is active and this visitor has no site access — CTAs should read "Coming
+ * is active and this visitor has no site access, CTAs should read "Coming
  * soon" and route to "/" instead of /register.
  */
 export function useWaitlisterView(): boolean {

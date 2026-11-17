@@ -1,10 +1,22 @@
 'use client'
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { Check, CircleDashed, GitPullRequest, Timer } from 'lucide-react'
+import { GitBranch, GitPullRequest, Loader2, Play } from 'lucide-react'
 import { RiGithubFill, RiVisaFill } from '@remixicon/react'
 import { BlurWords, CountUp, ForkeMark, Painting, Section, cn, useInView } from './primitives'
 import FitScale from './FitScale'
+import { Badge, C, Eyebrow, Primary, Secondary, Stat, StatStrip, TONE } from './dashUi'
+
+/** The thin breadcrumb bar every dashboard page opens with. */
+function Crumb({ trail, here }: { trail: string; here: string }) {
+  return (
+    <div className="flex h-9 items-center gap-2 border-b px-4 text-[11.5px]" style={{ borderColor: C.line }}>
+      <span style={{ color: C.muted }}>{trail}</span>
+      <span style={{ color: C.faint }}>/</span>
+      <span className="truncate font-medium text-[#f4f4f5]">{here}</span>
+    </div>
+  )
+}
 
 function ClaimUI() {
   const [left, setLeft] = useState(20 * 60 - 18)
@@ -17,36 +29,31 @@ function ClaimUI() {
   const mm = String(Math.floor(left / 60)).padStart(2, '0')
   const ss = String(left % 60).padStart(2, '0')
   return (
-    <div ref={ref} className="p-4">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-[13px] font-medium text-white/90">Paginate /v1/invoices</p>
-          <p className="mt-0.5 text-[11px] text-white/40">acme/api · Go · Level 2+</p>
+    <div ref={ref}>
+      <Crumb trail="Tasks" here="Paginate /v1/invoices" />
+      <div className="px-4 py-3.5">
+        <Eyebrow>acme/api · Go · Level 2+</Eyebrow>
+        <div className="mt-1.5 flex items-center gap-2.5">
+          <h3 className="text-[17px] font-medium tracking-[-0.03em] text-[#f4f4f5]">Paginate /v1/invoices</h3>
+          <Badge tone="accent">claimed</Badge>
         </div>
-        <span className="font-mono text-[14px] font-semibold text-accent">₹3,200</span>
+        <StatStrip cols={3} className="mt-3">
+          <Stat label="Bounty" value="₹3,200" hint="escrowed by the owner" />
+          <Stat label="Start within" value={`${mm}:${ss}`} hint="or the task reopens" />
+          <Stat label="Estimate" value="~2h" hint="tests required" />
+        </StatStrip>
+        <div className="mt-3 flex gap-2">
+          <Primary icon={Play} className="flex-1">
+            Start working
+          </Primary>
+          <Secondary icon={GitBranch}>Open branch</Secondary>
+        </div>
       </div>
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {['cursor pagination', 'tests required', '~2h'].map((t) => (
-          <span key={t} className="rounded border border-white/10 bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px] text-white/45">
-            {t}
-          </span>
-        ))}
-      </div>
-      <div className="mt-4 flex items-center gap-2">
-        <span className="flex h-9 flex-1 items-center justify-center rounded-lg bg-accent text-[12.5px] font-semibold text-black">
-          Claimed — start working
-        </span>
-        <span className="flex h-9 items-center gap-1.5 rounded-lg border border-white/10 px-3 font-mono text-[12px] tabular-nums text-white/70">
-          <Timer className="h-3.5 w-3.5 text-accent" />
-          {mm}:{ss}
-        </span>
-      </div>
-      <p className="mt-2 text-[10.5px] text-emerald-300/80">● Bounty escrowed by the owner</p>
     </div>
   )
 }
 
-const CHECKS = ['Build', 'Unit tests', 'Lint & format', 'Scope check', 'Security scan', 'AI review · 92/100']
+const CHECKS = ['Build', 'Unit tests', 'Lint & format', 'Scope check', 'Security scan', 'AI review']
 
 function ShipUI() {
   const [ref, inView] = useInView<HTMLDivElement>(0.5)
@@ -60,27 +67,39 @@ function ShipUI() {
     }, 700)
     return () => clearInterval(id)
   }, [inView])
+  const all = done >= CHECKS.length
   return (
-    <div ref={ref} className="p-4">
-      <p className="flex items-center gap-2 text-[12.5px] font-medium text-white/85">
-        <GitPullRequest className="h-4 w-4 text-accent" /> feat: cursor pagination for invoices #1190
-      </p>
-      <div className="mt-3 space-y-1.5">
-        {CHECKS.map((c, i) => {
-          const ok = i < done
-          return (
-            <div key={c} className="flex items-center justify-between rounded-md bg-white/[0.03] px-2.5 py-1.5 text-[11.5px]">
-              <span className={ok ? 'text-white/80' : 'text-white/40'}>{c}</span>
-              {ok ? (
-                <Check className="h-3.5 w-3.5 text-emerald-400" />
-              ) : i === done ? (
-                <CircleDashed className="animate-spin-slow h-3.5 w-3.5 text-accent" />
-              ) : (
-                <span className="h-1.5 w-1.5 rounded-full bg-white/15" />
-              )}
-            </div>
-          )
-        })}
+    <div ref={ref}>
+      <Crumb trail="Submissions" here="PR #1190" />
+      <div className="px-4 py-3">
+        <section className="overflow-hidden rounded-[8px]" style={{ background: C.surface, boxShadow: `0 0 0 1px ${C.line}` }}>
+          <div className="flex h-9 items-center justify-between border-b px-3.5" style={{ background: C.surface2, borderColor: C.line }}>
+            <span className="flex items-center gap-2 truncate text-[12px] font-semibold text-[#f4f4f5]">
+              <GitPullRequest className="h-3.5 w-3.5 text-[#ff7a00]" /> feat: cursor pagination for invoices
+            </span>
+            <Badge tone={all ? 'green' : 'blue'}>{all ? 'checks passed' : 'running'}</Badge>
+          </div>
+          {CHECKS.map((c, i) => {
+            const ok = i < done
+            const run = i === done
+            return (
+              <div key={c} className="flex h-[28px] items-center justify-between border-b px-3.5 last:border-0" style={{ borderColor: C.line }}>
+                <span className="text-[11.5px]" style={{ color: ok || run ? '#f4f4f5' : C.muted }}>
+                  {c}
+                </span>
+                {ok ? (
+                  <Badge tone="green">{i === CHECKS.length - 1 ? '92 / 100' : 'passed'}</Badge>
+                ) : run ? (
+                  <span className={cn('inline-flex h-[20px] items-center gap-1.5 rounded-[4px] px-1.5 text-[11px] font-medium', TONE.blue)}>
+                    <Loader2 className="h-3 w-3 animate-spin" /> running
+                  </span>
+                ) : (
+                  <Badge tone="neutral">queued</Badge>
+                )}
+              </div>
+            )
+          })}
+        </section>
       </div>
     </div>
   )
@@ -88,32 +107,29 @@ function ShipUI() {
 
 function PaidUI() {
   return (
-    <div className="p-4">
-      <div className="flex items-center gap-3">
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-400">
-          <Check className="h-5 w-5" />
-        </span>
-        <div>
-          <p className="text-[13px] font-medium text-white/90">Approved by the owner</p>
-          <p className="text-[11px] text-white/40">“Pagination works, tests are solid. Merging.”</p>
+    <div>
+      <Crumb trail="Earnings" here="Payout #2291" />
+      <div className="px-4 py-3.5">
+        <div className="flex items-center gap-2.5">
+          <h3 className="text-[17px] font-medium tracking-[-0.03em] text-[#f4f4f5]">Approved by the owner</h3>
+          <Badge tone="green">merged</Badge>
         </div>
-      </div>
-      <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-3">
-        <p className="text-[10.5px] uppercase tracking-[0.14em] text-white/35">Escrow released</p>
-        <p className="mt-1 text-[30px] font-semibold tracking-tight text-white">
-          <CountUp to={3200} prefix="₹" />
+        <p className="mt-1 text-[11.5px]" style={{ color: C.muted }}>
+          &ldquo;Pagination works, tests are solid. Merging.&rdquo;
         </p>
-        <div className="mt-2 flex items-center justify-between text-[11px] text-white/45">
-          <span>to riya@okaxis · UPI</span>
-          <span className="text-emerald-300">Settled in 41s</span>
+        <StatStrip cols={2} className="mt-3">
+          <Stat label="Escrow released" value={<CountUp to={3200} prefix="₹" />} hint="to riya@okaxis · UPI" />
+          <Stat label="Settled" value="41s" hint="after the merge" />
+        </StatStrip>
+        <div className="mt-3.5 flex items-center justify-between">
+          <span className="font-mono text-[10px] uppercase tracking-[0.08em]" style={{ color: C.muted }}>
+            Level 6 · 72%
+          </span>
+          <Badge tone="accent">+180 XP</Badge>
         </div>
-      </div>
-      <div className="mt-3 flex items-center justify-between text-[11px] text-white/45">
-        <span>Level progress</span>
-        <span className="text-accent-text">+180 XP</span>
-      </div>
-      <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
-        <div className="h-full w-[72%] rounded-full bg-gradient-to-r from-accent to-[#FFB25C]" />
+        <div className="mt-2 h-1.5 overflow-hidden rounded-full" style={{ background: C.surface3 }}>
+          <div className="h-full w-[72%] rounded-full bg-[#ff7a00]" />
+        </div>
       </div>
     </div>
   )
@@ -237,7 +253,8 @@ export default function HowItWorks() {
             <BlurWords text="Get paid." className="block text-white/40" delay={200} />
           </h2>
           <p className="mt-5 max-w-[360px] text-[16px] leading-7 text-white/50">
-            Three steps, no proposals. Every task on Forke is scoped, escrowed and reviewed before you start.
+            Forke swaps proposals for small, pre-paid tasks. Claim one, ship it through automatic review, and the
+            money lands in your UPI the day it merges.
           </p>
         </div>
 
@@ -276,8 +293,9 @@ export default function HowItWorks() {
                   <FitScale width={560} grow className="mt-6">
                     <Painting src={s.painting} className="rounded-[18px] border border-white/[0.06] pl-[8%] pt-12">
                       {/* window bleeds off the right and bottom edges, like a cropped screenshot */}
-                      <div className="float-layer -mb-8 -mr-8 overflow-hidden rounded-xl pointer-events-none select-none border border-white/15 bg-[#0c0c0e]/92 shadow-[0_24px_60px_rgba(0,0,0,0.6)] backdrop-blur-md">
-                        <div className="pb-8 pr-8">{s.ui}</div>
+                      <div className="float-layer -mb-8 -mr-8 overflow-hidden rounded-xl pointer-events-none select-none border border-white/15 bg-[#151414] shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+                        {/* one fixed size for all three, so the cards line up */}
+                        <div className="h-[300px] pb-8 pr-8">{s.ui}</div>
                       </div>
                     </Painting>
                   </FitScale>

@@ -101,7 +101,7 @@ export function ReviewLoop() {
               <p className="text-white/70">
                 you <span className="text-white/35">commented {ago} days ago</span>
               </p>
-              <p className="text-white/45">Friendly ping — any chance someone can take a look?</p>
+              <p className="text-white/45">Friendly ping: any chance someone can take a look?</p>
             </div>
           </div>
           <div className={cn('flex gap-2', appear(t >= 48))}>

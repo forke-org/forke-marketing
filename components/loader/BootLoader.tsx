@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * Full-load Forky loader — same behaviour as forke-admin's template:
+ * Full-load Forky loader: same behaviour as forke-admin's template:
  *
  * - On every hard load or manual reload it covers the page from the first paint
  *   (it is in the server HTML, so there is never a flash of half-loaded content).

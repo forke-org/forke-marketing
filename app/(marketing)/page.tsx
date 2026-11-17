@@ -6,8 +6,8 @@ import HowItWorks from '@/components/landing/HowItWorks'
 import Capability from '@/components/landing/Capability'
 import Benchmark from '@/components/landing/Benchmark'
 import Memory from '@/components/landing/Memory'
-import Review from '@/components/landing/Review'
-import Bento from '@/components/landing/Bento'
+import Matching from '@/components/landing/Matching'
+import ReviewSystem from '@/components/landing/ReviewSystem'
 import FAQ from '@/components/landing/FAQ'
 import FinalCTA from '@/components/landing/FinalCTA'
 import Footer from '@/components/landing/Footer'
@@ -28,8 +28,8 @@ export default function Home() {
             <Capability />
             <Benchmark />
             <Memory />
-            <Review />
-            <Bento />
+            <Matching />
+            <ReviewSystem />
             <FAQ />
             <SupportedBy />
           </Rails>

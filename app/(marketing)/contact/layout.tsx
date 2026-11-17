@@ -14,7 +14,7 @@ import { buildOpenGraph, buildTwitter } from '@/lib/utils/og'
 export const metadata: Metadata = {
   title: 'Contact',
   description:
-    'Get in touch with the Forke team. Questions about bounties, payouts, the review pipeline, or partnerships — reach us by email or send a message.',
+    'Get in touch with the Forke team. Questions about bounties, payouts, the review pipeline, or partnerships: reach us by email or send a message.',
   keywords: ['contact forke', 'forke support', 'forke email', 'get in touch', 'developer marketplace contact'],
   alternates: { canonical: '/contact' },
   openGraph: buildOpenGraph({

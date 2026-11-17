@@ -158,7 +158,7 @@ export default function StatusPage({
     ['Sheet', code],
     ['Status', status],
     ['Drawn', 'forke*'],
-    ['Date', today || '—'],
+    ['Date', today || '-'],
     ['Scale', '1 : 1'],
   ]
 

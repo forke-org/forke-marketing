@@ -30,13 +30,13 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/docs' },
   openGraph: buildOpenGraph({
-    title: 'Forke Docs — How the developer bounty marketplace works',
+    title: 'Forke Docs: How the developer bounty marketplace works',
     description:
-      'Everything about claiming bounties, shipping pull requests, passing the AI review pipeline, and getting paid via UPI escrow — for developers and founders alike.',
+      'Everything about claiming bounties, shipping pull requests, passing the AI review pipeline, and getting paid via UPI escrow, for developers and founders alike.',
     url: 'https://www.forke.space/docs',
   }),
   twitter: buildTwitter({
-    title: 'Forke Docs — How the developer bounty marketplace works',
+    title: 'Forke Docs: How the developer bounty marketplace works',
     description:
       'Claim scoped bounties, ship a PR, pass automated + AI review, and get paid instantly via UPI escrow. The complete Forke guide for developers and founders.',
   }),

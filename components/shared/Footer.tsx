@@ -167,7 +167,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/[0.05] py-7 font-mono text-[11px] text-white/60 md:flex-row">
-          <span>© 2026 forke — all rights reserved</span>
+          <span>© 2026 forke &middot; all rights reserved</span>
           <span>made in india · paid in rupees</span>
         </div>
       </div>

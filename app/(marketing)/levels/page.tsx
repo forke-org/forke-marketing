@@ -6,7 +6,7 @@ import LevelExplorer from './LevelExplorer'
 import { PRESTIGE, XP_RULES } from './data'
 
 export const metadata: Metadata = {
-  title: 'Levels — 25 milestones, 5 tiers, earned by shipping',
+  title: 'Levels: 25 milestones, 5 tiers, earned by shipping',
   description:
     'How levels work on Forke: earn XP by shipping quality code, keeping streaks and delivering early. 25 levels across 5 tiers unlock bigger bounties, perks and prestige ranks.',
   alternates: { canonical: '/levels' },

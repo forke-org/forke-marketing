@@ -13,8 +13,8 @@ import { cn } from '@/lib/utils/cn'
  *
  * The left half copies the page's Markdown to the clipboard. The chevron opens
  * a menu with:
- *   • Copy page         — copy page as Markdown for LLMs
- *   • View as Markdown  — open the raw .md view in a new tab
+ *   • Copy page        : copy page as Markdown for LLMs
+ *   • View as Markdown : open the raw .md view in a new tab
  *
  * Intentionally NO light/dark theme toggle.
  */
@@ -54,7 +54,7 @@ export default function CopyPageButton({
       setCopied(true)
       window.setTimeout(() => setCopied(false), 2000)
     } catch {
-      /* clipboard blocked — fail silently */
+      /* clipboard blocked: fail silently */
     }
     setOpen(false)
   }
@@ -62,7 +62,7 @@ export default function CopyPageButton({
   return (
     <div ref={ref} className="relative">
       <div className="flex items-stretch rounded-lg border border-white/[0.1] bg-white/[0.03] text-[13px] text-white/75 transition-colors hover:border-white/[0.16]">
-        {/* Primary action — copy markdown */}
+        {/* Primary action: copy markdown */}
         <button
           onClick={copy}
           className="flex items-center gap-2 rounded-l-lg px-3 py-1.5 transition-colors hover:bg-white/[0.04] hover:text-white"

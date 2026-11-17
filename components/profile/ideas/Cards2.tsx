@@ -105,7 +105,7 @@ export function TermFront() {
         <span className="h-2.5 w-2.5 rounded-full bg-[#FF7A00]" />
         <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
         <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-        <span className="ml-auto text-[11px] text-white/35">forke — id</span>
+        <span className="ml-auto text-[11px] text-white/35">forke: id</span>
       </div>
       <div className="px-5 pt-4 text-[13px] leading-6">
         <p className="text-white/45">
@@ -141,7 +141,7 @@ export function TermBack() {
         <span className="h-2.5 w-2.5 rounded-full bg-[#FF7A00]" />
         <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
         <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
-        <span className="ml-auto text-[11px] text-white/35">forke — verify</span>
+        <span className="ml-auto text-[11px] text-white/35">forke: verify</span>
       </div>
       <p className="px-5 pt-4 text-[13px] text-white/45">
         <span className="text-[#FF7A00]">$</span> forke verify @{DEMO.username}

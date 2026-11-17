@@ -49,7 +49,7 @@ export function Loader({ text = 'LOADING...', fullScreen = false }: LoaderProps)
             </span>
           </div>
           
-          {/* Progress Line — Track Bar style */}
+          {/* Progress Line: Track Bar style */}
           <div className="relative w-32 h-1 bg-white/5 rounded-full overflow-hidden">
             <div className="absolute inset-y-0 left-0 w-2/5 bg-accent rounded-full" style={{ animation: 'progressSlide 1.4s cubic-bezier(.65,.05,.36,1) infinite' }} />
           </div>

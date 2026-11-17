@@ -4,7 +4,7 @@ import { getPublishedChangelogs } from '@/lib/actions/changelog-actions'
 import ChangelogFeed from './ChangelogFeed'
 
 export const metadata: Metadata = {
-  title: 'Changelog — Everything We’ve Actually Shipped',
+  title: 'Changelog: Everything We’ve Actually Shipped',
   description:
     'The live changelog for Forke. Hand-curated shipping updates, new features, developer tools, bug fixes and platform releases.',
   alternates: { canonical: 'https://www.forke.space/changelog' },
@@ -22,7 +22,7 @@ export default async function ChangelogPage(props: { searchParams?: Promise<{ pa
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     url: 'https://www.forke.space/changelog',
-    name: 'Changelog — Everything We’ve Actually Shipped | Forke',
+    name: 'Changelog: Everything We’ve Actually Shipped | Forke',
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: items.length,
@@ -47,7 +47,7 @@ export default async function ChangelogPage(props: { searchParams?: Promise<{ pa
             <dt className="text-white/35">Last shipped</dt>
             <dd className="text-[15px] text-ink">{items.length}</dd>
             <dd className="text-[15px] text-ink">
-              {latest ? latest.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—'}
+              {latest ? latest.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '-'}
             </dd>
           </dl>
         }

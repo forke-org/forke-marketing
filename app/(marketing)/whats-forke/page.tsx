@@ -18,7 +18,7 @@ import CellGrid from '@/components/shared/CellGrid'
 import { Painting, Reveal, Section } from '@/components/landing/primitives'
 
 export const metadata: Metadata = {
-  title: "What's Forke — Real tasks, real code, real payouts",
+  title: "What's Forke: Real tasks, real code, real payouts",
   description:
     'Forke is a micro-task marketplace for developers. Claim scoped coding tasks from real codebases, ship a reviewed pull request, level up and get paid by UPI the moment it merges.',
   alternates: { canonical: '/whats-forke' },

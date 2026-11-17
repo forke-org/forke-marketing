@@ -9,6 +9,7 @@ import { dashboardUrl, useSiteOpen } from './useWaitlisterView'
 import { NAV_MENUS, isExternal, type SiteMenu } from './siteMenus'
 import { BlogBento, BuiltForBento, ForkeMailPromo, SoonBadge, type RecentPost } from './NavBentos'
 import { ContactBento } from './ContactBento'
+import { MobileMenuButton, MobileNav } from './MobileNav'
 
 /**
  * The navbar's call to action:
@@ -74,7 +75,12 @@ export function HeroNav() {
   return (
     <nav className="relative z-30 flex h-16 items-center justify-between px-5 sm:px-8">
       <Logo />
-      <NavCta />
+      <div className="flex items-center gap-2">
+        <div className="hidden lg:block">
+          <NavCta />
+        </div>
+        <MobileMenuButton />
+      </div>
     </nav>
   )
 }
@@ -359,7 +365,12 @@ export function StickyNav({ always = false }: { always?: boolean }) {
                   </button>
                 ))}
               </div>
-              <NavCta />
+              <div className="flex items-center gap-2">
+                <div className="hidden lg:block">
+                  <NavCta />
+                </div>
+                <MobileMenuButton />
+              </div>
             </div>
 
             {/* the panel: the sheet grows down to reveal it */}
@@ -386,6 +397,7 @@ export function StickyNav({ always = false }: { always?: boolean }) {
           </div>
         </div>
       </nav>
+      <MobileNav cta={<NavCta />} />
     </>
   )
 }

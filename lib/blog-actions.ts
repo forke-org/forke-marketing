@@ -16,7 +16,7 @@ import { eq, desc, and, sql } from 'drizzle-orm'
 
 // ── public reads ────────────────────────────────────────────────────────────
 
-/** All published posts, newest first — for the public /blog list. */
+/** All published posts, newest first: for the public /blog list. */
 export async function getPublishedBlogs() {
   return db
     .select({
@@ -50,7 +50,7 @@ export async function getRecentBlogs(limit = 3) {
     .limit(limit)
 }
 
-/** A single published post by slug — for /blog/[slug]. Drafts return null. */
+/** A single published post by slug, for /blog/[slug]. Drafts return null. */
 export async function getPublishedBlogBySlug(slug: string) {
   const row = await db
     .select()
@@ -60,7 +60,7 @@ export async function getPublishedBlogBySlug(slug: string) {
   return row[0] ?? null
 }
 
-/** Slugs + timestamps of published posts — for the sitemap. */
+/** Slugs + timestamps of published posts, for the sitemap. */
 export async function getPublishedBlogSlugs() {
   return db
     .select({ slug: blogs.slug, updatedAt: blogs.updatedAt, publishedAt: blogs.publishedAt })
@@ -83,7 +83,7 @@ export async function incrementBlogView(slug: string) {
   }
 }
 
-/** Views for a single post by id (public — no auth gate). */
+/** Views for a single post by id (public: no auth gate). */
 export async function getBlogViewCount(blogId: string): Promise<number> {
   try {
     const [row] = await db

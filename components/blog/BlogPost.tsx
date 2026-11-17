@@ -18,7 +18,7 @@ export default function BlogPost({ post }: { post: FullPost }) {
   return (
     <>
       <ReadingProgress target="article-body" />
-      {/* Phones: plain header — title, facts row, then the cover in the reading column. */}
+      {/* Phones: plain header: title, facts row, then the cover in the reading column. */}
       <Section className="sm:hidden">
         <header className="px-6 pb-10 pt-14">
           <Link href={base} className="inline-flex items-center gap-1.5 text-[13.5px] text-white/45 hover:text-white">

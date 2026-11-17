@@ -54,7 +54,7 @@ export function WorkspaceVisual() {
 }
 
 export function VaultVisual() {
-  // Isometric stack of plates — the encrypted vault.
+  // Isometric stack of plates, the encrypted vault.
   return (
     <Tile>
       <div className="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2 [transform-style:preserve-3d]">

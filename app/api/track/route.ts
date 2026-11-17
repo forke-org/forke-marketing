@@ -194,7 +194,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true })
   } catch (error) {
-    // Tracking must never break a page load — swallow and report 200.
+    // Tracking must never break a page load, swallow and report 200.
     console.error('track insert failed:', error)
     return NextResponse.json({ ok: false }, { status: 200 })
   }

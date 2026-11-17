@@ -114,7 +114,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 flex items-center justify-between border-t border-line pt-6">
-          <p className="text-[13px] text-white/40">© 2026 forke — all rights reserved</p>
+          <p className="text-[13px] text-white/40">© 2026 forke &middot; all rights reserved</p>
           <a href="#" className="inline-flex items-center gap-1.5 text-[13px] text-white/40 transition-colors hover:text-white">
             Back to top <ArrowUp className="h-3.5 w-3.5" />
           </a>

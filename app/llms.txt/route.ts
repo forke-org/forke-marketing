@@ -28,7 +28,7 @@ export async function GET() {
 Forke connects startups and repository owners with independent developers for scoped software engineering tasks. Unlike generic freelancing platforms with bidding wars and proposals, Forke is Git-native, skill-gated, and built around verified code contributions.
 
 ### How It Works:
-1. **Claim a Task**: Developers browse a live feed gated to their earned skill level and trust score. No bidding wars or lengthy proposals — claim a task and start building immediately.
+1. **Claim a Task**: Developers browse a live feed gated to their earned skill level and trust score. No bidding wars or lengthy proposals, claim a task and start building immediately.
 2. **Build in an Isolated Branch**: Work takes place in an isolated, Forke-managed GitHub branch, keeping repository owners' codebases secure.
 3. **Submit a Pull Request**: Developers open a PR with a structured submission. Automated tests and an AI-assisted code review pipeline run before the repository owner reviews the work.
 4. **Instant Payout & Merging**: 100% of the task bounty is held in escrow before work starts. When the owner approves the pull request, Forke merges upstream and releases the payout instantly via UPI.

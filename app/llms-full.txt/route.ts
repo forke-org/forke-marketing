@@ -37,7 +37,7 @@ ${md || ''}
     })
     .join('\n---\n\n')
 
-  const content = `# Forke Platform — Full Documentation for LLMs (forke.space)
+  const content = `# Forke Platform: Full Documentation for LLMs (forke.space)
 
 > Forke is a developer-only micro-task and bounty marketplace. Engineers claim bite-sized coding tasks (30 minutes to 4 hours), ship real code via Git pull requests, level up their engineering tier, and receive instant UPI payouts upon approval.
 
@@ -48,7 +48,7 @@ Organization: Forke Inc.
 
 ## 1. Platform Overview & Philosophy
 
-Forke eliminates traditional freelancing friction — no bidding wars, no hourly tracking, no bloated proposals. Instead, engineering work is broken down into scoped, discrete micro-tasks (30 minutes to 4 hours) with transparent requirements and upfront escrow guarantees.
+Forke eliminates traditional freelancing friction: no bidding wars, no hourly tracking, no bloated proposals. Instead, engineering work is broken down into scoped, discrete micro-tasks (30 minutes to 4 hours) with transparent requirements and upfront escrow guarantees.
 
 ### Key Pillars:
 1. **Developer Autonomy**: Engineers claim tasks that match their skill level and interest from a level-gated feed.

@@ -7,7 +7,7 @@ import BlogList from './BlogList'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'The Forke Blogs — Engineering Notes & Product Deep Dives',
+  title: 'The Forke Blogs: Engineering Notes & Product Deep Dives',
   description:
     'Stories, architectural updates, and technical ideas from the Forke engineering team. Deep-dives on systems, Git, micro-tasks, and developer culture.',
   alternates: {

@@ -102,7 +102,7 @@ export async function updateProfile(data: ProfileUpdateInput) {
     linkedinUrl: clean(data.linkedinUrl),
     websiteUrl: clean(data.websiteUrl),
   }
-  // name is NOT NULL — only overwrite when a non-empty value is supplied.
+  // name is NOT NULL, only overwrite when a non-empty value is supplied.
   const name = data.name?.trim()
   if (name) set.name = name
 
@@ -164,7 +164,7 @@ export async function getLinkedAvatars(): Promise<{ github: string | null; googl
 
     // If either is missing, resolve them via legacy/linked tables and cache them in users table
     if (!githubAvatar || !googleAvatar) {
-      // Independent of each other — fetch concurrently.
+      // Independent of each other, fetch concurrently.
       const [ghProfile, allAccounts] = await Promise.all([
         !githubAvatar
           ? db.query.developers.findFirst({ where: eq(developers.userId, session.user.id) })

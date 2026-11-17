@@ -54,7 +54,7 @@ const navStore = (() => {
         sessionStorage.setItem(NAV_STATE_KEY, JSON.stringify(next))
         cache = next
       } catch {
-        /* storage unavailable — degrade gracefully */
+        /* storage unavailable: degrade gracefully */
       }
       listeners.forEach((l) => l())
     },
@@ -78,7 +78,7 @@ function Sidebar({
 
   return (
     <div className="flex h-full flex-col">
-      {/* Brand — logo (→ home) · divider · Docs (→ /docs) */}
+      {/* Brand: logo (→ home) · divider · Docs (→ /docs) */}
       <div className="flex items-center gap-3 px-5 pt-6 pb-5">
         <Link
           href="/"
