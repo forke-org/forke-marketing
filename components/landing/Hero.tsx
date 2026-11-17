@@ -50,8 +50,8 @@ export default function Hero() {
             className="animate-fade-up mx-auto mt-6 max-w-[560px] text-[16px] leading-7 text-white/60 sm:text-[17px]"
             style={{ animationDelay: '420ms' }}
           >
-            Pick up a scoped task from a real codebase. Forke checks and reviews your pull request, the owner approves
-            it, and the escrowed bounty lands in your UPI.
+            Forke is the micro-task marketplace for developers. Pick up a scoped task from a real codebase, your pull
+            request gets checked and reviewed, and the escrowed bounty lands in your UPI once the owner approves it.
           </p>
 
           <div

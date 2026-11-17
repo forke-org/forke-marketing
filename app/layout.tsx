@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.forke.space'),
   title: {
-    default: 'Forke: Ship Real Work, Get Paid',
+    default: 'Forke - Ship Real Work, Get Paid',
     template: '%s | Forke'
   },
   description: 'The micro-task marketplace for developers. Join the movement, complete bounties, level up, and earn rewards for shipping high-quality code.',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: 'Forke: Ship Real Work, Get Paid',
+    title: 'Forke - Ship Real Work, Get Paid',
     description: 'The micro-task marketplace for developers. Complete bounties and level up your engineering career.',
     url: 'https://www.forke.space',
     siteName: 'Forke',
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Forke: Ship Real Work, Get Paid',
+    title: 'Forke - Ship Real Work, Get Paid',
     description: 'The micro-task marketplace for developers. Complete bounties and level up your engineering career.',
     creator: '@forkedotdev',
     images: ['/forke-assets/og-image.jpg'],
