@@ -75,12 +75,8 @@ export function HeroNav() {
   return (
     <nav className="relative z-30 flex h-16 items-center justify-between px-5 sm:px-8">
       <Logo />
-      <div className="flex items-center gap-2">
-        <div className="hidden lg:block">
-          <NavCta />
-        </div>
-        <MobileMenuButton />
-      </div>
+      {/* the hero always shows the call to action; the menu button only appears in the sticky bar once you scroll */}
+      <NavCta />
     </nav>
   )
 }
