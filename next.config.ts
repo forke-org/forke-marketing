@@ -82,6 +82,16 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       {
+        source: '/status',
+        destination: 'https://status.forke.space/?tab=website',
+        permanent: false,
+      },
+      {
+        source: '/status/:path*',
+        destination: 'https://status.forke.space/?tab=website',
+        permanent: false,
+      },
+      {
         source: '/mail',
         destination: 'https://mail.forke.space',
         permanent: false,
