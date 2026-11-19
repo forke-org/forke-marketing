@@ -396,6 +396,9 @@ export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
         'cf-ipcountry': country || '',
         'x-forke-session': sessionId,
         'x-forke-host': req.headers.get('host') || '',
+        // what the browser sent with this page request, so the tracker can spot spoofed user agents
+        'x-forke-sec-fetch-mode': req.headers.get('sec-fetch-mode') || '',
+        'x-forke-accept-language': req.headers.get('accept-language') || '',
       },
       body: JSON.stringify({
         sessionId,

@@ -10,9 +10,9 @@
 
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { eq, and, gt } from 'drizzle-orm'
+import { eq, and, gt, sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
-import { pageVisits } from '@/lib/db/schema'
+import { pageVisits, users } from '@/lib/db/schema'
 import { normalizeSource } from '@/lib/utils/attribution'
 import { detectInAppSocial } from '@/lib/utils/in-app-social'
 import { getCountry, detectBot } from '@/lib/utils/analytics'
@@ -23,6 +23,14 @@ function cleanCountry(raw: unknown): string | null {
   if (typeof raw !== 'string') return null
   const code = raw.trim().toUpperCase()
   return /^[A-Z]{2}$/.test(code) ? code : null
+}
+
+/** Paths that only count as a visit when they are someone's profile: a single segment that is not a known page. */
+const KNOWN_PAGES = new Set(['', 'levels', 'whats-forke', 'docs', 'blogs', 'blog', 'changelog', 'contact', 'waitlist', 'privacy', 'terms', 'refund', 'register', 'signin', 'checkout'])
+function isProfileLikePath(path: string): boolean {
+  const p = path.split('?')[0].replace(/\/+$/, '')
+  const parts = p.split('/').filter(Boolean)
+  return parts.length === 1 && !KNOWN_PAGES.has(parts[0].toLowerCase())
 }
 
 function clean(raw: unknown, max: number): string | null {
@@ -47,7 +55,25 @@ export async function POST(req: NextRequest) {
     const host = req.headers.get('x-forke-host') || req.headers.get('x-forwarded-host') || req.headers.get('host')
     const landingPath = clean(body.landingPath, 255) || '/'
 
-    const botResult = detectBot(ua, landingPath, host)
+    // headers of the original page request, forwarded by the middleware (absent when the browser pings us itself)
+    const signals = req.headers.has('x-forke-sec-fetch-mode')
+      ? { secFetchMode: req.headers.get('x-forke-sec-fetch-mode') || '', acceptLanguage: req.headers.get('x-forke-accept-language') || '' }
+      : undefined
+    let botResult = detectBot(ua, landingPath, host, signals)
+
+    // a one-word path is only a visit if it is a real profile; otherwise it is a scanner guessing (/metrics, /Dockerfile)
+    if (!botResult.isBot) {
+      const seg = landingPath.split('?')[0].replace(/\/+$/, '').slice(1)
+      if (isProfileLikePath(landingPath) && seg) {
+        const found = await db
+          .select({ id: users.id })
+          .from(users)
+          .where(sql`lower(${users.username}) = ${seg.toLowerCase()}`)
+          .limit(1)
+          .catch(() => [{ id: 'unknown' }])
+        if (found.length === 0) botResult = { isBot: true, category: 'malicious_scanner', name: 'Unknown Path' }
+      }
+    }
 
     const resolvedCountry =
       cleanCountry(body.country) ??

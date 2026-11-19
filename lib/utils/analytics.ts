@@ -136,10 +136,40 @@ const SCANNER_AGENT_PATTERNS: Record<string, RegExp> = {
 }
 
 
+/** What the browser sent with the page request, forwarded by the middleware (absent when the client pings). */
+export interface RequestSignals {
+  secFetchMode: string
+  acceptLanguage: string
+}
+
+const DAY = 86_400_000
+/** Chrome and Firefox ship a new major about every four weeks; this is roughly the current one for a given date. */
+function currentMajor(base: number, baseDate: number, now = Date.now()) {
+  return base + Math.floor((now - baseDate) / (28 * DAY))
+}
+
+/**
+ * Browsers update themselves, so a real visitor is almost never more than a year behind. Scrapers keep using whatever
+ * user agent they shipped with (old Chrome on Linux, "iPhone OS 13_2_3", and so on), so a very old version is a
+ * reliable bot signal. The cut-off moves with the calendar, so it never needs updating.
+ */
+function staleBrowser(ua: string): string | null {
+  const chrome = ua.match(/(?:Chrome|CriOS)\/(\d+)/)
+  if (chrome && !/Edg|OPR|SamsungBrowser|YaBrowser|UCBrowser/.test(ua)) {
+    if (Number(chrome[1]) < currentMajor(120, Date.UTC(2023, 11, 5)) - 14) return 'Outdated Chrome'
+  }
+  const firefox = ua.match(/(?:Firefox|FxiOS)\/(\d+)/)
+  if (firefox && Number(firefox[1]) < currentMajor(121, Date.UTC(2023, 11, 19)) - 24) return 'Outdated Firefox' // allows for ESR
+  const ios = ua.match(/(?:iPhone|iPad|iPod)[^)]*? OS (\d+)_/)
+  if (ios && Number(ios[1]) < 16) return 'Outdated iOS'
+  return null
+}
+
 export function detectBot(
   ua?: string | null,
   landingPath?: string | null,
-  host?: string | null
+  host?: string | null,
+  signals?: RequestSignals,
 ): BotDetectionResult {
   // 1. Path-based malicious probe detection
   if (landingPath && isProbePath(landingPath)) {
@@ -157,6 +187,14 @@ export function detectBot(
   }
   if (/^(curl|wget|python-requests|python|node-fetch|axios|go-http-client|okhttp|libwww-perl|headless|phantomjs|puppeteer|playwright|postman)/i.test(ua)) {
     return { isBot: true, category: 'malicious_scanner', name: 'HTTP Script / CLI' }
+  }
+  // automation anywhere in the string (e.g. "Mozilla/5.0 ... HeadlessChrome/131")
+  if (/headlesschrome|headless|phantomjs|puppeteer|playwright|selenium|webdriver|lighthouse|scrapy|httpclient|java\//i.test(ua)) {
+    return { isBot: true, category: 'malicious_scanner', name: 'Headless / Automation' }
+  }
+  // bots that sign their user agent with a contact link, e.g. "(+https://example.com/bot.html)"
+  if (/\+https?:\/\/|https?:\/\/\S+\.(html|htm|php)\)?$/i.test(ua)) {
+    return { isBot: true, category: 'search_engine', name: 'Declared Crawler' }
   }
 
   // 4. Search Engines
@@ -194,6 +232,18 @@ export function detectBot(
   // 9. General fallback bot pattern
   if (/\bbot\b|crawl|spider|slurp|monitor/i.test(ua)) {
     return { isBot: true, category: 'search_engine', name: 'Generic Crawler' }
+  }
+
+  // 10. A browser version far older than anyone runs
+  const stale = staleBrowser(ua)
+  if (stale) return { isBot: true, category: 'malicious_scanner', name: stale }
+
+  // 11. Claims to be a modern desktop/Android browser but did not send what every such browser sends on a page
+  // visit (Sec-Fetch-Mode, Accept-Language). Only checked when the middleware forwarded the request's headers.
+  if (signals) {
+    const modern = /Chrome\/\d+|Firefox\/\d+/.test(ua) && !/iPhone|iPad|iPod/.test(ua)
+    if (modern && !signals.secFetchMode) return { isBot: true, category: 'malicious_scanner', name: 'Spoofed Browser' }
+    if (!signals.acceptLanguage) return { isBot: true, category: 'malicious_scanner', name: 'No Accept-Language' }
   }
 
   return { isBot: false }
