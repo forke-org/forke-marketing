@@ -1,6 +1,16 @@
 'use client'
 
 /**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
+/**
  * Forky loader for page-to-page navigation on slow connections.
  *
  * Next's `loading.tsx` would also do this, but it makes Next send every page (static

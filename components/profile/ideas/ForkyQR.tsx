@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
 // TEMPORARY (idea preview): a QR code drawn in the Forky loader's line style. Not for commit yet.
 import QRCode from 'qrcode'
 import { LOADER_SHAPES } from '@/components/loader/forky-loader-data'

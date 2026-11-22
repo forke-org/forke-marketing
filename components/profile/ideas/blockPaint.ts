@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
 // TEMPORARY (idea preview): paints the ID card, its QR back, the strap and the foil mask onto canvases,
 // which become the textures of the 3D lanyard. Not for commit yet.
 import { LOADER_SHAPES } from '@/components/loader/forky-loader-data'

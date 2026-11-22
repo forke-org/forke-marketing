@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
 // TEMPORARY: lanyard card face ideas (380×536, same size as the 3D card's HTML faces). Not for commit.
 import ForkyQR from './ForkyQR'
 import { BadgeCheck, ScanLine } from 'lucide-react'

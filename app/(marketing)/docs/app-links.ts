@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL || 'https://dashboard.forke.space'
 // Pages that live in the signed-in app on the dashboard subdomain, not on the marketing site.
 const APP_PATHS = ['/dashboard', '/settings', '/escrow', '/tasks', '/submissions', '/earnings', '/notifications', '/support']

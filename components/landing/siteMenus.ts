@@ -1,4 +1,14 @@
 /**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
+/**
  * The site's menus. The footer shows SITE_MENUS as columns; the sticky navbar shows NAV_MENUS as dropdowns (the same
  * first three, with Contact in place of Legal), each with a coded bento beside its links.
  */

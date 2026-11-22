@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
 // Logos from Simple Icons (https://simpleicons.org), CC0 1.0: public domain.
 // Only the few stack logos Remix Icon doesn't ship; each path is a 24×24 viewBox.
 export const SIMPLE_ICONS = {

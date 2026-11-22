@@ -1,6 +1,16 @@
 'use client'
 
 /**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
+/**
  * Landing page tour of the public profile (forke.space/username).
  *
  * The real ProfileView renders at a fixed desktop size (STAGE_W × STAGE_H) inside a browser window. The window is

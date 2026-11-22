@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Forke Platform
+ * @copyright (c) 2026 Forke Inc. (https://www.forke.space/)
+ *
+ * Source-Available License (Non-Commercial / Fair Source).
+ * This source code is open for inspection, learning, and personal development.
+ * Commercial use, hosting, or resale as a paid service without an explicit
+ * commercial license from Forke Inc. is strictly prohibited.
+ */
+
 // TEMPORARY: second round of lanyard card ideas (380×536). Backs are a permanent Forky QR. Not for commit.
 import { BadgeCheck } from 'lucide-react'
 import { DEMO } from './demo'
