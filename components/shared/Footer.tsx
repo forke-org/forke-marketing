@@ -82,6 +82,7 @@ export default function Footer() {
       links: [
         { name: 'blogs', href: '/blogs' },
         { name: 'contact', href: '/contact' },
+        { name: 'status', href: 'https://status.forke.space', external: true },
       ],
     },
     {

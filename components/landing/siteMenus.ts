@@ -35,6 +35,7 @@ export const SITE_MENUS: SiteMenu[] = [
       { label: 'Blogs', href: '/blogs', desc: 'Engineering notes and deep-dives' },
       { label: 'Changelog', href: '/changelog', desc: 'Everything we ship, newest first' },
       { label: 'Docs', href: '/docs', desc: 'Guides for contributors and repo owners' },
+      { label: 'Status', href: 'https://status.forke.space', desc: 'Live uptime for every Forke service' },
     ],
   },
   {

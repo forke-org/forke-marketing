@@ -71,6 +71,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: sharedDisallow,
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: [`${baseUrl}/sitemap.xml`, 'https://status.forke.space/sitemap.xml'],
   }
 }
