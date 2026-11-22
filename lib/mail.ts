@@ -18,14 +18,14 @@ function eventsUrl(): string {
   return `${api.replace(/\/api\/forke-mail$/, '')}/api/events`
 }
 
-export async function trackForkeMailEvent(email: string, event: string, data?: Record<string, string>): Promise<void> {
+export async function trackForkeMailEvent(email: string, event: string, data?: Record<string, string>, tags?: string[]): Promise<void> {
   const apiKey = unquote(process.env.FORKE_MAIL_API_KEY || '')
   if (!apiKey || !email) return
   try {
     const res = await fetch(eventsUrl(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({ email, event, data: data || {} }),
+      body: JSON.stringify({ email, event, data: data || {}, tags: tags || [] }),
     })
     if (!res.ok) console.error(`Forke Mail event ${event} failed (${res.status}):`, await res.text())
   } catch (error) {

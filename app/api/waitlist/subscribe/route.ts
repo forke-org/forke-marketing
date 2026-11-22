@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Forke Mail's "Waitlist welcome" workflow sends the welcome now and a follow-up 3 days later.
-    await trackForkeMailEvent(email, 'subscriber.joined', { source: channel })
+    await trackForkeMailEvent(email, 'subscriber.joined', { source: channel }, ['Forke Subscribers'])
 
     return NextResponse.json({ success: true, message: "You're on the list!" })
   } catch (error) {
