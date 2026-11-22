@@ -12,7 +12,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { subscribers, pageVisits } from '@/lib/db/schema'
 import { z } from 'zod'
-import { sendWelcomeEmail } from '@/lib/email'
+import { trackForkeMailEvent } from '@/lib/mail'
 import { eq } from 'drizzle-orm'
 import { logAudit } from '@/lib/actions/audit-actions'
 import { readAttributionCookie, normalizeSource, readSessionId } from '@/lib/utils/attribution'
@@ -86,10 +86,8 @@ export async function POST(request: NextRequest) {
       actorName: 'system'
     })
 
-    // Dispatch the welcome email synchronously to guarantee delivery and zero delays before responding
-    await sendWelcomeEmail(email).catch((err) => {
-      console.error('Failed to send welcome email:', err)
-    })
+    // Forke Mail's "Waitlist welcome" workflow sends the welcome now and a follow-up 3 days later.
+    await trackForkeMailEvent(email, 'subscriber.joined', { source: channel })
 
     return NextResponse.json({ success: true, message: "You're on the list!" })
   } catch (error) {
