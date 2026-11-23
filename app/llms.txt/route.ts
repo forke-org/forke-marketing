@@ -48,6 +48,7 @@ Forke connects startups and repository owners with independent developers for sc
 - [Engineering Documentation](https://www.forke.space/docs) - Technical guides, repo linking, task lifecycle, and submission requirements.
 - [Changelog](https://www.forke.space/changelog) - Chronological log of product updates, feature enhancements, and platform releases.
 - [Engineering Blog](https://www.forke.space/blogs) - Systems engineering deep-dives, developer culture, Git workflows, and AI coding insights.
+- [Forke Mail docs](https://www.forke.space/docs/forke-mail) - Email API, MCP server and CLI: connect Claude, ChatGPT or Cursor at https://mail.forke.space/mcp ([agent guide](https://mail.forke.space/llms.txt)).
 - [Status](https://status.forke.space/) - Live status and 90-day uptime for forke.space, the dashboard, the API and Forke Mail, with incident history ([llms.txt](https://status.forke.space/llms.txt), [status.json](https://status.forke.space/status.json)).
 - [Full Documentation for LLMs](https://www.forke.space/llms-full.txt) - Comprehensive single-file text documentation for deep-context AI models.
 

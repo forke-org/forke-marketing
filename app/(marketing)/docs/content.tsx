@@ -9,6 +9,8 @@
  */
 
 import React from 'react'
+import { RiMailSendFill } from '@remixicon/react'
+import { MAIL_ARTICLES } from './mail-content'
 import {
   ArrowRight,
   ArrowDown,
@@ -1742,6 +1744,13 @@ export const SECTIONS: DocSection[] = [
     description: 'Razorpay escrow deposits, instant UPI payout processing, refunds, and disputes.',
     icon: RiWallet3Fill,
     articles: [escrow, refundsDisputes],
+  },
+  {
+    id: 'forke-mail',
+    label: 'Forke Mail',
+    description: 'Email API, MCP server and CLI: connect Claude, ChatGPT or Cursor, send email safely and build email into your app.',
+    icon: RiMailSendFill,
+    articles: MAIL_ARTICLES,
   },
   {
     id: 'policies',
