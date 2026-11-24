@@ -101,6 +101,11 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       {
+        source: '/github',
+        destination: 'https://github.com/forke-org',
+        permanent: false,
+      },
+      {
         source: '/mail',
         destination: 'https://mail.forke.space',
         permanent: false,
