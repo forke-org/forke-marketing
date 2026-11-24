@@ -9,7 +9,7 @@ Moving is mostly swapping one HTTP call for another. Plan for an hour, plus the 
 
 Connect Forke Mail to your coding agent ([how](/docs-demo/agents/quickstart)) and paste:
 
-```text
+```prompt Prompt
 Move this codebase from my current provider to Forke Mail.
 Find every place that sends email, list them for me first, then replace them with calls to POST https://mail.forke.space/api/transactional (or templates where the same email repeats). Keep the same from addresses, add idempotency keys, and use a test key until I confirm.
 ```

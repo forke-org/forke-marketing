@@ -10,7 +10,7 @@
  * commercial license from Forke Inc. is strictly prohibited.
  */
 
-import { Check, CircleCheck, Clock, GitBranch, GitMerge, Loader2, ShieldCheck, Sparkles, Timer, Wallet, Zap } from 'lucide-react'
+import { Check, CircleCheck, ClipboardCheck, Clock, GitBranch, GitMerge, Loader2, ShieldCheck, Timer, Wallet, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Badge, MiniCursor, Stage, Window, at, show, useTimeline } from './kit'
 
@@ -136,7 +136,7 @@ export function PipelineDemo() {
         </Window>
         <div className={cn('absolute top-6 right-8 bottom-6 w-[330px] rounded-xl border border-white/[0.1] bg-[#151414] p-5 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)] transition-all duration-700', t >= 58 ? 'opacity-100' : 'pointer-events-none translate-x-3 opacity-0')}>
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 text-[13px] font-medium text-white"><Sparkles className="h-4 w-4 text-accent" />Verdict</span>
+            <span className="flex items-center gap-1.5 text-[13px] font-medium text-white"><ClipboardCheck className="h-4 w-4 text-accent" />Verdict</span>
             <Badge tone="blue">Owner review</Badge>
           </div>
           <p className="mt-3 text-[12px] leading-relaxed text-white/60">Adds Zod validation with inline errors under each field. Matches the acceptance criteria; no files outside the scope were touched.</p>

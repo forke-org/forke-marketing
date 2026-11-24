@@ -92,14 +92,14 @@ export default function DocsShell({ index, children }: { index: SearchEntry[]; c
             </a>
           </div>
         </div>
-        <nav aria-label="Products" className="docs-scroll-x mx-auto hidden h-11 max-w-[1500px] items-end gap-1 overflow-x-auto px-4 sm:px-6 lg:flex">
+        <nav aria-label="Products" className="docs-scroll-x mx-auto hidden h-11 max-w-[1500px] items-end gap-1 overflow-x-auto px-4 sm:px-6 md:flex">
           {TABS.map((t) => (
             <TabLink key={t.id} tab={t} active={t.id === tab.id} />
           ))}
         </nav>
       </header>
 
-      <div className="mx-auto flex max-w-[1500px] pt-14 lg:pt-[100px]">
+      <div className="mx-auto flex max-w-[1500px] pt-14 md:pt-[100px]">
         {tab.groups.length ? (
           <aside className="docs-scroll sticky top-[100px] hidden h-[calc(100vh-100px)] w-[272px] shrink-0 overflow-y-auto border-r border-white/[0.05] px-3 pt-6 pb-16 lg:block">
             <SidebarNav tab={tab} current={current} />

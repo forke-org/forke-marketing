@@ -9,6 +9,7 @@
  */
 
 import { createHighlighter, type Highlighter } from 'shiki'
+import { promptHtml } from './prompt'
 
 /** Build-time syntax highlighting. Vesper's warm orange sits naturally next to Forke's accent. */
 
@@ -19,6 +20,7 @@ let highlighter: Promise<Highlighter> | null = null
 const get = () => (highlighter ??= createHighlighter({ themes: ['vesper'], langs: [...LANGS] }))
 
 export async function highlight(code: string, lang: string): Promise<string> {
+  if (lang === 'prompt') return promptHtml(code)
   const h = await get()
   const l = ALIAS[lang] ?? lang
   const known = (LANGS as readonly string[]).includes(l)

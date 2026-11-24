@@ -69,7 +69,7 @@ function attrs(text: string): Record<string, string> {
 }
 
 const LANG_NAMES: Record<string, string> = {
-  ts: 'TypeScript', tsx: 'TypeScript', js: 'JavaScript', jsx: 'JavaScript', bash: 'Terminal', sh: 'Terminal', shell: 'Terminal', python: 'Python', py: 'Python', go: 'Go', rust: 'Rust', ruby: 'Ruby', php: 'PHP', java: 'Java', csharp: 'C#', json: 'JSON', text: 'Text', html: 'HTML', yaml: 'YAML', toml: 'TOML', sql: 'SQL', http: 'HTTP',
+  ts: 'TypeScript', tsx: 'TypeScript', js: 'JavaScript', jsx: 'JavaScript', bash: 'Terminal', sh: 'Terminal', shell: 'Terminal', python: 'Python', py: 'Python', go: 'Go', rust: 'Rust', ruby: 'Ruby', php: 'PHP', java: 'Java', csharp: 'C#', json: 'JSON', text: 'Text', prompt: 'Prompt', html: 'HTML', yaml: 'YAML', toml: 'TOML', sql: 'SQL', http: 'HTTP',
 }
 export const langName = (lang: string) => LANG_NAMES[lang] ?? lang.toUpperCase()
 

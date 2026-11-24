@@ -10,8 +10,8 @@
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, Bot, ChevronRight, FileText, Mail, Plug, Sparkles, GitFork } from 'lucide-react'
-import { RiClaudeFill, RiOpenaiFill, RiCursorFill } from '@remixicon/react'
+import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, FileText, Mail, Plug, Wand } from 'lucide-react'
+import { RiClaudeFill, RiOpenaiFill, RiCursorAiFill } from '@remixicon/react'
 import { CodeGroup } from '@/components/docs/CodeGroup'
 import { CopyText } from '@/components/docs/CopyText'
 import { DocIcon } from '@/components/docs/Icon'
@@ -28,7 +28,7 @@ const PATHS = [
     title: 'Forke',
     text: 'Claim scoped coding tasks, ship them as pull requests and get paid by UPI. Or post tasks and review a plain-English verdict.',
     href: '/docs-demo/forke',
-    icon: GitFork,
+    icon: 'ForkeMark',
     image: '/docs-demo/img/path-forke.webp',
     prompt: 'P1',
     links: [
@@ -41,7 +41,7 @@ const PATHS = [
     title: 'Forke Mail',
     text: 'Transactional email, templates, contacts, workflows and broadcasts on Amazon SES, from any language.',
     href: '/docs-demo/mail',
-    icon: Mail,
+    icon: 'Mail',
     image: '/docs-demo/img/path-mail.webp',
     prompt: 'P2',
     links: [
@@ -54,7 +54,7 @@ const PATHS = [
     title: 'Agents & CLI',
     text: 'Let Claude, ChatGPT, Cursor or your coding agent set up and send email for you, safely.',
     href: '/docs-demo/agents',
-    icon: Bot,
+    icon: 'Plug',
     image: '/docs-demo/img/path-agents.webp',
     prompt: 'P3',
     links: [
@@ -110,7 +110,7 @@ const EXPLORE = [
 export default async function DocsHome() {
   const setup = PROMPTS.find((p) => p.name === 'setup-app')!
   const hero = await codeTabs([
-    { title: 'setup-prompt.md', lang: 'text', code: setup.text },
+    { title: 'Setup prompt', lang: 'prompt', code: setup.text },
     { title: 'cURL', lang: 'bash', code: snippet('curl', { method: 'POST', path: '/api/transactional', body: { to: 'ada@example.com', from_address: 'hi@acme.com', subject: 'Hello', text: 'It works' } }) },
     { title: 'Node.js', lang: 'ts', code: snippet('node', { method: 'POST', path: '/api/transactional', body: { to: 'ada@example.com', from_address: 'hi@acme.com', subject: 'Hello', text: 'It works' } }) },
   ])
@@ -120,7 +120,7 @@ export default async function DocsHome() {
       <section className="mx-auto grid max-w-[1180px] items-center gap-12 pt-14 pb-20 lg:grid-cols-[1fr_520px] lg:pt-20">
         <div>
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-[12px] text-white/55">
-            <Sparkles className="h-3.5 w-3.5 text-accent" /> Docs for people and their AI agents
+            <BookOpen className="h-3.5 w-3.5 text-accent" /> Docs for people and their AI agents
           </p>
           <h1 className="text-[40px] leading-[1.05] font-semibold tracking-[-0.04em] text-white sm:text-[54px]">
             Ship real work.
@@ -140,8 +140,8 @@ export default async function DocsHome() {
             Or connect
             <Link href="/docs-demo/agents/claude" className="flex items-center gap-1.5 text-white/65 hover:text-white"><RiClaudeFill className="h-4 w-4 text-[#D97757]" />Claude</Link>
             <Link href="/docs-demo/agents/chatgpt" className="flex items-center gap-1.5 text-white/65 hover:text-white"><RiOpenaiFill className="h-4 w-4" />ChatGPT</Link>
-            <Link href="/docs-demo/agents/cursor" className="flex items-center gap-1.5 text-white/65 hover:text-white"><RiCursorFill className="h-4 w-4" />Cursor</Link>
-            <Link href="/docs-demo/agents/claude-code" className="flex items-center gap-1.5 text-white/65 hover:text-white"><LangLogo name="terminal" className="h-4 w-4" />Claude Code</Link>
+            <Link href="/docs-demo/agents/cursor" className="flex items-center gap-1.5 text-white/65 hover:text-white"><RiCursorAiFill className="h-4 w-4" />Cursor</Link>
+            <Link href="/docs-demo/agents/claude-code" className="flex items-center gap-1.5 text-white/65 hover:text-white"><LangLogo name="claudecode" className="h-4 w-4" />Claude Code</Link>
           </div>
         </div>
         <div className="relative">
@@ -162,7 +162,7 @@ export default async function DocsHome() {
               </Link>
               <div className="flex flex-1 flex-col p-5">
                 <Link href={p.href} className="flex items-center gap-2 text-[17px] font-medium text-white">
-                  <p.icon className="h-4 w-4 text-accent" />
+                  <DocIcon name={p.icon} className="h-4 w-4 text-accent" />
                   {p.title}
                   <ArrowRight className="ml-auto h-4 w-4 text-white/30 transition-transform group-hover:translate-x-0.5 group-hover:text-white/70" />
                 </Link>
@@ -236,7 +236,7 @@ export default async function DocsHome() {
               [FileText, 'llms.txt', 'An index of every page', '/docs-demo/llms.txt'],
               [FileText, 'llms-full.txt', 'All docs in one file', '/docs-demo/llms-full.txt'],
               [Plug, 'Docs MCP server', 'Search and read pages as tools', '/docs-demo/agents/docs-for-agents'],
-              [Sparkles, 'Agent skill', 'A ready-made SKILL.md', '/docs-demo/skill.md'],
+              [Wand, 'Agent skill', 'A ready-made SKILL.md', '/docs-demo/skill.md'],
             ].map(([Icon, title, text, href]) => {
               const I = Icon as typeof FileText
               return (

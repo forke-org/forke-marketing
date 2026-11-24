@@ -8,9 +8,10 @@
  * commercial license from Forke Inc. is strictly prohibited.
  */
 
-import { RiJavaFill, RiNextjsFill, RiNodejsFill, RiPhpFill, RiTerminalBoxFill, RiClaudeFill, RiOpenaiFill, RiCursorFill, RiGithubFill, RiJavascriptFill } from '@remixicon/react'
+import { RiJavaFill, RiNextjsFill, RiNodejsFill, RiPhpFill, RiTerminalBoxFill, RiClaudeFill, RiOpenaiFill, RiCursorAiFill, RiGithubFill, RiJavascriptFill } from '@remixicon/react'
 import { SIMPLE_ICONS } from '@/components/landing/simple-icons'
 import { cn } from '@/lib/utils/cn'
+import { ClaudeCodeMark } from './ClaudeCodeMark'
 
 /** Brand marks for languages, frameworks and AI apps, by display name or guide id. */
 
@@ -32,7 +33,7 @@ const MARKS: Record<string, Mark> = {
   laravel: { kind: 'mono', text: 'L', color: '#FF2D20' },
   claude: { kind: 'remix', Icon: RiClaudeFill, color: '#D97757' },
   openai: { kind: 'remix', Icon: RiOpenaiFill, color: '#ffffff' },
-  cursor: { kind: 'remix', Icon: RiCursorFill, color: '#ffffff' },
+  cursor: { kind: 'remix', Icon: RiCursorAiFill, color: '#ffffff' },
   github: { kind: 'remix', Icon: RiGithubFill, color: '#ffffff' },
   json: { kind: 'mono', text: '{}', color: '#a3a3a3' },
 }
@@ -43,6 +44,7 @@ const NAMES: Record<string, string> = {
 }
 
 export function LangLogo({ name, className }: { name: string; className?: string }) {
+  if (name === 'claudecode' || name === 'Claude Code') return <ClaudeCodeMark className={cn('shrink-0', className)} />
   const mark = MARKS[NAMES[name] ?? name]
   if (!mark) return null
   if (mark.kind === 'remix')
@@ -64,4 +66,4 @@ export function LangLogo({ name, className }: { name: string; className?: string
   )
 }
 
-export const hasLogo = (name: string) => Boolean(MARKS[NAMES[name] ?? name])
+export const hasLogo = (name: string) => name === 'claudecode' || Boolean(MARKS[NAMES[name] ?? name])

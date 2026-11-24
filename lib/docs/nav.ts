@@ -35,14 +35,14 @@ export const TABS: Tab[] = [
   {
     id: 'forke',
     title: 'Forke',
-    icon: 'GitFork',
+    icon: 'ForkeMark',
     root: 'forke',
     description: 'The developer task marketplace',
     groups: [
       {
         title: 'Get started',
         items: [
-          item('forke', 'What is Forke?', 'Sparkles'),
+          item('forke', 'What is Forke?', 'Compass'),
           item('forke/how-it-works', 'How Forke works', 'Workflow'),
           item('forke/quickstart-developers', 'Quickstart for developers', 'Code'),
           item('forke/quickstart-founders', 'Quickstart for founders', 'Rocket'),
@@ -109,7 +109,7 @@ export const TABS: Tab[] = [
       {
         title: 'Get started',
         items: [
-          item('mail', 'Introduction', 'Sparkles'),
+          item('mail', 'Introduction', 'BookOpen'),
           item('mail/quickstart', 'Quickstart', 'Rocket'),
           item('mail/concepts', 'How Forke Mail works', 'Workflow'),
           item('mail/test-mode', 'Test mode & live mode', 'FlaskConical'),
@@ -200,14 +200,14 @@ export const TABS: Tab[] = [
   {
     id: 'agents',
     title: 'Agents & CLI',
-    icon: 'Bot',
+    icon: 'Plug',
     root: 'agents',
     description: 'MCP server, CLI and prompts',
     groups: [
       {
         title: 'Get started',
         items: [
-          item('agents', 'Overview', 'Sparkles'),
+          item('agents', 'Overview', 'BookOpen'),
           item('agents/quickstart', 'Quickstart', 'Rocket'),
           item('agents/safety', 'Safety & confirmations', 'ShieldCheck'),
         ],
@@ -215,10 +215,10 @@ export const TABS: Tab[] = [
       {
         title: 'Connect your app',
         items: [
-          item('agents/claude', 'Claude', 'MessageCircle'),
-          item('agents/chatgpt', 'ChatGPT', 'MessagesSquare'),
-          item('agents/claude-code', 'Claude Code', 'SquareTerminal'),
-          item('agents/cursor', 'Cursor, VS Code & others', 'MousePointer2'),
+          item('agents/claude', 'Claude', 'claude'),
+          item('agents/chatgpt', 'ChatGPT', 'openai'),
+          item('agents/claude-code', 'Claude Code', 'claudecode'),
+          item('agents/cursor', 'Cursor, VS Code & others', 'cursor'),
           item('agents/servers-and-ci', 'Servers, CI & frameworks', 'Server'),
         ],
       },

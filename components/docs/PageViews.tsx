@@ -79,6 +79,21 @@ export async function ArticleView({ page }: { page: DocPage }) {
       <article className="min-w-0 flex-1 px-5 pt-10 pb-24 sm:px-10 xl:px-14">
         <div className="mx-auto max-w-[760px]">
           <Header page={page} />
+          {page.toc.length > 2 ? (
+            <details className="group/t mb-8 rounded-xl border border-white/[0.07] bg-white/[0.015] xl:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-[13.5px] font-medium text-white/75 select-none">
+                On this page
+                <ChevronRight className="h-4 w-4 text-white/35 transition-transform group-open/t:rotate-90" />
+              </summary>
+              <ul className="border-t border-white/[0.06] px-4 py-2.5">
+                {page.toc.map((t) => (
+                  <li key={t.id}>
+                    <a href={`#${t.id}`} className={cn('block py-1.5 text-[13.5px] text-white/50 hover:text-white', t.depth === 3 && 'pl-4')}>{t.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ) : null}
           <div className="docs-prose">
             <Blocks blocks={page.blocks} />
           </div>

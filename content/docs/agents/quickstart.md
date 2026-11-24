@@ -26,7 +26,7 @@ A Forke Mail window opens. Sign in, choose the project the app should use (or cr
 
 ### Paste the setup prompt
 
-```text
+```prompt Prompt
 Set up Forke Mail in this web project.
 1. Call get_account to see my project, verified domains and limits.
 2. Create a test API key with create_api_key (mode "test") and add it to .env as FORKE_MAIL_API_KEY. Make sure .env is in .gitignore.

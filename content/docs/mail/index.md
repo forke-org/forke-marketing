@@ -7,7 +7,7 @@ Forke Mail sends the email your product needs: sign-in codes, receipts and notif
 
 :::cards cols=3
 - [HTTP API](/docs-demo/mail/quickstart) — Plain JSON over HTTPS, with a guide for every language. {icon=Braces}
-- [AI agents](/docs-demo/agents/quickstart) — Connect Claude, ChatGPT or Cursor and ask it to set things up. {icon=Bot}
+- [AI agents](/docs-demo/agents/quickstart) — Connect Claude, ChatGPT or Cursor and ask it to set things up. {icon=Plug}
 - [CLI](/docs-demo/agents/cli) — One binary for macOS, Linux and Windows. {icon=Terminal}
 :::
 

@@ -25,7 +25,7 @@ Choose **forke-mail** and **Authenticate**. Your browser opens Forke Mail: sign 
 
 ### Ask
 
-```text
+```prompt Prompt
 Set up Forke Mail in this project: create a test key, add a sendEmail helper and send one test email.
 ```
 

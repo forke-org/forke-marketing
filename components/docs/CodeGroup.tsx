@@ -111,7 +111,7 @@ export function CodeGroup({ tabs, filename, panel, className }: { tabs: CodeTab[
           <CopyButton copied={copied} onClick={copy} />
         </div>
       ) : null}
-      <div className={cn('docs-scroll-x overflow-x-auto text-[13px] leading-[1.7]', tabs[active].lang === 'text' && 'docs-wrap', panel ? 'max-h-[520px] overflow-y-auto' : 'max-h-[640px] overflow-y-auto')} dangerouslySetInnerHTML={{ __html: tabs[active].html }} />
+      <div className={cn('docs-scroll-x overflow-x-auto text-[13px] leading-[1.7]', tabs[active].lang === 'text' && 'docs-wrap', tabs[active].lang === 'prompt' && 'docs-prompt-wrap', panel ? 'max-h-[520px] overflow-y-auto' : 'max-h-[640px] overflow-y-auto')} dangerouslySetInnerHTML={{ __html: tabs[active].html }} />
     </div>
   )
 }

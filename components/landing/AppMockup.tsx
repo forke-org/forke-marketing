@@ -41,9 +41,9 @@ import {
   Search,
   Settings,
   ShieldCheck,
-  Bot,
   TerminalSquare,
   User,
+  ScanSearch,
   Wallet,
 } from 'lucide-react'
 import { RiGithubFill } from '@remixicon/react'
@@ -1086,7 +1086,7 @@ function Notifications({ open }: { open: boolean }) {
           }}
         >
           <span className={cn('mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-[5px]', n.icon === 'pay' ? TONE.green : n.icon === 'merge' ? TONE.blue : TONE.accent)}>
-            {n.icon === 'pay' ? <Wallet className="h-3 w-3" /> : n.icon === 'merge' ? <GitMerge className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
+            {n.icon === 'pay' ? <Wallet className="h-3 w-3" /> : n.icon === 'merge' ? <GitMerge className="h-3 w-3" /> : <ScanSearch className="h-3 w-3" />}
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-[12px] font-medium text-[#f4f4f5]">{n.title}</p>

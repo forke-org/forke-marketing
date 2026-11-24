@@ -9,24 +9,26 @@
  */
 
 import {
-  Activity, ArrowRightLeft, Ban, BellOff, BookA, BookOpen, Bot, Braces, Building2, ChartColumn, ClipboardCheck, Code, Coins, Compass, Download, FileCode, Filter, FlaskConical,
-  Gauge, Gavel, GitBranch, GitFork, GitMerge, GitPullRequest, Globe, Hammer, Hand, IdCard, Inbox, KeyRound, Languages, Layers, LayoutList, LayoutTemplate, LifeBuoy, ListChecks,
+  Activity, ArrowRightLeft, Ban, BellOff, BookA, BookOpen, Braces, Building2, ChartColumn, ClipboardCheck, Code, Coins, Compass, Download, FileCode, Filter, FlaskConical,
+  Gauge, Gavel, GitBranch, GitMerge, GitPullRequest, Globe, Hammer, Hand, IdCard, Inbox, KeyRound, Languages, Layers, LayoutList, LayoutTemplate, LifeBuoy, ListChecks,
   ListOrdered, Mail, Megaphone, MessageCircle, MessagesSquare, MousePointer2, MousePointerClick, PenLine, Plug, RefreshCw, Rocket, Scale, ScanSearch, Send, Server, ShieldCheck,
-  Sparkles, SquareTerminal, Terminal, Timer, TrendingUp, TriangleAlert, Users, Vault, Wallet, Wand, Webhook, Workflow, Wrench, Zap, Brain, Trophy, Lock, Eye, Plane, Cable, type LucideIcon,
+  SquareTerminal, Terminal, Timer, TrendingUp, TriangleAlert, Users, Vault, Wallet, Wand, Webhook, Workflow, Wrench, Zap, Brain, Trophy, Lock, Eye, Plane, Cable, type LucideIcon,
 } from 'lucide-react'
 import { RiGithubFill } from '@remixicon/react'
 import { LangLogo, hasLogo } from './LangLogo'
+import { ForkyMark } from './ForkyMark'
 
 const ICONS: Record<string, LucideIcon | React.ComponentType<{ className?: string }>> = {
-  Activity, ArrowRightLeft, Ban, BellOff, BookA, BookOpen, Bot, Braces, Building2, ChartColumn, ClipboardCheck, Code, Coins, Compass, Download, FileCode, Filter, FlaskConical,
-  Gauge, Gavel, GitBranch, GitFork, GitMerge, GitPullRequest, Globe, Hammer, Hand, IdCard, Inbox, KeyRound, Languages, Layers, LayoutList, LayoutTemplate, LifeBuoy, ListChecks,
+  Activity, ArrowRightLeft, Ban, BellOff, BookA, BookOpen, Braces, Building2, ChartColumn, ClipboardCheck, Code, Coins, Compass, Download, FileCode, Filter, FlaskConical,
+  Gauge, Gavel, GitBranch, GitMerge, GitPullRequest, Globe, Hammer, Hand, IdCard, Inbox, KeyRound, Languages, Layers, LayoutList, LayoutTemplate, LifeBuoy, ListChecks,
   ListOrdered, Mail, Megaphone, MessageCircle, MessagesSquare, MousePointer2, MousePointerClick, PenLine, Plug, RefreshCw, Rocket, Scale, ScanSearch, Send, Server, ShieldCheck,
-  Sparkles, SquareTerminal, Terminal, Timer, TrendingUp, TriangleAlert, Users, Vault, Wallet, Wand, Webhook, Workflow, Wrench, Zap, Brain, Trophy, Lock, Eye, Plane, Cable,
+  SquareTerminal, Terminal, Timer, TrendingUp, TriangleAlert, Users, Vault, Wallet, Wand, Webhook, Workflow, Wrench, Zap, Brain, Trophy, Lock, Eye, Plane, Cable,
   Github: RiGithubFill,
 }
 
 export function DocIcon({ name, className }: { name?: string; className?: string }) {
   if (!name) return null
+  if (name === 'ForkeMark') return <ForkyMark className={className} />
   const I = ICONS[name]
   if (I) return <I className={className} />
   if (hasLogo(name)) return <LangLogo name={name} className={className} />
