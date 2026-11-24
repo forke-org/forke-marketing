@@ -262,15 +262,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
 }
-.docs-prompt .pt-steps li:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 0.72em;
-  top: 1.75em;
-  bottom: 0.3em;
-  width: 1px;
-  background: rgba(255, 255, 255, 0.07);
-}
+
 .docs-prompt [class^='pt-']:not(.pt-lead):not(.pt-steps) {
   border-radius: 5px;
   padding: 0.05em 0.35em;
@@ -305,4 +297,15 @@
   text-underline-offset: 3px;
   white-space: normal !important;
   word-break: break-all;
+}
+
+.docs-wrap pre.shiki {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.docs-quiet-scroll {
+  scrollbar-width: none;
+}
+.docs-quiet-scroll::-webkit-scrollbar {
+  display: none;
 }

@@ -44,7 +44,7 @@ const store = {
 
 export type CodeTab = { title: string; lang: string; html: string; code: string }
 
-export function CodeGroup({ tabs, filename, panel, className }: { tabs: CodeTab[]; filename?: string; panel?: boolean; className?: string }) {
+export function CodeGroup({ tabs, filename, panel, className, wrap, bodyClassName }: { tabs: CodeTab[]; filename?: string; panel?: boolean; className?: string; wrap?: boolean; bodyClassName?: string }) {
   const preferred = useSyncExternalStore(store.subscribe, store.get, () => '')
   const [local, setLocal] = useState<number | null>(null)
   const [copied, setCopied] = useState(false)
@@ -84,7 +84,7 @@ export function CodeGroup({ tabs, filename, panel, className }: { tabs: CodeTab[
               <span className="truncate">{label}</span>
             </div>
           ) : (
-            <div role="tablist" className="docs-scroll-x flex min-w-0 items-center overflow-x-auto">
+            <div role="tablist" className="flex min-w-0 items-center overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {tabs.map((t, i) => (
                 <button
                   key={t.title + i}
@@ -92,7 +92,7 @@ export function CodeGroup({ tabs, filename, panel, className }: { tabs: CodeTab[
                   aria-selected={i === active}
                   onClick={() => pick(i)}
                   className={cn(
-                    'relative flex shrink-0 items-center gap-1.5 px-3.5 py-2.5 text-[12.5px] font-medium transition-colors',
+                    'relative flex shrink-0 items-center gap-1.5 px-3.5 py-2.5 text-[12.5px] font-medium outline-none transition-colors focus-visible:bg-white/[0.04]',
                     i === active ? 'text-white' : 'text-white/40 hover:text-white/75',
                   )}
                 >
@@ -111,7 +111,7 @@ export function CodeGroup({ tabs, filename, panel, className }: { tabs: CodeTab[
           <CopyButton copied={copied} onClick={copy} />
         </div>
       ) : null}
-      <div className={cn('docs-scroll-x overflow-x-auto text-[13px] leading-[1.7]', tabs[active].lang === 'text' && 'docs-wrap', tabs[active].lang === 'prompt' && 'docs-prompt-wrap', panel ? 'max-h-[520px] overflow-y-auto' : 'max-h-[640px] overflow-y-auto')} dangerouslySetInnerHTML={{ __html: tabs[active].html }} />
+      <div className={cn('docs-scroll-x overflow-x-auto text-[13px] leading-[1.7]', (wrap || tabs[active].lang === 'text') && 'docs-wrap', bodyClassName ?? (panel ? 'max-h-[520px] overflow-y-auto' : 'max-h-[640px] overflow-y-auto'))} dangerouslySetInnerHTML={{ __html: tabs[active].html }} />
     </div>
   )
 }

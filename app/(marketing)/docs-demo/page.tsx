@@ -10,11 +10,10 @@
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, FileText, Mail, Plug, Wand } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, ChevronRight } from 'lucide-react'
 import { RiClaudeFill, RiOpenaiFill, RiCursorAiFill } from '@remixicon/react'
 import { CodeGroup } from '@/components/docs/CodeGroup'
 import { CopyText } from '@/components/docs/CopyText'
-import { DocIcon } from '@/components/docs/Icon'
 import { LangLogo } from '@/components/docs/LangLogo'
 import { codeTabs, Frame } from '@/components/docs/Blocks'
 import { LANGUAGE_GUIDES } from '@/lib/docs/languages'
@@ -28,39 +27,36 @@ const PATHS = [
     title: 'Forke',
     text: 'Claim scoped coding tasks, ship them as pull requests and get paid by UPI. Or post tasks and review a plain-English verdict.',
     href: '/docs-demo/forke',
-    icon: 'ForkeMark',
     image: '/docs-demo/img/path-forke.webp',
     prompt: 'P1',
     links: [
-      ['Quickstart for developers', '/docs-demo/forke/quickstart-developers', 'Code'],
-      ['Quickstart for founders', '/docs-demo/forke/quickstart-founders', 'Rocket'],
-      ['The review pipeline', '/docs-demo/forke/review-pipeline', 'ScanSearch'],
+      ['Quickstart for developers', '/docs-demo/forke/quickstart-developers'],
+      ['Quickstart for founders', '/docs-demo/forke/quickstart-founders'],
+      ['The review pipeline', '/docs-demo/forke/review-pipeline'],
     ],
   },
   {
     title: 'Forke Mail',
     text: 'Transactional email, templates, contacts, workflows and broadcasts on Amazon SES, from any language.',
     href: '/docs-demo/mail',
-    icon: 'Mail',
     image: '/docs-demo/img/path-mail.webp',
     prompt: 'P2',
     links: [
-      ['Quickstart', '/docs-demo/mail/quickstart', 'Rocket'],
-      ['Verify a domain', '/docs-demo/mail/domains', 'Globe'],
-      ['API reference', '/docs-demo/mail/api', 'Braces'],
+      ['Quickstart', '/docs-demo/mail/quickstart'],
+      ['Verify a domain', '/docs-demo/mail/domains'],
+      ['API reference', '/docs-demo/mail/api'],
     ],
   },
   {
     title: 'Agents & CLI',
     text: 'Let Claude, ChatGPT, Cursor or your coding agent set up and send email for you, safely.',
     href: '/docs-demo/agents',
-    icon: 'Plug',
     image: '/docs-demo/img/path-agents.webp',
     prompt: 'P3',
     links: [
-      ['Connect your AI app', '/docs-demo/agents/quickstart', 'Plug'],
-      ['Prompt library', '/docs-demo/agents/prompts', 'Wand'],
-      ['The CLI', '/docs-demo/agents/cli', 'Terminal'],
+      ['Connect your AI app', '/docs-demo/agents/quickstart'],
+      ['Prompt library', '/docs-demo/agents/prompts'],
+      ['The CLI', '/docs-demo/agents/cli'],
     ],
   },
 ] as const
@@ -120,7 +116,7 @@ export default async function DocsHome() {
       <section className="mx-auto grid max-w-[1180px] items-center gap-12 pt-14 pb-20 lg:grid-cols-[1fr_520px] lg:pt-20">
         <div>
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-[12px] text-white/55">
-            <BookOpen className="h-3.5 w-3.5 text-accent" /> Docs for people and their AI agents
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Docs for people and their AI agents
           </p>
           <h1 className="text-[40px] leading-[1.05] font-semibold tracking-[-0.04em] text-white sm:text-[54px]">
             Ship real work.
@@ -146,7 +142,7 @@ export default async function DocsHome() {
         </div>
         <div className="relative">
           <div aria-hidden className="absolute -inset-10 -z-10 bg-[radial-gradient(closest-side,rgba(255,122,0,0.14),transparent)]" />
-          <CodeGroup tabs={hero} panel />
+          <CodeGroup tabs={hero} panel wrap bodyClassName="docs-quiet-scroll h-[372px] overflow-y-auto" />
         </div>
       </section>
 
@@ -162,17 +158,16 @@ export default async function DocsHome() {
               </Link>
               <div className="flex flex-1 flex-col p-5">
                 <Link href={p.href} className="flex items-center gap-2 text-[17px] font-medium text-white">
-                  <DocIcon name={p.icon} className="h-4 w-4 text-accent" />
                   {p.title}
                   <ArrowRight className="ml-auto h-4 w-4 text-white/30 transition-transform group-hover:translate-x-0.5 group-hover:text-white/70" />
                 </Link>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-white/50">{p.text}</p>
-                <ul className="mt-4 space-y-1">
-                  {p.links.map(([label, href, icon]) => (
+                <p className="mt-2 min-h-[4.5rem] text-[13.5px] leading-relaxed text-white/50">{p.text}</p>
+                <ul className="mt-4 space-y-0.5 border-t border-white/[0.06] pt-3">
+                  {p.links.map(([label, href]) => (
                     <li key={href}>
-                      <Link href={href} className="flex items-center gap-2.5 rounded-lg py-1.5 text-[13.5px] text-white/65 transition-colors hover:text-white">
-                        <DocIcon name={icon} className="h-3.5 w-3.5 text-white/35" />
+                      <Link href={href} className="group/l flex items-center justify-between rounded-lg py-1.5 text-[13.5px] text-white/65 transition-colors hover:text-white">
                         {label}
+                        <ChevronRight className="h-3.5 w-3.5 text-white/20 transition-transform group-hover/l:translate-x-0.5 group-hover/l:text-white/60" />
                       </Link>
                     </li>
                   ))}
@@ -216,7 +211,7 @@ export default async function DocsHome() {
         <div className="mt-8 grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:grid-cols-7">
           {LANGUAGE_GUIDES.map((g) => (
             <Link key={g.id} href={`/docs-demo/mail/send-with-${g.id}`} className="group flex flex-col items-center gap-2.5 rounded-xl border border-white/[0.07] bg-white/[0.015] px-3 py-4 transition-all hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.03]">
-              <LangLogo name={g.id === 'nodejs' ? 'node' : g.id === 'curl' ? 'terminal' : g.id === 'laravel' ? 'laravel' : g.icon} className="h-6 w-6" />
+              <LangLogo name={g.id} className="h-6 w-6" />
               <span className="text-[12.5px] text-white/70 group-hover:text-white">{g.name}</span>
             </Link>
           ))}
@@ -233,16 +228,14 @@ export default async function DocsHome() {
           </div>
           <div className="grid gap-2.5 sm:grid-cols-2">
             {[
-              [FileText, 'llms.txt', 'An index of every page', '/docs-demo/llms.txt'],
-              [FileText, 'llms-full.txt', 'All docs in one file', '/docs-demo/llms-full.txt'],
-              [Plug, 'Docs MCP server', 'Search and read pages as tools', '/docs-demo/agents/docs-for-agents'],
-              [Wand, 'Agent skill', 'A ready-made SKILL.md', '/docs-demo/skill.md'],
-            ].map(([Icon, title, text, href]) => {
-              const I = Icon as typeof FileText
+              ['llms.txt', 'An index of every page', '/docs-demo/llms.txt'],
+              ['llms-full.txt', 'All docs in one file', '/docs-demo/llms-full.txt'],
+              ['Docs MCP server', 'Search and read pages as tools', '/docs-demo/agents/docs-for-agents'],
+              ['Agent skill', 'A ready-made SKILL.md', '/docs-demo/skill.md'],
+            ].map(([title, text, href]) => {
               return (
                 <a key={title as string} href={href as string} className="group rounded-xl border border-white/[0.08] bg-[#121111]/70 p-4 transition-colors hover:border-white/[0.16]">
-                  <I className="h-4 w-4 text-white/50 group-hover:text-accent" />
-                  <span className="mt-3 flex items-center gap-1 font-mono text-[13px] text-white">{title as string}<ArrowUpRight className="h-3 w-3 text-white/30" /></span>
+                  <span className="flex items-center gap-1 font-mono text-[13px] text-white">{title as string}<ArrowUpRight className="h-3 w-3 text-white/30" /></span>
                   <span className="mt-1 block text-[12.5px] text-white/45">{text as string}</span>
                 </a>
               )

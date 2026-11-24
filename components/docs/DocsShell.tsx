@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils/cn'
 import { TABS, tabFor, type Tab } from '@/lib/docs/nav'
 import type { SearchEntry } from '@/lib/docs/load'
 import { DocIcon } from './Icon'
+import { hasLogo } from './LangLogo'
 import { SearchDialog } from './SearchDialog'
 
 const pathOf = (pathname: string) => pathname.replace(/^\/docs-demo\/?/, '').replace(/\/$/, '')
@@ -120,7 +121,6 @@ export default function DocsShell({ index, children }: { index: SearchEntry[]; c
           <div className="grid grid-cols-2 gap-1.5 border-b border-white/[0.06] p-3">
             {TABS.map((t) => (
               <Link key={t.id} href={href(t.root)} className={cn('flex items-center gap-2 rounded-lg px-2.5 py-2 text-[13px]', t.id === tab.id ? 'bg-white/[0.07] text-white' : 'text-white/55')}>
-                <DocIcon name={t.icon} className="h-3.5 w-3.5" />
                 {t.title}
               </Link>
             ))}
@@ -138,8 +138,7 @@ export default function DocsShell({ index, children }: { index: SearchEntry[]; c
 
 function TabLink({ tab, active }: { tab: Tab; active: boolean }) {
   return (
-    <Link href={href(tab.root)} className={cn('group relative flex h-full shrink-0 items-center gap-2 px-3 text-[13.5px] transition-colors', active ? 'text-white' : 'text-white/45 hover:text-white/80')}>
-      <DocIcon name={tab.icon} className={cn('h-[15px] w-[15px] transition-colors', active ? 'text-accent' : 'text-white/35 group-hover:text-white/60')} />
+    <Link href={href(tab.root)} className={cn('group relative flex h-full shrink-0 items-center px-3 text-[13.5px] transition-colors', active ? 'text-white' : 'text-white/45 hover:text-white/80')}>
       {tab.title}
       <span className={cn('absolute inset-x-2 bottom-0 h-[2px] rounded-full bg-accent transition-opacity', active ? 'opacity-100' : 'opacity-0')} />
     </Link>
@@ -166,7 +165,7 @@ function SidebarNav({ tab, current }: { tab: Tab; current: string }) {
                       active ? 'bg-white/[0.06] font-medium text-white' : 'text-white/55 hover:bg-white/[0.03] hover:text-white/90',
                     )}
                   >
-                    {isApi ? <MethodBadge method={item.badge!} /> : <DocIcon name={item.icon} className={cn('h-[15px] w-[15px] shrink-0 transition-colors', active ? 'text-accent' : 'text-white/35 group-hover:text-white/60')} />}
+                    {isApi ? <MethodBadge method={item.badge!} /> : item.icon && hasLogo(item.icon) ? <DocIcon name={item.icon} className="h-[15px] w-[15px] shrink-0" /> : null}
                     <span className="truncate">{item.title}</span>
                   </Link>
                 </li>

@@ -117,7 +117,7 @@ export const TABS: Tab[] = [
       },
       {
         title: 'Send with your stack',
-        items: [item('mail/languages', 'All languages', 'Languages'), ...LANGUAGE_GUIDES.map((l) => item(`mail/send-with-${l.id}`, l.name, l.icon))],
+        items: [item('mail/languages', 'All languages', 'Languages'), ...LANGUAGE_GUIDES.map((l) => item(`mail/send-with-${l.id}`, l.name, l.id))],
       },
       {
         title: 'Domains',

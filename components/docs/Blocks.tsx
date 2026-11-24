@@ -158,11 +158,6 @@ async function BlockView({ block: b, index }: { block: Block; index: number }): 
               {c.image ? <CardImage src={c.image} alt={c.title} /> : null}
               <div className="flex flex-1 flex-col p-4">
                 <div className="flex items-center gap-2.5">
-                  {c.icon ? (
-                    <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-white/[0.08] bg-white/[0.03] text-white/60 transition-colors group-hover/card:border-accent/30 group-hover/card:text-accent">
-                      <DocIcon name={c.icon} className="h-3.5 w-3.5" />
-                    </span>
-                  ) : null}
                   <span className="text-[14.5px] font-medium text-white">{c.title}</span>
                   <ChevronRight className="ml-auto h-4 w-4 text-white/25 transition-all group-hover/card:translate-x-0.5 group-hover/card:text-white/60" />
                 </div>
@@ -202,7 +197,7 @@ async function BlockView({ block: b, index }: { block: Block; index: number }): 
           <div key={index} className="not-prose my-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
             {LANGUAGE_GUIDES.map((g) => (
               <Link key={g.id} href={`/docs-demo/mail/send-with-${g.id}`} className="group/l flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.015] px-3.5 py-3 transition-all hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.035]">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.07] bg-[#121111]"><LangLogo name={g.id === 'nodejs' ? 'node' : g.id === 'curl' ? 'terminal' : g.icon === 'ruby' ? 'ruby' : g.id === 'laravel' ? 'laravel' : g.icon} className="h-4 w-4" /></span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.07] bg-[#121111]"><LangLogo name={g.id} className="h-4 w-4" /></span>
                 <span className="min-w-0">
                   <span className="block text-[13.5px] font-medium text-white">{g.name}</span>
                   <span className="block text-[11.5px] text-white/35">{g.kind === 'framework' ? 'Framework' : 'Language'}</span>

@@ -16,7 +16,6 @@ import {
 } from 'lucide-react'
 import { RiGithubFill } from '@remixicon/react'
 import { LangLogo, hasLogo } from './LangLogo'
-import { ForkyMark } from './ForkyMark'
 
 const ICONS: Record<string, LucideIcon | React.ComponentType<{ className?: string }>> = {
   Activity, ArrowRightLeft, Ban, BellOff, BookA, BookOpen, Braces, Building2, ChartColumn, ClipboardCheck, Code, Coins, Compass, Download, FileCode, Filter, FlaskConical,
@@ -28,7 +27,6 @@ const ICONS: Record<string, LucideIcon | React.ComponentType<{ className?: strin
 
 export function DocIcon({ name, className }: { name?: string; className?: string }) {
   if (!name) return null
-  if (name === 'ForkeMark') return <ForkyMark className={className} />
   const I = ICONS[name]
   if (I) return <I className={className} />
   if (hasLogo(name)) return <LangLogo name={name} className={className} />
