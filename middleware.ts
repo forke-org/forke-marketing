@@ -343,8 +343,35 @@ async function fetchWaitlistStatus(origin: string): Promise<boolean> {
   }
 }
 
+// AI agents that fetch a page for a person right now (not search crawlers): they get the page as markdown.
+const AGENT_UA = /(ChatGPT-User|Claude-User|Claude-Web|Perplexity-User|OAI-SearchBot|ClaudeBot|GPTBot|PerplexityBot|anthropic-ai|Cohere-ai|cursor|Google-Extended|meta-externalagent|Amazonbot|DuckAssistBot|MistralAI-User)/i
+
+/**
+ * Docs for agents: /docs-demo/<page>.md, and any docs page requested with Accept: text/markdown or by an AI agent,
+ * are answered with the page's markdown (served by /docs-demo/raw/<page>).
+ */
+function docsForAgents(req: NextRequest, pathname: string): NextResponse | null {
+  if (pathname !== '/docs-demo' && pathname !== '/docs-demo.md' && !pathname.startsWith('/docs-demo/')) return null
+  if (/^\/docs-demo\/(raw|mcp|llms(-full)?\.txt|img)(\/|$)/.test(pathname)) return null
+  const md = pathname === '/docs-demo.md' ? '' : pathname.match(/^\/docs-demo\/(.+)\.md$/)?.[1]
+  const accept = req.headers.get('accept') || ''
+  const wantsMarkdown = /text\/markdown/.test(accept) && !/^text\/html/.test(accept)
+  const isAgent = AGENT_UA.test(req.headers.get('user-agent') || '')
+  if (md === undefined && !wantsMarkdown && !isAgent) return null
+  if (md === undefined && pathname.includes('.')) return null
+  const page = md ?? pathname.replace(/^\/docs-demo\/?/, '').replace(/\/$/, '')
+  const url = req.nextUrl.clone()
+  url.pathname = `/docs-demo/raw${page ? '/' + page : ''}`
+  const res = NextResponse.rewrite(url)
+  res.headers.set('Vary', 'Accept, User-Agent')
+  return res
+}
+
 export async function middleware(req: NextRequest, ev?: NextFetchEvent) {
   const pathname = req.nextUrl.pathname
+
+  const docs = docsForAgents(req, pathname)
+  if (docs) return docs
 
   // Probes and crawler files (robots.txt, llms.txt, sitemaps) are skipped by the marketing tracker below.
   // The track route only keeps these when the request is from a bot.

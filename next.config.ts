@@ -61,6 +61,15 @@ const nextConfig: NextConfig = {
       ...(r2Host ? [{ protocol: 'https' as const, hostname: r2Host, pathname: '**' }] : []),
     ],
   },
+  // Tell agents where the machine-readable docs are, on every docs page.
+  async headers() {
+    return [
+      {
+        source: '/docs-demo/:path*',
+        headers: [{ key: 'Link', value: '</docs-demo/llms.txt>; rel="llms-txt", </docs-demo/llms-full.txt>; rel="llms-full-txt", </docs-demo/mcp>; rel="mcp"' }],
+      },
+    ];
+  },
   async redirects() {
     const isProd = process.env.NODE_ENV === 'production';
     const dashboardUrl = process.env.NEXT_PUBLIC_DASHBOARD_URL || (isProd ? 'https://dashboard.forke.space' : 'http://localhost:3001');

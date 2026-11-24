@@ -1,0 +1,175 @@
+{
+  "tools": [
+    {
+      "name": "get_account",
+      "description": "Current project, plan, credits and limits, warm-up status, verified sending domains and whether this connection uses a test key. Call this first.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "list_projects",
+      "description": "Projects (workspaces) the signed-in user belongs to.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "switch_project",
+      "description": "Point this AI connection at another of the user's projects. Only for OAuth connections; API keys always belong to one project.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "send_email",
+      "description": "Send one transactional email (sign-in link, receipt, notification). Use html and/or text, or a saved template with data. With a live key this delivers a real email, so it asks for confirmation. With a test key nothing is delivered.",
+      "level": "Asks you first with a live key; runs directly with a test key"
+    },
+    {
+      "name": "get_email",
+      "description": "Status and content of one transactional email: queued, sent, delivered, bounced, complained, opened, clicked, or test.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "list_deliveries",
+      "description": "Recent emails across transactional and broadcasts with their delivery status. Use it to answer why an email bounced or did not arrive.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "list_domains",
+      "description": "Sending domains and their verification status.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "add_domain",
+      "description": "Add a domain to send from. Returns the DNS records (DKIM CNAMEs, SPF, DMARC) the user must add at their DNS provider. Then use check_domain.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "check_domain",
+      "description": "Re-check a domain's verification and DNS records, with exactly which record is missing.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "list_templates",
+      "description": "Saved email templates with their variables.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "get_template",
+      "description": "One template with its HTML, text and variables.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "save_template",
+      "description": "Create a template, or update the one with the same name. Use {{variable}} for escaped values and {{{variable}}} for raw HTML. kind is transactional (always delivered) or marketing (skipped for unsubscribed contacts).",
+      "level": "Runs directly"
+    },
+    {
+      "name": "delete_template",
+      "description": "Delete a template. Emails or workflows using it will fail, so this asks for confirmation.",
+      "level": "Asks you first"
+    },
+    {
+      "name": "list_contacts",
+      "description": "Contacts in the project.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "upsert_contact",
+      "description": "Create a contact or update their name, custom data and tags. Records a contact.saved event.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "track_event",
+      "description": "Record that a contact did something (user.signed_up, order.paid). Creates the contact if needed and starts any workflow triggered by this event, which may send emails.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "list_segments",
+      "description": "Saved audiences built from rules, with their size.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "create_segment",
+      "description": "Save an audience from rules. Each rule is {\"field\",\"op\",\"value\"}; fields include email, first_name, last_name, status, tag, created_at, last_engaged_at, event, data.<field>. Use {\"field\":\"group\",\"op\":\"any\"/\"all\",\"rules\":[...]} for one nested group. Call call_api with POST /api/segments/preview to check the size first.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "create_broadcast",
+      "description": "Create a newsletter or announcement as a draft. Nothing is sent until the user confirms send_broadcast in the chat.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "send_broadcast",
+      "description": "Launch a broadcast draft to its whole audience. It can't be undone, so the user must confirm it in the chat first.",
+      "level": "Asks you first (can't be undone)"
+    },
+    {
+      "name": "get_analytics",
+      "description": "Sent, delivered, opened, clicked, bounced and complaint numbers with rates, compared with the previous period.",
+      "level": "Runs directly"
+    },
+    {
+      "name": "create_api_key",
+      "description": "Create an API key for the user's app. mode test (default) stores emails without delivering them; mode live sends for real. The key is shown once: tell the user to put it in an environment variable (FORKE_MAIL_API_KEY), never in code.",
+      "level": "Asks you first"
+    },
+    {
+      "name": "call_api",
+      "description": "Call any /api endpoint for things the other tools do not cover (workflows, topics, suppressions, team, webhooks, settings, campaigns, reports). Reading is free; risky changes ask the user to confirm in the chat. See the resource forke-mail://guide for the endpoint list.",
+      "level": "Depends on the endpoint (see Safety model)"
+    }
+  ],
+  "prompts": [
+    {
+      "title": "Set up Forke Mail in my app",
+      "description": "Add email to the project you're working on: key, helper, first test send.",
+      "text": "Set up Forke Mail in this web project.\n1. Call get_account to see my project, verified domains and limits.\n2. Create a test API key with create_api_key (mode \"test\") and add it to .env as FORKE_MAIL_API_KEY. Make sure .env is in .gitignore.\n3. Add a small sendEmail helper that calls POST https://mail.forke.space/api/transactional with the key from the environment and an Idempotency-Key header.\n4. Send one test email through the helper and show me the result.\n5. Tell me what I need to switch to live sending (verified domain and a live key).",
+      "name": "setup-app"
+    },
+    {
+      "title": "Create a welcome email",
+      "description": "Design a welcome email template that matches your product.",
+      "text": "Create a welcome email template for my product with a friendly tone.\nUse save_template named \"welcome\" (kind transactional) with {{name}} for the person's name and a clear call to action button. Keep the HTML simple and mobile friendly, and include a plain-text version. Then send me a preview with a test key.",
+      "name": "welcome-email"
+    },
+    {
+      "title": "Add sign-in and password reset emails",
+      "description": "Templates and code for magic links, one-time codes and password resets.",
+      "text": "Add sign-in and password reset emails to this web app with Forke Mail.\nCreate templates \"sign-in-code\" ({{code}}, expires in 10 minutes) and \"password-reset\" ({{reset_link}}) with save_template, then wire them into the existing auth flow using the template name and data. Use an Idempotency-Key per request so retries never send twice.",
+      "name": "auth-emails"
+    },
+    {
+      "title": "Build a welcome email series",
+      "description": "A workflow that sends a short series after someone signs up.",
+      "text": "Build a welcome series that starts when the user.signed_up event is tracked.\nDraft three short emails (day 0, day 2, day 5) as templates, then create a workflow with call_api POST /api/workflows using wait and send steps, exiting if the person does the main action. Show me the plan before you create the workflow, and track one test event to check it.",
+      "name": "welcome-series"
+    },
+    {
+      "title": "Write and send a newsletter",
+      "description": "Draft a broadcast for a segment and send it when you're happy.",
+      "text": "Write a newsletter about our latest update for the main segment.\nCheck the segment size with list_segments, draft it with create_broadcast (keep the {{unsubscribe_url}} link), show me the subject and content, and only call send_broadcast after I say yes.",
+      "name": "newsletter"
+    },
+    {
+      "title": "Verify my sending domain",
+      "description": "Add a domain and walk through the DNS records step by step.",
+      "text": "Help me send email from my domain.\nAdd it with add_domain, then show me each DNS record as a small table (type, name, value) for my DNS provider. After I add them, run check_domain and tell me exactly which record is still missing until it's verified.",
+      "name": "verify-domain"
+    },
+    {
+      "title": "Why didn't my email arrive?",
+      "description": "Find a missing email and explain what happened.",
+      "text": "An email to the recipient didn't arrive. Use list_deliveries with that address, then get_email for the latest one, and explain in plain words what happened (sent, delivered, bounced, suppressed or failed) and what I should do next.",
+      "name": "debug-delivery"
+    },
+    {
+      "title": "Move to Forke Mail from another provider",
+      "description": "Replace Resend, SendGrid, Postmark or SES calls in your code.",
+      "text": "Move this codebase from my current provider to Forke Mail.\nFind every place that sends email, list them for me first, then replace them with calls to POST https://mail.forke.space/api/transactional (or templates where the same email repeats). Keep the same from addresses, add idempotency keys, and use a test key until I say to go live.",
+      "name": "migrate"
+    },
+    {
+      "title": "How are my emails doing?",
+      "description": "A short report on delivery, opens, clicks and problems.",
+      "text": "Give me a short report on my email over the last 7 days using get_analytics and list_deliveries with status \"problems\": what was sent, delivery and open rates compared with the week before, and anything that bounced or was reported as spam, with one suggestion to improve.",
+      "name": "weekly-report"
+    }
+  ]
+}
