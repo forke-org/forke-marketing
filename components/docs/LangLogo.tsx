@@ -9,7 +9,7 @@
  */
 
 import { RiJavaFill, RiTerminalBoxFill, RiClaudeFill, RiOpenaiFill, RiCursorAiFill, RiGithubFill } from '@remixicon/react'
-import { siCurl, siDjango, siDotnet, siExpress, siGo, siLaravel, siNextdotjs, siNodedotjs, siPhp, siPython, siRuby, siRubyonrails, siRust, siTypescript, siJavascript } from 'simple-icons'
+import { siCurl, siDjango, siDotnet, siExpress, siGo, siHomebrew, siLaravel, siNextdotjs, siNodedotjs, siPhp, siPython, siRuby, siRubyonrails, siRust, siTypescript, siJavascript } from 'simple-icons'
 import { cn } from '@/lib/utils/cn'
 import { ClaudeCodeMark } from './ClaudeCodeMark'
 
@@ -35,6 +35,7 @@ const MARKS: Record<string, Mark> = {
   rust: si(siRust, '#e8e2dd'),
   dotnet: si(siDotnet, '#8E6BF0'),
   curl: si(siCurl, '#5FA8E0'),
+  homebrew: si(siHomebrew, '#FBB040'),
   java: { kind: 'remix', Icon: RiJavaFill, color: '#F89820' },
   terminal: { kind: 'remix', Icon: RiTerminalBoxFill, color: '#d4d4d4' },
   claude: { kind: 'remix', Icon: RiClaudeFill, color: '#D97757' },
@@ -44,7 +45,7 @@ const MARKS: Record<string, Mark> = {
 }
 
 const NAMES: Record<string, string> = {
-  'Node.js': 'node', nodejs: 'node', Express: 'express', JavaScript: 'js', TypeScript: 'ts', 'Next.js': 'nextjs', Python: 'python', Django: 'django', Go: 'go', Rust: 'rust', PHP: 'php', Laravel: 'laravel', Java: 'java', Ruby: 'ruby', Rails: 'rails', '.NET': 'dotnet', 'C#': 'dotnet', cURL: 'curl', Terminal: 'terminal', CLI: 'terminal', 'macOS & Linux': 'terminal', 'Debian & Ubuntu': 'terminal', Windows: 'terminal',
+  'Node.js': 'node', nodejs: 'node', Express: 'express', JavaScript: 'js', TypeScript: 'ts', 'Next.js': 'nextjs', Python: 'python', Django: 'django', Go: 'go', Rust: 'rust', PHP: 'php', Laravel: 'laravel', Java: 'java', Ruby: 'ruby', Rails: 'rails', '.NET': 'dotnet', 'C#': 'dotnet', cURL: 'curl', Terminal: 'terminal', CLI: 'terminal', 'macOS & Linux': 'terminal', 'Install script': 'terminal', Homebrew: 'homebrew', 'Debian & Ubuntu': 'terminal', Windows: 'terminal',
 }
 
 export function LangLogo({ name, className }: { name: string; className?: string }) {

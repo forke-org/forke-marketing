@@ -16,7 +16,7 @@ Prefer to let an AI app do it? Connect it and paste one prompt: see [Agents quic
 Sign in at [mail.forke.space](https://mail.forke.space), open **API keys**, create a key and choose **Test**. Or let the CLI do it in your project folder:
 
 ```bash Terminal
-curl -fsSL https://mail.forke.space/install.sh | sh
+brew install forke-org/tap/forke-mail   # or: curl -fsSL https://mail.forke.space/install.sh | sh
 forke-mail login
 forke-mail init
 ```

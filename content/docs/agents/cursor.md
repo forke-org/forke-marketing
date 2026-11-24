@@ -37,7 +37,7 @@ The app opens your browser to sign in the first time it connects.
 Install the CLI and sign in once, then run it as a local (stdio) server:
 
 ```bash
-curl -fsSL https://mail.forke.space/install.sh | sh
+brew install forke-org/tap/forke-mail   # or: curl -fsSL https://mail.forke.space/install.sh | sh
 forke-mail login
 ```
 

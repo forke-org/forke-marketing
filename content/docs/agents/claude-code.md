@@ -38,7 +38,7 @@ Run `forke-mail init` once in the repository. It writes notes into `AGENTS.md` (
 ## Without the network: the CLI as a local server
 
 ```bash
-curl -fsSL https://mail.forke.space/install.sh | sh
+brew install forke-org/tap/forke-mail   # or: curl -fsSL https://mail.forke.space/install.sh | sh
 forke-mail login
 claude mcp add forke-mail -- forke-mail mcp
 ```

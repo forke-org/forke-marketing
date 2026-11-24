@@ -9,7 +9,11 @@ description: Install the forke-mail CLI on macOS, Linux or Windows, sign in thro
 
 ## Install
 
-```bash macOS & Linux
+```bash Homebrew
+brew install forke-org/tap/forke-mail
+```
+
+```bash Install script
 curl -fsSL https://mail.forke.space/install.sh | sh
 ```
 
@@ -23,7 +27,7 @@ sudo apt install ./forke-mail_*_linux_amd64.deb
 # unzip it and put forke-mail.exe somewhere on your PATH
 ```
 
-The install script finds the latest release for your system, checks its SHA-256 checksum and installs it. Every release, with `.deb`, `.rpm` and `.apk` packages, checksums and build attestations, is on [GitHub](https://github.com/forke-org/forke-mail/releases/latest).
+Homebrew works on macOS and Linux and keeps the CLI up to date with `brew upgrade forke-mail`. The install script finds the latest release for your system, checks its SHA-256 checksum and installs it. Every release, with `.deb`, `.rpm` and `.apk` packages, checksums and build attestations, is on [GitHub](https://github.com/forke-org/forke-mail/releases/latest).
 
 ## Sign in
 

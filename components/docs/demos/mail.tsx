@@ -17,7 +17,7 @@ import { Badge, Caret, MiniCursor, Stage, Window, at, show, typed, typingDone, u
 // ---------------------------------------------------------------- CLI: install → login → init → send
 
 const CMDS = [
-  { at: 4, cps: 3, cmd: 'curl -fsSL https://mail.forke.space/install.sh | sh', out: [[0, 'Downloading forke-mail 1.1.0 for darwin/arm64…'], [4, '✓ Checksum verified'], [7, '✓ Installed /usr/local/bin/forke-mail']] },
+  { at: 4, cps: 3, cmd: 'brew install forke-org/tap/forke-mail', out: [[0, '==> Tapping forke-org/tap'], [3, '==> Fetching forke-org/tap/forke-mail 1.1.0'], [7, '✓ Installed forke-mail 1.1.0 (checksum verified)']] },
   { at: 34, cps: 2, cmd: 'forke-mail login', out: [[2, 'Opening your browser to sign in…'], [12, '✓ Signed in as ada@acme.com · project Acme']] },
   { at: 62, cps: 2, cmd: 'forke-mail init', out: [[2, '✓ Created test key fm_test_9c2f…'], [5, '✓ Saved FORKE_MAIL_API_KEY to .env (and added .env to .gitignore)'], [8, '✓ Wrote Forke Mail notes to AGENTS.md for your coding agent']] },
   { at: 88, cps: 4, cmd: 'forke-mail send --to ada@example.com --from "Acme <hi@acme.com>" --subject "Hello" --text "It works"', out: [[3, '✓ Accepted  id 5f1c2e7a  status test  (test key: stored, not delivered)']] },
