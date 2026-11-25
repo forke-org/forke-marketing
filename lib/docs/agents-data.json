@@ -120,7 +120,7 @@
     {
       "title": "Set up Forke Mail in my app",
       "description": "Add email to the project you're working on: key, helper, first test send.",
-      "text": "Set up Forke Mail in this web project.\n1. Call get_account to see my project, verified domains and limits.\n2. Create a test API key with create_api_key (mode \"test\") and add it to .env as FORKE_MAIL_API_KEY. Make sure .env is in .gitignore.\n3. Add a small sendEmail helper that calls POST https://mail.forke.space/api/transactional with the key from the environment and an Idempotency-Key header.\n4. Send one test email through the helper and show me the result.\n5. Tell me what I need to switch to live sending (verified domain and a live key).",
+      "text": "Set up Forke Mail in this web project.\n1. Call get_account to check my project, verified domains and limits.\n2. Create a test key with create_api_key (mode \"test\"), add it to .env as FORKE_MAIL_API_KEY, and make sure .env is in .gitignore.\n3. Add a sendEmail helper that calls POST https://mail.forke.space/api/transactional with the key from the environment and an Idempotency-Key header.\n4. Send one test email through the helper and show me the result.\n5. Tell me what I need to switch to live sending (a verified domain and a live key).",
       "name": "setup-app"
     },
     {

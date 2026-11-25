@@ -5,7 +5,7 @@ description: The Forke Mail HTTP API. Plain JSON over HTTPS, with every endpoint
 
 The Forke Mail API is plain JSON over HTTPS. There's no SDK to install: every example on these pages uses the language's standard HTTP client, and you can pick your language once for the whole site.
 
-::image{src="/docs-demo/img/api-hero.webp" alt="Lanterns along a pier, lit one after another in perfect sequence" ratio="21 / 9"}
+::image{src="/docs-demo/img/api-hero.webp" alt="Sequential API endpoint ports along a dark metal rail streaming glowing amber data traces" ratio="21 / 9"}
 
 ## Base URL
 

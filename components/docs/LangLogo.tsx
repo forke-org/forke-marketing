@@ -8,7 +8,7 @@
  * commercial license from Forke Inc. is strictly prohibited.
  */
 
-import { RiJavaFill, RiTerminalBoxFill, RiClaudeFill, RiOpenaiFill, RiCursorAiFill, RiGithubFill } from '@remixicon/react'
+import { RiJavaFill, RiTerminalBoxFill, RiClaudeFill, RiOpenaiFill, RiCursorAiFill, RiGithubFill, RiSparkling2Fill } from '@remixicon/react'
 import { siCurl, siDjango, siDotnet, siExpress, siGo, siHomebrew, siLaravel, siNextdotjs, siNodedotjs, siPhp, siPython, siRuby, siRubyonrails, siRust, siTypescript, siJavascript } from 'simple-icons'
 import { cn } from '@/lib/utils/cn'
 import { ClaudeCodeMark } from './ClaudeCodeMark'
@@ -42,10 +42,11 @@ const MARKS: Record<string, Mark> = {
   openai: { kind: 'remix', Icon: RiOpenaiFill, color: '#ffffff' },
   cursor: { kind: 'remix', Icon: RiCursorAiFill, color: '#ffffff' },
   github: { kind: 'remix', Icon: RiGithubFill, color: '#ffffff' },
+  prompt: { kind: 'remix', Icon: RiSparkling2Fill, color: '#FF7A00' },
 }
 
 const NAMES: Record<string, string> = {
-  'Node.js': 'node', nodejs: 'node', Express: 'express', JavaScript: 'js', TypeScript: 'ts', 'Next.js': 'nextjs', Python: 'python', Django: 'django', Go: 'go', Rust: 'rust', PHP: 'php', Laravel: 'laravel', Java: 'java', Ruby: 'ruby', Rails: 'rails', '.NET': 'dotnet', 'C#': 'dotnet', cURL: 'curl', Terminal: 'terminal', CLI: 'terminal', 'macOS & Linux': 'terminal', 'Install script': 'terminal', Homebrew: 'homebrew', 'Debian & Ubuntu': 'terminal', Windows: 'terminal',
+  'Setup prompt': 'prompt', Prompt: 'prompt', 'Node.js': 'node', nodejs: 'node', Express: 'express', JavaScript: 'js', TypeScript: 'ts', 'Next.js': 'nextjs', Python: 'python', Django: 'django', Go: 'go', Rust: 'rust', PHP: 'php', Laravel: 'laravel', Java: 'java', Ruby: 'ruby', Rails: 'rails', '.NET': 'dotnet', 'C#': 'dotnet', cURL: 'curl', Terminal: 'terminal', CLI: 'terminal', 'macOS & Linux': 'terminal', 'Install script': 'terminal', Homebrew: 'homebrew', 'Debian & Ubuntu': 'terminal', Windows: 'terminal',
 }
 
 export function LangLogo({ name, className }: { name: string; className?: string }) {
