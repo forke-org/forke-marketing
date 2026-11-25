@@ -14,7 +14,6 @@ import SupportedBy from '@/components/landing/SupportedBy'
 import Problem from '@/components/landing/Problem'
 import HowItWorks from '@/components/landing/HowItWorks'
 import Capability from '@/components/landing/Capability'
-import ForkySection from '@/components/landing/forky/ForkySection'
 import Memory from '@/components/landing/Memory'
 import Matching from '@/components/landing/Matching'
 import ReviewSystem from '@/components/landing/ReviewSystem'
@@ -38,7 +37,6 @@ export default function Home() {
             <Capability />
             <Memory />
             <Matching />
-            <ForkySection />
             <ReviewSystem />
             <FAQ />
             <SupportedBy />
