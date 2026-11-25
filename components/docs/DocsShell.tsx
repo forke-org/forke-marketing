@@ -67,7 +67,7 @@ export default function DocsShell({ index, children }: { index: SearchEntry[]; c
   return (
     <div className="docs-root min-h-screen bg-[#121111] font-sans text-white selection:bg-accent selection:text-black">
       <header className="fixed inset-x-0 top-0 z-40 border-b border-white/[0.06] bg-[#121111]/85 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 max-w-[1500px] items-center gap-4 px-4 sm:px-6">
+        <div className="mx-auto flex h-16 max-w-[1500px] items-center gap-4 px-4 pt-2 sm:px-6">
           <button onClick={() => setDrawer(true)} aria-label="Open menu" className="-ml-1 flex h-9 w-9 items-center justify-center rounded-lg text-white/60 hover:bg-white/[0.05] hover:text-white lg:hidden">
             <Menu className="h-[18px] w-[18px]" />
           </button>
@@ -93,16 +93,16 @@ export default function DocsShell({ index, children }: { index: SearchEntry[]; c
             </a>
           </div>
         </div>
-        <nav aria-label="Products" className="docs-scroll-x mx-auto hidden h-11 max-w-[1500px] items-end gap-1 overflow-x-auto px-4 sm:px-6 md:flex">
+        <nav aria-label="Products" className="docs-scroll-x mx-auto hidden h-10 max-w-[1500px] items-end gap-1 overflow-x-auto px-4 sm:px-6 md:flex">
           {TABS.map((t) => (
             <TabLink key={t.id} tab={t} active={t.id === tab.id} />
           ))}
         </nav>
       </header>
 
-      <div className="mx-auto flex max-w-[1500px] pt-14 md:pt-[100px]">
+      <div className="mx-auto flex max-w-[1500px] pt-16 md:pt-[104px]">
         {tab.groups.length ? (
-          <aside className="docs-scroll sticky top-[100px] hidden h-[calc(100vh-100px)] w-[272px] shrink-0 overflow-y-auto border-r border-white/[0.05] px-3 pt-6 pb-16 lg:block">
+          <aside className="docs-scroll sticky top-[104px] hidden h-[calc(100vh-104px)] w-[272px] shrink-0 overflow-y-auto border-r border-white/[0.05] px-3 pt-6 pb-16 lg:block">
             <SidebarNav tab={tab} current={current} />
           </aside>
         ) : null}

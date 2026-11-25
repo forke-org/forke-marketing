@@ -28,11 +28,11 @@ A Forke Mail window opens. Sign in, choose the project the app should use (or cr
 
 ```prompt Prompt
 Set up Forke Mail in this web project.
-1. Call get_account to see my project, verified domains and limits.
-2. Create a test API key with create_api_key (mode "test") and add it to .env as FORKE_MAIL_API_KEY. Make sure .env is in .gitignore.
-3. Add a small sendEmail helper that calls POST https://mail.forke.space/api/transactional with the key from the environment and an Idempotency-Key header.
+1. Call get_account to check my project, verified domains and limits.
+2. Create a test key with create_api_key (mode "test"), add it to .env as FORKE_MAIL_API_KEY, and make sure .env is in .gitignore.
+3. Add a sendEmail helper that calls POST https://mail.forke.space/api/transactional with the key from the environment and an Idempotency-Key header.
 4. Send one test email through the helper and show me the result.
-5. Tell me what I need to switch to live sending (verified domain and a live key).
+5. Tell me what I need to switch to live sending (a verified domain and a live key).
 ```
 
 The app asks you once, in the chat, before creating the key. The test email is stored, not delivered, so nothing goes out.

@@ -223,19 +223,25 @@
 
 /* Prompts for AI apps */
 .docs-prompt {
-  padding: 18px 20px 20px;
+  padding: 16px 20px 18px;
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 13.5px;
+  line-height: 1.65;
   color: rgba(255, 255, 255, 0.72);
 }
 .docs-prompt p {
-  margin: 0 0 0.6em;
+  margin: 0 0 0.65em;
+}
+.docs-prompt p:last-child {
+  margin-bottom: 0;
 }
 .docs-prompt .pt-lead {
-  margin-bottom: 0.9em;
-  font-size: 15px;
+  margin: 0 0 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 14.5px;
   font-weight: 500;
+  letter-spacing: -0.01em;
   color: #fff;
 }
 .docs-prompt .pt-steps {
@@ -247,62 +253,72 @@
 .docs-prompt .pt-steps li {
   position: relative;
   counter-increment: pt;
-  padding: 0 0 0.75em 2.1em;
+  padding: 10px 0 10px 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
 }
 .docs-prompt .pt-steps li:last-child {
   padding-bottom: 0;
+  border-bottom: 0;
 }
 .docs-prompt .pt-steps li::before {
-  content: counter(pt);
+  content: counter(pt, decimal-leading-zero);
   position: absolute;
   left: 0;
-  top: 0.15em;
-  display: grid;
-  width: 1.45em;
-  height: 1.45em;
-  place-items: center;
-  border: 1px solid rgba(255, 122, 0, 0.35);
-  border-radius: 999px;
-  background: rgba(255, 122, 0, 0.08);
-  color: #ffa347;
+  top: 12px;
+  color: rgba(255, 163, 71, 0.78);
   font-family: var(--font-mono);
   font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
 }
 
 .docs-prompt [class^='pt-']:not(.pt-lead):not(.pt-steps) {
   border-radius: 5px;
-  padding: 0.05em 0.35em;
+  padding: 0.08em 0.4em;
   font-family: var(--font-mono);
-  font-size: 0.86em;
+  font-size: 0.84em;
   white-space: nowrap;
 }
 .docs-prompt .pt-tool {
-  background: rgba(255, 122, 0, 0.1);
-  color: #ffa347;
+  border: 1px solid rgba(255, 122, 0, 0.2);
+  background: rgba(255, 122, 0, 0.08);
+  color: #ffb366;
 }
 .docs-prompt .pt-env,
 .docs-prompt .pt-file,
 .docs-prompt .pt-var {
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.045);
   color: rgba(255, 255, 255, 0.88);
 }
 .docs-prompt .pt-method {
-  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: rgba(56, 189, 248, 0.08);
   color: #7dd3fc;
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 .docs-prompt .pt-str {
-  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.18);
+  background: rgba(74, 222, 128, 0.07);
   color: #86efac;
 }
 .docs-prompt .pt-url {
+  display: inline-block;
+  max-width: 100%;
+  border: 0 !important;
   background: none !important;
   padding: 0 !important;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: underline;
   text-decoration-color: rgba(255, 122, 0, 0.45);
   text-underline-offset: 3px;
   white-space: normal !important;
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .docs-wrap pre.shiki {

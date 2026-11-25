@@ -5,7 +5,7 @@ description: Let Claude, ChatGPT, Cursor or your coding agent set up and send em
 
 Forke Mail has an MCP server, so any AI app that supports the Model Context Protocol can use it: add your domain, write templates, wire email into your code, send, and find out why an email didn't arrive. You stay in charge: anything risky needs your yes in the chat.
 
-::image{src="/docs-demo/img/agents-hero.webp" alt="An AI app chat window connected to Forke Mail, with a confirmation card before a real send" prompt="P5" ratio="21 / 9"}
+::image{src="/docs-demo/img/agents-hero.webp" alt="AI assistants including ChatGPT, Claude, Gemini and Cursor streaming amber light filaments into a Forke relay hub" prompt="P5" ratio="21 / 9"}
 
 ## Three ways in
 

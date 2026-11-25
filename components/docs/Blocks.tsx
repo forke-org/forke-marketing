@@ -192,27 +192,46 @@ async function BlockView({ block: b, index }: { block: Block; index: number }): 
         </figure>
       )
     case 'generated':
-      if (b.name === 'languages')
+      if (b.name === 'languages') {
+        const languages = LANGUAGE_GUIDES.filter((g) => g.kind === 'language' && g.id !== 'curl')
+        const frameworksAndHttp = LANGUAGE_GUIDES.filter((g) => g.kind === 'framework' || g.id === 'curl')
+        const renderCard = (g: (typeof LANGUAGE_GUIDES)[number]) => (
+          <Link
+            key={g.id}
+            href={`/docs-demo/mail/send-with-${g.id}`}
+            className="group/l flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.015] px-3.5 py-3 transition-all hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.035]"
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/[0.07] bg-[#121111]">
+              <LangLogo name={g.id} className="h-4 w-4" />
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate text-[13.5px] font-medium text-white">{g.name}</span>
+              <span className="block text-[11.5px] text-white/35">
+                {g.id === 'curl' ? 'HTTP' : g.kind === 'framework' ? 'Framework' : 'Language'}
+              </span>
+            </span>
+          </Link>
+        )
         return (
-          <div key={index} className="not-prose my-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
-            {LANGUAGE_GUIDES.map((g) => (
-              <Link key={g.id} href={`/docs-demo/mail/send-with-${g.id}`} className="group/l flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.015] px-3.5 py-3 transition-all hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-white/[0.035]">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.07] bg-[#121111]"><LangLogo name={g.id} className="h-4 w-4" /></span>
-                <span className="min-w-0">
-                  <span className="block text-[13.5px] font-medium text-white">{g.name}</span>
-                  <span className="block text-[11.5px] text-white/35">{g.kind === 'framework' ? 'Framework' : 'Language'}</span>
-                </span>
-              </Link>
-            ))}
+          <div key={index} className="not-prose my-6 space-y-6">
+            <div>
+              <p className="mb-2.5 text-[12px] font-medium tracking-[0.04em] text-white/40 uppercase">Languages</p>
+              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">{languages.map(renderCard)}</div>
+            </div>
+            <div>
+              <p className="mb-2.5 text-[12px] font-medium tracking-[0.04em] text-white/40 uppercase">Frameworks &amp; HTTP</p>
+              <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">{frameworksAndHttp.map(renderCard)}</div>
+            </div>
           </div>
         )
+      }
       if (b.name === 'prompts') return <div key={index} className="not-prose my-6"><PromptGrid prompts={PROMPTS} /></div>
       return (
-        <div key={index} className="docs-scroll-x not-prose my-6 overflow-x-auto rounded-xl border border-white/[0.07]">
+        <div key={index} className="docs-table docs-scroll-x not-prose my-6 overflow-x-auto rounded-xl border border-white/[0.07]">
           <table className="w-full text-left text-[13.5px]">
             <thead>
               <tr className="border-b border-white/[0.07] bg-white/[0.02] text-white/55">
-                <th className="px-4 py-2.5 font-medium">Tool</th>
+                <th className="px-4 py-2.5 font-medium whitespace-nowrap">Tool</th>
                 <th className="px-4 py-2.5 font-medium">What it does</th>
                 <th className="px-4 py-2.5 font-medium whitespace-nowrap">Safety</th>
               </tr>
@@ -220,9 +239,9 @@ async function BlockView({ block: b, index }: { block: Block; index: number }): 
             <tbody>
               {TOOLS.map((t) => (
                 <tr key={t.name} id={`tool-${t.name}`} className="scroll-mt-32 border-b border-white/[0.05] last:border-0">
-                  <td className="px-4 py-3 align-top"><code className="docs-inline-code whitespace-nowrap">{t.name}</code></td>
+                  <td className="px-4 py-3 align-top whitespace-nowrap"><code className="docs-inline-code">{t.name}</code></td>
                   <td className="px-4 py-3 align-top leading-relaxed text-white/65"><Inline text={t.description} /></td>
-                  <td className="px-4 py-3 align-top"><LevelBadge level={t.level} /></td>
+                  <td className="w-[210px] px-4 py-3 align-top"><LevelBadge level={t.level} /></td>
                 </tr>
               ))}
             </tbody>
@@ -234,7 +253,7 @@ async function BlockView({ block: b, index }: { block: Block; index: number }): 
 
 export function LevelBadge({ level }: { level: string }) {
   const tone = level.includes("can't be undone") ? 'border-red-400/25 bg-red-400/[0.07] text-red-300' : level.startsWith('Asks') ? 'border-amber-400/25 bg-amber-400/[0.07] text-amber-200' : level.startsWith('Never') ? 'border-white/15 bg-white/[0.04] text-white/50' : 'border-emerald-400/25 bg-emerald-400/[0.07] text-emerald-300'
-  return <span className={cn('inline-flex rounded-full border px-2 py-0.5 text-[11.5px] font-medium whitespace-nowrap', tone)}>{level}</span>
+  return <span className={cn('inline-block rounded-lg border px-2.5 py-0.5 text-[11.5px] leading-snug font-medium', tone)}>{level}</span>
 }
 
 function CardImage({ src, alt }: { src: string; alt: string }) {

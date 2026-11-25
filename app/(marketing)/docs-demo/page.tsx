@@ -25,7 +25,7 @@ export const metadata: Metadata = { title: { absolute: 'Forke Docs' }, alternate
 const PATHS = [
   {
     title: 'Forke',
-    text: 'Claim scoped coding tasks, ship them as pull requests and get paid by UPI. Or post tasks and review a plain-English verdict.',
+    text: 'Ship scoped coding tasks as pull requests and get paid by UPI, or post tasks with clear review verdicts.',
     href: '/docs-demo/forke',
     image: '/docs-demo/img/path-forke.webp',
     prompt: 'P1',
@@ -49,7 +49,7 @@ const PATHS = [
   },
   {
     title: 'Agents & CLI',
-    text: 'Let Claude, ChatGPT, Cursor or your coding agent set up and send email for you, safely.',
+    text: 'Connect Claude, ChatGPT, Cursor or the CLI so your agent can set up and send email safely.',
     href: '/docs-demo/agents',
     image: '/docs-demo/img/path-agents.webp',
     prompt: 'P3',
@@ -127,7 +127,7 @@ export default async function DocsHome() {
             Everything about <b className="font-medium text-white/85">Forke</b>, where developers earn by shipping scoped tasks, and <b className="font-medium text-white/85">Forke Mail</b>, the email API you can use from any language or hand to your AI agent.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <CopyText text={setup.text} label="Copy the setup prompt" done="Paste it into your AI app" className="bg-accent text-black shadow-[0_0_30px_-8px_rgba(255,122,0,0.7)] hover:bg-[#ff8a1f]" />
+            <CopyText text={setup.text} label="Copy the setup prompt" done="Paste it into your AI app" className="bg-accent text-black hover:bg-[#ff8a1f]" />
             <Link href="/docs-demo/mail/quickstart" className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-white/[0.12] px-4 text-[14px] text-white/85 transition-colors hover:bg-white/[0.05]">
               Read the quickstart <ArrowRight className="h-4 w-4" />
             </Link>
