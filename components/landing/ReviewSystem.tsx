@@ -591,7 +591,7 @@ export default function ReviewSystem() {
 
   return (
     <Section id="review">
-      <div className="px-6 pt-16 sm:pt-24 md:px-[144px]">
+      <div className="px-6 pt-16 sm:px-12 sm:pt-24">
         <h2 className="text-[32px] font-[450] leading-[1.1] tracking-[-0.01em] text-ink sm:text-[44px] sm:leading-[48px]">
           Reviews that <ScrambleText text="never sleep" />.
         </h2>

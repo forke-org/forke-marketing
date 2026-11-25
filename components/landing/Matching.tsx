@@ -250,14 +250,14 @@ function TrustVisual() {
 export default function Matching() {
   return (
     <Section>
-      <div className="px-6 pt-16 sm:pt-24 md:px-[144px]">
+      <div className="px-6 pt-16 sm:px-12 sm:pt-24">
         <h2 id="matching" className="scroll-mt-24 text-[32px] font-[450] leading-[1.1] tracking-[-0.01em] text-ink sm:text-[44px] sm:leading-[48px]">
           Every task finds the right hands.
         </h2>
-        <p className="mt-6 text-base leading-6 text-white/45">
+        <p className="mt-6 max-w-[640px] text-base leading-6 text-white/45">
           A task only appears in your feed when you pass all three of its gates: your level, your skill tier and your
           trust score.
-          <br className="max-md:hidden" /> Owners get someone who can actually ship it, and you never scroll past work you
+          Owners get someone who can actually ship it, and you never scroll past work you
           can&rsquo;t claim.
         </p>
       </div>
