@@ -31,7 +31,7 @@ function DashboardFilm() {
     return () => io.disconnect()
   }, [])
   return (
-    <div ref={ref} role="img" aria-label="The Forke Mail dashboard: sending a test email, watching its timeline and verifying a domain" className="docs-demo relative aspect-[960/520] w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#151414]">
+    <div ref={ref} role="img" aria-label="The Forke Mail dashboard: sending a test email, watching its timeline and verifying a domain" className="docs-demo relative aspect-[1440/900] w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#151414]">
       <MailVideo active={active} />
     </div>
   )
